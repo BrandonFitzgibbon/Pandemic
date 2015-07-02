@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Cities.cs" />
     <Compile Include="Diseases.cs" />
+    <Compile Include="Nodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

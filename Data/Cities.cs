@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Cities : IDataAccess<ICity>
+    public static class Cities
     {
-        public IList<ICity> GetAll()
+        public static IList<ICity> GetAll()
         {
             return new List<ICity>()
             {

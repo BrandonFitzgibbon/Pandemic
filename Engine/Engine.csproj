@@ -49,7 +49,7 @@
     <Compile Include="Implementations\CounterPool.cs" />
     <Compile Include="Implementations\Disease.cs" />
     <Compile Include="Implementations\Node.cs" />
-    <Compile Include="Infrastructure\IDataAccess.cs" />
+    <Compile Include="Infrastructure\Counters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -39,5 +39,10 @@ namespace Engine.Implementations
                 this.pool = pool;
         }
 
+        public override string ToString()
+        {
+            return name;
+        }
+
     }
 }

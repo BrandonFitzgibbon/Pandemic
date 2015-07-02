@@ -1,6 +1,7 @@
 ﻿using Engine.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,16 @@ namespace Engine.Implementations
             get { return disease; }
         }
 
-        private ICounter counter;
-        public ICounter Counter
+        private IList<ICounter> counters;
+        public IList<ICounter> Counters
         {
-            get { return counter; }
+            get { return counters; }
         }
 
         private IList<INode> connections;
-        public IList<INode> Connections
+        public IReadOnlyCollection<INode> Connections
         {
-            get { return connections; }
+            get { return connections.ToList().AsReadOnly(); }
         }
 
         private bool hasResearchStation;
@@ -38,6 +39,39 @@ namespace Engine.Implementations
         {
             get { return hasResearchStation; }
             set { hasResearchStation = value; }
+        }
+
+        public Node(ICity city, IDisease disease, IList<ICounter> counters)
+        {
+            this.city = city;
+            this.disease = disease;
+            this.counters = counters;
+            this.connections = new List<INode>();
+        }
+
+        public void FormConnection(INode connection)
+        {
+            if(connection != null && !connections.Contains(connection))
+                connections.Add(connection);
+        }
+
+        public override string ToString()
+        {
+            return city.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return city.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            INode node = (INode)obj;
+            if (node != null)
+                return city.Equals(node.City);
+            else
+                return false;
         }
     }
 }

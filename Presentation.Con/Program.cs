@@ -21,13 +21,18 @@ namespace Presentation.Con
         {
             public static async void WriteCities()
             {
-                IDataAccess<ICity> cities = new Cities();
-                foreach (ICity city in cities.GetAll())
+                foreach (INode node in Nodes.GetAll())
                 {
-                    await Task.Delay(100);
-                    Console.Write(city.Name + ", ");
-                    Console.Write(city.Country);
-                    Console.WriteLine(" (Population: " + city.Population.ToString("##,#") + ")");
+                    Console.Write(node.City.Name + ", ");
+                    Console.Write(node.City.Country);
+                    Console.WriteLine(" (Population: " + node.City.Population.ToString("##,#") + ")");
+                    Console.WriteLine("\tNative Disease: " + node.Disease);
+                    Console.WriteLine("\tConnections: ");
+                    foreach (INode con in node.Connections)
+                    {
+                        Console.WriteLine("\t\t" + con);
+                    }
+                    Console.WriteLine();
                 }
             }
         }

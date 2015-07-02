@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Diseases : IDataAccess<IDisease>
+    public static class Diseases
     {
-        public IList<IDisease> GetAll()
+        public static IList<IDisease> GetAll()
         {
             List<IDisease> diseases = new List<IDisease>()
             {
