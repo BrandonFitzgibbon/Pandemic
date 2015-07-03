@@ -7,19 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace DataAccess
 {
     public static class Diseases
     {
         public static IList<IDisease> GetAll()
         {
-            List<IDisease> diseases = new List<IDisease>()
+            List<IDisease> diseases = new List<IDisease>();
+            using (var context = new DataEntities())
             {
-                new Disease(1) { Name = "Yellow" },
-                new Disease(2) { Name = "Red" },
-                new Disease(3) { Name = "Blue" },
-                new Disease(4) { Name = "Black" }
-            };
+                foreach (DataAccess.Disease disease in context.Diseases)
+                {
+                    diseases.Add(new Engine.Implementations.Disease(disease.Id) { Name = disease.Name });
+                }
+            }
 
             foreach (IDisease disease in diseases)
             {

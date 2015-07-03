@@ -9,6 +9,12 @@ namespace Engine.Implementations
 {
     public class City : ICity
     {
+        private int id;
+        public int Id
+        {
+            get { return id; }
+        }
+
         private string name;
         public string Name
         {
@@ -27,8 +33,9 @@ namespace Engine.Implementations
             get { return population; }
         }
 
-        public City(string name, string country, int population)
+        public City(int id, string name, string country, int population)
         {
+            this.id = id;
             this.name = name;
             this.country = country;
             this.population = population;

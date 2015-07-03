@@ -8,6 +8,7 @@ namespace Engine.Contracts
 {
     public interface ICity
     {
+        int Id { get; }
         string Name { get; }
         string Country { get; }
         int Population { get; }
