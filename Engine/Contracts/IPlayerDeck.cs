@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IEventCard : ICard
+    public interface IPlayerDeck : IDeck
     {
+        event EventHandler<EventArgs> GameOver;
+        void Setup(IList<IPlayer> players, int difficulty);
     }
 }

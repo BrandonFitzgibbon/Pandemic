@@ -47,11 +47,11 @@
     <Compile Include="Contracts\IDataAccess.cs" />
     <Compile Include="Contracts\IDisease.cs" />
     <Compile Include="Contracts\IEpidemicCard.cs" />
-    <Compile Include="Contracts\IEventCard.cs" />
     <Compile Include="Contracts\IGame.cs" />
     <Compile Include="Contracts\IInfectionDeck.cs" />
     <Compile Include="Contracts\INode.cs" />
     <Compile Include="Contracts\IPlayer.cs" />
+    <Compile Include="Contracts\IDeck.cs" />
     <Compile Include="Contracts\IPlayerDeck.cs" />
     <Compile Include="Contracts\IResearcher.cs" />
     <Compile Include="Implementations\Card.cs" />
@@ -60,13 +60,15 @@
     <Compile Include="Implementations\Counter.cs" />
     <Compile Include="Implementations\CounterPool.cs" />
     <Compile Include="Implementations\Disease.cs" />
+    <Compile Include="Implementations\EpidemicCard.cs" />
     <Compile Include="Implementations\Game.cs" />
     <Compile Include="Implementations\Node.cs" />
     <Compile Include="Implementations\Player.cs" />
     <Compile Include="Implementations\PlayerDeck.cs" />
-    <Compile Include="Infrastructure\Counters.cs" />
+    <Compile Include="Infrastructure\CounterBuilder.cs" />
     <Compile Include="Infrastructure\ListExtensions.cs" />
     <Compile Include="Infrastructure\NodeExtensions.cs" />
+    <Compile Include="Infrastructure\PlayerBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

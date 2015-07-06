@@ -9,7 +9,7 @@ namespace Engine.Infrastructure
 {
     public static class PlayerBuilder
     {
-        public IList<IPlayer> BuildPlayers(IList<string> names)
+        public static IList<IPlayer> BuildPlayers(IList<string> names)
         {
             IList<IPlayer> players = new List<IPlayer>();
             List<string> roles = new List<string>() { "Contingency Planner", "Dispatcher", "Medic", "Operations Expert", "Quarantine Specialist", "Researcher", "Scientist" };

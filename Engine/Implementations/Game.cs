@@ -25,18 +25,6 @@ namespace Engine.Implementations
             get { return players; }
         }
 
-        private IDeck playerDeck;
-        public IDeck PlayerDeck
-        {
-            get { return playerDeck; }
-        }
-
-        private IDeck infectionDeck;
-        public IDeck InfectionDeck
-        {
-            get { return infectionDeck; }
-        }
-
         public Game(IList<INode> nodes, IList<ICity> cities, IList<IDisease> diseases, IList<string> playerNames, Difficulty difficulty)
         {
             this.nodes = nodes;

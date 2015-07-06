@@ -48,15 +48,14 @@ namespace Engine.Implementations
 
         public override int GetHashCode()
         {
-            string hashString = name + country;
-            return hashString.GetHashCode();
+            return id.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             ICity equalsTarget = (ICity)obj;
             if (equalsTarget != null)
-                return equalsTarget.Name == this.name && equalsTarget.Country == this.country;
+                return equalsTarget.Id == this.id;
             else
                 return false;
         }
