@@ -11,8 +11,10 @@ namespace Engine.Contracts
         ICity City { get; }
         IDisease Disease { get; }
         IList<ICounter> Counters { get; }
-        IReadOnlyCollection<INode> Connections { get; }
-        bool HasResearchStation { get; set; }
-        void FormConnection(INode connection);
+        IList<INode> Connections { get; }
+        IList<IPlayer> Players { get; }
+        bool HasResearchStation { get; }
+        void BuildReasearchStation();
+        void DestroyResearchStation();
     }
 }

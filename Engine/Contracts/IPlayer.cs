@@ -8,8 +8,10 @@ namespace Engine.Contracts
 {
     public interface IPlayer
     {
-        string Name { get; set; }
-        ICity Location { get; set; }
-        IRole Role { get; }
+        string Name { get; }
+        INode Location { get; set; }
+        IList<ICard> Hand { get; }
+        void Drive(INode destination);
+
     }
 }

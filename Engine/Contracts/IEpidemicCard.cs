@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IRole
+    public interface IEpidemicCard : ICard
     {
-        int Id { get; }
-        string Name { get; }
     }
 }

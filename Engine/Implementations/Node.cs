@@ -29,16 +29,21 @@ namespace Engine.Implementations
         }
 
         private IList<INode> connections;
-        public IReadOnlyCollection<INode> Connections
+        public IList<INode> Connections
         {
-            get { return connections.ToList().AsReadOnly(); }
+            get { return connections; }
+        }
+
+        private IList<IPlayer> players;
+        public IList<IPlayer> Players
+        {
+            get { return players; }
         }
 
         private bool hasResearchStation;
         public bool HasResearchStation
         {
             get { return hasResearchStation; }
-            set { hasResearchStation = value; }
         }
 
         public Node(ICity city, IDisease disease, IList<ICounter> counters)
@@ -47,12 +52,17 @@ namespace Engine.Implementations
             this.disease = disease;
             this.counters = counters;
             this.connections = new List<INode>();
+            this.players = new List<IPlayer>();
         }
 
-        public void FormConnection(INode connection)
+        public void BuildReasearchStation()
         {
-            if(connection != null && !connections.Contains(connection))
-                connections.Add(connection);
+            hasResearchStation = true;
+        }
+
+        public void DestroyResearchStation()
+        {
+            hasResearchStation = false;
         }
 
         public override string ToString()
