@@ -1,5 +1,6 @@
 ﻿using Engine.Contracts;
 using Engine.Implementations;
+using Engine.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,8 @@ namespace DataAccess
         {
             List<ICity> cities = Cities.GetAll().ToList();
             List<IDisease> diseases = Diseases.GetAll().ToList();
+            List<ICounter> counters = new List<ICounter>(CounterBuilder.GetCounters(diseases));
             IList<INode> nodes = new List<INode>();
-
-            List<ICounter> counters = new List<ICounter>();
-            foreach (IDisease disease in diseases)
-            {
-                counters.Add(new Counter(disease));
-            }
 
             using (var context = new DataEntities())
             {

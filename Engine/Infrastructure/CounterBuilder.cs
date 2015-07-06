@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Infrastructure
 {
-    public class Counters
+    public static class CounterBuilder
     {
-        public IList<ICounter> GetCounters(IList<IDisease> diseases)
+        public static IList<ICounter> GetCounters(IList<IDisease> diseases)
         {
             List<ICounter> counters = new List<ICounter>();
             foreach (IDisease disease in diseases)

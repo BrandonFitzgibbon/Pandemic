@@ -44,6 +44,7 @@
     <Compile Include="Contracts\ICityCard.cs" />
     <Compile Include="Contracts\ICounter.cs" />
     <Compile Include="Contracts\ICounterPool.cs" />
+    <Compile Include="Contracts\IDataAccess.cs" />
     <Compile Include="Contracts\IDisease.cs" />
     <Compile Include="Contracts\IEpidemicCard.cs" />
     <Compile Include="Contracts\IEventCard.cs" />
