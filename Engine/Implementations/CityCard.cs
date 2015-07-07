@@ -19,5 +19,18 @@ namespace Engine.Implementations
         {
             this.city = city;
         }
+
+        public override int GetHashCode()
+        {
+            return city.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            ICityCard compare = (ICityCard)obj;
+            if (compare != null)
+                return city.Equals(compare.City);
+            return false;
+        }
     }
 }

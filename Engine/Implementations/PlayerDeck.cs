@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using Engine.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Engine.Implementations
     {
         private Stack<ICard> cardPile;
         private Stack<ICard> discardPile;
-        private bool IsSetup;
+        private bool IsSet;
 
         public PlayerDeck(IList<ICity> cities)
         {
@@ -20,7 +21,7 @@ namespace Engine.Implementations
             cityCards.Shuffle();
             cardPile = new Stack<ICard>(cityCards);
             discardPile = new Stack<ICard>();
-            IsSetup = false;
+            IsSet = false;
         }
 
         public ICard Draw()
@@ -32,25 +33,32 @@ namespace Engine.Implementations
                 return null;
         }
 
-        public void Discard(ICard discardedCard)
-        {
-            discardPile.Push(discardedCard);
-        }
-
         private IList<ICard> CreateCityCards(IList<ICity> cities)
         {
             IList<ICard> cityCards = new List<ICard>();
             foreach (ICity city in cities)
             {
-                cityCards.Add(new CityCard(city));
+                ICityCard card = new CityCard(city);
+                card.Discarded += card_Discarded;
+                cityCards.Add(card);
             }
             return cityCards;
         }
 
+        void card_Discarded(object sender, DiscardedEventArgs e)
+        {
+            discardPile.Push(e.Card);
+        }
+
+        //Provides players with starting hand and sets up the deck with epidemics
         public void Setup(IList<IPlayer> players, int difficulty)
         {
+            if (IsSet)
+                return;
+
             int i;
 
+            //determine initial hand size
             switch(players.Count)
             {
                 case 4:
@@ -67,11 +75,12 @@ namespace Engine.Implementations
                     break;
             }
 
+            //issue initial cards
             while(i < 4)
             {
                 foreach (IPlayer player in players)
                 {
-                    player.Hand.Add(Draw());
+                    player.Hand.Draw(this);
                 }
                 i++;
             }
@@ -102,7 +111,9 @@ namespace Engine.Implementations
                 {
                     miniPile.Add(cardPile.Pop());
                 }
-                miniPile.Add(new EpidemicCard());
+                IEpidemicCard card = new EpidemicCard();
+                card.Discarded += card_Discarded;
+                miniPile.Add(card);
                 miniPile.Shuffle();
                 epidemicPiles.Add(miniPile);
             }
@@ -117,6 +128,8 @@ namespace Engine.Implementations
             }
 
             cardPile = new Stack<ICard>(setCardPile);
+
+            IsSet = true;
         }
 
         public event EventHandler<EventArgs> GameOver;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.CustomEventArgs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Engine.Contracts
 {
     public interface ICard
     {
-        void Discard(IDeck deck);
+        void Discard();
+        event EventHandler<DiscardedEventArgs> Discarded;
     }
 }

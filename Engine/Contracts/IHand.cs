@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IDeck
+    public interface IHand
     {
-        ICard Draw();
+        IEnumerable<ICard> Cards { get; }
+        void Draw(IDeck deck);
     }
 }

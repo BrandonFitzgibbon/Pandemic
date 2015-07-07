@@ -9,5 +9,6 @@ namespace Engine.Implementations
 {
     public class EpidemicCard : Card, IEpidemicCard
     {
+
     }
 }

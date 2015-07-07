@@ -11,6 +11,7 @@ namespace EngineTests
     {
         private List<ICity> cities;
         private List<IPlayer> players;
+        private PlayerDeck deck;
 
         public class MockPlayer : Player, IPlayer
         {
@@ -87,13 +88,30 @@ namespace EngineTests
                 new MockPlayer("Jane"),
                 new MockPlayer("John")
             };
+
+            deck = new PlayerDeck(cities);
+            deck.Setup(players, 6);
         }
 
         [TestMethod]
-        public void TestSetUp()
+        public void TestEpidemicCountExpect6()
         {
-            PlayerDeck pd = new PlayerDeck(cities);
-            pd.Setup(players, 6);   
+            List<ICard> drawnCards = new List<ICard>();
+            ICard drawnCard;
+            drawnCard = deck.Draw();
+            drawnCards.Add(drawnCard);
+            while(drawnCard != null)
+            {
+                drawnCard = deck.Draw();
+                drawnCards.Add(drawnCard);
+            }
+            int epidemicCount = 0;
+            foreach (ICard card in drawnCards)
+            {
+                if (card is IEpidemicCard)
+                    epidemicCount++;
+            }
+            Assert.AreEqual<int>(6, epidemicCount);
         }
     }
 }

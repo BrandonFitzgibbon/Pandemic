@@ -23,8 +23,8 @@ namespace Engine.Implementations
             set { location = value; }
         }
 
-        private IList<ICard> hand;
-        public IList<ICard> Hand
+        private IHand hand;
+        public IHand Hand
         {
             get { return hand; }
         }
@@ -32,7 +32,7 @@ namespace Engine.Implementations
         public Player(string name)
         {
             this.name = name;
-            this.hand = new List<ICard>();
+            this.hand = new Hand();
         }
 
         public virtual void Drive(INode destination)
@@ -41,5 +41,72 @@ namespace Engine.Implementations
                 this.location = destination;
         }
 
+        public void DirectFlight(INode destination)
+        {
+            foreach (ICityCard card in Hand.Cards)
+            {
+                if(card.City == destination.City)
+                {
+                    card.Discard();
+                    location = destination;
+                    return;
+                }
+            }
+        }
+
+        public void CharterFlight(INode destination)
+        {
+            foreach (ICityCard card in Hand.Cards)
+            {
+                if (card.City == location.City)
+                {
+                    card.Discard();
+                    location = destination;
+                    return;
+                }
+            }
+        }
+
+        public void ShuttleFlight(INode destination)
+        {
+            if (location.HasResearchStation && destination.HasResearchStation)
+                location = destination;
+        }
+
+        public void BuildResearchStation()
+        {
+            if (!location.HasResearchStation)
+            {
+                foreach (ICityCard card in Hand.Cards)
+                {
+                    if (card.City == location.City)
+                    {
+                        card.Discard();
+                        location.BuildReasearchStation();
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void TreatDisease()
+        {
+            
+        }
+
+        public void TakeKnowledge(IPlayer giver)
+        {
+            
+        }
+
+        public void GiveKnowledge(IPlayer taker, ICard card)
+        {
+            
+        }
+
+        public void DiscoverCure(IList<ICard> cards)
+        {
+            
+        }
     }
 }

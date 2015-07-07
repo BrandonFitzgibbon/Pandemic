@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlayerDeckTests.cs" />
+    <Compile Include="PlayerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">
