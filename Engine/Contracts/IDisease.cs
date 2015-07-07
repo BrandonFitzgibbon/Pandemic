@@ -9,8 +9,10 @@ namespace Engine.Contracts
     public interface IDisease
     {
         int Id { get; }
-        string Name { get; set; }
-        ICounterPool Pool { get; }
-        void CreatePool(ICounterPool pool);
+        string Name { get; }
+        int Count { get; }
+        void Increase();
+        void Decrease();
+        event EventHandler GameOver;
     }
 }

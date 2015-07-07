@@ -22,21 +22,16 @@ namespace Engine.Implementations
             set { name = value; }
         }
 
-        private ICounterPool pool;
-        public ICounterPool Pool
+        private int count;
+        public int Count
         {
-            get { return pool; }
+            get { return count; }
         }
 
         public Disease(int id)
         {
             this.id = id;
-        }
-
-        public void CreatePool(ICounterPool pool)
-        {
-            if (this.pool == null)
-                this.pool = pool;
+            count = 24;
         }
 
         public override string ToString()
@@ -44,5 +39,33 @@ namespace Engine.Implementations
             return name;
         }
 
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            IDisease equalsTarget = (IDisease)obj;
+            if (equalsTarget != null)
+                return equalsTarget.Id == this.id;
+            return false;
+        }
+
+        public void Decrease()
+        {
+            if (count > 0)
+                count--;
+            else
+                if (GameOver != null) GameOver(this, EventArgs.Empty);
+        }
+
+        public void Increase()
+        {
+            if (count < 24)
+                count++;
+        }
+
+        public event EventHandler GameOver;
     }
 }

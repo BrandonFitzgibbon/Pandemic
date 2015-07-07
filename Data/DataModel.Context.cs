@@ -28,6 +28,5 @@ namespace DataAccess
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Connection> Connections { get; set; }
         public virtual DbSet<Disease> Diseases { get; set; }
-        public virtual DbSet<Node> Nodes { get; set; }
     }
 }

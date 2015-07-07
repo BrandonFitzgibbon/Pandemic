@@ -15,7 +15,7 @@ namespace DataAccess
     public partial class Connection
     {
         public int Id { get; set; }
-        public int NodeId { get; set; }
         public int ConnectionId { get; set; }
+        public int CityId { get; set; }
     }
 }

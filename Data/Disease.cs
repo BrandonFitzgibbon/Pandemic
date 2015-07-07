@@ -14,14 +14,7 @@ namespace DataAccess
     
     public partial class Disease
     {
-        public Disease()
-        {
-            this.Nodes = new HashSet<Node>();
-        }
-    
         public int Id { get; set; }
         public string Name { get; set; }
-    
-        public virtual ICollection<Node> Nodes { get; set; }
     }
 }

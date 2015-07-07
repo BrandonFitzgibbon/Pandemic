@@ -9,17 +9,17 @@ namespace Engine.Contracts
     public interface IPlayer
     {
         string Name { get; }
-        INode Location { get; set; }
+        ICity Location { get; set; }
         IHand Hand { get; }
 
-        void Drive(INode destination);
-        void DirectFlight(INode destination);
-        void CharterFlight(INode destination);
-        void ShuttleFlight(INode destination);
+        void Drive(ICity destination);
+        void DirectFlight(ICity destination);
+        void CharterFlight(ICity destination);
+        void ShuttleFlight(ICity destination);
         void BuildResearchStation();
-        void TreatDisease();
+        void TreatDisease(IDisease disease);
         void TakeKnowledge(IPlayer giver);
-        void GiveKnowledge(IPlayer taker, ICard card);
+        void GiveKnowledge(IPlayer taker);
         void DiscoverCure(IList<ICard> cards);
     }
 }

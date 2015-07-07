@@ -6,12 +6,9 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7bc7d0aeb0e147468a9ed35a189ca29d" Name="Diagram1">
         <EntityTypeShape EntityType="DataModel.City" Width="1.5" PointX="0.5" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Connection" Width="1.5" PointX="2.75" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Disease" Width="1.5" PointX="5" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataModel.Node" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="DataModel.FK_Nodes_To_Cities" />
-        <AssociationConnector Association="DataModel.FK_Nodes_To_Diseases" />
-      </Diagram>
+        <EntityTypeShape EntityType="DataModel.Connection" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataModel.Disease" Width="1.5" PointX="2.125" PointY="0.75" IsExpanded="true" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

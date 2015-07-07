@@ -16,8 +16,8 @@ namespace Engine.Implementations
             get { return name; }
         }
         
-        private INode location;
-        public INode Location
+        private ICity location;
+        public ICity Location
         {
             get { return location; }
             set { location = value; }
@@ -35,17 +35,17 @@ namespace Engine.Implementations
             this.hand = new Hand();
         }
 
-        public virtual void Drive(INode destination)
+        public virtual void Drive(ICity destination)
         {
             if (this.location.Connections.Contains(destination))
                 this.location = destination;
         }
 
-        public void DirectFlight(INode destination)
+        public void DirectFlight(ICity destination)
         {
             foreach (ICityCard card in Hand.Cards)
             {
-                if(card.City == destination.City)
+                if(card.City == destination)
                 {
                     card.Discard();
                     location = destination;
@@ -54,11 +54,11 @@ namespace Engine.Implementations
             }
         }
 
-        public void CharterFlight(INode destination)
+        public void CharterFlight(ICity destination)
         {
             foreach (ICityCard card in Hand.Cards)
             {
-                if (card.City == location.City)
+                if (card.City == location)
                 {
                     card.Discard();
                     location = destination;
@@ -67,7 +67,7 @@ namespace Engine.Implementations
             }
         }
 
-        public void ShuttleFlight(INode destination)
+        public void ShuttleFlight(ICity destination)
         {
             if (location.HasResearchStation && destination.HasResearchStation)
                 location = destination;
@@ -79,19 +79,23 @@ namespace Engine.Implementations
             {
                 foreach (ICityCard card in Hand.Cards)
                 {
-                    if (card.City == location.City)
+                    if (card.City == location)
                     {
                         card.Discard();
-                        location.BuildReasearchStation();
+                        
                         return;
                     }
                 }
             }
         }
 
-        public void TreatDisease()
+        public void TreatDisease(IDisease disease)
         {
-            
+            ICounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
+            if (treatTarget != null)
+            {
+                
+            }
         }
 
         public void TakeKnowledge(IPlayer giver)
@@ -99,7 +103,7 @@ namespace Engine.Implementations
             
         }
 
-        public void GiveKnowledge(IPlayer taker, ICard card)
+        public void GiveKnowledge(IPlayer taker)
         {
             
         }

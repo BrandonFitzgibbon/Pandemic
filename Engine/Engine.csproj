@@ -43,14 +43,11 @@
     <Compile Include="Contracts\ICity.cs" />
     <Compile Include="Contracts\ICityCard.cs" />
     <Compile Include="Contracts\ICounter.cs" />
-    <Compile Include="Contracts\ICounterPool.cs" />
-    <Compile Include="Contracts\IDataAccess.cs" />
     <Compile Include="Contracts\IDisease.cs" />
     <Compile Include="Contracts\IEpidemicCard.cs" />
     <Compile Include="Contracts\IGame.cs" />
     <Compile Include="Contracts\IHand.cs" />
     <Compile Include="Contracts\IInfectionDeck.cs" />
-    <Compile Include="Contracts\INode.cs" />
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IDeck.cs" />
     <Compile Include="Contracts\IPlayerDeck.cs" />
@@ -60,21 +57,19 @@
     <Compile Include="Implementations\City.cs" />
     <Compile Include="Implementations\CityCard.cs" />
     <Compile Include="Implementations\Counter.cs" />
-    <Compile Include="Implementations\CounterPool.cs" />
     <Compile Include="Implementations\Disease.cs" />
     <Compile Include="Implementations\EpidemicCard.cs" />
     <Compile Include="Implementations\Game.cs" />
     <Compile Include="Implementations\Hand.cs" />
-    <Compile Include="Implementations\Node.cs" />
     <Compile Include="Implementations\Player.cs" />
     <Compile Include="Implementations\PlayerDeck.cs" />
-    <Compile Include="Infrastructure\CounterBuilder.cs" />
     <Compile Include="Infrastructure\ListExtensions.cs" />
-    <Compile Include="Infrastructure\NodeExtensions.cs" />
     <Compile Include="Infrastructure\PlayerBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

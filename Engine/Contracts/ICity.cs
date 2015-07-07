@@ -12,5 +12,10 @@ namespace Engine.Contracts
         string Name { get; }
         string Country { get; }
         int Population { get; }
+        IEnumerable<ICity> Connections { get; }
+        IDisease Disease { get; }
+        IList<ICounter> Counters { get; }
+        IList<IPlayer> Players { get; }
+        bool HasResearchStation { get; }
     }
 }

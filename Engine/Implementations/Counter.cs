@@ -25,7 +25,7 @@ namespace Engine.Implementations
         {
             if (count < 3)
             {
-                disease.Pool.Decrease();
+                disease.Decrease();
                 count++;
             }
             else
@@ -35,7 +35,10 @@ namespace Engine.Implementations
         public void Decrease()
         {
             if (count > 0)
+            {
                 count--;
+                disease.Increase();
+            }
         }
 
         public Counter(IDisease disease)

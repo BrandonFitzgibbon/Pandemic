@@ -10,6 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DiseaseId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
           <Property Name="Population" Type="int" />
@@ -19,7 +20,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NodeId" Type="int" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
           <Property Name="ConnectionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Diseases">
@@ -29,51 +30,10 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Nodes">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="CityId" Type="int" Nullable="false" />
-          <Property Name="DiseaseId" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Nodes_To_Cities">
-          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
-          <End Role="Nodes" Type="Self.Nodes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cities">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Nodes">
-              <PropertyRef Name="CityId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Nodes_To_Diseases">
-          <End Role="Diseases" Type="Self.Diseases" Multiplicity="1" />
-          <End Role="Nodes" Type="Self.Nodes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Diseases">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Nodes">
-              <PropertyRef Name="DiseaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DataModelStoreContainer">
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Connections" EntityType="Self.Connections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diseases" EntityType="Self.Diseases" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Nodes" EntityType="Self.Nodes" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Nodes_To_Cities" Association="Self.FK_Nodes_To_Cities">
-            <End Role="Cities" EntitySet="Cities" />
-            <End Role="Nodes" EntitySet="Nodes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Nodes_To_Diseases" Association="Self.FK_Nodes_To_Diseases">
-            <End Role="Diseases" EntitySet="Diseases" />
-            <End Role="Nodes" EntitySet="Nodes" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -87,15 +47,15 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Population" Type="Int32" />
-          <NavigationProperty Name="Nodes" Relationship="DataModel.FK_Nodes_To_Cities" FromRole="City" ToRole="Node" />
+          <Property Name="DiseaseId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Connection">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NodeId" Type="Int32" Nullable="false" />
           <Property Name="ConnectionId" Type="Int32" Nullable="false" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Disease">
           <Key>
@@ -103,57 +63,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Nodes" Relationship="DataModel.FK_Nodes_To_Diseases" FromRole="Disease" ToRole="Node" />
-        </EntityType>
-        <EntityType Name="Node">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="CityId" Type="Int32" Nullable="false" />
-          <Property Name="DiseaseId" Type="Int32" Nullable="false" />
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="City" Relationship="DataModel.FK_Nodes_To_Cities" FromRole="Node" ToRole="City" />
-          <NavigationProperty Name="Disease" Relationship="DataModel.FK_Nodes_To_Diseases" FromRole="Node" ToRole="Disease" />
         </EntityType>
         <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Connections" EntityType="Self.Connection" />
           <EntitySet Name="Diseases" EntityType="Self.Disease" />
-          <EntitySet Name="Nodes" EntityType="Self.Node" />
-          <AssociationSet Name="FK_Nodes_To_Cities" Association="DataModel.FK_Nodes_To_Cities">
-            <End Role="City" EntitySet="Cities" />
-            <End Role="Node" EntitySet="Nodes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Nodes_To_Diseases" Association="DataModel.FK_Nodes_To_Diseases">
-            <End Role="Disease" EntitySet="Diseases" />
-            <End Role="Node" EntitySet="Nodes" />
-          </AssociationSet>
-        </EntityContainer>
-        <Association Name="FK_Nodes_To_Cities">
-          <End Type="DataModel.City" Role="City" Multiplicity="1" />
-          <End Type="DataModel.Node" Role="Node" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="City">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Node">
-              <PropertyRef Name="CityId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Nodes_To_Diseases">
-          <End Type="DataModel.Disease" Role="Disease" Multiplicity="1" />
-          <End Type="DataModel.Node" Role="Node" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Disease">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Node">
-              <PropertyRef Name="DiseaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+          </EntityContainer>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -162,6 +78,7 @@
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="DataModel.City">
               <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="DiseaseId" ColumnName="DiseaseId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
@@ -172,8 +89,8 @@
           <EntitySetMapping Name="Connections">
             <EntityTypeMapping TypeName="DataModel.Connection">
               <MappingFragment StoreEntitySet="Connections">
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
                 <ScalarProperty Name="ConnectionId" ColumnName="ConnectionId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -183,15 +100,6 @@
               <MappingFragment StoreEntitySet="Diseases">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Nodes">
-            <EntityTypeMapping TypeName="DataModel.Node">
-              <MappingFragment StoreEntitySet="Nodes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="DiseaseId" ColumnName="DiseaseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

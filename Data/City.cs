@@ -14,16 +14,10 @@ namespace DataAccess
     
     public partial class City
     {
-        public City()
-        {
-            this.Nodes = new HashSet<Node>();
-        }
-    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
         public Nullable<int> Population { get; set; }
-    
-        public virtual ICollection<Node> Nodes { get; set; }
+        public int DiseaseId { get; set; }
     }
 }
