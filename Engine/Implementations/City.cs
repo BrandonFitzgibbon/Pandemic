@@ -69,6 +69,7 @@ namespace Engine.Implementations
             this.name = name;
             this.country = country;
             this.population = population;
+            this.connections = new List<ICity>();
             this.disease = disease;
             CreateCounters(diseases);
             this.players = new List<IPlayer>();
@@ -82,6 +83,12 @@ namespace Engine.Implementations
 	        {
                 counters.Add(new Counter(disease));
 	        }
+        }
+
+        public void FormConnection(ICity connection)
+        {
+            if(!connections.Contains(connection))
+                connections.Add(connection);
         }
 
         public override string ToString()

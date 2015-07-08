@@ -19,5 +19,7 @@ namespace DataAccess
         public string Country { get; set; }
         public Nullable<int> Population { get; set; }
         public int DiseaseId { get; set; }
+    
+        public virtual Disease Disease { get; set; }
     }
 }

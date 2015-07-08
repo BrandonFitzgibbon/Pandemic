@@ -17,5 +17,6 @@ namespace Engine.Contracts
         IList<ICounter> Counters { get; }
         IList<IPlayer> Players { get; }
         bool HasResearchStation { get; }
+        void FormConnection(ICity connection);
     }
 }

@@ -41,7 +41,7 @@ namespace Engine.Implementations
                 this.location = destination;
         }
 
-        public void DirectFlight(ICity destination)
+        public virtual void DirectFlight(ICity destination)
         {
             foreach (ICityCard card in Hand.Cards)
             {

@@ -30,10 +30,26 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_Cities_To_Diseases">
+          <End Role="Diseases" Type="Self.Diseases" Multiplicity="1" />
+          <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Diseases">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cities">
+              <PropertyRef Name="DiseaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DataModelStoreContainer">
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Connections" EntityType="Self.Connections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diseases" EntityType="Self.Diseases" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cities_To_Diseases" Association="Self.FK_Cities_To_Diseases">
+            <End Role="Diseases" EntitySet="Diseases" />
+            <End Role="Cities" EntitySet="Cities" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -48,6 +64,7 @@
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Population" Type="Int32" />
           <Property Name="DiseaseId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Disease" Relationship="DataModel.FK_Cities_To_Diseases" FromRole="City" ToRole="Disease" />
         </EntityType>
         <EntityType Name="Connection">
           <Key>
@@ -63,12 +80,29 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cities" Relationship="DataModel.FK_Cities_To_Diseases" FromRole="Disease" ToRole="City" />
         </EntityType>
         <EntityContainer Name="DataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Connections" EntityType="Self.Connection" />
           <EntitySet Name="Diseases" EntityType="Self.Disease" />
+          <AssociationSet Name="FK_Cities_To_Diseases" Association="DataModel.FK_Cities_To_Diseases">
+            <End Role="Disease" EntitySet="Diseases" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
           </EntityContainer>
+        <Association Name="FK_Cities_To_Diseases">
+          <End Type="DataModel.Disease" Role="Disease" Multiplicity="1" />
+          <End Type="DataModel.City" Role="City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disease">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="DiseaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
