@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IHand
+    public interface IPlayerFactory
     {
-        IEnumerable<ICard> Cards { get; }
-        IEnumerable<ICityCard> CityCards { get; }
-        void Draw(IDeck deck);
+        IPlayer Get(string name, string role);
     }
 }

@@ -13,8 +13,8 @@ namespace Engine.Contracts
         IHand Hand { get; }
 
         void Drive(ICity destination);
-        void DirectFlight(ICity destination);
-        void CharterFlight(ICity destination);
+        void DirectFlight(ICity destination, ICityCard destinationCard);
+        void CharterFlight(ICity destination, ICityCard locationCard);
         void ShuttleFlight(ICity destination);
         void BuildResearchStation();
         void TreatDisease(IDisease disease);

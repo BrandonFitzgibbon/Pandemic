@@ -11,9 +11,15 @@ namespace Engine.Implementations
     public class Hand : IHand
     {
         private IList<ICard> cards;
+        
         public IEnumerable<ICard> Cards
         {
             get { return cards; }
+        }
+
+        public IEnumerable<ICityCard> CityCards
+        {
+            get { return cards.Where(i => i is ICityCard).OfType<ICityCard>(); }
         }
 
         public Hand()

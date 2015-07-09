@@ -8,14 +8,13 @@ namespace Engine.Contracts
 {
     public interface ICity
     {
-        int Id { get; }
         string Name { get; }
         string Country { get; }
         int Population { get; }
         IEnumerable<ICity> Connections { get; }
         IDisease Disease { get; }
         IList<ICounter> Counters { get; }
-        IList<IPlayer> Players { get; }
+        IList<IPlayer> PlayersInCity { get; }
         bool HasResearchStation { get; }
         void FormConnection(ICity connection);
     }

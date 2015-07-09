@@ -41,29 +41,21 @@ namespace Engine.Implementations
                 this.location = destination;
         }
 
-        public virtual void DirectFlight(ICity destination)
+        public virtual void DirectFlight(ICity destination, ICityCard destinationCard)
         {
-            foreach (ICityCard card in Hand.Cards)
+            if (destinationCard.City == destination)
             {
-                if(card.City == destination)
-                {
-                    card.Discard();
-                    location = destination;
-                    return;
-                }
+                location = destination;
+                destinationCard.Discard();
             }
         }
 
-        public void CharterFlight(ICity destination)
+        public virtual void CharterFlight(ICity destination, ICityCard locationCard)
         {
-            foreach (ICityCard card in Hand.Cards)
+            if (locationCard.City == location)
             {
-                if (card.City == location)
-                {
-                    card.Discard();
-                    location = destination;
-                    return;
-                }
+                location = destination;
+                locationCard.Discard();
             }
         }
 
@@ -73,18 +65,13 @@ namespace Engine.Implementations
                 location = destination;
         }
 
-        public void BuildResearchStation()
+        public void BuildResearchStation(ICityCard locationCard)
         {
             if (!location.HasResearchStation)
             {
-                foreach (ICityCard card in Hand.Cards)
+                if(locationCard.City == location)
                 {
-                    if (card.City == location)
-                    {
-                        card.Discard();
-                        
-                        return;
-                    }
+                    
                 }
             }
         }
@@ -111,6 +98,12 @@ namespace Engine.Implementations
         public void DiscoverCure(IList<ICard> cards)
         {
             
+        }
+
+
+        public void BuildResearchStation()
+        {
+            throw new NotImplementedException();
         }
     }
 }

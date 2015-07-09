@@ -11,6 +11,10 @@ namespace Engine.Implementations
     public class Game : IGame
     {
         private IList<IDisease> diseases;
+        public IList<IDisease> Diseases
+        {
+            get { return diseases; }
+        }
 
         private IList<ICity> cities;
         public IEnumerable<ICity> Cities
@@ -30,14 +34,11 @@ namespace Engine.Implementations
             get { return playerDeck; }
         }
 
-        public Game(IList<ICity> cities, IList<IDisease> diseases, IList<string> playerNames, Difficulty difficulty)
+        public Game(IList<string> playerNames, Difficulty difficulty)
         {
-            this.cities = cities;
-            this.diseases = diseases;
-            this.players = PlayerBuilder.BuildPlayers(playerNames);
-            this.playerDeck = new PlayerDeck(this.cities);
-            playerDeck.Setup(this.players, (int)difficulty);
+           
         }
+
     }
 
     public enum Difficulty

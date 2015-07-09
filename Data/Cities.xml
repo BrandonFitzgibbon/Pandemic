@@ -1,0 +1,574 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Cities>
+  
+  <City>
+    <Name>Bogota</Name>
+    <Country>Colombia</Country>
+    <Population>8702000</Population>
+    <Connections>
+      <Connection>Buenos Ares</Connection>
+      <Connection>Lima</Connection>
+      <Connection>Mexico City</Connection>
+      <Connection>Miami</Connection>
+      <Connection>Sao Paulo</Connection>
+    </Connections>
+  </City>
+  
+  <City>
+    <Name>Buenos Aires</Name>
+    <Country>Argentina</Country>
+    <Population>1363900</Population>
+    <Connections>
+      <Connection>Bogota</Connection>
+      <Connection>Sao Paulo</Connection>
+    </Connections>
+  </City>
+  
+  <City>
+    <Name>Johannesburg</Name>
+    <Country>South Africa</Country>
+    <Population>3888000</Population>
+    <Connections>
+      <Connection>Kinshasa</Connection>
+      <Connection>Khartoum</Connection>
+    </Connections>
+  </City>
+  
+  <City>
+    <Name>Khartoum</Name>
+    <Country>Sudan</Country>
+    <Population>4887000</Population>
+    <Connections>
+      <Connection>Cairo</Connection>
+      <Connection>Lagos</Connection>
+      <Connection>Kinshasa</Connection>
+      <Connection>Johannesburg</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Kinshasa</Name>
+    <Country>Democratic Republic of Congo</Country>
+    <Population>9046000</Population>
+    <Connections>
+      <Connection>Lagos</Connection>
+      <Connection>Khartoum</Connection>
+      <Connection>Johannesburg</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Lagos</Name>
+    <Country>Nigeria</Country>
+    <Population>11547000</Population>
+    <Connections>
+      <Connection>Khartoum</Connection>
+      <Connection>Kinshasa</Connection>
+      <Connection>Sao Paulo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Lima</Name>
+    <Country>Peru</Country>
+    <Population>9121000</Population>
+    <Connections>
+      <Connection>Bogota</Connection>
+      <Connection>Mexico City</Connection>
+      <Connection>Santiago</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Los Angeles</Name>
+    <Country>United States</Country>
+    <Population>14900000</Population>
+    <Connections>
+      <Connection>Chicago</Connection>
+      <Connection>Mexico City</Connection>
+      <Connection>San Franciso</Connection>
+      <Connection>Sydney</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Mexico City</Name>
+    <Country>Mexico</Country>
+    <Population>19463000</Population>
+    <Connections>
+      <Connection>Chicago</Connection>
+      <Connection>Bogota</Connection>
+      <Connection>Lima</Connection>
+      <Connection>Los Angeles</Connection>
+      <Connection>Lima</Connection>
+    </Connections>
+  </City>
+  
+  <City>
+    <Name>Miami</Name>
+    <Country>United States</Country>
+    <Population>5582000</Population>
+    <Connections>
+      <Connection>Atlanta</Connection>
+      <Connection>Bogota</Connection>
+      <Connection>Mexico City</Connection>
+      <Connection>Washington</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Santiago</Name>
+    <Country>Chile</Country>
+    <Population>6015000</Population>
+    <Connections>
+      <Connection>Lima</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Sao Paulo</Name>
+    <Country>Brazil</Country>
+    <Population>20186000</Population>
+    <Connections>
+      <Connection>Bogota</Connection>
+      <Connection>Buenos Aires</Connection>
+      <Connection>Madrid</Connection>
+      <Connection>Lagos</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Bangkok</Name>
+    <Country>Thailand</Country>
+    <Population>7151000</Population>
+    <Connections>
+      <Connection>Chennai</Connection>
+      <Connection>Jakarta</Connection>
+      <Connection>Kolkata</Connection>
+      <Connection>Ho Chi Minh City</Connection>
+      <Connection>Hong Kong</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Beijing</Name>
+    <Country>People's Republic of China</Country>
+    <Population>17311000</Population>
+    <Connections>
+      <Connection>Seoul</Connection>
+      <Connection>Shanghai</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Ho Chi Minh City</Name>
+    <Country>Vietnam</Country>
+    <Population>8314000</Population>
+    <Connections>
+      <Connection>Bangkok</Connection>
+      <Connection>Jakarta</Connection>
+      <Connection>Manila</Connection>
+      <Connection>Sydney</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Hong Kong</Name>
+    <Country>People's Republic of China</Country>
+    <Population>7106000</Population>
+    <Connections>
+      <Connection>Bangkok</Connection>
+      <Connection>Ho Chi Minh City</Connection>
+      <Connection>Kolkata</Connection>
+      <Connection>Manila</Connection>
+      <Connection>Shanghai</Connection>
+      <Connection>Taipei</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Jakarta</Name>
+    <Country>Indonesia</Country>
+    <Population>23063000</Population>
+    <Connections>
+      <Connection>Bangkok</Connection>
+      <Connection>Chennai</Connection>
+      <Connection>Ho Chi Minh City</Connection>
+      <Connection>Sydney</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Manila</Name>
+    <Country>Philippines</Country>
+    <Population>20767000</Population>
+    <Connections>
+      <Connection>Ho Chi Minh City</Connection>
+      <Connection>Hong Kong</Connection>
+      <Connection>San Franciso</Connection>
+      <Connection>Sydney</Connection>
+      <Connection>Taipei</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Osaka</Name>
+    <Country>Japan</Country>
+    <Population>2871000</Population>
+    <Connections>
+      <Connection>Taipei</Connection>
+      <Connection>Tokyo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Seoul</Name>
+    <Country>South Korea</Country>
+    <Population>22547000</Population>
+    <Connections>
+      <Connection>Beijing</Connection>
+      <Connection>Shanghai</Connection>
+      <Connection>Tokyo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Shanghai</Name>
+    <Country>People's Republic of China</Country>
+    <Population>13482000</Population>
+    <Connections>
+      <Connection>Beijing</Connection>
+      <Connection>Hong Kong</Connection>
+      <Connection>Seoul</Connection>
+      <Connection>Taipei</Connection>
+      <Connection>Tokyo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Sydney</Name>
+    <Country>Australia</Country>
+    <Population>3785000</Population>
+    <Connections>
+      <Connection>Jakarta</Connection>
+      <Connection>Los Angeles</Connection>
+      <Connection>Manila</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Taipei</Name>
+    <Country>Taiwan</Country>
+    <Population>8338000</Population>
+    <Connections>
+      <Connection>Hong Kong</Connection>
+      <Connection>Manila</Connection>
+      <Connection>Osaka</Connection>
+      <Connection>Shanghai</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Tokyo</Name>
+    <Country>Japan</Country>
+    <Population>13189000</Population>
+    <Connections>
+      <Connection>Osaka</Connection>
+      <Connection>San Franciso</Connection>
+      <Connection>Seoul</Connection>
+      <Connection>Shanghai</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Atlanta</Name>
+    <Country>United States</Country>
+    <Population>4715000</Population>
+    <Connections>
+      <Connection>Chicago</Connection>
+      <Connection>Miami</Connection>
+      <Connection>Washington</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Chicago</Name>
+    <Country>United States</Country>
+    <Population>9121000</Population>
+    <Connections>
+      <Connection>Atlanta</Connection>
+      <Connection>Los Angeles</Connection>
+      <Connection>Mexico City</Connection>
+      <Connection>Montreal</Connection>
+      <Connection>San Franciso</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Essen</Name>
+    <Country>Germany</Country>
+    <Population>575000</Population>
+    <Connections>
+      <Connection>London</Connection>
+      <Connection>Milan</Connection>
+      <Connection>Paris</Connection>
+      <Connection>St. Petersburg</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>London</Name>
+    <Country>United Kingdom</Country>
+    <Population>8586000</Population>
+    <Connections>
+      <Connection>Esssen</Connection>
+      <Connection>Madrid</Connection>
+      <Connection>New York</Connection>
+      <Connection>Paris</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Madrid</Name>
+    <Country>Spain</Country>
+    <Population>5427000</Population>
+    <Connections>
+      <Connection>Algiers</Connection>
+      <Connection>London</Connection>
+      <Connection>New York</Connection>
+      <Connection>Paris</Connection>
+      <Connection>Sao Paulo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Milan</Name>
+    <Country>Italy</Country>
+    <Population>5232000</Population>
+    <Connections>
+      <Connection>Essen</Connection>
+      <Connection>Istanbul</Connection>
+      <Connection>Paris</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Montreal</Name>
+    <Country>Canada</Country>
+    <Population>3429000</Population>
+    <Connections>
+      <Connection>Chicago</Connection>
+      <Connection>New York</Connection>
+      <Connection>Washington</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>New York</Name>
+    <Country>United States</Country>
+    <Population>20464000</Population>
+    <Connections>
+      <Connection>London</Connection>
+      <Connection>Madrid</Connection>
+      <Connection>Montreal</Connection>
+      <Connection>Washington</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Paris</Name>
+    <Country>France</Country>
+    <Population>10755000</Population>
+    <Connections>
+      <Connection>Algiers</Connection>
+      <Connection>Essen</Connection>
+      <Connection>London</Connection>
+      <Connection>Madrid</Connection>
+      <Connection>Milan</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>San Franciso</Name>
+    <Country>United States</Country>
+    <Population>5864000</Population>
+    <Connections>
+      <Connection>Chicago</Connection>
+      <Connection>Los Angeles</Connection>
+      <Connection>Manila</Connection>
+      <Connection>Tokyo</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>St. Petersburg</Name>
+    <Country>Russia</Country>
+    <Population>4879000</Population>
+    <Connections>
+      <Connection>Essen</Connection>
+      <Connection>Istanbul</Connection>
+      <Connection>Moscow</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Washington</Name>
+    <Country>United States</Country>
+    <Population>4679000</Population>
+    <Connections>
+      <Connection>Atlanta</Connection>
+      <Connection>Miami</Connection>
+      <Connection>Montreal</Connection>
+      <Connection>New York</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Algiers</Name>
+    <Country>Algeria</Country>
+    <Population>2946000</Population>
+    <Connections>
+      <Connection>Cairo</Connection>
+      <Connection>Istanbul</Connection>
+      <Connection>Madrid</Connection>
+      <Connection>Paris</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Baghdad</Name>
+    <Country>Iraq</Country>
+    <Population>6204000</Population>
+    <Connections>
+      <Connection>Cairo</Connection>
+      <Connection>Istanbul</Connection>
+      <Connection>Karachi</Connection>
+      <Connection>Riyadh</Connection>
+      <Connection>Tehran</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Cairo</Name>
+    <Country>Egypt</Country>
+    <Population>14718000</Population>
+    <Connections>
+      <Connection>Algiers</Connection>
+      <Connection>Baghdad</Connection>
+      <Connection>Istanbul</Connection>
+      <Connection>Khartoum</Connection>
+      <Connection>Riyadh</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Chennai</Name>
+    <Country>India</Country>
+    <Population>8865000</Population>
+    <Connections>
+      <Connection>Bangkok</Connection>
+      <Connection>Delhi</Connection>
+      <Connection>Jakarta</Connection>
+      <Connection>Kolkata</Connection>
+      <Connection>Mumbai</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Delhi</Name>
+    <Country>India</Country>
+    <Population>22242000</Population>
+    <Connections>
+      <Connection>Chennai</Connection>
+      <Connection>Karachi</Connection>
+      <Connection>Kolkata</Connection>
+      <Connection>Mumbai</Connection>
+      <Connection>Tehran</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Istanbul</Name>
+    <Country>Turkey</Country>
+    <Population>13576000</Population>
+    <Connections>
+      <Connection>Algiers</Connection>
+      <Connection>Baghdad</Connection>
+      <Connection>Cairo</Connection>
+      <Connection>Milan</Connection>
+      <Connection>Moscow</Connection>
+      <Connection>St. Petersburg</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Karachi</Name>
+    <Country>Pakistan</Country>
+    <Population>20711000</Population>
+    <Connections>
+      <Connection>Baghdad</Connection>
+      <Connection>Delhi</Connection>
+      <Connection>Mumbai</Connection>
+      <Connection>Riyadh</Connection>
+      <Connection>Tehran</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Kolkata</Name>
+    <Country>India</Country>
+    <Population>14374000</Population>
+    <Connections>
+      <Connection>Bangkok</Connection>
+      <Connection>Chennai</Connection>
+      <Connection>Delhi</Connection>
+      <Connection>Hong Kong</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Moscow</Name>
+    <Country>Russia</Country>
+    <Population>15512000</Population>
+    <Connections>
+      <Connection>Istanbul</Connection>
+      <Connection>Tehran</Connection>
+      <Connection>St. Petersburg</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Mumbai</Name>
+    <Country>India</Country>
+    <Population>16910000</Population>
+    <Connections>
+      <Connection>Chennai</Connection>
+      <Connection>Delhi</Connection>
+      <Connection>Karachi</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Riyadh</Name>
+    <Country>Saudi Arabia</Country>
+    <Population>5037000</Population>
+    <Connections>
+      <Connection>Baghdad</Connection>
+      <Connection>Cairo</Connection>
+      <Connection>Karachi</Connection>
+    </Connections>
+  </City>
+
+  <City>
+    <Name>Tehran</Name>
+    <Country>Iran</Country>
+    <Population>7419000</Population>
+    <Connections>
+      <Connection>Baghdad</Connection>
+      <Connection>Delhi</Connection>
+      <Connection>Karachi</Connection>
+      <Connection>Moscow</Connection>
+    </Connections>
+  </City>
+  
+</Cities>

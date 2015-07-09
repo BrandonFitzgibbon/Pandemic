@@ -8,6 +8,8 @@ namespace Engine.Contracts
 {
     public interface IGame
     {
-
+        IList<IDisease> Diseases { get; }
+        IEnumerable<ICity> Cities { get; }
+        IList<IPlayer> Players { get; }
     }
 }

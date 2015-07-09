@@ -9,12 +9,6 @@ namespace Engine.Implementations
 {
     public class City : ICity
     {
-        private int id;
-        public int Id
-        {
-            get { return id; }
-        }
-
         private string name;
         public string Name
         {
@@ -51,10 +45,10 @@ namespace Engine.Implementations
             get { return counters; }
         }
 
-        private IList<IPlayer> players;
-        public IList<IPlayer> Players
+        private IList<IPlayer> playersInCity;
+        public IList<IPlayer> PlayersInCity
         {
-            get { return players; }
+            get { return playersInCity; }
         }
 
         private bool hasResearchStation;
@@ -63,16 +57,14 @@ namespace Engine.Implementations
             get { return hasResearchStation; }
         }
 
-        public City(int id, string name, string country, int population, IDisease disease, IList<IDisease> diseases)
+        public City(string name, string country, int population, IDisease disease)
         {
-            this.id = id;
             this.name = name;
             this.country = country;
             this.population = population;
             this.connections = new List<ICity>();
             this.disease = disease;
-            CreateCounters(diseases);
-            this.players = new List<IPlayer>();
+            this.playersInCity = new List<IPlayer>();
             hasResearchStation = false;
         }
 
@@ -98,14 +90,14 @@ namespace Engine.Implementations
 
         public override int GetHashCode()
         {
-            return id.GetHashCode();
+            return (name + country).GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             ICity equalsTarget = (ICity)obj;
             if (equalsTarget != null)
-                return equalsTarget.Id == this.id;
+                return equalsTarget.Name == this.name;
             else
                 return false;
         }
