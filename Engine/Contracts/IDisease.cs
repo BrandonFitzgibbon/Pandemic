@@ -8,7 +8,6 @@ namespace Engine.Contracts
 {
     public interface IDisease
     {
-        int Id { get; }
         string Name { get; }
         int Count { get; }
         void Increase();

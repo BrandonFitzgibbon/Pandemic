@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Engine.Implementations
 {
     public class Game : IGame
     {
         private IList<IDisease> diseases;
-        public IList<IDisease> Diseases
+        public IEnumerable<IDisease> Diseases
         {
             get { return diseases; }
         }
@@ -23,20 +24,28 @@ namespace Engine.Implementations
         }
 
         private IList<IPlayer> players;
-        public IList<IPlayer> Players
+        public IEnumerable<IPlayer> Players
         {
             get { return players; }
         }
 
-        private PlayerDeck playerDeck;
-        public PlayerDeck PlayerDeck
+        private IPlayerDeck playerDeck;
+        public IPlayerDeck PlayerDeck
         {
             get { return playerDeck; }
         }
 
-        public Game(IList<string> playerNames, Difficulty difficulty)
+        public int NumberOfResearchStations
         {
-           
+            get { return cities.Where(i => i.HasResearchStation == true).Count(); }
+        }
+
+        public Game(IDataAccess data, IPlayerFactory playerFactory, IList<string> playerNames, Difficulty difficulty)
+        {
+            this.diseases = data.GetDiseases();
+            this.cities = data.GetCities();
+            this.players = playerFactory.GetPlayers(playerNames);
+            this.cities.InitalizeCities(this, data);
         }
 
     }

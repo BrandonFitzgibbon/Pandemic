@@ -56,6 +56,7 @@
     <Compile Include="Contracts\IResearcher.cs" />
     <Compile Include="CustomEventArgs\DiscardedEventArgs.cs" />
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\ResearchStationChangedEventArgs.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\Card.cs" />
     <Compile Include="Implementations\City.cs" />

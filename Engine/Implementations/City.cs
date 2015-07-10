@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,13 +41,13 @@ namespace Engine.Implementations
         }
 
         private IList<ICounter> counters;
-        public IList<ICounter> Counters
+        public IEnumerable<ICounter> Counters
         {
             get { return counters; }
         }
 
         private IList<IPlayer> playersInCity;
-        public IList<IPlayer> PlayersInCity
+        public IEnumerable<IPlayer> PlayersInCity
         {
             get { return playersInCity; }
         }
@@ -57,30 +58,65 @@ namespace Engine.Implementations
             get { return hasResearchStation; }
         }
 
-        public City(string name, string country, int population, IDisease disease)
+        public City(string name, string country, int population)
         {
             this.name = name;
             this.country = country;
             this.population = population;
-            this.connections = new List<ICity>();
-            this.disease = disease;
             this.playersInCity = new List<IPlayer>();
             hasResearchStation = false;
         }
 
-        private void CreateCounters(IList<IDisease> diseases)
+        public void InitializeGame(IGame game, IDataAccess data)
         {
+            //resolve disease
+            this.disease = game.Diseases.Single(i => i.Name == data.ResolveCityDisease(this));
+            
+            //resolve connections
+            connections = new List<ICity>();
+            foreach (string cityName in data.ResolveCityConnections(this))
+            {
+                connections.Add(game.Cities.Single(i => i.Name == cityName));
+            }
+            
+            //create counters
             counters = new List<ICounter>();
-            foreach (IDisease disease in diseases)
-	        {
-                counters.Add(new Counter(disease));
-	        }
+            this.counters = data.GetCounters();
+
+            //subscribe to players
+            foreach (IPlayer player in game.Players)
+            {
+                player.Moved += playerMoved;
+                player.ResearchStationChanged += playerResearchStationChanged;
+            }
+
+            //build research station in atlanta
+            if (this.name == "Atlanta")
+                hasResearchStation = true;
         }
 
-        public void FormConnection(ICity connection)
+        private void playerResearchStationChanged(object sender, ResearchStationChangedEventArgs e)
         {
-            if(!connections.Contains(connection))
-                connections.Add(connection);
+            IPlayer player = (IPlayer)sender;
+            if (player != null)
+            {
+                if (e.OldCity == this)
+                    hasResearchStation = false;
+                if (e.NewCity == this)
+                    hasResearchStation = true;
+            }
+        }
+
+        private void playerMoved(object sender, PlayerMovedEventArgs e)
+        {
+            IPlayer player = (IPlayer)sender;
+            if (player != null)
+            {
+                if (e.DepartedCity == this)
+                    playersInCity.Remove(player);
+                if (e.ArrivedCity == this)
+                    playersInCity.Add(player);
+            }
         }
 
         public override string ToString()

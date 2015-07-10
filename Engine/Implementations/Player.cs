@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,11 +17,10 @@ namespace Engine.Implementations
             get { return name; }
         }
         
-        private ICity location;
+        protected ICity location;
         public ICity Location
         {
             get { return location; }
-            set { location = value; }
         }
 
         private IHand hand;
@@ -35,48 +35,50 @@ namespace Engine.Implementations
             this.hand = new Hand();
         }
 
-        public virtual void Drive(ICity destination)
+        public virtual void Drive(ICity destinationCity)
         {
-            if (this.location.Connections.Contains(destination))
-                this.location = destination;
+            ICity departedCity = this.location;
+            this.location = destinationCity;
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
         }
 
-        public virtual void DirectFlight(ICity destination, ICityCard destinationCard)
+        public virtual void DirectFlight(ICity destinationCity, ICityCard destinationCard)
         {
-            if (destinationCard.City == destination)
+            ICity departedCity = this.location;
+            this.location = destinationCity;
+            destinationCard.Discard();
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
+        }
+
+        public virtual void CharterFlight(ICity destinationCity, ICityCard locationCard)
+        {
+            ICity departedCity = this.location;
+            this.location = destinationCity;
+            locationCard.Discard();
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
+        }
+
+        public virtual void ShuttleFlight(ICity destinationCity)
+        {
+            ICity departedCity = this.location;
+            this.location = destinationCity;
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
+        }
+
+        public virtual void BuildResearchStation(ICityCard locationCard, ICity dismantledStation = null)
+        {
+            locationCard.Discard();
+            if (dismantledStation != null)
             {
-                location = destination;
-                destinationCard.Discard();
+                if (ResearchStationChanged != null)
+                    ResearchStationChanged(this, new ResearchStationChangedEventArgs(this.location, dismantledStation));
             }
+            else
+                if (ResearchStationChanged != null)
+                    ResearchStationChanged(this, new ResearchStationChangedEventArgs(this.location, null));
         }
 
-        public virtual void CharterFlight(ICity destination, ICityCard locationCard)
-        {
-            if (locationCard.City == location)
-            {
-                location = destination;
-                locationCard.Discard();
-            }
-        }
-
-        public void ShuttleFlight(ICity destination)
-        {
-            if (location.HasResearchStation && destination.HasResearchStation)
-                location = destination;
-        }
-
-        public void BuildResearchStation(ICityCard locationCard)
-        {
-            if (!location.HasResearchStation)
-            {
-                if(locationCard.City == location)
-                {
-                    
-                }
-            }
-        }
-
-        public void TreatDisease(IDisease disease)
+        public virtual void TreatDisease(IDisease disease)
         {
             ICounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
             if (treatTarget != null)
@@ -100,10 +102,7 @@ namespace Engine.Implementations
             
         }
 
-
-        public void BuildResearchStation()
-        {
-            throw new NotImplementedException();
-        }
+        public event EventHandler<PlayerMovedEventArgs> Moved;
+        public event EventHandler<ResearchStationChangedEventArgs> ResearchStationChanged;
     }
 }

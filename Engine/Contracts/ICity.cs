@@ -11,11 +11,13 @@ namespace Engine.Contracts
         string Name { get; }
         string Country { get; }
         int Population { get; }
+
         IEnumerable<ICity> Connections { get; }
         IDisease Disease { get; }
-        IList<ICounter> Counters { get; }
-        IList<IPlayer> PlayersInCity { get; }
+        IEnumerable<ICounter> Counters { get; }
+        IEnumerable<IPlayer> PlayersInCity { get; }
         bool HasResearchStation { get; }
-        void FormConnection(ICity connection);
+
+        void InitializeGame(IGame game, IDataAccess data);
     }
 }

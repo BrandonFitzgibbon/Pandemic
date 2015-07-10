@@ -9,12 +9,6 @@ namespace Engine.Implementations
 {
     public class Disease : IDisease
     {
-        private int id;
-        public int Id
-        {
-            get { return id; }
-        }
-
         private string name;
         public string Name
         {
@@ -28,9 +22,9 @@ namespace Engine.Implementations
             get { return count; }
         }
 
-        public Disease(int id)
+        public Disease(string name)
         {
-            this.id = id;
+            this.name = name;
             count = 24;
         }
 
@@ -41,14 +35,14 @@ namespace Engine.Implementations
 
         public override int GetHashCode()
         {
-            return id.GetHashCode();
+            return name.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             IDisease equalsTarget = (IDisease)obj;
             if (equalsTarget != null)
-                return equalsTarget.Id == this.id;
+                return equalsTarget.Name == this.name;
             return false;
         }
 

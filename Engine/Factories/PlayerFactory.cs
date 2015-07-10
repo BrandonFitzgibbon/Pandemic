@@ -9,9 +9,9 @@ namespace Engine.Factories
 {
     public class PlayerFactory : IPlayerFactory
     {
-        public IPlayer Get(string name, string role)
+        public IList<IPlayer> GetPlayers(IList<string> names)
         {
-            throw new NotImplementedException();
+            return new List<IPlayer>();
         }
     }
 }

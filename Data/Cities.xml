@@ -5,8 +5,9 @@
     <Name>Bogota</Name>
     <Country>Colombia</Country>
     <Population>8702000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
-      <Connection>Buenos Ares</Connection>
+      <Connection>Buenos Aires</Connection>
       <Connection>Lima</Connection>
       <Connection>Mexico City</Connection>
       <Connection>Miami</Connection>
@@ -18,6 +19,7 @@
     <Name>Buenos Aires</Name>
     <Country>Argentina</Country>
     <Population>1363900</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Bogota</Connection>
       <Connection>Sao Paulo</Connection>
@@ -28,6 +30,7 @@
     <Name>Johannesburg</Name>
     <Country>South Africa</Country>
     <Population>3888000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Kinshasa</Connection>
       <Connection>Khartoum</Connection>
@@ -38,6 +41,7 @@
     <Name>Khartoum</Name>
     <Country>Sudan</Country>
     <Population>4887000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Cairo</Connection>
       <Connection>Lagos</Connection>
@@ -50,6 +54,7 @@
     <Name>Kinshasa</Name>
     <Country>Democratic Republic of Congo</Country>
     <Population>9046000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Lagos</Connection>
       <Connection>Khartoum</Connection>
@@ -61,6 +66,7 @@
     <Name>Lagos</Name>
     <Country>Nigeria</Country>
     <Population>11547000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Khartoum</Connection>
       <Connection>Kinshasa</Connection>
@@ -72,6 +78,7 @@
     <Name>Lima</Name>
     <Country>Peru</Country>
     <Population>9121000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Bogota</Connection>
       <Connection>Mexico City</Connection>
@@ -83,6 +90,7 @@
     <Name>Los Angeles</Name>
     <Country>United States</Country>
     <Population>14900000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>Mexico City</Connection>
@@ -95,6 +103,7 @@
     <Name>Mexico City</Name>
     <Country>Mexico</Country>
     <Population>19463000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>Bogota</Connection>
@@ -108,6 +117,7 @@
     <Name>Miami</Name>
     <Country>United States</Country>
     <Population>5582000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Atlanta</Connection>
       <Connection>Bogota</Connection>
@@ -120,6 +130,7 @@
     <Name>Santiago</Name>
     <Country>Chile</Country>
     <Population>6015000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Lima</Connection>
     </Connections>
@@ -129,6 +140,7 @@
     <Name>Sao Paulo</Name>
     <Country>Brazil</Country>
     <Population>20186000</Population>
+    <Disease>Yellow</Disease>
     <Connections>
       <Connection>Bogota</Connection>
       <Connection>Buenos Aires</Connection>
@@ -141,6 +153,7 @@
     <Name>Bangkok</Name>
     <Country>Thailand</Country>
     <Population>7151000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Chennai</Connection>
       <Connection>Jakarta</Connection>
@@ -154,6 +167,7 @@
     <Name>Beijing</Name>
     <Country>People's Republic of China</Country>
     <Population>17311000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Seoul</Connection>
       <Connection>Shanghai</Connection>
@@ -164,6 +178,7 @@
     <Name>Ho Chi Minh City</Name>
     <Country>Vietnam</Country>
     <Population>8314000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Bangkok</Connection>
       <Connection>Jakarta</Connection>
@@ -176,6 +191,7 @@
     <Name>Hong Kong</Name>
     <Country>People's Republic of China</Country>
     <Population>7106000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Bangkok</Connection>
       <Connection>Ho Chi Minh City</Connection>
@@ -190,6 +206,7 @@
     <Name>Jakarta</Name>
     <Country>Indonesia</Country>
     <Population>23063000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Bangkok</Connection>
       <Connection>Chennai</Connection>
@@ -202,6 +219,7 @@
     <Name>Manila</Name>
     <Country>Philippines</Country>
     <Population>20767000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Ho Chi Minh City</Connection>
       <Connection>Hong Kong</Connection>
@@ -215,6 +233,7 @@
     <Name>Osaka</Name>
     <Country>Japan</Country>
     <Population>2871000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Taipei</Connection>
       <Connection>Tokyo</Connection>
@@ -225,6 +244,7 @@
     <Name>Seoul</Name>
     <Country>South Korea</Country>
     <Population>22547000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Beijing</Connection>
       <Connection>Shanghai</Connection>
@@ -236,6 +256,7 @@
     <Name>Shanghai</Name>
     <Country>People's Republic of China</Country>
     <Population>13482000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Beijing</Connection>
       <Connection>Hong Kong</Connection>
@@ -249,6 +270,7 @@
     <Name>Sydney</Name>
     <Country>Australia</Country>
     <Population>3785000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Jakarta</Connection>
       <Connection>Los Angeles</Connection>
@@ -260,6 +282,7 @@
     <Name>Taipei</Name>
     <Country>Taiwan</Country>
     <Population>8338000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Hong Kong</Connection>
       <Connection>Manila</Connection>
@@ -272,6 +295,7 @@
     <Name>Tokyo</Name>
     <Country>Japan</Country>
     <Population>13189000</Population>
+    <Disease>Red</Disease>
     <Connections>
       <Connection>Osaka</Connection>
       <Connection>San Franciso</Connection>
@@ -284,6 +308,7 @@
     <Name>Atlanta</Name>
     <Country>United States</Country>
     <Population>4715000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>Miami</Connection>
@@ -295,6 +320,7 @@
     <Name>Chicago</Name>
     <Country>United States</Country>
     <Population>9121000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Atlanta</Connection>
       <Connection>Los Angeles</Connection>
@@ -308,6 +334,7 @@
     <Name>Essen</Name>
     <Country>Germany</Country>
     <Population>575000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>London</Connection>
       <Connection>Milan</Connection>
@@ -320,8 +347,9 @@
     <Name>London</Name>
     <Country>United Kingdom</Country>
     <Population>8586000</Population>
+    <Disease>Blue</Disease>
     <Connections>
-      <Connection>Esssen</Connection>
+      <Connection>Essen</Connection>
       <Connection>Madrid</Connection>
       <Connection>New York</Connection>
       <Connection>Paris</Connection>
@@ -332,6 +360,7 @@
     <Name>Madrid</Name>
     <Country>Spain</Country>
     <Population>5427000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Algiers</Connection>
       <Connection>London</Connection>
@@ -345,6 +374,7 @@
     <Name>Milan</Name>
     <Country>Italy</Country>
     <Population>5232000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Essen</Connection>
       <Connection>Istanbul</Connection>
@@ -356,6 +386,7 @@
     <Name>Montreal</Name>
     <Country>Canada</Country>
     <Population>3429000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>New York</Connection>
@@ -367,6 +398,7 @@
     <Name>New York</Name>
     <Country>United States</Country>
     <Population>20464000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>London</Connection>
       <Connection>Madrid</Connection>
@@ -379,6 +411,7 @@
     <Name>Paris</Name>
     <Country>France</Country>
     <Population>10755000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Algiers</Connection>
       <Connection>Essen</Connection>
@@ -392,6 +425,7 @@
     <Name>San Franciso</Name>
     <Country>United States</Country>
     <Population>5864000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>Los Angeles</Connection>
@@ -404,6 +438,7 @@
     <Name>St. Petersburg</Name>
     <Country>Russia</Country>
     <Population>4879000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Essen</Connection>
       <Connection>Istanbul</Connection>
@@ -415,6 +450,7 @@
     <Name>Washington</Name>
     <Country>United States</Country>
     <Population>4679000</Population>
+    <Disease>Blue</Disease>
     <Connections>
       <Connection>Atlanta</Connection>
       <Connection>Miami</Connection>
@@ -427,6 +463,7 @@
     <Name>Algiers</Name>
     <Country>Algeria</Country>
     <Population>2946000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Cairo</Connection>
       <Connection>Istanbul</Connection>
@@ -439,6 +476,7 @@
     <Name>Baghdad</Name>
     <Country>Iraq</Country>
     <Population>6204000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Cairo</Connection>
       <Connection>Istanbul</Connection>
@@ -452,6 +490,7 @@
     <Name>Cairo</Name>
     <Country>Egypt</Country>
     <Population>14718000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Algiers</Connection>
       <Connection>Baghdad</Connection>
@@ -465,6 +504,7 @@
     <Name>Chennai</Name>
     <Country>India</Country>
     <Population>8865000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Bangkok</Connection>
       <Connection>Delhi</Connection>
@@ -478,6 +518,7 @@
     <Name>Delhi</Name>
     <Country>India</Country>
     <Population>22242000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Chennai</Connection>
       <Connection>Karachi</Connection>
@@ -491,6 +532,7 @@
     <Name>Istanbul</Name>
     <Country>Turkey</Country>
     <Population>13576000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Algiers</Connection>
       <Connection>Baghdad</Connection>
@@ -505,6 +547,7 @@
     <Name>Karachi</Name>
     <Country>Pakistan</Country>
     <Population>20711000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Baghdad</Connection>
       <Connection>Delhi</Connection>
@@ -518,6 +561,7 @@
     <Name>Kolkata</Name>
     <Country>India</Country>
     <Population>14374000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Bangkok</Connection>
       <Connection>Chennai</Connection>
@@ -530,6 +574,7 @@
     <Name>Moscow</Name>
     <Country>Russia</Country>
     <Population>15512000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Istanbul</Connection>
       <Connection>Tehran</Connection>
@@ -541,6 +586,7 @@
     <Name>Mumbai</Name>
     <Country>India</Country>
     <Population>16910000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Chennai</Connection>
       <Connection>Delhi</Connection>
@@ -552,6 +598,7 @@
     <Name>Riyadh</Name>
     <Country>Saudi Arabia</Country>
     <Population>5037000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Baghdad</Connection>
       <Connection>Cairo</Connection>
@@ -563,6 +610,7 @@
     <Name>Tehran</Name>
     <Country>Iran</Country>
     <Population>7419000</Population>
+    <Disease>Black</Disease>
     <Connections>
       <Connection>Baghdad</Connection>
       <Connection>Delhi</Connection>

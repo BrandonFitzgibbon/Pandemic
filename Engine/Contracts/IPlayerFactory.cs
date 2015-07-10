@@ -8,6 +8,6 @@ namespace Engine.Contracts
 {
     public interface IPlayerFactory
     {
-        IPlayer Get(string name, string role);
+        IList<IPlayer> GetPlayers(IList<string> names);
     }
 }
