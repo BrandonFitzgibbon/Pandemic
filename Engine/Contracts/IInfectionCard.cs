@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IInfectionCard : ICard
     {
-        ICard DrawBottom();
+        ICity City { get; }
     }
 }

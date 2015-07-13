@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class CityCard : Card, ICityCard
+    public class InfectionCard : Card, IInfectionCard
     {
         private ICity city;
         public ICity City
@@ -15,7 +15,7 @@ namespace Engine.Implementations
             get { return city; }
         }
 
-        public CityCard(ICity city)
+        public InfectionCard(ICity city)
         {
             this.city = city;
         }
@@ -32,7 +32,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            ICityCard compare = (ICityCard)obj;
+            IInfectionCard compare = (IInfectionCard)obj;
             if (compare != null)
                 return city.Equals(compare.City);
             return false;

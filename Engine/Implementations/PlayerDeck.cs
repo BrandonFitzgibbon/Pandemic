@@ -15,10 +15,13 @@ namespace Engine.Implementations
         private Stack<ICard> discardPile;
         private bool IsSet;
 
-        public PlayerDeck(IList<ICity> cities)
+        public PlayerDeck(IList<ICityCard> cityCards)
         {
-            IList<ICard> cityCards = CreateCityCards(cities);
             cityCards.Shuffle();
+            foreach (ICityCard card in cityCards)
+            {
+                card.Discarded += CardDiscarded;
+            }
             cardPile = new Stack<ICard>(cityCards);
             discardPile = new Stack<ICard>();
             IsSet = false;
@@ -33,19 +36,7 @@ namespace Engine.Implementations
                 return null;
         }
 
-        private IList<ICard> CreateCityCards(IList<ICity> cities)
-        {
-            IList<ICard> cityCards = new List<ICard>();
-            foreach (ICity city in cities)
-            {
-                ICityCard card = new CityCard(city);
-                card.Discarded += card_Discarded;
-                cityCards.Add(card);
-            }
-            return cityCards;
-        }
-
-        void card_Discarded(object sender, DiscardedEventArgs e)
+        private void CardDiscarded(object sender, DiscardedEventArgs e)
         {
             discardPile.Push(e.Card);
         }
@@ -112,7 +103,7 @@ namespace Engine.Implementations
                     miniPile.Add(cardPile.Pop());
                 }
                 IEpidemicCard card = new EpidemicCard();
-                card.Discarded += card_Discarded;
+                card.Discarded += CardDiscarded;
                 miniPile.Add(card);
                 miniPile.Shuffle();
                 epidemicPiles.Add(miniPile);

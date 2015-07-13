@@ -15,7 +15,7 @@ namespace Presentation.Con
     {
         static void Main(string[] args)
         {
-            IGame game = new Game(new DataAccess.Data(), new PlayerFactory(), new List<string>(), Difficulty.Standard);
+            IGame game = new Game(new DataAccess.Data(), new PlayerFactory(), new List<string>() { "John", "Jane" }, new OutbreakCounter(), new InfectionRateCounter(), Difficulty.Standard);
             Console.Write(game.NumberOfResearchStations);
             Console.ReadKey();
         }

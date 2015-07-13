@@ -10,6 +10,7 @@ namespace Engine.Contracts
     {
         string Name { get; }
         int Count { get; }
+        bool IsCured { get; }
         void Increase();
         void Decrease();
         event EventHandler GameOver;

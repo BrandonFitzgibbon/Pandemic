@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IMedic : IPlayer
     {
-        ICard DrawBottom();
+
     }
 }

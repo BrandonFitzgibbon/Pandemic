@@ -13,6 +13,7 @@ namespace Engine.Contracts
         ICity Location { get; }
         IHand Hand { get; }
 
+        void SetStartingLocation(ICity startingCity);
         void Drive(ICity destination);
         void DirectFlight(ICity destination, ICityCard destinationCard);
         void CharterFlight(ICity destination, ICityCard locationCard);

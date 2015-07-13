@@ -11,7 +11,7 @@ namespace Engine.Implementations
 {
     public abstract class Player : IPlayer
     {
-        private string name;
+        protected string name;
         public string Name
         {
             get { return name; }
@@ -23,7 +23,7 @@ namespace Engine.Implementations
             get { return location; }
         }
 
-        private IHand hand;
+        protected IHand hand;
         public IHand Hand
         {
             get { return hand; }
@@ -33,6 +33,15 @@ namespace Engine.Implementations
         {
             this.name = name;
             this.hand = new Hand();
+        }
+
+        public void SetStartingLocation(ICity startingCity)
+        {
+            if (location == null)
+            {
+                location = startingCity;
+                if (Moved != null) Moved(this, new PlayerMovedEventArgs(null, startingCity));
+            }
         }
 
         public virtual void Drive(ICity destinationCity)
@@ -80,10 +89,10 @@ namespace Engine.Implementations
 
         public virtual void TreatDisease(IDisease disease)
         {
-            ICounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
+            IDiseaseCounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
             if (treatTarget != null)
             {
-                
+                treatTarget.Decrease();
             }
         }
 
@@ -100,6 +109,11 @@ namespace Engine.Implementations
         public void DiscoverCure(IList<ICard> cards)
         {
             
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
 
         public event EventHandler<PlayerMovedEventArgs> Moved;

@@ -22,6 +22,12 @@ namespace Engine.Implementations
             get { return count; }
         }
 
+        private bool isCured;
+        public bool IsCured
+        {
+            get { return isCured; }
+        }
+
         public Disease(string name)
         {
             this.name = name;
