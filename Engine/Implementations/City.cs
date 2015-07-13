@@ -40,8 +40,8 @@ namespace Engine.Implementations
             get { return disease; }
         }
 
-        private IList<ICounter> counters;
-        public IEnumerable<ICounter> Counters
+        private IList<IDiseaseCounter> counters;
+        public IEnumerable<IDiseaseCounter> Counters
         {
             get { return counters; }
         }
@@ -80,7 +80,7 @@ namespace Engine.Implementations
             }
             
             //create counters
-            counters = new List<ICounter>();
+            counters = new List<IDiseaseCounter>();
             this.counters = data.GetCounters();
 
             //subscribe to players

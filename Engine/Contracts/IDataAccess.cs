@@ -10,7 +10,9 @@ namespace Engine.Contracts
     {
         IList<IDisease> GetDiseases();
         IList<ICity> GetCities();
-        IList<ICounter> GetCounters();
+        IList<IDiseaseCounter> GetCounters();
+        IPlayerDeck GetPlayerDeck();
+        IInfectionDeck GetInfectionDeck();
         string ResolveCityDisease(ICity city);
         IList<string> ResolveCityConnections(ICity city);
     }

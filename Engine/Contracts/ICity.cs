@@ -14,7 +14,7 @@ namespace Engine.Contracts
 
         IEnumerable<ICity> Connections { get; }
         IDisease Disease { get; }
-        IEnumerable<ICounter> Counters { get; }
+        IEnumerable<IDiseaseCounter> Counters { get; }
         IEnumerable<IPlayer> PlayersInCity { get; }
         bool HasResearchStation { get; }
 

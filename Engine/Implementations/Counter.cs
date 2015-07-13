@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Counter : ICounter
+    public class Counter : IDiseaseCounter
     {
         private IDisease disease;
         public IDisease Disease

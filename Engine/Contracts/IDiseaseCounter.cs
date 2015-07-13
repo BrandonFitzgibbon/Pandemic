@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface ICounter
+    public interface IDiseaseCounter
     {
         IDisease Disease { get; }
         int Count { get; }

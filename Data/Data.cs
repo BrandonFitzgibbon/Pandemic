@@ -71,15 +71,34 @@ namespace DataAccess
             return connectionDictionary[city];
         }
 
-
-        public IList<ICounter> GetCounters()
+        public IList<IDiseaseCounter> GetCounters()
         {
-            IList<ICounter> counters = new List<ICounter>();
+            IList<IDiseaseCounter> counters = new List<IDiseaseCounter>();
             foreach (IDisease disease in diseases)
             {
                 counters.Add(new Counter(disease));
             }
             return counters;
+        }
+
+        public IPlayerDeck GetPlayerDeck()
+        {
+            List<ICityCard> cityCards = new List<ICityCard>();
+            foreach (ICity city in this.cities)
+            {
+                cityCards.Add(new CityCard(city));
+            }
+            return new PlayerDeck(cityCards);
+        }
+
+        public IInfectionDeck GetInfectionDeck()
+        {
+            List<IInfectionCard> infectionCards = new List<IInfectionCard>();
+            foreach (ICity city in this.cities)
+            {
+                infectionCards.Add(new InfectionCard(city));
+            }
+            return new InfectionDeck(infectionCards);
         }
     }
 }
