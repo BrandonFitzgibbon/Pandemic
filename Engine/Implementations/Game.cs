@@ -11,7 +11,11 @@ namespace Engine.Implementations
 {
     public class Game : IGame
     {
-        private bool IsGameOn;
+        private bool isGameOn;
+        public bool IsGameOn
+        {
+            get { return isGameOn; }
+        }
 
         private IList<IDisease> diseases;
         public IEnumerable<IDisease> Diseases
@@ -31,6 +35,7 @@ namespace Engine.Implementations
             get { return players; }
         }
 
+        private PlayerQueue playerQueue;
         private IPlayer currentPlayer;
         public IPlayer CurrentPlayer
         {
@@ -79,21 +84,20 @@ namespace Engine.Implementations
             this.playerDeck = data.GetPlayerDeck();
             this.playerDeck.Setup(this.players, (int)difficulty);
             this.players = players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
+            this.playerQueue = new PlayerQueue(this.players);
             SubscribeToOutbreak();
             SubscribeToGameOver();
             InitialInfection();
-            GameLoop();
+            isGameOn = true;
+            NextPlayer();
         }
 
-        private void GameLoop()
+        public void NextPlayer()
         {
-            do
+            foreach (IPlayer player in playerQueue.NextPlayer)
             {
-                foreach (IPlayer player in this.players)
-                {
-
-                }
-            } while (IsGameOn);
+                currentPlayer = player;
+            }
         }
 
         private void SetStartingLocation()
@@ -171,7 +175,27 @@ namespace Engine.Implementations
 
         private void GameOver(object sender, EventArgs e)
         {
-            IsGameOn = false;
+            isGameOn = false;
+        }
+    }
+
+    public class PlayerQueue
+    {
+        private Queue<IPlayer> players;
+
+        public PlayerQueue(IList<IPlayer> players)
+        {
+            this.players = new Queue<IPlayer>(players);
+        }
+
+        public IEnumerable<IPlayer> NextPlayer
+        {
+            get 
+            {
+                IPlayer player = players.Dequeue();
+                players.Enqueue(player);
+                yield return player;
+            }
         }
     }
 

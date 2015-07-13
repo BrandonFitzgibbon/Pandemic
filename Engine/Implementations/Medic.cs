@@ -32,7 +32,8 @@ namespace Engine.Implementations
                 do
                 {
                     treatTarget.Decrease();
-                } while (treatTarget.Count > 0);
+                } 
+                while (treatTarget.Count > 0);
             }
         }
     }

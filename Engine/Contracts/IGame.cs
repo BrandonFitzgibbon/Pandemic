@@ -11,6 +11,9 @@ namespace Engine.Contracts
         IEnumerable<IDisease> Diseases { get; }
         IEnumerable<ICity> Cities { get; }
         IEnumerable<IPlayer> Players { get; }
+        IPlayer CurrentPlayer { get; }
         int NumberOfResearchStations { get; }
+        void NextPlayer();
+        bool IsGameOn { get; }
     }
 }

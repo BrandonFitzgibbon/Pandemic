@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IActions.cs" />
     <Compile Include="Contracts\ICard.cs" />
     <Compile Include="Contracts\ICity.cs" />
     <Compile Include="Contracts\ICityCard.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
     <Compile Include="CustomEventArgs\ResearchStationChangedEventArgs.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
+    <Compile Include="Implementations\Actions.cs" />
     <Compile Include="Implementations\Card.cs" />
     <Compile Include="Implementations\City.cs" />
     <Compile Include="Implementations\CityCard.cs" />

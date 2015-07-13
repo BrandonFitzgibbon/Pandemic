@@ -55,6 +55,17 @@ namespace EngineTests
                 }
                 return new List<string>();
             }
+
+
+            public IPlayerDeck GetPlayerDeck()
+            {
+                throw new NotImplementedException();
+            }
+
+            public IInfectionDeck GetInfectionDeck()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class MockPlayer : Player, IPlayer
