@@ -21,6 +21,12 @@ namespace Engine.Implementations
             get { return count; }
         }
 
+        public Counter(IDisease disease)
+        {
+            this.disease = disease;
+            this.count = 0;
+        }
+
         public void Increase(int rate = 1)
         {
             for (int i = 0; i < rate; i++)
@@ -47,10 +53,9 @@ namespace Engine.Implementations
             }
         }
 
-        public Counter(IDisease disease)
+        public override string ToString()
         {
-            this.disease = disease;
-            this.count = 0;
+            return disease.ToString() + ": " + count.ToString();
         }
 
         public event EventHandler Outbreak;

@@ -52,7 +52,7 @@
 
   <City>
     <Name>Kinshasa</Name>
-    <Country>Democratic Republic of Congo</Country>
+    <Country>Congo</Country>
     <Population>9046000</Population>
     <Disease>Yellow</Disease>
     <Connections>
@@ -109,7 +109,6 @@
       <Connection>Bogota</Connection>
       <Connection>Lima</Connection>
       <Connection>Los Angeles</Connection>
-      <Connection>Lima</Connection>
     </Connections>
   </City>
   
@@ -165,7 +164,7 @@
 
   <City>
     <Name>Beijing</Name>
-    <Country>People's Republic of China</Country>
+    <Country>China</Country>
     <Population>17311000</Population>
     <Disease>Red</Disease>
     <Connections>
@@ -189,7 +188,7 @@
 
   <City>
     <Name>Hong Kong</Name>
-    <Country>People's Republic of China</Country>
+    <Country>China</Country>
     <Population>7106000</Population>
     <Disease>Red</Disease>
     <Connections>
@@ -254,7 +253,7 @@
 
   <City>
     <Name>Shanghai</Name>
-    <Country>People's Republic of China</Country>
+    <Country>China</Country>
     <Population>13482000</Population>
     <Disease>Red</Disease>
     <Connections>

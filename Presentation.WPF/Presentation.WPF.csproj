@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Contracts\IBoardViewModel.cs" />
+    <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>

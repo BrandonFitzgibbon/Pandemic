@@ -11,10 +11,15 @@ namespace Presentation.WPF.Implementations
     public class BoardViewModel : ViewModelBase, IBoardViewModel
     {
         private IList<ICity> cities;
+        public IList<ICity> Cities
+        {
+            get { return cities; }
+            set { cities = value; NotifyPropertyChanged(); }
+        }
 
         public BoardViewModel(IList<ICity> cities)
         {
-            this.cities = cities;
+            Cities = cities;
         }
     }
 }
