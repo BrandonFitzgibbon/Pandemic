@@ -13,7 +13,11 @@ namespace Engine.Contracts
         IEnumerable<IPlayer> Players { get; }
         IPlayer CurrentPlayer { get; }
         int NumberOfResearchStations { get; }
+        
         void NextPlayer();
+        void DrawPhase();
+        void InfectionPhase();
+
         bool IsGameOn { get; }
     }
 }

@@ -29,11 +29,7 @@ namespace Engine.Implementations
             IDiseaseCounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
             if (treatTarget != null)
             {
-                do
-                {
-                    treatTarget.Decrease();
-                } 
-                while (treatTarget.Count > 0);
+                treatTarget.Decrease(treatTarget.Count);
             }
         }
     }

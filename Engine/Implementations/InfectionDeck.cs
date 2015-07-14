@@ -53,15 +53,21 @@ namespace Engine.Implementations
             List<ICard> cards = discardPile.ToList();
             cards.Shuffle();
             cards.Reverse();
-            foreach (ICard card in discardPile)
+            for (int i = cards.Count - 1; i >= 0; i--)
             {
-                cardPile.Push(discardPile.Pop());
+                cardPile.Push(cards[i]);
             }
+            discardPile = new Stack<ICard>();
         }
 
         private void CardDiscarded(object sender, DiscardedEventArgs e)
         {
             discardPile.Push(e.Card);
+        }
+
+        public void Intensify()
+        {
+            ShuffleDiscardPileOntoCardPile();
         }
     }
 }

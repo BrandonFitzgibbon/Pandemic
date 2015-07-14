@@ -11,7 +11,7 @@ namespace Engine.Factories
 {
     public class PlayerFactory : IPlayerFactory
     {
-        private List<string> roles = new List<string>() { "Medic", "Dispatcher" };
+        private List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist" };
 
         public IList<IPlayer> GetPlayers(IList<string> names)
         {
@@ -28,6 +28,9 @@ namespace Engine.Factories
                         break;
                     case "Dispatcher":
                         players.Add(new Dispatcher(name));
+                        break;
+                    case "Scientist":
+                        players.Add(new Scientist(name));
                         break;
                 }
             }

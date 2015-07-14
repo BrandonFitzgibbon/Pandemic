@@ -50,6 +50,9 @@ namespace Presentation.Con
                             break;
                     }
                 }
+                game.DrawPhase();
+                game.DrawPhase();
+                game.InfectionPhase();
                 game.NextPlayer();
             } while (game.IsGameOn);
         }

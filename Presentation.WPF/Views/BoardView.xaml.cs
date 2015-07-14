@@ -1,5 +1,4 @@
-﻿using Presentation.WPF.Implementations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Presentation.WPF
+namespace Presentation.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for BoardView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class BoardView : UserControl
     {
-        public MainWindow()
+        public BoardView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

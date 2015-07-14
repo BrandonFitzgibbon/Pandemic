@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IScientist : IPlayer
     {
-        ICard DrawBottom();
-        void Intensify();
+        
     }
 }

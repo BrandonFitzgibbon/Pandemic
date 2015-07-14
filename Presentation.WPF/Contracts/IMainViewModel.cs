@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Contracts
+namespace Presentation.WPF.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IMainViewModel
     {
-        ICard DrawBottom();
-        void Intensify();
+        IViewModelBase BoardViewModel { get; }
     }
 }

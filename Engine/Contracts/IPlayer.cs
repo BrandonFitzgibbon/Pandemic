@@ -22,7 +22,7 @@ namespace Engine.Contracts
         void TreatDisease(IDisease disease);
         void TakeKnowledge(IPlayer giver);
         void GiveKnowledge(IPlayer taker);
-        void DiscoverCure(IList<ICard> cards);
+        void DiscoverCure(IList<ICard> cards, IDisease disease);
 
         event EventHandler<PlayerMovedEventArgs> Moved;
         event EventHandler<ResearchStationChangedEventArgs> ResearchStationChanged;

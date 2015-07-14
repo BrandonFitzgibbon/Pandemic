@@ -106,9 +106,12 @@ namespace Engine.Implementations
             
         }
 
-        public void DiscoverCure(IList<ICard> cards)
+        public void DiscoverCure(IList<ICard> cards, IDisease disease)
         {
-            
+            foreach (ICard card in cards)
+            {
+                card.Discard();
+            }
         }
 
         public override string ToString()

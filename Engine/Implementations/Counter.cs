@@ -21,23 +21,29 @@ namespace Engine.Implementations
             get { return count; }
         }
 
-        public void Increase()
+        public void Increase(int rate = 1)
         {
-            if (count < 3)
+            for (int i = 0; i < rate; i++)
             {
-                disease.Decrease();
-                count++;
+                if (count < 3)
+                {
+                    disease.Decrease();
+                    count++;
+                }
+                else
+                    if (Outbreak != null) Outbreak(this, EventArgs.Empty);
             }
-            else
-                if (Outbreak != null) Outbreak(this, EventArgs.Empty);
         }
 
-        public void Decrease()
+        public void Decrease(int rate = 1)
         {
-            if (count > 0)
+            for (int i = 0; i < rate; i++)
             {
-                count--;
-                disease.Increase();
+                if (count > 0)
+                {
+                    count--;
+                    disease.Increase();
+                }
             }
         }
 

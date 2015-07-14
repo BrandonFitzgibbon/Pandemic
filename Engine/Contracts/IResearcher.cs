@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    interface IResearcher
+    public interface IResearcher : IPlayer
     {
+
     }
 }

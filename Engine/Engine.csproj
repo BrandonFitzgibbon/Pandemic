@@ -60,6 +60,7 @@
     <Compile Include="Contracts\IPlayerDeck.cs" />
     <Compile Include="Contracts\IPlayerFactory.cs" />
     <Compile Include="Contracts\IResearcher.cs" />
+    <Compile Include="Contracts\IScientist.cs" />
     <Compile Include="CustomEventArgs\DiscardedEventArgs.cs" />
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
     <Compile Include="CustomEventArgs\ResearchStationChangedEventArgs.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Implementations\OutbreakCounter.cs" />
     <Compile Include="Implementations\Player.cs" />
     <Compile Include="Implementations\PlayerDeck.cs" />
+    <Compile Include="Implementations\Scientist.cs" />
     <Compile Include="Infrastructure\ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

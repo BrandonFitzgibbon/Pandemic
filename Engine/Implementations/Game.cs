@@ -100,6 +100,30 @@ namespace Engine.Implementations
             }
         }
 
+        public void DrawPhase()
+        {
+            ICard drawn;
+            currentPlayer.Hand.Draw(playerDeck, out drawn);
+            if (drawn is IEpidemicCard)
+            {
+                infectionRateCounter.Increase();
+                IInfectionCard infectionCard = (IInfectionCard)infectionDeck.DrawBottom();
+                infectionCard.City.Counters.Single(i => i.Disease == infectionCard.City.Disease).Increase(3);
+                infectionCard.Discard();
+                infectionDeck.Intensify();
+            }
+        }
+
+        public void InfectionPhase()
+        {
+            for (int i = 0; i < infectionRateCounter.InfectionRate; i++)
+            {
+                IInfectionCard card = (IInfectionCard)infectionDeck.Draw();
+                card.City.Counters.Single(j => j.Disease == card.City.Disease).Increase();
+                card.Discard();
+            }
+        }
+
         private void SetStartingLocation()
         {
             ICity atlanta = this.cities.Single(i => i.Name == "Atlanta");

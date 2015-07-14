@@ -1,8 +1,16 @@
 ﻿<Application x:Class="Presentation.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:Presentation.WPF.Implementations"
+             xmlns:v="clr-namespace:Presentation.WPF.Views"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
-         
+        
+        <DataTemplate DataType="{x:Type i:BoardViewModel}">
+            <v:BoardView/>
+        </DataTemplate>
+
     </Application.Resources>
+    
 </Application>

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Contracts
+namespace Presentation.WPF.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IViewModelBase : INotifyPropertyChanged
     {
-        ICard DrawBottom();
-        void Intensify();
+
     }
 }
