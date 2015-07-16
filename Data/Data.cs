@@ -20,10 +20,10 @@ namespace DataAccess
         {
             diseases = new List<IDisease>()
             {
-                new Disease("Yellow"),
-                new Disease("Red"),
-                new Disease("Blue"),
-                new Disease("Black")
+                new Disease("Yellow", DiseaseType.Yellow),
+                new Disease("Red", DiseaseType.Red),
+                new Disease("Blue", DiseaseType.Blue),
+                new Disease("Black", DiseaseType.Black)
             };
 
             cities = new List<ICity>();

@@ -16,6 +16,12 @@ namespace Engine.Implementations
             set { name = value; }
         }
 
+        private DiseaseType type;
+        public DiseaseType Type
+        {
+            get { return type; }
+        }
+
         private int count;
         public int Count
         {
@@ -28,9 +34,10 @@ namespace Engine.Implementations
             get { return isCured; }
         }
 
-        public Disease(string name)
+        public Disease(string name, DiseaseType type)
         {
             this.name = name;
+            this.type = type;
             count = 24;
         }
 
@@ -48,7 +55,7 @@ namespace Engine.Implementations
         {
             IDisease equalsTarget = (IDisease)obj;
             if (equalsTarget != null)
-                return equalsTarget.Name == this.name;
+                return equalsTarget.Type == this.Type;
             return false;
         }
 

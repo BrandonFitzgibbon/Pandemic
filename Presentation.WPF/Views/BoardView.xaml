@@ -19,7 +19,6 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock DataContext="{Binding}" Foreground="{Binding Disease, Converter={StaticResource DiseaseToColorConverter}}">
@@ -30,7 +29,6 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Foreground="White" Grid.Row="1" DataContext="{Binding}" Text="{Binding Path=Population, StringFormat={}Population: {0:###,###,###}}"/>
                         <StackPanel Grid.Row="2" Orientation="Vertical">
                             <HeaderedItemsControl Header="Connections" Margin="5" Foreground="White" ItemsSource="{Binding Connections}">
                                 <HeaderedItemsControl.Template>

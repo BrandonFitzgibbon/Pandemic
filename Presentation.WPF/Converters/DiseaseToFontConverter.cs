@@ -9,23 +9,23 @@ using System.Windows.Media;
 
 namespace Presentation.WPF.Converters
 {
-    public class DiseaseToColorConverter : IValueConverter
+    public class DiseaseToFontConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             IDisease disease = (IDisease)value;
             if (disease != null)
             {
-                switch(disease.Type)
+                switch (disease.Type)
                 {
                     case DiseaseType.Yellow:
-                        return Brushes.Yellow;
-                    case DiseaseType.Red:
-                        return Brushes.Red;
-                    case DiseaseType.Blue:
-                        return Brushes.Blue;
-                    case DiseaseType.Black:
                         return Brushes.Black;
+                    case DiseaseType.Red:
+                        return Brushes.White;
+                    case DiseaseType.Blue:
+                        return Brushes.White;
+                    case DiseaseType.Black:
+                        return Brushes.White;
                 }
             }
             return null;

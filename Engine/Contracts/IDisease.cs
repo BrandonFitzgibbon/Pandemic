@@ -8,11 +8,17 @@ namespace Engine.Contracts
 {
     public interface IDisease
     {
-        string Name { get; }
+        string Name { get; set; }
+        DiseaseType Type { get; }
         int Count { get; }
         bool IsCured { get; }
         void Increase();
         void Decrease();
         event EventHandler GameOver;
+    }
+
+    public enum DiseaseType
+    {
+        Yellow, Red, Blue, Black
     }
 }

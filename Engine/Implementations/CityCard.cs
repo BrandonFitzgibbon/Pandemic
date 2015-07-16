@@ -32,7 +32,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            ICityCard compare = (ICityCard)obj;
+            ICityCard compare = obj as ICityCard;
             if (compare != null)
                 return city.Equals(compare.City);
             return false;
