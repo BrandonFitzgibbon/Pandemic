@@ -12,6 +12,7 @@ namespace Engine.Contracts
         DiseaseType Type { get; }
         int Count { get; }
         bool IsCured { get; }
+        bool IsEradicated { get; }
         void Increase();
         void Decrease();
         event EventHandler GameOver;

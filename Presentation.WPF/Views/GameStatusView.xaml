@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="Presentation.WPF.Views.GameStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300">
+    
+    <Grid TextElement.Foreground="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" MinWidth="90"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" MinWidth="90"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" MinWidth="90"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" MinWidth="90"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Column="0" Margin="10,3,3,3">
+            <UniformGrid Columns="2">
+                <ContentControl Content="{StaticResource biohazard}" ToolTip="Outbreaks"/>
+                <TextBlock Text="{Binding Outbreaks}" FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
+            </UniformGrid>
+        </Viewbox>
+        <Separator Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,10,0">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
+        <Viewbox Grid.Column="2">
+            <UniformGrid Columns="3">
+                <ContentControl Content="{StaticResource compoundYellow}" Width="125"/>
+                <TextBlock Text="{Binding YellowCounters}" Margin="15,0,0,0" FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ContentControl Margin="0,20,0,20">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Content" Value="{StaticResource curedYellow}"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding YellowCured}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding YellowEradicated}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Content" Value="{StaticResource eradicatedYellow}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </UniformGrid>
+        </Viewbox>
+        <Separator Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
+        <Viewbox Grid.Column="4">
+            <UniformGrid Columns="3">
+                <ContentControl Content="{StaticResource compoundRed}" Width="125"/>
+                <TextBlock Text="{Binding RedCounters}" Margin="15,0,0,0" FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ContentControl Margin="0,20,0,20">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Content" Value="{StaticResource curedRed}"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RedCured}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RedEradicated}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Content" Value="{StaticResource eradicatedRed}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </UniformGrid>
+        </Viewbox>
+        <Separator Grid.Column="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
+        <Viewbox Grid.Column="6">
+            <UniformGrid Columns="3">
+                <ContentControl Content="{StaticResource compoundBlue}" Width="125"/>
+                <TextBlock Text="{Binding BlueCounters}" Margin="15,0,0,0" FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ContentControl Margin="0,20,0,20">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Content" Value="{StaticResource curedBlue}"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BlueCured}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding BlueEradicated}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Content" Value="{StaticResource eradicatedBlue}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </UniformGrid>
+        </Viewbox>
+        <Separator Grid.Column="7" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
+        <Viewbox Grid.Column="8">
+            <UniformGrid Columns="3">
+                <ContentControl Content="{StaticResource compoundBlack}" Width="125"/>
+                <TextBlock Text="{Binding BlackCounters}" Margin="15,0,0,0" FontSize="72" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ContentControl Margin="0,20,0,20">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Content" Value="{StaticResource curedBlack}"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BlackCured}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding BlackEradicated}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Content" Value="{StaticResource eradicatedBlack}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </UniformGrid>
+        </Viewbox>
+        <Separator Grid.Column="9" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,0,10,0">
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
+        <Viewbox Grid.Column="10" Margin="3,3,10,3">
+            <Viewbox.Resources>
+                <Style x:Key="InfectionEllipse" TargetType="Ellipse">
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Width" Value="50"/>
+                    <Setter Property="Fill" Value="Green"/>
+                </Style>
+            </Viewbox.Resources>
+            <StackPanel Orientation="Horizontal">
+                <ContentControl Content="{StaticResource gasmask}"/>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterOne}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="2" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterTwo}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="2" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterThree}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="2" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterFour}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="3" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterFive}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="3" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterSix}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="4" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                    <Ellipse>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse" BasedOn="{StaticResource InfectionEllipse}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InfectionCounterSeven}" Value="True">
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <TextBlock Text="4" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </Viewbox>
+    </Grid>
+    
+</UserControl>

@@ -10,9 +10,9 @@ namespace Presentation.WPF.Contracts
 {
     public interface IPlayersViewModel : IViewModelBase
     {
-        ICollection<IPlayer> Players { get; }
+        ICollection<IPlayerViewModel> Players { get; }
         IPlayer SelectedPlayer { get; set; }
-        IPlayer CurrentPlayer { get; set; }
+        IPlayer CurrentPlayer { get; }
         ICollection<ICity> PossibleDestinations { get; }
         int ActionsLeft { get; set; }
         ICommand DriveCommand { get; }

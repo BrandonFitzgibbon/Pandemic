@@ -4,6 +4,7 @@ using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,11 +15,13 @@ namespace Presentation.WPF.Implementations
     public class PlayersViewModel : ViewModelBase, IPlayersViewModel
     {
         private IGame game;
-        private IContext<IPlayer> context;
-        private IContext<IActions> actions;
+        private IMainViewModel mainViewModel;
 
-        private ICollection<IPlayer> players;
-        public ICollection<IPlayer> Players
+        private IContext<IPlayer> playerContext;
+        private IContext<IActions> actionsContext;
+
+        private ICollection<IPlayerViewModel> players;
+        public ICollection<IPlayerViewModel> Players
         {
             get { return players; }
         }
@@ -27,19 +30,17 @@ namespace Presentation.WPF.Implementations
         public IPlayer SelectedPlayer
         {
             get { return selectedPlayer; }
-            set { selectedPlayer = value; context.Context = value; NotifyPropertyChanged(); }
+            set { selectedPlayer = value; playerContext.Context = value; NotifyPropertyChanged(); }
         }
 
-        private IPlayer currentPlayer;
         public IPlayer CurrentPlayer
         {
-            get { return currentPlayer; }
-            set { currentPlayer = value; actions.Context = new Actions(value); ActionsLeft = 4; NotifyPropertyChanged(); }
+            get { return game.CurrentPlayer; }
         }
 
         public ICollection<ICity> PossibleDestinations
         {
-            get { return currentPlayer != null ? currentPlayer.Location.Connections.ToList() : null; }
+            get { return CurrentPlayer != null ? CurrentPlayer.Location.Connections.ToList() : null; }
         }
 
         private int actionsLeft;
@@ -50,29 +51,33 @@ namespace Presentation.WPF.Implementations
             {
                 if (value > 0)
                 {
-                    actionsLeft = value; 
+                    actionsLeft = value;
                     NotifyPropertyChanged();
                 }
                 else
-                    RequestNextPlayer();
+                {
+                    mainViewModel.RequestCard();
+                    mainViewModel.RequestCard();
+                    mainViewModel.RequestInfection();
+                    mainViewModel.RequestNextPlayer();
+                    NotifyPropertyChanged("CurrentPlayer");
+                    actionsLeft = 4;
+                    NotifyPropertyChanged("ActionsLeft");
+                    actionsContext.Context = new Actions(game.CurrentPlayer);
+                }
+                    
             }
         }
            
-        public PlayersViewModel(IGame game, IContext<IActions> actions, IContext<IPlayer> context, ICollection<IPlayer> players)
+        public PlayersViewModel(IMainViewModel mainViewModel, IGame game, IContext<IActions> actions, IContext<IPlayer> context, ICollection<IPlayerViewModel> viewModels, ICollection<IPlayer> players)
         {
+            this.mainViewModel = mainViewModel;
             this.game = game;
-            this.actions = actions;
-            this.context = context;
-            this.players = players;
-        }
-
-        private void RequestNextPlayer()
-        {
-            game.DrawPhase();
-            game.DrawPhase();
-            game.InfectionPhase();
-            game.NextPlayer();
-            CurrentPlayer = game.CurrentPlayer;
+            this.actionsContext = actions;
+            this.playerContext = context;
+            this.players = viewModels;
+            actionsLeft = 4;
+            actions.Context = new Actions(game.CurrentPlayer);
         }
 
         private RelayCommand driveCommand;
@@ -88,10 +93,14 @@ namespace Presentation.WPF.Implementations
 
         private void Drive(ICity city)
         {
-            actions.Context.Drive(city);
+            actionsContext.Context.Drive(city);
             ActionsLeft = ActionsLeft - 1;
             NotifyPropertyChanged("PossibleDestinations");
             NotifyPropertyChanged("Players");
+            foreach (IPlayerViewModel pvm in players)
+            {
+                pvm.NotifyChanges();
+            }
         }
 
         private bool CanDrive(ICity city)

@@ -57,18 +57,28 @@
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
+    <Compile Include="Contracts\IDeckViewModel.cs" />
     <Compile Include="Contracts\IGameStatusViewModel.cs" />
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
+    <Compile Include="Contracts\IPlayerViewModel.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
+    <Compile Include="Implementations\DeckViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
+    <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DecksView.xaml.cs">
+      <DependentUpon>DecksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GameStatusView.xaml.cs">
+      <DependentUpon>GameStatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HandView.xaml.cs">
       <DependentUpon>HandView.xaml</DependentUpon>
@@ -76,6 +86,13 @@
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlayerView.xaml.cs">
+      <DependentUpon>PlayerView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,11 +113,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DecksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GameStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HandView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlayersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

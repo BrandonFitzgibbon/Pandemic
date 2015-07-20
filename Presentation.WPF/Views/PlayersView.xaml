@@ -6,15 +6,98 @@
              xmlns:i="clr-namespace:Engine.Implementations;assembly=Engine"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        
+        <ControlTemplate x:Key="LeftButton" TargetType="Button">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="Common">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ColorAnimation From="White" To="Yellow" Storyboard.TargetName="Path" Storyboard.TargetProperty="(Stroke).Color"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <DoubleAnimation From="1" To="0.75" Storyboard.TargetName="Content" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:00.1" AutoReverse="True"/>
+                                <DoubleAnimation From="1" To="0.75" Storyboard.TargetName="Content" Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0:00:00.1" AutoReverse="True"/>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                
+                <Border Width="30" Height="15" Background="Transparent">
+                    <ContentControl x:Name="Content">
+                        <ContentControl.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </ContentControl.RenderTransform>
+                        <ContentControl.Content>
+                            <Path x:Name="Path" Width="15" Height="15" Stroke="White" StrokeThickness="3" Stretch="Uniform" UseLayoutRounding="False" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="F1 M 328.101,80.0001L 80,328.101L 328.101,576.203"/>
+                        </ContentControl.Content>
+                    </ContentControl>
+                </Border>
 
-    <StackPanel>
-        <ListView ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer}" BorderBrush="Transparent">
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="RightButton" TargetType="Button">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="Common">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ColorAnimation From="White" To="Yellow" Storyboard.TargetName="Path" Storyboard.TargetProperty="(Stroke).Color"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <DoubleAnimation From="1" To="0.75" Storyboard.TargetName="Content" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:00.1" AutoReverse="True"/>
+                                <DoubleAnimation From="1" To="0.75" Storyboard.TargetName="Content" Storyboard.TargetProperty="(RenderTransform).ScaleY" Duration="0:00:00.1" AutoReverse="True"/>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <Border Width="30" Height="15" Background="Transparent">
+                    <ContentControl x:Name="Content">
+                        <ContentControl.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </ContentControl.RenderTransform>
+                        <ContentControl.Content>
+                            <Path x:Name="Path" Width="15" Height="15" Stroke="White" StrokeThickness="3" Stretch="Uniform" UseLayoutRounding="False" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="F1 M 328.101,80.0001L 80,328.101L 328.101,576.203">
+                                <Path.LayoutTransform>
+                                    <RotateTransform Angle="180"/>
+                                </Path.LayoutTransform>
+                            </Path>
+                        </ContentControl.Content>
+                    </ContentControl>
+                </Border>
+
+            </Grid>
+        </ControlTemplate>
+
+    </UserControl.Resources>
+
+    <StackPanel Background="Transparent">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Viewbox Height="25">
+                <ContentControl Content="{StaticResource man}"/>
+            </Viewbox>
+            <Viewbox Height="40">
+                <ContentControl Content="{StaticResource man}"/>
+            </Viewbox>
+            <Viewbox Height="25">
+                <ContentControl Content="{StaticResource man}"/>
+            </Viewbox>
+        </StackPanel>
+        <Separator HorizontalAlignment="Stretch"/>
+        <ListView ItemsSource="{Binding Players}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type i:Player}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}"/>
-                        <TextBlock Text="{Binding Location.Name, StringFormat={}Location: {0}}"/>
-                    </StackPanel>
+                <DataTemplate>
+                    <ContentControl Content="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>
@@ -25,7 +108,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="3" CornerRadius="3" Width="150" Height="75">
+                                <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" Background="White" BorderThickness="1" CornerRadius="3">
                                     <ContentPresenter Margin="3"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -39,45 +122,61 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="3" Width="150" Height="75">
-            <StackPanel>
-                <TextBlock Text="{Binding CurrentPlayer, StringFormat={}Current Player: {0}}"/>
-                <TextBlock Text="{Binding ActionsLeft, StringFormat={}Actions Left: {0}}"/>
-            </StackPanel>
-        </Border>
-        <ListView x:Name="dest" ItemsSource="{Binding PossibleDestinations}"/>
-        <Button x:Name="DriveButton" Width="150" Height="25" Content="Drive" Margin="3" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=dest, Path=SelectedItem}">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Separator HorizontalAlignment="Stretch"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Viewbox Height="30">
+                <ContentControl Content="{StaticResource man}"/>
+            </Viewbox>
+            <Label Content="{Binding CurrentPlayer}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
+            <Viewbox Height="25" Margin="15,0,0,0">
+                <ContentControl Content="{StaticResource actions}"/>
+            </Viewbox>
+            <Label Content="{Binding ActionsLeft}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TabControl Margin="5" Width="200" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Loaded="TabControl_Loaded">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </TabControl.Resources>
+            <TabControl.Style>
+                <Style TargetType="TabControl">
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="Border" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
-                                    <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Background" Value="Gray"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="Yellow"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
+                            <ControlTemplate TargetType="TabControl">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Template="{StaticResource LeftButton}" Click="LeftButton_Click"/>
+                                        <ContentControl Grid.Column="1" Content="{Binding RelativeSource={RelativeSource AncestorType=TabControl}, Path=SelectedItem.Header}" HorizontalContentAlignment="Center" TextElement.Foreground="White" TextElement.FontSize="16"/>
+                                        <Button Grid.Column="2" Template="{StaticResource RightButton}" Click="RightButton_Click"/>
+                                    </Grid>
+                                    <ContentPresenter ContentSource="SelectedContent"/>
+                                </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </Button.Style>
-        </Button>
+            </TabControl.Style>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Drive" HorizontalAlignment="Center"/>
+                </TabItem.Header>
+                <StackPanel Margin="10">
+                    <ListView x:Name="PossibleDestinations" ItemsSource="{Binding PossibleDestinations}"/>
+                    <Button Content="Drive" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Treat Disease" HorizontalAlignment="Center"/>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
     </StackPanel>
     
 </UserControl>

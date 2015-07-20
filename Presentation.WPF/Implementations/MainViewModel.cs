@@ -5,6 +5,7 @@ using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,13 @@ namespace Presentation.WPF.Implementations
         {
             get { return boardViewModel; }
             set { boardViewModel = value; NotifyPropertyChanged(); }
+        }
+
+        private IGameStatusViewModel gameStatusViewModel;
+        public IGameStatusViewModel GameStatusViewModel
+        {
+            get { return gameStatusViewModel; }
+            set { gameStatusViewModel = value; NotifyPropertyChanged(); }
         }
 
         private IViewModelBase handViewModel;
@@ -46,14 +54,37 @@ namespace Presentation.WPF.Implementations
             game = new Game(data.GetDiseases(), data.GetCities(), new PlayerFactory(), new List<string>() { "John", "Jane", "Jack" }, new DeckFactory(data.GetCities()), new OutbreakCounter(data.GetCities()), new InfectionRateCounter(), Difficulty.Standard);
 
             BoardViewModel = new BoardViewModel(game.Cities.ToList());
+            GameStatusViewModel = new GameStatusViewModel(game);
 
             playerContext = new ObjectContext<IPlayer>();
             actionContext = new ObjectContext<IActions>();
 
-            PlayersViewModel = new PlayersViewModel(game, actionContext, playerContext, game.Players.ToList());
-            HandViewModel = new HandViewModel(playerContext);
+            Collection<IPlayerViewModel> playerViewModels = new Collection<IPlayerViewModel>();
+            foreach (IPlayer player in game.Players)
+            {
+                playerViewModels.Add(new PlayerViewModel(player));
+            }
 
-            PlayersViewModel.CurrentPlayer = game.CurrentPlayer;
+            PlayersViewModel = new PlayersViewModel(this, game, actionContext, playerContext, playerViewModels, game.Players.ToList());
+            HandViewModel = new HandViewModel(playerContext);
+        }
+
+        public void RequestCard()
+        {
+            game.DrawPhase();
+            GameStatusViewModel.NotifyChanges();
+        }
+
+        public void RequestInfection()
+        {
+            game.InfectionPhase();
+            GameStatusViewModel.NotifyChanges();
+        }
+
+        public void RequestNextPlayer()
+        {
+            game.NextPlayer();
+            GameStatusViewModel.NotifyChanges();
         }
     }
 }

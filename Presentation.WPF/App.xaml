@@ -5,60 +5,76 @@
              xmlns:v="clr-namespace:Presentation.WPF.Views"
              StartupUri="MainWindow.xaml">
     
-    <Application.Resources>
-        
-        <DataTemplate DataType="{x:Type i:BoardViewModel}">
-            <v:BoardView/>
-        </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type i:HandViewModel}">
-            <v:HandView/>
-        </DataTemplate>
+    <Application.Resources>      
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Controls/Icons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="Background" Color="#BF111113"/>
+            
+            <DataTemplate DataType="{x:Type i:BoardViewModel}">
+                <v:BoardView/>
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type i:PlayersViewModel}">
-            <v:PlayersView/>
-        </DataTemplate>
-        
-        <ControlTemplate x:Key="HeaderButton" TargetType="ToggleButton">
-            <Grid>
-                <Border x:Name="Border" CornerRadius="10,10,0,0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="1,1,1,0">
-                    <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Border>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Cursor" Value="ScrollN"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Cursor" Value="ScrollS"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+            <DataTemplate DataType="{x:Type i:HandViewModel}">
+                <v:HandView/>
+            </DataTemplate>
 
-        <ControlTemplate x:Key="CustomToggleExpander" TargetType="Expander">
-            <StackPanel>
+            <DataTemplate DataType="{x:Type i:PlayersViewModel}">
+                <v:PlayersView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:GameStatusViewModel}">
+                <v:GameStatusView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:PlayerViewModel}">
+                <v:PlayerView/>
+            </DataTemplate>
+
+            <ControlTemplate x:Key="HeaderButton" TargetType="ToggleButton">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Name="ContentRow" Height="0"/>
-                    </Grid.RowDefinitions>
-                    <ToggleButton x:Name="Toggle" HorizontalAlignment="Left" Height="25" Width="75" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Template="{StaticResource HeaderButton}" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, Path=IsExpanded}">
-                        <ToggleButton.Content>
-                            <ContentPresenter Content="{TemplateBinding Header}"/>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <Border x:Name="Content" Grid.Row="1" BorderBrush="Transparent" Background="Transparent">
-                        <ContentPresenter/>
+                    <Border x:Name="Border" CornerRadius="10,10,0,0" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="1,1,1,0">
+                        <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </Grid>
-            </StackPanel>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsExpanded" Value="True">
-                    <Setter TargetName="ContentRow" Property="Height" Value="{Binding ElementName=Content, Path=Content.ActualHeight}"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="False">
+                        <Setter Property="Cursor" Value="ScrollN"/>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Cursor" Value="ScrollS"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
 
+            <ControlTemplate x:Key="CustomToggleExpander" TargetType="Expander">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Name="ContentRow" Height="0"/>
+                        </Grid.RowDefinitions>
+                        <ToggleButton x:Name="Toggle" HorizontalAlignment="Left" Height="25" Width="75" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Template="{StaticResource HeaderButton}" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, Path=IsExpanded}">
+                            <ToggleButton.Content>
+                                <ContentPresenter Content="{TemplateBinding Header}"/>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                        <Border x:Name="Content" Grid.Row="1" BorderBrush="Transparent" Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsExpanded" Value="True">
+                        <Setter TargetName="ContentRow" Property="Height" Value="{Binding ElementName=Content, Path=Content.ActualHeight}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            
+        </ResourceDictionary>
     </Application.Resources>
     
 </Application>

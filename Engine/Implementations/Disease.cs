@@ -34,6 +34,12 @@ namespace Engine.Implementations
             get { return isCured; }
         }
 
+        private bool isEradicated;
+        public bool IsEradicated
+        {
+            get { return isEradicated; }
+        }
+
         public Disease(string name, DiseaseType type)
         {
             this.name = name;
