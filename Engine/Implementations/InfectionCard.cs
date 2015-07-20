@@ -10,14 +10,20 @@ namespace Engine.Implementations
     public class InfectionCard : Card, IInfectionCard
     {
         private ICity city;
-        public ICity City
+        
+        public string Name
         {
-            get { return city; }
+            get { return city.Name; }
         }
 
         public InfectionCard(ICity city)
         {
             this.city = city;
+        }
+
+        public void Infect(int rate)
+        {
+            city.Counters.Single(i => i.Disease == city.Disease).Increase(rate);
         }
 
         public override string ToString()
@@ -34,7 +40,7 @@ namespace Engine.Implementations
         {
             IInfectionCard compare = (IInfectionCard)obj;
             if (compare != null)
-                return city.Equals(compare.City);
+                return compare.Name == this.Name;
             return false;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.CustomEventArgs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace Engine.Contracts
     {
         IDisease Disease { get; }
         int Count { get; }
-        void Increase(int rate = 1);
-        void Decrease(int rate = 1);
-        event EventHandler Outbreak;
+        void Increase(int rate);
+        void Decrease(int rate);
+        event EventHandler<OutbreakEventArgs> Outbreak;
     }
 }

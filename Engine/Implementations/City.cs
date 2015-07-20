@@ -28,7 +28,7 @@ namespace Engine.Implementations
             get { return population; }
         }
 
-        private IList<ICity> connections;
+        private List<ICity> connections;
         public IEnumerable<ICity> Connections
         {
             get { return connections; }
@@ -40,13 +40,13 @@ namespace Engine.Implementations
             get { return disease; }
         }
 
-        private IList<IDiseaseCounter> counters;
+        private IEnumerable<IDiseaseCounter> counters;
         public IEnumerable<IDiseaseCounter> Counters
         {
             get { return counters; }
         }
 
-        private IList<IPlayer> playersInCity;
+        private List<IPlayer> playersInCity;
         public IEnumerable<IPlayer> PlayersInCity
         {
             get { return playersInCity; }
@@ -58,41 +58,26 @@ namespace Engine.Implementations
             get { return hasResearchStation; }
         }
 
-        public City(string name, string country, int population)
+        public City(string name, string country, int population, IDisease disease, IDiseaseCounterFactory counterFactory)
         {
             this.name = name;
             this.country = country;
             this.population = population;
+            this.disease = disease;
+            this.counters = counterFactory.GetCounters(this);
+            this.connections = new List<ICity>();
             this.playersInCity = new List<IPlayer>();
             hasResearchStation = false;
         }
 
-        public void InitializeGame(IGame game, IDataAccess data)
+        public void Subscribe(IPlayer player)
         {
-            //resolve disease
-            this.disease = game.Diseases.Single(i => i.Name == data.ResolveCityDisease(this));
-            
-            //resolve connections
-            connections = new List<ICity>();
-            foreach (string cityName in data.ResolveCityConnections(this))
-            {
-                connections.Add(game.Cities.Single(i => i.Name == cityName));
-            }
-            
-            //create counters
-            counters = new List<IDiseaseCounter>();
-            this.counters = data.GetCounters();
+            player.Moved += playerMoved;
+        }
 
-            //subscribe to players
-            foreach (IPlayer player in game.Players)
-            {
-                player.Moved += playerMoved;
-                player.ResearchStationChanged += playerResearchStationChanged;
-            }
-
-            //build research station in atlanta
-            if (this.name == "Atlanta")
-                hasResearchStation = true;
+        public void Connect(ICity city)
+        {
+            this.connections.Add(city);
         }
 
         private void playerResearchStationChanged(object sender, ResearchStationChangedEventArgs e)

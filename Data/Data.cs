@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Factories;
 using Engine.Implementations;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace DataAccess
     {
         private List<IDisease> diseases;
         private List<ICity> cities;
-        private Dictionary<ICity, string> diseaseDictionary;
         private Dictionary<ICity, IList<string>> connectionDictionary;
 
         public Data()
@@ -27,7 +27,7 @@ namespace DataAccess
             };
 
             cities = new List<ICity>();
-            diseaseDictionary = new Dictionary<ICity, string>();
+
             connectionDictionary = new Dictionary<ICity, IList<string>>();
 
             XDocument xmlCities = XDocument.Load("Cities.XML");
@@ -43,10 +43,17 @@ namespace DataAccess
                     connectionNames.Add(con.Value);
                 }
 
-                ICity newCity = new City(cityName, countryName, population);
+                ICity newCity = new City(cityName, countryName, population, diseases.Single(i => i.Type.ToString() == cityDisease), new DiseaseCounterFactory(diseases));
                 cities.Add(newCity);
-                diseaseDictionary.Add(newCity, cityDisease);
                 connectionDictionary.Add(newCity, connectionNames);
+            }
+
+            foreach (ICity city in cities)
+            {
+                foreach (string cityName in ResolveCityConnections(city))
+                {
+                    city.Connect(cities.Single(i => i.Name == cityName));
+                }
             }
 
         }
@@ -61,44 +68,9 @@ namespace DataAccess
             return this.cities;
         }
 
-        public string ResolveCityDisease(ICity city)
-        {
-            return diseaseDictionary[city];
-        }
-
-        public IList<string> ResolveCityConnections(ICity city)
+        private IList<string> ResolveCityConnections(ICity city)
         {
             return connectionDictionary[city];
-        }
-
-        public IList<IDiseaseCounter> GetCounters()
-        {
-            IList<IDiseaseCounter> counters = new List<IDiseaseCounter>();
-            foreach (IDisease disease in diseases)
-            {
-                counters.Add(new Counter(disease));
-            }
-            return counters;
-        }
-
-        public IPlayerDeck GetPlayerDeck()
-        {
-            List<ICityCard> cityCards = new List<ICityCard>();
-            foreach (ICity city in this.cities)
-            {
-                cityCards.Add(new CityCard(city));
-            }
-            return new PlayerDeck(cityCards);
-        }
-
-        public IInfectionDeck GetInfectionDeck()
-        {
-            List<IInfectionCard> infectionCards = new List<IInfectionCard>();
-            foreach (ICity city in this.cities)
-            {
-                infectionCards.Add(new InfectionCard(city));
-            }
-            return new InfectionDeck(infectionCards);
         }
     }
 }

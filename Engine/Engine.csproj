@@ -46,12 +46,14 @@
     <Compile Include="Contracts\IDiseaseCounter.cs" />
     <Compile Include="Contracts\IDataAccess.cs" />
     <Compile Include="Contracts\IDisease.cs" />
+    <Compile Include="Contracts\IDiseaseCounterFactory.cs" />
     <Compile Include="Contracts\IDispatcher.cs" />
     <Compile Include="Contracts\IEpidemicCard.cs" />
     <Compile Include="Contracts\IGame.cs" />
     <Compile Include="Contracts\IHand.cs" />
     <Compile Include="Contracts\IInfectionCard.cs" />
     <Compile Include="Contracts\IInfectionDeck.cs" />
+    <Compile Include="Contracts\IDeckFactory.cs" />
     <Compile Include="Contracts\IInfectionRateCounter.cs" />
     <Compile Include="Contracts\IMedic.cs" />
     <Compile Include="Contracts\IOutbreakCounter.cs" />
@@ -62,8 +64,11 @@
     <Compile Include="Contracts\IResearcher.cs" />
     <Compile Include="Contracts\IScientist.cs" />
     <Compile Include="CustomEventArgs\DiscardedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\OutbreakEventArgs.cs" />
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
     <Compile Include="CustomEventArgs\ResearchStationChangedEventArgs.cs" />
+    <Compile Include="Factories\DeckFactory.cs" />
+    <Compile Include="Factories\DiseaseCounterFactory.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\Actions.cs" />
     <Compile Include="Implementations\Card.cs" />

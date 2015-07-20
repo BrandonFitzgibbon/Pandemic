@@ -18,6 +18,7 @@ namespace Engine.Contracts
         IEnumerable<IPlayer> PlayersInCity { get; }
         bool HasResearchStation { get; }
 
-        void InitializeGame(IGame game, IDataAccess data);
+        void Connect(ICity city);
+        void Subscribe(IPlayer player);
     }
 }

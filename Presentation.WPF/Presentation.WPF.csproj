@@ -57,13 +57,16 @@
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
+    <Compile Include="Contracts\IGameStatusViewModel.cs" />
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
+    <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
+    <Compile Include="Implementations\RelayCommand.cs" />
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>

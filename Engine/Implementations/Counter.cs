@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Engine.Implementations
 {
     public class Counter : IDiseaseCounter
     {
+        private ICity city;
+
         private IDisease disease;
         public IDisease Disease
         {
@@ -21,13 +24,14 @@ namespace Engine.Implementations
             get { return count; }
         }
 
-        public Counter(IDisease disease)
+        public Counter(IDisease disease, ICity city)
         {
             this.disease = disease;
+            this.city = city;
             this.count = 0;
         }
 
-        public void Increase(int rate = 1)
+        public void Increase(int rate)
         {
             for (int i = 0; i < rate; i++)
             {
@@ -37,11 +41,11 @@ namespace Engine.Implementations
                     count++;
                 }
                 else
-                    if (Outbreak != null) Outbreak(this, EventArgs.Empty);
+                    if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(city, disease));
             }
         }
 
-        public void Decrease(int rate = 1)
+        public void Decrease(int rate)
         {
             for (int i = 0; i < rate; i++)
             {
@@ -58,6 +62,6 @@ namespace Engine.Implementations
             return disease.ToString() + ": " + count.ToString();
         }
 
-        public event EventHandler Outbreak;
+        public event EventHandler<OutbreakEventArgs> Outbreak;
     }
 }

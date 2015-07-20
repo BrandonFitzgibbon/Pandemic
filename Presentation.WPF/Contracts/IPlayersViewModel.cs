@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Presentation.WPF.Contracts
 {
@@ -12,5 +13,8 @@ namespace Presentation.WPF.Contracts
         ICollection<IPlayer> Players { get; }
         IPlayer SelectedPlayer { get; set; }
         IPlayer CurrentPlayer { get; set; }
+        ICollection<ICity> PossibleDestinations { get; }
+        int ActionsLeft { get; set; }
+        ICommand DriveCommand { get; }
     }
 }

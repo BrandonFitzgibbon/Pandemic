@@ -15,7 +15,9 @@ namespace Presentation.WPF.Implementations
     {
         private IGame game;
         private IDataAccess data;
+
         private IContext<IPlayer> playerContext;
+        private IContext<IActions> actionContext;
 
         private IViewModelBase boardViewModel;
         public IViewModelBase BoardViewModel
@@ -31,8 +33,8 @@ namespace Presentation.WPF.Implementations
             set { handViewModel = value; NotifyPropertyChanged(); }
         }
 
-        private IViewModelBase playersViewModel;
-        public IViewModelBase PlayersViewModel
+        private IPlayersViewModel playersViewModel;
+        public IPlayersViewModel PlayersViewModel
         {
             get { return playersViewModel; }
             set { playersViewModel = value; NotifyPropertyChanged(); }
@@ -41,14 +43,17 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new PlayerFactory(), new List<string>() { "John", "Jane" }, new OutbreakCounter(), new InfectionRateCounter(), Difficulty.Standard);
+            game = new Game(data.GetDiseases(), data.GetCities(), new PlayerFactory(), new List<string>() { "John", "Jane", "Jack" }, new DeckFactory(data.GetCities()), new OutbreakCounter(data.GetCities()), new InfectionRateCounter(), Difficulty.Standard);
 
             BoardViewModel = new BoardViewModel(game.Cities.ToList());
 
             playerContext = new ObjectContext<IPlayer>();
+            actionContext = new ObjectContext<IActions>();
 
-            PlayersViewModel = new PlayersViewModel(playerContext, game.Players.ToList());
+            PlayersViewModel = new PlayersViewModel(game, actionContext, playerContext, game.Players.ToList());
             HandViewModel = new HandViewModel(playerContext);
+
+            PlayersViewModel.CurrentPlayer = game.CurrentPlayer;
         }
     }
 }

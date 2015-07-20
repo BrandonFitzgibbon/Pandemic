@@ -23,11 +23,14 @@ namespace Engine.Infrastructure
             }
         }
 
-        public static void InitalizeCities(this IList<ICity> list, IGame game, IDataAccess data)
+        public static void SubscribeCitiesToPlayerMovements(this IList<ICity> cities, IList<IPlayer> players)
         {
-            foreach (ICity city in list)
+            foreach (ICity city in cities)
             {
-                city.InitializeGame(game, data);
+                foreach (IPlayer player in players)
+                {
+                    city.Subscribe(player);
+                }
             }
         }
     }

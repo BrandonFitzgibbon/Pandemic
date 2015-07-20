@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IDataAccess
+    public interface IDiseaseCounterFactory
     {
-        IList<IDisease> GetDiseases();
-        IList<ICity> GetCities();
+        IList<IDiseaseCounter> GetCounters(ICity city);
     }
 }

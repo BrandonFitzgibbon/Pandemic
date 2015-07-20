@@ -8,6 +8,7 @@ namespace Engine.Contracts
 {
     public interface IInfectionCard : ICard
     {
-        ICity City { get; }
+        string Name { get; }
+        void Infect(int rate);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,31 @@ namespace Engine.Implementations
 {
     public class OutbreakCounter : IOutbreakCounter
     {
-        public OutbreakCounter()
-        {
-            this.count = 0;
-        }
-
         private int count;
         public int Count
         {
             get { return count; }
         }
 
-        public void Increase()
+        public OutbreakCounter(IList<ICity> cities)
+        {
+            this.count = 0;
+
+            foreach (ICity city in cities)
+            {
+                foreach (IDiseaseCounter diseaseCounter in city.Counters)
+                {
+                    diseaseCounter.Outbreak += diseaseCounterOutbreak;
+                }
+            }
+        }
+
+        private void diseaseCounterOutbreak(object sender, OutbreakEventArgs e)
+        {
+            Increase();
+        }
+
+        private void Increase()
         {
             if (count < 7)
                 count++;

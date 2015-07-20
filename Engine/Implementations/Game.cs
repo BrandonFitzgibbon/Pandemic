@@ -71,21 +71,25 @@ namespace Engine.Implementations
             get { return cities.Where(i => i.HasResearchStation == true).Count(); }
         }
 
-        public Game(IDataAccess data, IPlayerFactory playerFactory, IList<string> playerNames, IOutbreakCounter outbreakCounter, IInfectionRateCounter infectionRateCounter, Difficulty difficulty)
+        public Game(IList<IDisease> diseases, IList<ICity> cities, IPlayerFactory playerFactory, IList<string> playerNames, IDeckFactory deckFactory, IOutbreakCounter outbreakCounter, IInfectionRateCounter infectionRateCounter, Difficulty difficulty)
         {
-            this.diseases = data.GetDiseases();
-            this.cities = data.GetCities();
+            this.diseases = diseases;
+            this.cities = cities;
             this.outbreakCounter = outbreakCounter;
             this.infectionRateCounter = infectionRateCounter;
             this.players = playerFactory.GetPlayers(playerNames);
-            this.cities.InitalizeCities(this, data);
-            SetStartingLocation();
-            this.infectionDeck = data.GetInfectionDeck();
-            this.playerDeck = data.GetPlayerDeck();
+            this.infectionDeck = deckFactory.GetInfectionDeck();
+            this.playerDeck = deckFactory.GetPlayerDeck();
+
+            //adds epidemics to player deck and gives players initial hands
             this.playerDeck.Setup(this.players, (int)difficulty);
+
+            //subscribes cities to plyaer movements
+            this.cities.SubscribeCitiesToPlayerMovements(this.players);
+            SetStartingLocation();
+
             this.players = players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
             this.playerQueue = new PlayerQueue(this.players);
-            SubscribeToOutbreak();
             SubscribeToGameOver();
             InitialInfection();
             isGameOn = true;
@@ -108,7 +112,7 @@ namespace Engine.Implementations
             {
                 infectionRateCounter.Increase();
                 IInfectionCard infectionCard = (IInfectionCard)infectionDeck.DrawBottom();
-                infectionCard.City.Counters.Single(i => i.Disease == infectionCard.City.Disease).Increase(3);
+                infectionCard.Infect(3);
                 infectionCard.Discard();
                 infectionDeck.Intensify();
             }
@@ -118,8 +122,12 @@ namespace Engine.Implementations
         {
             for (int i = 0; i < infectionRateCounter.InfectionRate; i++)
             {
-                IInfectionCard card = (IInfectionCard)infectionDeck.Draw();
-                card.City.Counters.Single(j => j.Disease == card.City.Disease).Increase();
+                ICard card = infectionDeck.Draw();
+                if(card is IInfectionCard)
+                {
+                    IInfectionCard iCard = (IInfectionCard)card;
+                    iCard.Infect(1);
+                }
                 card.Discard();
             }
         }
@@ -140,11 +148,7 @@ namespace Engine.Implementations
             for (int i = 0; i < 3; i++)
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
-                ICity city = card.City;
-                IDiseaseCounter counter = city.Counters.Single(j => j.Disease == city.Disease);
-                counter.Increase();
-                counter.Increase();
-                counter.Increase();
+                card.Infect(3);
                 card.Discard();
             }
 
@@ -152,10 +156,7 @@ namespace Engine.Implementations
             for (int i = 0; i < 3; i++)
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
-                ICity city = card.City;
-                IDiseaseCounter counter = city.Counters.Single(j => j.Disease == city.Disease);
-                counter.Increase();
-                counter.Increase();
+                card.Infect(2);
                 card.Discard();
             }
 
@@ -163,27 +164,9 @@ namespace Engine.Implementations
             for (int i = 0; i < 3; i++)
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
-                ICity city = card.City;
-                IDiseaseCounter counter = city.Counters.Single(j => j.Disease == city.Disease);
-                counter.Increase();
+                card.Infect(1);
                 card.Discard();
             }
-        }
-
-        private void SubscribeToOutbreak()
-        {
-            foreach (ICity city in this.cities)
-            {
-                foreach (IDiseaseCounter diseaseCounter in city.Counters)
-                {
-                    diseaseCounter.Outbreak += DiseaseCounterOutbreak;
-                }
-            }
-        }
-
-        private void DiseaseCounterOutbreak(object sender, EventArgs e)
-        {
-            outbreakCounter.Increase();
         }
 
         private void SubscribeToGameOver()

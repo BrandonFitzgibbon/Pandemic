@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Actions
+    public class Actions : IActions
     {
         private Action<ICity> drive;
         public Action<ICity> Drive
