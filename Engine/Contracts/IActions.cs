@@ -9,5 +9,6 @@ namespace Engine.Contracts
     public interface IActions
     {
         Action<ICity> Drive { get; }
+        Action<IDisease> TreatDisease { get; }
     }
 }

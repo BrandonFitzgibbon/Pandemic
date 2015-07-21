@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:Engine.Implementations;assembly=Engine"
+             xmlns:c="clr-namespace:Presentation.WPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
+        
+        <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
         
         <ControlTemplate x:Key="LeftButton" TargetType="Button">
             <Grid>
@@ -81,7 +84,15 @@
 
     </UserControl.Resources>
 
-    <StackPanel Background="Transparent">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
             <Viewbox Height="25">
                 <ContentControl Content="{StaticResource man}"/>
@@ -93,27 +104,32 @@
                 <ContentControl Content="{StaticResource man}"/>
             </Viewbox>
         </StackPanel>
-        <Separator HorizontalAlignment="Stretch"/>
-        <ListView ItemsSource="{Binding Players}" BorderBrush="Transparent" Background="Transparent">
+        <Separator Grid.Row="1" HorizontalAlignment="Stretch"/>
+        <ListView Grid.Row="2" ItemsSource="{Binding Players}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="2" Columns="2"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Margin" Value="5"/>
-                    <Setter Property="BorderBrush" Value="Gray"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" Background="White" BorderThickness="1" CornerRadius="3">
-                                    <ContentPresenter Margin="3"/>
+                                <Border x:Name="Border" Background="Transparent" BorderThickness="1" CornerRadius="3" TextElement.FontSize="14" TextElement.Foreground="White">
+                                    <ContentPresenter Margin="5"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="Yellow"/>
+                                        <Setter TargetName="Border" Property="BorderBrush" Value="White"/>        
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -122,8 +138,8 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Separator HorizontalAlignment="Stretch"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+        <Separator Grid.Row="3" HorizontalAlignment="Stretch"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
             <Viewbox Height="30">
                 <ContentControl Content="{StaticResource man}"/>
             </Viewbox>
@@ -133,7 +149,7 @@
             </Viewbox>
             <Label Content="{Binding ActionsLeft}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
         </StackPanel>
-        <TabControl Margin="5" Width="200" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Loaded="TabControl_Loaded">
+        <TabControl Grid.Row="5" Width="200" Margin="0,5,0,0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Loaded="TabControl_Loaded">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Background" Value="Transparent"/>
@@ -144,7 +160,11 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabControl">
-                                <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
@@ -155,8 +175,8 @@
                                         <ContentControl Grid.Column="1" Content="{Binding RelativeSource={RelativeSource AncestorType=TabControl}, Path=SelectedItem.Header}" HorizontalContentAlignment="Center" TextElement.Foreground="White" TextElement.FontSize="16"/>
                                         <Button Grid.Column="2" Template="{StaticResource RightButton}" Click="RightButton_Click"/>
                                     </Grid>
-                                    <ContentPresenter ContentSource="SelectedContent"/>
-                                </StackPanel>
+                                    <ContentPresenter Margin="0,5,0,0" Grid.Row="1" ContentSource="SelectedContent"/>
+                                </Grid>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -164,19 +184,116 @@
             </TabControl.Style>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="Drive" HorizontalAlignment="Center"/>
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource car}" HorizontalAlignment="Center"/>
+                    </Viewbox>
                 </TabItem.Header>
-                <StackPanel Margin="10">
-                    <ListView x:Name="PossibleDestinations" ItemsSource="{Binding PossibleDestinations}"/>
-                    <Button Content="Drive" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="PossibleDestinations" Margin="5,0,5,0" ItemsSource="{Binding DriveDestinations}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Destination.Name}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <TextBlock x:Name="Text" Text="{Binding ActionsRequired}"/>
+                                        <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                            <ContentControl Content="{StaticResource actions}"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="Transparent">
+                                                <ContentPresenter x:Name="Content" TextElement.Foreground="White" TextElement.FontSize="14"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Content" Property="TextElement.FontSize" Value="18"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Button Grid.Row="1" Margin="5,0,5,0" Content="Drive" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}"/>
+                </Grid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="Treat Disease" HorizontalAlignment="Center"/>
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center"/>
+                    </Viewbox>
                 </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="LocationDiseaseCounters" Margin="5,0,5,0" ItemsSource="{Binding LocationDiseaseCounters}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="0,3,4,0">
+                                            <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                                        </Viewbox>
+                                        <TextBlock Text="{Binding Count}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <TextBlock x:Name="Text" Text="1"/>
+                                        <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                            <ContentControl Content="{StaticResource actions}"/>
+                                        </Viewbox>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="Transparent">
+                                                <ContentPresenter x:Name="Content" TextElement.Foreground="White" TextElement.FontSize="14"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Content" Property="TextElement.FontSize" Value="18"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Button Grid.Row="1" Margin="5,0,5,0" Content="Treat Disease" Command="{Binding TreatDiseaseCommand}" CommandParameter="{Binding ElementName=LocationDiseaseCounters, Path=SelectedItem}"/>
+                </Grid>
             </TabItem>
         </TabControl>
-    </StackPanel>
+    </Grid>
     
 </UserControl>

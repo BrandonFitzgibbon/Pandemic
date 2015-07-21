@@ -9,38 +9,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Validation;
 
 namespace Presentation.WPF.Implementations
 {
     public class PlayersViewModel : ViewModelBase, IPlayersViewModel
     {
-        private IGame game;
-        private IMainViewModel mainViewModel;
-
-        private IContext<IPlayer> playerContext;
+        private IContext<IPlayer> currentPlayerContext;
+        private IContext<IPlayer> selectedPlayerContext;
         private IContext<IActions> actionsContext;
 
-        private ICollection<IPlayerViewModel> players;
-        public ICollection<IPlayerViewModel> Players
+        private IEnumerable<IPlayerViewModel> players;
+        public IEnumerable<IPlayerViewModel> Players
         {
             get { return players; }
+        }
+
+        private IEnumerable<IDiseaseCounterViewModel> diseaseCounters;
+        public IEnumerable<IDiseaseCounterViewModel> DiseaseCounters
+        {
+            get { return diseaseCounters; }
         }
 
         private IPlayer selectedPlayer;
         public IPlayer SelectedPlayer
         {
             get { return selectedPlayer; }
-            set { selectedPlayer = value; playerContext.Context = value; NotifyPropertyChanged(); }
+            set { selectedPlayer = value; selectedPlayerContext.Context = value; NotifyPropertyChanged(); }
         }
 
         public IPlayer CurrentPlayer
         {
-            get { return game.CurrentPlayer; }
+            get { return currentPlayerContext.Context; }
         }
 
-        public ICollection<ICity> PossibleDestinations
+        public IList<DriveDestination> DriveDestinations
         {
-            get { return CurrentPlayer != null ? CurrentPlayer.Location.Connections.ToList() : null; }
+            get { return currentPlayerContext.Context != null ? GetDriveDestinations(currentPlayerContext.Context, actionsLeft).OrderBy(i => i.ActionsRequired).ThenBy(j => j.Destination.Name).ToList() : null; }
+        }
+
+        public IEnumerable<IDiseaseCounterViewModel> LocationDiseaseCounters
+        {
+            get { return CurrentPlayer != null && DiseaseCounters != null ? DiseaseCounters.Where(i => i.City == CurrentPlayer.Location) : null; }
         }
 
         private int actionsLeft;
@@ -56,28 +66,33 @@ namespace Presentation.WPF.Implementations
                 }
                 else
                 {
-                    mainViewModel.RequestCard();
-                    mainViewModel.RequestCard();
-                    mainViewModel.RequestInfection();
-                    mainViewModel.RequestNextPlayer();
-                    NotifyPropertyChanged("CurrentPlayer");
-                    actionsLeft = 4;
-                    NotifyPropertyChanged("ActionsLeft");
-                    actionsContext.Context = new Actions(game.CurrentPlayer);
+                    if (RequestPlayerChange != null) RequestPlayerChange(this, EventArgs.Empty);
                 }
                     
             }
         }
            
-        public PlayersViewModel(IMainViewModel mainViewModel, IGame game, IContext<IActions> actions, IContext<IPlayer> context, ICollection<IPlayerViewModel> viewModels, ICollection<IPlayer> players)
+        public PlayersViewModel(IContext<IPlayer> currentPlayerContext, IContext<IPlayer> selectedPlayerContext, IContext<IActions> actionsContext, ICollection<IPlayerViewModel> playerViewModels, ICollection<IDiseaseCounterViewModel> diseaseCounterViewModels)
         {
-            this.mainViewModel = mainViewModel;
-            this.game = game;
-            this.actionsContext = actions;
-            this.playerContext = context;
-            this.players = viewModels;
-            actionsLeft = 4;
-            actions.Context = new Actions(game.CurrentPlayer);
+            this.actionsContext = actionsContext;
+            this.selectedPlayerContext = selectedPlayerContext;
+            this.currentPlayerContext = currentPlayerContext;
+            this.players = playerViewModels;
+            this.diseaseCounters = diseaseCounterViewModels;
+
+            currentPlayerContext.ContextChanged += currentPlayerContextChanged;
+            actionsContext.ContextChanged += actionsContextChanged;
+        }
+
+        private void actionsContextChanged(object sender, ContextChangedEventArgs<IActions> e)
+        {
+            ActionsLeft = 4;
+            NotifyChanges();
+        }
+
+        private void currentPlayerContextChanged(object sender, ContextChangedEventArgs<IPlayer> e)
+        {
+            NotifyChanges();
         }
 
         private RelayCommand driveCommand;
@@ -86,27 +101,89 @@ namespace Presentation.WPF.Implementations
             get 
             {
                 if (driveCommand == null)
-                    driveCommand = new RelayCommand(city => Drive((ICity)city), city => CanDrive((ICity)city));
+                    driveCommand = new RelayCommand(driveDestination => Drive((DriveDestination)driveDestination), driveDestination => CanDrive((DriveDestination)driveDestination));
                 return driveCommand;
             }
         }
 
-        private void Drive(ICity city)
+        private void Drive(DriveDestination destination)
         {
-            actionsContext.Context.Drive(city);
-            ActionsLeft = ActionsLeft - 1;
-            NotifyPropertyChanged("PossibleDestinations");
-            NotifyPropertyChanged("Players");
+            actionsContext.Context.Drive(destination.Destination);
+            this.NotifyChanges();
             foreach (IPlayerViewModel pvm in players)
             {
                 pvm.NotifyChanges();
             }
+            ActionsLeft = ActionsLeft - destination.ActionsRequired;
         }
 
-        private bool CanDrive(ICity city)
+        private bool CanDrive(DriveDestination driveDestination)
         {
-            return city != null;
+            return driveDestination != null;
         }
 
+        private RelayCommand treatDiseaseCommand;
+        public ICommand TreatDiseaseCommand
+        {
+            get
+            {
+                if (treatDiseaseCommand == null)
+                    treatDiseaseCommand = new RelayCommand(disease => TreatDisease((IDiseaseCounterViewModel)disease), disease => CanTreatDisease((IDiseaseCounterViewModel)disease));
+                return treatDiseaseCommand;
+            }
+        }
+
+        private void TreatDisease(IDiseaseCounterViewModel disease)
+        {
+            actionsContext.Context.TreatDisease(disease.Disease);          
+            this.NotifyChanges();
+            foreach (IDiseaseCounterViewModel dcvm in LocationDiseaseCounters)
+            {
+                dcvm.NotifyChanges();
+            }
+            if (RequestStateUpdate != null) RequestStateUpdate(this, EventArgs.Empty);
+            ActionsLeft = ActionsLeft - 1;
+        }
+
+
+        private bool CanTreatDisease(IDiseaseCounterViewModel disease)
+        {
+            return disease != null && disease.Disease != null && disease.Count != 0;
+        }
+
+        public event EventHandler RequestPlayerChange;
+        public event EventHandler RequestStateUpdate;
+
+        public static List<DriveDestination> GetDriveDestinations(IPlayer player, int actionsLeft)
+        {
+            List<DriveDestination> driveDests = new List<DriveDestination>();
+            Dictionary<ICity, int> dests = DriveValidation.DriveDestinations(player, actionsLeft);
+            foreach (ICity city in dests.Keys)
+            {
+                driveDests.Add(new DriveDestination(city, dests[city]));
+            }
+            return driveDests;
+        }
+
+        public class DriveDestination
+        {
+            private ICity destination;
+            public ICity Destination
+            {
+                get { return destination; }
+            }
+
+            private int actionsRequired;
+            public int ActionsRequired
+            {
+                get { return actionsRequired; }
+            }
+
+            public DriveDestination(ICity destination, int actionsRequired)
+            {
+                this.destination = destination;
+                this.actionsRequired = actionsRequired;
+            }
+        }
     }
 }

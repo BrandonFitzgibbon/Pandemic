@@ -10,6 +10,6 @@ namespace Presentation.WPF.Contracts
     {
         string Name { get; }
         string Location { get; }
-        void NotifyChanges();
+        string Role { get; }
     }
 }

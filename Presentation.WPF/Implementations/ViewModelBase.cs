@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,14 @@ namespace Presentation.WPF.Implementations
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void NotifyChanges()
+        {
+            foreach (PropertyInfo prop in this.GetType().GetProperties())
+            {
+                NotifyPropertyChanged(prop.Name);
+            }
         }
     }
 }

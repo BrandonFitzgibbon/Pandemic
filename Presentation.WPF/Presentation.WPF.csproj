@@ -58,14 +58,18 @@
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
     <Compile Include="Contracts\IDeckViewModel.cs" />
+    <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\IGameStatusViewModel.cs" />
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
+    <Compile Include="Controls\Icons.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
+    <Compile Include="Converters\DiseaseToIconConverter.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Implementations\DeckViewModel.cs" />
+    <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
@@ -169,6 +173,10 @@
     <ProjectReference Include="..\Engine\Engine.csproj">
       <Project>{c72d0eca-4385-4332-bfe8-5cf3856c707a}</Project>
       <Name>Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Validation\Validation.csproj">
+      <Project>{5a359aab-8fdf-41c3-9cc8-596395e15d84}</Project>
+      <Name>Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

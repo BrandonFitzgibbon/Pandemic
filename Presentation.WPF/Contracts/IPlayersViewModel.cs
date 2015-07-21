@@ -10,11 +10,14 @@ namespace Presentation.WPF.Contracts
 {
     public interface IPlayersViewModel : IViewModelBase
     {
-        ICollection<IPlayerViewModel> Players { get; }
+        IEnumerable<IPlayerViewModel> Players { get; }
+        IEnumerable<IDiseaseCounterViewModel> LocationDiseaseCounters { get; }
         IPlayer SelectedPlayer { get; set; }
         IPlayer CurrentPlayer { get; }
-        ICollection<ICity> PossibleDestinations { get; }
         int ActionsLeft { get; set; }
         ICommand DriveCommand { get; }
+        ICommand TreatDiseaseCommand { get; }
+        event EventHandler RequestPlayerChange;
+        event EventHandler RequestStateUpdate;
     }
 }

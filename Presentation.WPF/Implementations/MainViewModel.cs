@@ -17,7 +17,8 @@ namespace Presentation.WPF.Implementations
         private IGame game;
         private IDataAccess data;
 
-        private IContext<IPlayer> playerContext;
+        private IContext<IPlayer> selectedPlayerContext;
+        private IContext<IPlayer> currentPlayerContext;
         private IContext<IActions> actionContext;
 
         private IViewModelBase boardViewModel;
@@ -51,12 +52,13 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data.GetDiseases(), data.GetCities(), new PlayerFactory(), new List<string>() { "John", "Jane", "Jack" }, new DeckFactory(data.GetCities()), new OutbreakCounter(data.GetCities()), new InfectionRateCounter(), Difficulty.Standard);
+            game = new Game(data.GetDiseases(), data.GetCities(), new PlayerFactory(), new List<string>() { "Jon", "Jessica", "Jack"}, new DeckFactory(data.GetCities()), new OutbreakCounter(data.GetCities()), new InfectionRateCounter(), Difficulty.Standard);
 
             BoardViewModel = new BoardViewModel(game.Cities.ToList());
             GameStatusViewModel = new GameStatusViewModel(game);
 
-            playerContext = new ObjectContext<IPlayer>();
+            selectedPlayerContext = new ObjectContext<IPlayer>();
+            currentPlayerContext = new ObjectContext<IPlayer>();
             actionContext = new ObjectContext<IActions>();
 
             Collection<IPlayerViewModel> playerViewModels = new Collection<IPlayerViewModel>();
@@ -65,8 +67,32 @@ namespace Presentation.WPF.Implementations
                 playerViewModels.Add(new PlayerViewModel(player));
             }
 
-            PlayersViewModel = new PlayersViewModel(this, game, actionContext, playerContext, playerViewModels, game.Players.ToList());
-            HandViewModel = new HandViewModel(playerContext);
+            Collection<IDiseaseCounterViewModel> diseaseViewModels = new Collection<IDiseaseCounterViewModel>();
+            foreach (ICity city in game.Cities)
+            {
+                foreach (IDiseaseCounter counter in city.Counters)
+                {
+                    diseaseViewModels.Add(new DiseaseCounterViewModel(city, counter.Disease));
+                }
+            }
+
+            PlayersViewModel = new PlayersViewModel(currentPlayerContext, selectedPlayerContext, actionContext, playerViewModels, diseaseViewModels);
+            PlayersViewModel.RequestPlayerChange += PlayersViewModelRequestPlayerChange;
+            PlayersViewModel.RequestStateUpdate += PlayersViewModelRequestStateUpdate;
+
+            HandViewModel = new HandViewModel(selectedPlayerContext);
+
+            RequestNextPlayer();
+        }
+
+        private void PlayersViewModelRequestStateUpdate(object sender, EventArgs e)
+        {
+            GameStatusViewModel.NotifyChanges();
+        }
+
+        public void PlayersViewModelRequestPlayerChange(object sender, EventArgs e)
+        {
+            RequestNextPlayer();
         }
 
         public void RequestCard()
@@ -84,7 +110,8 @@ namespace Presentation.WPF.Implementations
         public void RequestNextPlayer()
         {
             game.NextPlayer();
-            GameStatusViewModel.NotifyChanges();
+            currentPlayerContext.Context = game.CurrentPlayer;
+            actionContext.Context = new Actions(currentPlayerContext.Context);
         }
     }
 }

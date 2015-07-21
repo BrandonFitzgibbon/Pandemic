@@ -23,17 +23,14 @@ namespace Presentation.WPF.Implementations
             get { return (player != null && player.Location != null) ? player.Location.Name : null; }
         }
 
+        public string Role
+        {
+            get { return player.GetType().Name; }
+        }
+
         public PlayerViewModel(IPlayer player)
         {
             this.player = player;
-        }
-
-        public void NotifyChanges()
-        {
-            foreach (PropertyInfo prop in this.GetType().GetProperties())
-            {
-                NotifyPropertyChanged(prop.Name);
-            }
         }
     }
 }
