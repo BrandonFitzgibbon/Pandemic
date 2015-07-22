@@ -12,7 +12,7 @@ namespace Presentation.WPF.Contracts
     {
         IEnumerable<IPlayerViewModel> Players { get; }
         IEnumerable<IDiseaseCounterViewModel> LocationDiseaseCounters { get; }
-        IPlayer SelectedPlayer { get; set; }
+        IPlayerViewModel SelectedPlayer { get; set; }
         IPlayer CurrentPlayer { get; }
         int ActionsLeft { get; set; }
         ICommand DriveCommand { get; }

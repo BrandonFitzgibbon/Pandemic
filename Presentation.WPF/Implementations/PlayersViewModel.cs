@@ -31,11 +31,11 @@ namespace Presentation.WPF.Implementations
             get { return diseaseCounters; }
         }
 
-        private IPlayer selectedPlayer;
-        public IPlayer SelectedPlayer
+        private IPlayerViewModel selectedPlayer;
+        public IPlayerViewModel SelectedPlayer
         {
             get { return selectedPlayer; }
-            set { selectedPlayer = value; selectedPlayerContext.Context = value; NotifyPropertyChanged(); }
+            set { selectedPlayer = value; selectedPlayerContext.Context = value.Player; NotifyPropertyChanged(); }
         }
 
         public IPlayer CurrentPlayer
@@ -109,12 +109,12 @@ namespace Presentation.WPF.Implementations
         private void Drive(DriveDestination destination)
         {
             actionsContext.Context.Drive(destination.Destination);
+            ActionsLeft = ActionsLeft - destination.ActionsRequired;
             this.NotifyChanges();
             foreach (IPlayerViewModel pvm in players)
             {
                 pvm.NotifyChanges();
             }
-            ActionsLeft = ActionsLeft - destination.ActionsRequired;
         }
 
         private bool CanDrive(DriveDestination driveDestination)
@@ -135,14 +135,14 @@ namespace Presentation.WPF.Implementations
 
         private void TreatDisease(IDiseaseCounterViewModel disease)
         {
-            actionsContext.Context.TreatDisease(disease.Disease);          
+            actionsContext.Context.TreatDisease(disease.Disease);
+            ActionsLeft = ActionsLeft - 1;
             this.NotifyChanges();
             foreach (IDiseaseCounterViewModel dcvm in LocationDiseaseCounters)
             {
                 dcvm.NotifyChanges();
             }
-            if (RequestStateUpdate != null) RequestStateUpdate(this, EventArgs.Empty);
-            ActionsLeft = ActionsLeft - 1;
+            if (RequestStateUpdate != null) RequestStateUpdate(this, EventArgs.Empty);          
         }
 
 

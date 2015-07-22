@@ -63,6 +63,7 @@
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
+    <Compile Include="Controls\GridLengthAnimation.cs" />
     <Compile Include="Controls\Icons.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />

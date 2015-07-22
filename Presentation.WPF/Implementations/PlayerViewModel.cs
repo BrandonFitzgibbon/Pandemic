@@ -12,6 +12,10 @@ namespace Presentation.WPF.Implementations
     public class PlayerViewModel : ViewModelBase, IPlayerViewModel
     {
         private IPlayer player;
+        public IPlayer Player
+        {
+            get { return player; }
+        }
 
         public string Name
         {

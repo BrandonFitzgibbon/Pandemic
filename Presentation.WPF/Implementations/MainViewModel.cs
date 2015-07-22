@@ -92,6 +92,9 @@ namespace Presentation.WPF.Implementations
 
         public void PlayersViewModelRequestPlayerChange(object sender, EventArgs e)
         {
+            RequestCard();
+            RequestCard();
+            RequestInfection();
             RequestNextPlayer();
         }
 
@@ -99,6 +102,7 @@ namespace Presentation.WPF.Implementations
         {
             game.DrawPhase();
             GameStatusViewModel.NotifyChanges();
+            HandViewModel.NotifyChanges();
         }
 
         public void RequestInfection()

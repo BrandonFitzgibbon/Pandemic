@@ -5,23 +5,94 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:e="clr-namespace:Engine.Implementations;assembly=Engine"
              xmlns:c="clr-namespace:Presentation.WPF.Converters"
+             xmlns:a="clr-namespace:Presentation.WPF.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" BorderBrush="Transparent">
     
     <UserControl.Resources>
         
-        <c:DiseaseToColorConverter x:Key="DiseaseToColorConverter"/>
+        <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
         <c:DiseaseToFontConverter x:Key="DiseaseToFontConverter"/>
+
+        <Storyboard x:Key="ExpandB">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
+        </Storyboard>
+        <Storyboard x:Key="CollapseB">
+            <DoubleAnimation From="1" To="0" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
+        </Storyboard>
 
     </UserControl.Resources>
     
-    <Grid>
+    <Expander ExpandDirection="Right">
+        <Expander.Header>
+            <Viewbox Width="50">
+                <ContentControl Content="{StaticResource cards}"/>
+            </Viewbox>
+        </Expander.Header>
+        <Expander.Resources>
+            <ControlTemplate x:Key="ExpanderToggle" TargetType="ToggleButton">
+                <Border x:Name="Border" Background="{TemplateBinding Background}">
+                    <ContentControl x:Name="Content" Content="{StaticResource rightArrow}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="Content" Property="Content" Value="{StaticResource leftArrow}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="Border" Property="Background" Value="Gray"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Expander.Resources>
+        <Expander.Style>
+            <Style TargetType="Expander">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Expander">
+                            <Grid>                                                                                       
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition x:Name="ContentColumn" Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource Background}" BorderBrush="Gray" BorderThickness="0,1,0,0">
+                                    <ContentPresenter ContentSource="Header" Margin="5"/>
+                                </Border>
+                                <Border x:Name="ContentSite" Background="{StaticResource Background}" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,1,0,0">
+                                    <Border.RenderTransform>
+                                        <ScaleTransform ScaleX="0" ScaleY="1"/>
+                                    </Border.RenderTransform>
+                                    <ContentPresenter x:Name="Content"/>
+                                </Border>
+                                <Border x:Name="ToggleBorder" Background="{StaticResource Background}" Grid.Column="1" BorderBrush="Gray" BorderThickness="1,1,1,0">
+                                    <ToggleButton Background="Transparent" Template="{StaticResource ExpanderToggle}" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsExpanded, Mode=TwoWay}"/>
+                                </Border> 
+                                <Border Grid.Row="3"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsExpanded" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard Storyboard="{StaticResource ExpandB}"/>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard Storyboard="{StaticResource CollapseB}"/>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Expander.Style>
         <ListView ItemsSource="{Binding Cards}" Height="250" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl x:Name="Content">
-                        <Grid TextElement.Foreground="{Binding City.Disease, Converter={StaticResource DiseaseToFontConverter}}">
-                            <StackPanel VerticalAlignment="Top" Background="{Binding City.Disease, Converter={StaticResource DiseaseToColorConverter}}">
+                        <Grid TextElement.Foreground="White">
+                            <Viewbox>
+                                <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                            </Viewbox>
+                            <StackPanel VerticalAlignment="Top" Background="Transparent">
                                 <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" TextWrapping="Wrap" FontSize="16" Margin="3"/>
                             </StackPanel>
                         </Grid>
@@ -30,16 +101,19 @@
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
                             <Setter TargetName="Content" Property="Content">
                                 <Setter.Value>
-                                    <Grid TextElement.Foreground="{Binding City.Disease, Converter={StaticResource DiseaseToFontConverter}}">
+                                    <Grid x:Name="Grid" TextElement.Foreground="White">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <StackPanel VerticalAlignment="Top" Background="{Binding City.Disease, Converter={StaticResource DiseaseToColorConverter}}">
+                                        <Viewbox Grid.RowSpan="2">
+                                            <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                                        </Viewbox>
+                                        <StackPanel VerticalAlignment="Top" Background="Transparent">
                                             <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" FontSize="16" Margin="3"/>
                                             <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Country}" FontSize="12" FontWeight="SemiBold" Margin="3"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="{Binding City.Disease, Converter={StaticResource DiseaseToColorConverter}}">
+                                        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="Transparent">
                                             <TextBlock VerticalAlignment="Top" Text="Population" FontSize="12" Margin="3"/>
                                             <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Population, StringFormat={}{0:###,###,###}}" FontSize="12" Margin="3"/>
                                         </StackPanel>
@@ -59,24 +133,12 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="Margin" Value="5"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="BorderBrush" Value="{Binding City.Disease, Converter={StaticResource DiseaseToColorConverter}}"/>
+                    <Setter Property="BorderBrush" Value="White"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="Border" Height="150" Width="117" Background="Transparent" BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}" BorderThickness="3" CornerRadius="3">
-                                    <Grid>
-                                        <Border CornerRadius="3">
-                                            <Border.Background>
-                                                <LinearGradientBrush Opacity="1" StartPoint="0,0" EndPoint="10,10" MappingMode="Absolute" SpreadMethod="Repeat">
-                                                    <GradientStop Offset="0" Color="White"/>
-                                                    <GradientStop Offset="0.5" Color="White"/>
-                                                    <GradientStop Offset="0.5" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush.Color}"/>
-                                                    <GradientStop Offset="1" Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush.Color}"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                        <ContentPresenter Margin="5"/>
-                                    </Grid>
+                                <Border x:Name="Border" Height="150" Width="117" Background="Transparent" BorderBrush="White" BorderThickness="2" CornerRadius="3">
+                                    <ContentPresenter Margin="5"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">  
@@ -90,6 +152,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>        
-    </Grid>
+    </Expander>
     
 </UserControl>

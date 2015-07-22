@@ -56,7 +56,7 @@ namespace Presentation.WPF.Views
             if (tabControl != null)
             {
                 tc = tabControl;
-                tc.SelectedIndex = 0;
+                
             }
         }
     }

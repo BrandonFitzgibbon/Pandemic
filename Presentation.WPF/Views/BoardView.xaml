@@ -13,7 +13,7 @@
     </UserControl.Resources>
     
     <Grid>
-        <ListView ItemsSource="{Binding Cities}" Background="Transparent" BorderBrush="Transparent">
+        <ListView ItemsSource="{Binding Cities}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
