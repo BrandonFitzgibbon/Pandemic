@@ -49,6 +49,20 @@ namespace Presentation.WPF.Implementations
             set { playersViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IDeckViewModel deckViewModel;
+        public IDeckViewModel DeckViewModel
+        {
+            get { return deckViewModel; }
+            set { deckViewModel = value; NotifyPropertyChanged(); }
+        }
+
+        private IActionsViewModel actionsViewModel;
+        public IActionsViewModel ActionsViewModel
+        {
+            get { return actionsViewModel; }
+            set { actionsViewModel = value; NotifyPropertyChanged(); }
+        }
+
         public MainViewModel()
         {
             data = new DataAccess.Data();
@@ -77,12 +91,20 @@ namespace Presentation.WPF.Implementations
             }
 
             PlayersViewModel = new PlayersViewModel(currentPlayerContext, selectedPlayerContext, actionContext, playerViewModels, diseaseViewModels);
-            PlayersViewModel.RequestPlayerChange += PlayersViewModelRequestPlayerChange;
             PlayersViewModel.RequestStateUpdate += PlayersViewModelRequestStateUpdate;
 
             HandViewModel = new HandViewModel(selectedPlayerContext);
+            DeckViewModel = new DeckViewModel(game.PlayerDeck, this);
+            ActionsViewModel = new ActionsViewModel(actionContext);
+
+            DeckViewModel.CardDrawn += DeckViewModel_CardDrawn;
 
             RequestNextPlayer();
+        }
+
+        void DeckViewModel_CardDrawn(object sender, EventArgs e)
+        {
+            RequestCard();
         }
 
         private void PlayersViewModelRequestStateUpdate(object sender, EventArgs e)
@@ -90,12 +112,9 @@ namespace Presentation.WPF.Implementations
             GameStatusViewModel.NotifyChanges();
         }
 
-        public void PlayersViewModelRequestPlayerChange(object sender, EventArgs e)
+        public void PlayersViewModelActionsDepleted(object sender, EventArgs e)
         {
-            RequestCard();
-            RequestCard();
-            RequestInfection();
-            RequestNextPlayer();
+            if (DrawPhase != null) DrawPhase(this, EventArgs.Empty);
         }
 
         public void RequestCard()
@@ -115,7 +134,9 @@ namespace Presentation.WPF.Implementations
         {
             game.NextPlayer();
             currentPlayerContext.Context = game.CurrentPlayer;
-            actionContext.Context = new Actions(currentPlayerContext.Context);
+            actionContext.Context = new Actions((Player)currentPlayerContext.Context);
         }
+
+        public event EventHandler DrawPhase;
     }
 }

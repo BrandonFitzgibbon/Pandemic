@@ -44,14 +44,14 @@ namespace Engine.Implementations
             }
         }
 
-        public virtual void Drive(ICity destinationCity)
+        internal virtual void Drive(ICity destinationCity)
         {
             ICity departedCity = this.location;
             this.location = destinationCity;
             if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
         }
 
-        public virtual void DirectFlight(ICity destinationCity, ICityCard destinationCard)
+        internal virtual void DirectFlight(ICity destinationCity, ICityCard destinationCard)
         {
             ICity departedCity = this.location;
             this.location = destinationCity;
@@ -59,7 +59,7 @@ namespace Engine.Implementations
             if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
         }
 
-        public virtual void CharterFlight(ICity destinationCity, ICityCard locationCard)
+        internal virtual void CharterFlight(ICity destinationCity, ICityCard locationCard)
         {
             ICity departedCity = this.location;
             this.location = destinationCity;
@@ -67,14 +67,14 @@ namespace Engine.Implementations
             if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
         }
 
-        public virtual void ShuttleFlight(ICity destinationCity)
+        internal virtual void ShuttleFlight(ICity destinationCity)
         {
             ICity departedCity = this.location;
             this.location = destinationCity;
             if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, destinationCity));
         }
 
-        public virtual void BuildResearchStation(ICityCard locationCard, ICity dismantledStation = null)
+        internal virtual void BuildResearchStation(ICityCard locationCard, ICity dismantledStation = null)
         {
             locationCard.Discard();
             if (dismantledStation != null)
@@ -87,7 +87,7 @@ namespace Engine.Implementations
                     ResearchStationChanged(this, new ResearchStationChangedEventArgs(this.location, null));
         }
 
-        public virtual void TreatDisease(IDisease disease)
+        internal virtual void TreatDisease(IDisease disease)
         {
             IDiseaseCounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
             if (treatTarget != null)
@@ -96,17 +96,17 @@ namespace Engine.Implementations
             }
         }
 
-        public void TakeKnowledge(IPlayer giver)
+        internal virtual void TakeKnowledge(IPlayer giver)
         {
             
         }
 
-        public void GiveKnowledge(IPlayer taker)
+        internal virtual void GiveKnowledge(IPlayer taker)
         {
             
         }
 
-        public void DiscoverCure(IList<ICard> cards, IDisease disease)
+        public virtual void DiscoverCure(IList<ICard> cards, IDisease disease)
         {
             foreach (ICard card in cards)
             {
@@ -117,6 +117,11 @@ namespace Engine.Implementations
         public override string ToString()
         {
             return name;
+        }
+
+        internal void RaiseMoveEvent(ICity departedCity, ICity arrivedCity)
+        {
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedCity, arrivedCity));
         }
 
         public event EventHandler<PlayerMovedEventArgs> Moved;

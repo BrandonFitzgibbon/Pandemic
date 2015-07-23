@@ -12,6 +12,8 @@ namespace Validation
         public static Dictionary<ICity, int> DriveDestinations(IPlayer player, int actionsAvailable)
         {
             Dictionary<ICity, int> driveDestinations = new Dictionary<ICity, int>();
+            if (actionsAvailable == 0)
+                return driveDestinations;
             AddConnectionsToDriveDestinations(driveDestinations, player.Location, player.Location, 1, actionsAvailable);             
             return driveDestinations;
         }

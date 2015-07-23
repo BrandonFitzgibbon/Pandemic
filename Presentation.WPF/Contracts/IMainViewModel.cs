@@ -10,8 +10,11 @@ namespace Presentation.WPF.Contracts
     {
         IViewModelBase BoardViewModel { get; }
         IViewModelBase HandViewModel { get; }
+        IDeckViewModel DeckViewModel { get; }
+        IActionsViewModel ActionsViewModel { get; }
         void RequestCard();
         void RequestInfection();
         void RequestNextPlayer();
+        event EventHandler DrawPhase;
     }
 }

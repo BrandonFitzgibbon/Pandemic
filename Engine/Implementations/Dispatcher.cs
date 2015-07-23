@@ -11,12 +11,12 @@ namespace Engine.Implementations
     {
         public Dispatcher(string name) : base(name) { }
 
-        public void DispatchDrive(IPlayer player, ICity destinationCity)
+        public void DispatchDrive(Player player, ICity destinationCity)
         {
             player.Drive(destinationCity);
         }
 
-        public void Dispatch(IPlayer player, IPlayer playerDestination)
+        public void Dispatch(Player player, Player playerDestination)
         {
             player.ShuttleFlight(playerDestination.Location);
         }

@@ -13,6 +13,10 @@
             </ResourceDictionary.MergedDictionaries>
             
             <SolidColorBrush x:Key="Background" Color="#FF4D4D4E"/>
+            <SolidColorBrush x:Key="StandardBorderBrush" Color="White"/>
+            <SolidColorBrush x:Key="StandardMouseOverBrush" Color="Gray"/>
+            <Thickness x:Key="StandardBorderThickness" Left="1" Top="1" Right="2" Bottom="2"/>
+            <CornerRadius x:Key="StandardCornerRadius" BottomLeft="3" BottomRight="3" TopLeft="3" TopRight="3"/>
             
             <DataTemplate DataType="{x:Type i:BoardViewModel}">
                 <v:BoardView/>
@@ -32,6 +36,14 @@
             
             <DataTemplate DataType="{x:Type i:PlayerViewModel}">
                 <v:PlayerView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:DeckViewModel}">
+                <v:DeckView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:ActionsViewModel}">
+                <v:ActionsView/>
             </DataTemplate>
             
         </ResourceDictionary>

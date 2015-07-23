@@ -24,7 +24,7 @@ namespace Engine.Implementations
             }
         }
 
-        public override void TreatDisease(IDisease disease)
+        internal override void TreatDisease(IDisease disease)
         {
             IDiseaseCounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
             if (treatTarget != null)

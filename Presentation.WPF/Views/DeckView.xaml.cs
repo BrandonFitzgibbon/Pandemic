@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Presentation.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for PlayersView.xaml
+    /// Interaction logic for DecksView.xaml
     /// </summary>
-    public partial class PlayersView : UserControl
+    public partial class DeckView : UserControl
     {
-        public PlayersView()
+        public DeckView()
         {
             InitializeComponent();
         }

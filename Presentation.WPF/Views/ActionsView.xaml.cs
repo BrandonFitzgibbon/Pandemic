@@ -16,13 +16,25 @@ using System.Windows.Shapes;
 namespace Presentation.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for DecksView.xaml
+    /// Interaction logic for ActionsView.xaml
     /// </summary>
-    public partial class DecksView : UserControl
+    public partial class ActionsView : UserControl
     {
-        public DecksView()
+        private TabControl tc;
+
+        public ActionsView()
         {
             InitializeComponent();
+        }
+
+        private void TabControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            TabControl tabControl = (TabControl)sender;
+            if (tabControl != null)
+            {
+                tc = tabControl;
+
+            }
         }
     }
 }

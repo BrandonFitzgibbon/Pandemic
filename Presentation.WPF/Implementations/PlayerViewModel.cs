@@ -32,9 +32,32 @@ namespace Presentation.WPF.Implementations
             get { return player.GetType().Name; }
         }
 
+        private int actionsLeft;
+        public int ActionsLeft
+        {
+            get { return actionsLeft; }
+            set
+            {
+                if (value > 0)
+                {
+                    actionsLeft = value;
+                    NotifyPropertyChanged();
+                }
+                else
+                {
+                    actionsLeft = 0;
+                    NotifyPropertyChanged();
+                    if (ActionsDepleted != null) ActionsDepleted(this, EventArgs.Empty);
+                }
+
+            }
+        }
+
         public PlayerViewModel(IPlayer player)
         {
             this.player = player;
         }
+
+        public event EventHandler ActionsDepleted;
     }
 }

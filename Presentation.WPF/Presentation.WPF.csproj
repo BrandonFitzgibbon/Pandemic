@@ -56,6 +56,7 @@
     <Compile Include="Context\ContextBase.cs" />
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
+    <Compile Include="Contracts\IActionsViewModel.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
     <Compile Include="Contracts\IDeckViewModel.cs" />
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
@@ -63,11 +64,11 @@
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
-    <Compile Include="Controls\GridLengthAnimation.cs" />
     <Compile Include="Controls\Icons.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
+    <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Implementations\DeckViewModel.cs" />
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
@@ -76,11 +77,14 @@
     <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
+    <Compile Include="Views\ActionsView.xaml.cs">
+      <DependentUpon>ActionsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DecksView.xaml.cs">
-      <DependentUpon>DecksView.xaml</DependentUpon>
+    <Compile Include="Views\DeckView.xaml.cs">
+      <DependentUpon>DeckView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GameStatusView.xaml.cs">
       <DependentUpon>GameStatusView.xaml</DependentUpon>
@@ -114,11 +118,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ActionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DecksView.xaml">
+    <Page Include="Views\DeckView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

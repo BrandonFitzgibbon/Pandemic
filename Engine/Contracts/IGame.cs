@@ -15,6 +15,7 @@ namespace Engine.Contracts
         int NumberOfResearchStations { get; }
         IOutbreakCounter OutbreakCounter { get; }
         IInfectionRateCounter InfectionRateCounter { get; }
+        IPlayerDeck PlayerDeck { get; }
         
         void NextPlayer();
         void DrawPhase();

@@ -177,6 +177,7 @@ namespace Engine.Implementations
                 disease.GameOver += GameOver;
             }
 
+            //subscribe to outbreak counter game over
             outbreakCounter.GameOver += GameOver;
         }
 
