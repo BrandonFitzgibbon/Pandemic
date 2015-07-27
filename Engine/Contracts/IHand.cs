@@ -10,6 +10,6 @@ namespace Engine.Contracts
     {
         IEnumerable<ICard> Cards { get; }
         IEnumerable<ICityCard> CityCards { get; }
-        void Draw(IDeck deck, out ICard drawnCard);
+        void AddToHand(ICard card);
     }
 }

@@ -27,5 +27,12 @@ namespace Presentation.WPF.Implementations
                 NotifyPropertyChanged(prop.Name);
             }
         }
+
+        public event EventHandler ChangeNotificationRequested;
+
+        public void RaiseChangeNotificationRequested()
+        {
+            if (ChangeNotificationRequested != null) ChangeNotificationRequested(this, EventArgs.Empty);
+        }
     }
 }

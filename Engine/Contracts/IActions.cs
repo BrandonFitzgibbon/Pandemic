@@ -10,8 +10,10 @@ namespace Engine.Contracts
     {
         int ActionCount { get; }
         IDictionary<ICity, int> DriveDestinations { get; }
+        IDictionary<IDisease, int> DiseaseTreatmentOptions { get; }
         Func<ICity, bool> CanDrive { get; }
         Action<ICity> Drive { get; }
-        Action<IDisease> TreatDisease { get; }
+        Action<IDisease, ICity> TreatDisease { get; }
+        event EventHandler ActionsDepleted;
     }
 }

@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:Presentation.WPF.Implementations"
              xmlns:v="clr-namespace:Presentation.WPF.Views"
+             xmlns:e="clr-namespace:Engine.Implementations;assembly=Engine"
+             xmlns:c="clr-namespace:Presentation.WPF.Converters"
              StartupUri="MainWindow.xaml">
     
     <Application.Resources>      
@@ -11,12 +13,72 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Controls/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
+            <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
+            <c:DiseaseToFontConverter x:Key="DiseaseToFontConverter"/>
+
             <SolidColorBrush x:Key="Background" Color="#FF4D4D4E"/>
             <SolidColorBrush x:Key="StandardBorderBrush" Color="White"/>
             <SolidColorBrush x:Key="StandardMouseOverBrush" Color="Gray"/>
             <Thickness x:Key="StandardBorderThickness" Left="1" Top="1" Right="2" Bottom="2"/>
             <CornerRadius x:Key="StandardCornerRadius" BottomLeft="3" BottomRight="3" TopLeft="3" TopRight="3"/>
+
+            <Style TargetType="Button" x:Key="StandardButtonStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="Common">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation From="Transparent" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ColorAnimation From="Gray" To="Yellow" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextElement.Foreground).Color" Duration="0:00:00"/>
+                                                <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(BorderBrush).Color" Duration="0:00:00"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="2" TextElement.Foreground="White" TextElement.FontSize="14">
+                                    <ContentPresenter HorizontalAlignment="Center"/>
+                                </Border>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <DataTemplate DataType="{x:Type e:Card}">
+                <Grid x:Name="Grid" TextElement.Foreground="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Viewbox Grid.RowSpan="2">
+                        <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                    </Viewbox>
+                    <StackPanel VerticalAlignment="Top" Background="Transparent">
+                        <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" FontSize="16" Margin="3"/>
+                        <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Country}" FontSize="12" FontWeight="SemiBold" Margin="3"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="Transparent">
+                        <TextBlock VerticalAlignment="Top" Text="Population" FontSize="12" Margin="3"/>
+                        <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Population, StringFormat={}{0:###,###,###}}" FontSize="12" Margin="3"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
             
             <DataTemplate DataType="{x:Type i:BoardViewModel}">
                 <v:BoardView/>
@@ -44,6 +106,10 @@
             
             <DataTemplate DataType="{x:Type i:ActionsViewModel}">
                 <v:ActionsView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:InfectionCardViewModel}">
+                <v:InfectionCardView/>
             </DataTemplate>
             
         </ResourceDictionary>

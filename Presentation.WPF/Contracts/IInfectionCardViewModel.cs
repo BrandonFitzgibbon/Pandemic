@@ -8,9 +8,9 @@ using System.Windows.Input;
 
 namespace Presentation.WPF.Contracts
 {
-    public interface IDeckViewModel : IViewModelBase
+    public interface IInfectionCardViewModel : IViewModelBase
     {
-        ICommand DrawPlayerCardCommand { get; }
-        ICommand DrawInfectionCardCommand { get; }
+        string Name { get; }
+        IDisease Disease { get; }
     }
 }

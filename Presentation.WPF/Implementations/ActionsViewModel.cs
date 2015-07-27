@@ -13,15 +13,22 @@ namespace Presentation.WPF.Implementations
     public class ActionsViewModel : ViewModelBase, IActionsViewModel
     {
         IContext<IActions> actionContext;
+        IContext<IPlayer> currentPlayerContext;
 
         public IDictionary<ICity, int> DriveDestinations
         {
             get { return actionContext.Context.DriveDestinations; }
         }
 
-        public ActionsViewModel(IContext<IActions> actionContext)
+        public IDictionary<IDisease, int> DiseaseTreatmentOptions
+        {
+            get { return actionContext.Context.DiseaseTreatmentOptions; }
+        }
+
+        public ActionsViewModel(IContext<IActions> actionContext, IContext<IPlayer> currentPlayerContext)
         {
             this.actionContext = actionContext;
+            this.currentPlayerContext = currentPlayerContext;
         }
 
         private RelayCommand driveCommand;
@@ -38,7 +45,7 @@ namespace Presentation.WPF.Implementations
         private void Drive(ICity destination)
         {
             actionContext.Context.Drive.Invoke(destination);
-            this.NotifyChanges();
+            RaiseChangeNotificationRequested();
         }
 
         private bool CanDrive(ICity destination)
@@ -52,19 +59,20 @@ namespace Presentation.WPF.Implementations
             get
             {
                 if (treatDiseaseCommand == null)
-                    treatDiseaseCommand = new RelayCommand(disease => TreatDisease((IDiseaseCounterViewModel)disease), disease => CanTreatDisease((IDiseaseCounterViewModel)disease));
+                    treatDiseaseCommand = new RelayCommand(disease => TreatDisease((IDisease)disease), disease => CanTreatDisease((IDisease)disease));
                 return treatDiseaseCommand;
             }
         }
 
-        private void TreatDisease(IDiseaseCounterViewModel disease)
+        private void TreatDisease(IDisease disease)
         {
-            
+            actionContext.Context.TreatDisease.Invoke(disease, currentPlayerContext.Context.Location);
+            RaiseChangeNotificationRequested();
         }
 
-        private bool CanTreatDisease(IDiseaseCounterViewModel disease)
+        private bool CanTreatDisease(IDisease disease)
         {
-            return true;
+            return disease != null; 
         }
     }
 }

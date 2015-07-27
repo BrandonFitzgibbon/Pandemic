@@ -9,6 +9,8 @@ namespace Presentation.WPF.Contracts
 {
     public interface IViewModelBase : INotifyPropertyChanged
     {
+        event EventHandler ChangeNotificationRequested;
+        void RaiseChangeNotificationRequested();
         void NotifyChanges();
     }
 }

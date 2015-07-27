@@ -9,6 +9,7 @@ namespace Engine.Contracts
     public interface IInfectionCard : ICard
     {
         string Name { get; }
+        IDisease Disease { get; }
         void Infect(int rate);
     }
 }

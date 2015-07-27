@@ -20,6 +20,10 @@ namespace Presentation.WPF.Implementations
         private IContext<IPlayer> selectedPlayerContext;
         private IContext<IPlayer> currentPlayerContext;
         private IContext<IActions> actionContext;
+        private IContext<IDrawCounter> drawCounterContext;
+        private IContext<IInfectionCard> infectionCardContext;
+
+        private ICollection<IPlayerViewModel> playerViewModels;
 
         private IViewModelBase boardViewModel;
         public IViewModelBase BoardViewModel
@@ -49,6 +53,13 @@ namespace Presentation.WPF.Implementations
             set { playersViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private InfectionCardViewModel infectionCardViewModel;
+        public InfectionCardViewModel InfectionCardViewModel
+        {
+            get { return infectionCardViewModel; }
+            set { infectionCardViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IDeckViewModel deckViewModel;
         public IDeckViewModel DeckViewModel
         {
@@ -69,74 +80,72 @@ namespace Presentation.WPF.Implementations
             game = new Game(data.GetDiseases(), data.GetCities(), new PlayerFactory(), new List<string>() { "Jon", "Jessica", "Jack"}, new DeckFactory(data.GetCities()), new OutbreakCounter(data.GetCities()), new InfectionRateCounter(), Difficulty.Standard);
 
             BoardViewModel = new BoardViewModel(game.Cities.ToList());
-            GameStatusViewModel = new GameStatusViewModel(game);
 
             selectedPlayerContext = new ObjectContext<IPlayer>();
             currentPlayerContext = new ObjectContext<IPlayer>();
             actionContext = new ObjectContext<IActions>();
+            drawCounterContext = new ObjectContext<IDrawCounter>();
+            infectionCardContext = new ObjectContext<IInfectionCard>();
 
-            Collection<IPlayerViewModel> playerViewModels = new Collection<IPlayerViewModel>();
+            playerViewModels = new Collection<IPlayerViewModel>();
             foreach (IPlayer player in game.Players)
             {
                 playerViewModels.Add(new PlayerViewModel(player));
             }
 
-            Collection<IDiseaseCounterViewModel> diseaseViewModels = new Collection<IDiseaseCounterViewModel>();
-            foreach (ICity city in game.Cities)
-            {
-                foreach (IDiseaseCounter counter in city.Counters)
-                {
-                    diseaseViewModels.Add(new DiseaseCounterViewModel(city, counter.Disease));
-                }
-            }
-
-            PlayersViewModel = new PlayersViewModel(currentPlayerContext, selectedPlayerContext, actionContext, playerViewModels, diseaseViewModels);
-            PlayersViewModel.RequestStateUpdate += PlayersViewModelRequestStateUpdate;
-
+            GameStatusViewModel = new GameStatusViewModel(game);
+            PlayersViewModel = new PlayersViewModel(currentPlayerContext, selectedPlayerContext, actionContext, playerViewModels);
             HandViewModel = new HandViewModel(selectedPlayerContext);
-            DeckViewModel = new DeckViewModel(game.PlayerDeck, this);
-            ActionsViewModel = new ActionsViewModel(actionContext);
+            InfectionCardViewModel = new InfectionCardViewModel(infectionCardContext);
+            DeckViewModel = new DeckViewModel(drawCounterContext, infectionCardContext, InfectionCardViewModel);
+            ActionsViewModel = new ActionsViewModel(actionContext, currentPlayerContext);
 
-            DeckViewModel.CardDrawn += DeckViewModel_CardDrawn;
+            GameStatusViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
+            PlayersViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
+            HandViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
+            DeckViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
+            ActionsViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
+            InfectionCardViewModel.ChangeNotificationRequested += ViewModelChangeNotificationRequested;
 
             RequestNextPlayer();
         }
 
-        void DeckViewModel_CardDrawn(object sender, EventArgs e)
+        private void ViewModelChangeNotificationRequested(object sender, EventArgs e)
         {
-            RequestCard();
+            NotifyViewModels();
         }
 
-        private void PlayersViewModelRequestStateUpdate(object sender, EventArgs e)
+        private void NotifyViewModels()
         {
             GameStatusViewModel.NotifyChanges();
-        }
-
-        public void PlayersViewModelActionsDepleted(object sender, EventArgs e)
-        {
-            if (DrawPhase != null) DrawPhase(this, EventArgs.Empty);
-        }
-
-        public void RequestCard()
-        {
-            game.DrawPhase();
-            GameStatusViewModel.NotifyChanges();
+            PlayersViewModel.NotifyChanges();
+            ActionsViewModel.NotifyChanges();
             HandViewModel.NotifyChanges();
-        }
+            InfectionCardViewModel.NotifyChanges();
 
-        public void RequestInfection()
-        {
-            game.InfectionPhase();
-            GameStatusViewModel.NotifyChanges();
+            foreach (IPlayerViewModel pvm in playerViewModels)
+            {
+                pvm.NotifyChanges();
+            }
         }
 
         public void RequestNextPlayer()
         {
             game.NextPlayer();
             currentPlayerContext.Context = game.CurrentPlayer;
-            actionContext.Context = new Actions((Player)currentPlayerContext.Context);
+            actionContext.Context = game.CurrentActions;
+            actionContext.Context.ActionsDepleted += ActionsDepleted;
         }
 
-        public event EventHandler DrawPhase;
+        private void ActionsDepleted(object sender, EventArgs e)
+        {
+            drawCounterContext.Context = game.CurrentDrawCounter;
+            drawCounterContext.Context.InfectionsDepleted += InfectionsDepleted;
+        }
+
+        private void InfectionsDepleted(object sender, EventArgs e)
+        {
+            RequestNextPlayer();
+        }
     }
 }

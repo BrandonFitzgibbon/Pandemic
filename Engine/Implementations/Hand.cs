@@ -27,14 +27,13 @@ namespace Engine.Implementations
             cards = new List<ICard>();
         }
 
-        public void Draw(IDeck deck, out ICard drawnCard)
+        public void AddToHand(ICard card)
         {
-            drawnCard = deck.Draw();
-            drawnCard.Discarded += drawnCard_Discarded;
-            cards.Add(drawnCard);
+            card.Discarded += cardDiscarded;
+            cards.Add(card);
         }
 
-        void drawnCard_Discarded(object sender, DiscardedEventArgs e)
+        private void cardDiscarded(object sender, DiscardedEventArgs e)
         {
             cards.Remove(e.Card);
         }

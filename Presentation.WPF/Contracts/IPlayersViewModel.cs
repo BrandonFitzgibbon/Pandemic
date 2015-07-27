@@ -13,6 +13,6 @@ namespace Presentation.WPF.Contracts
         IEnumerable<IPlayerViewModel> Players { get; }
         IPlayerViewModel SelectedPlayer { get; set; }
         IPlayer CurrentPlayer { get; }
-        event EventHandler RequestStateUpdate;
+        int CurrentPlayerActionsRemaining { get; }
     }
 }

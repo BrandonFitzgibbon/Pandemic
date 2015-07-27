@@ -9,14 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" BorderBrush="Transparent">
     
-    <UserControl.Resources>
-        
-        <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
-        <c:DiseaseToFontConverter x:Key="DiseaseToFontConverter"/>
+    <UserControl.Resources>     
 
+        <c:DiseaseToColorConverter x:Key="DiseaseToColorConverter"/>
+        
         <Storyboard x:Key="ExpandB">
             <DoubleAnimation From="0" To="1" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
         </Storyboard>
+        
         <Storyboard x:Key="CollapseB">
             <DoubleAnimation From="1" To="0" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
         </Storyboard>
@@ -84,74 +84,37 @@
                 </Setter>
             </Style>
         </Expander.Style>
-        <ListView ItemsSource="{Binding Cards}" Height="250" BorderBrush="Transparent" Background="Transparent">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl x:Name="Content">
-                        <Grid TextElement.Foreground="White">
-                            <Viewbox>
-                                <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                            </Viewbox>
-                            <StackPanel VerticalAlignment="Top" Background="Transparent">
-                                <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" TextWrapping="Wrap" FontSize="16" Margin="3"/>
-                            </StackPanel>
-                        </Grid>
-                    </ContentControl>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
-                            <Setter TargetName="Content" Property="Content">
-                                <Setter.Value>
-                                    <Grid x:Name="Grid" TextElement.Foreground="White">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Viewbox Grid.RowSpan="2">
-                                            <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                                        </Viewbox>
-                                        <StackPanel VerticalAlignment="Top" Background="Transparent">
-                                            <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" FontSize="16" Margin="3"/>
-                                            <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Country}" FontSize="12" FontWeight="SemiBold" Margin="3"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="Transparent">
-                                            <TextBlock VerticalAlignment="Top" Text="Population" FontSize="12" Margin="3"/>
-                                            <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Population, StringFormat={}{0:###,###,###}}" FontSize="12" Margin="3"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
+        <ListBox ItemsSource="{Binding Cards}" Height="250" BorderBrush="Transparent" Background="Transparent">
+            <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
                     <Setter Property="Margin" Value="5"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     <Setter Property="BorderBrush" Value="White"/>
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="Border" Height="150" Width="117" Background="Transparent" BorderBrush="White" BorderThickness="2" CornerRadius="3">
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="Border" Height="225" Width="175" Background="Transparent" BorderBrush="White" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}">
                                     <ContentPresenter Margin="5"/>
                                 </Border>
                                 <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">  
-                                        <Setter TargetName="Border" Property="Height" Value="225"/>
-                                        <Setter TargetName="Border" Property="Width" Value="175.5"/>  
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="Gray"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="4"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>        
+            </ListBox.ItemContainerStyle>
+        </ListBox>        
     </Expander>
     
 </UserControl>

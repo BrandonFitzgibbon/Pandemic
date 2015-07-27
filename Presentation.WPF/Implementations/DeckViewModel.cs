@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
 using System;
 using System.Collections.Generic;
@@ -11,24 +12,20 @@ namespace Presentation.WPF.Implementations
 {
     public class DeckViewModel : ViewModelBase, IDeckViewModel
     {
-        private bool drawPhase;
+        private IContext<IDrawCounter> drawCounterContext;
+        private IContext<IInfectionCard> infectionCardContext;
 
-        private IPlayerDeck playerDeck;
-        public IPlayerDeck PlayerDeck
+        private IInfectionCardViewModel infectionCardViewModel;
+        public IInfectionCardViewModel InfectionCardViewModel
         {
-            get { return playerDeck; }
+            get { return infectionCardViewModel; }
         }
 
-        public DeckViewModel(IPlayerDeck playerDeck, IMainViewModel mainViewModel)
+        public DeckViewModel(IContext<IDrawCounter> drawCounterContext, IContext<IInfectionCard> infectionCardContext, InfectionCardViewModel infectionCardViewModel)
         {
-            this.playerDeck = playerDeck;
-            mainViewModel.DrawPhase += mainViewModel_DrawPhase;
-            drawPhase = false;
-        }
-
-        void mainViewModel_DrawPhase(object sender, EventArgs e)
-        {
-            drawPhase = true;
+            this.drawCounterContext = drawCounterContext;
+            this.infectionCardViewModel = infectionCardViewModel;
+            this.infectionCardContext = infectionCardContext;
         }
 
         private RelayCommand drawPlayerCardCommand;
@@ -44,14 +41,35 @@ namespace Presentation.WPF.Implementations
 
         public void DrawPlayerCard()
         {
-            if (CardDrawn != null) CardDrawn(this, EventArgs.Empty);
+            drawCounterContext.Context.DrawPlayerCard();
+            RaiseChangeNotificationRequested();
         }
 
         public bool CanDrawPlayerCard()
         {
-            return drawPhase;
+            return drawCounterContext != null && drawCounterContext.Context != null ? drawCounterContext.Context.DrawCount > 0 : false;
         }
 
-        public event EventHandler CardDrawn;
+        private RelayCommand drawInfectionCardCommand;
+        public ICommand DrawInfectionCardCommand
+        {
+            get
+            {
+                if (drawInfectionCardCommand == null)
+                    drawInfectionCardCommand = new RelayCommand(a => DrawInfectionCard(), a => CanDrawInfectionCard());
+                return drawInfectionCardCommand;
+            }
+        }
+
+        public void DrawInfectionCard()
+        {
+            infectionCardContext.Context = drawCounterContext.Context.DrawInfectionCard();
+            RaiseChangeNotificationRequested();
+        }
+
+        public bool CanDrawInfectionCard()
+        {
+            return drawCounterContext != null && drawCounterContext.Context != null ? drawCounterContext.Context.DrawCount == 0 && drawCounterContext.Context.InfectionCount > 0 : false;
+        }
     }
 }

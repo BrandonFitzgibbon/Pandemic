@@ -5,6 +5,7 @@ using Presentation.WPF.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,6 @@ namespace Presentation.WPF.Implementations
             get { return players; }
         }
 
-        private IEnumerable<IDiseaseCounterViewModel> diseaseCounters;
-        public IEnumerable<IDiseaseCounterViewModel> DiseaseCounters
-        {
-            get { return diseaseCounters; }
-        }
-
         private IPlayerViewModel selectedPlayer;
         public IPlayerViewModel SelectedPlayer
         {
@@ -42,14 +37,18 @@ namespace Presentation.WPF.Implementations
         {
             get { return currentPlayerContext.Context; }
         }
+
+        public int CurrentPlayerActionsRemaining
+        {
+            get { return actionsContext.Context.ActionCount; }
+        }
            
-        public PlayersViewModel(IContext<IPlayer> currentPlayerContext, IContext<IPlayer> selectedPlayerContext, IContext<IActions> actionsContext, ICollection<IPlayerViewModel> playerViewModels, ICollection<IDiseaseCounterViewModel> diseaseCounterViewModels)
+        public PlayersViewModel(IContext<IPlayer> currentPlayerContext, IContext<IPlayer> selectedPlayerContext, IContext<IActions> actionsContext, ICollection<IPlayerViewModel> playerViewModels)
         {
             this.actionsContext = actionsContext;
             this.selectedPlayerContext = selectedPlayerContext;
             this.currentPlayerContext = currentPlayerContext;
             this.players = playerViewModels;
-            this.diseaseCounters = diseaseCounterViewModels;
 
             currentPlayerContext.ContextChanged += currentPlayerContextChanged;
             actionsContext.ContextChanged += actionsContextChanged;
@@ -64,7 +63,5 @@ namespace Presentation.WPF.Implementations
         {
             NotifyChanges();
         }
-
-        public event EventHandler RequestStateUpdate;
     }
 }

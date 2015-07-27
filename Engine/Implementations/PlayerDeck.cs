@@ -71,8 +71,7 @@ namespace Engine.Implementations
             {
                 foreach (IPlayer player in players)
                 {
-                    ICard drawn;
-                    player.Hand.Draw(this, out drawn);
+                    player.Hand.AddToHand(this.Draw());
                 }
                 i++;
             }

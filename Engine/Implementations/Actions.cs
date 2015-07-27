@@ -11,7 +11,7 @@ namespace Engine.Implementations
 {
     public class Actions : IActions
     {
-        private Player player;
+        private ICity location;
 
         private int actionCount;
         public int ActionCount
@@ -20,10 +20,16 @@ namespace Engine.Implementations
             set
             {
                 if (value > 0)
+                {
                     actionCount = value;
+                    driveDestinations = ListExtensions.GetDriveDestinations(location, ActionCount);
+                    diseaseTreatmentOptions = ListExtensions.GetDiseaseTreatmentOptions(location, ActionCount);
+                }
                 else if (value == 0)
                 {
                     actionCount = value;
+                    driveDestinations = ListExtensions.GetDriveDestinations(location, ActionCount);
+                    diseaseTreatmentOptions = ListExtensions.GetDiseaseTreatmentOptions(location, ActionCount);
                     if (ActionsDepleted != null) ActionsDepleted(this, EventArgs.Empty);
                 }
             }
@@ -32,7 +38,13 @@ namespace Engine.Implementations
         private IDictionary<ICity, int> driveDestinations;
         public IDictionary<ICity, int> DriveDestinations
         {
-            get { return driveDestinations; }
+            get { return driveDestinations.OrderBy(i => i.Value).ThenBy(i => i.Key.Name).ToDictionary(pair => pair.Key, pair => pair.Value); }
+        }
+
+        private IDictionary<IDisease, int> diseaseTreatmentOptions;
+        public IDictionary<IDisease, int> DiseaseTreatmentOptions
+        {
+            get { return diseaseTreatmentOptions; }
         }
 
         private Action<ICity> drive;
@@ -48,31 +60,34 @@ namespace Engine.Implementations
         }
 
         private Action<IDisease> treatDisease;
-        public Action<IDisease> TreatDisease
+        public Action<IDisease, ICity> TreatDisease
         {
             get { return TreatDiseaseAction; }
         }
 
         public Actions(Player player)
         {
-            this.player = player;
+            location = player.Location;
+            player.Moved += PlayerMoved;
 
             //Hook drive
             drive = player.Drive;
             canDrive = CanDriveFunction;
-            player.Moved += PlayerMoved;
 
             //Hook treatDisease
             treatDisease = player.TreatDisease;     
      
             //set actions
             ActionCount = 4;
-            driveDestinations = ListExtensions.DriveDestinations(player.Location, ActionCount);
+            driveDestinations = ListExtensions.GetDriveDestinations(location, ActionCount);
+            diseaseTreatmentOptions = ListExtensions.GetDiseaseTreatmentOptions(location, ActionCount);
         }
 
         public void PlayerMoved(object sender, PlayerMovedEventArgs e)
         {
-            driveDestinations = ListExtensions.DriveDestinations(e.ArrivedCity, ActionCount);
+            driveDestinations = ListExtensions.GetDriveDestinations(e.ArrivedCity, ActionCount);
+            diseaseTreatmentOptions = ListExtensions.GetDiseaseTreatmentOptions(e.ArrivedCity, ActionCount);
+            location = e.ArrivedCity;
         }
 
         private bool CanDriveFunction(ICity city)
@@ -84,15 +99,16 @@ namespace Engine.Implementations
         {
             if (canDrive(city))
             {
-                ActionCount = ActionCount - DriveDestinations[city];
+                int actionsRequired = DriveDestinations[city];
                 drive.Invoke(city);
+                ActionCount = ActionCount - actionsRequired;
             }
         }
 
-        private void TreatDiseaseAction(IDisease disease)
+        private void TreatDiseaseAction(IDisease disease, ICity city)
         {
-            ActionCount = ActionCount - 1;
             treatDisease.Invoke(disease);
+            ActionCount = ActionCount - 1;
         }
 
         public event EventHandler ActionsDepleted;

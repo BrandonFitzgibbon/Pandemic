@@ -48,6 +48,7 @@
     <Compile Include="Contracts\IDisease.cs" />
     <Compile Include="Contracts\IDiseaseCounterFactory.cs" />
     <Compile Include="Contracts\IDispatcher.cs" />
+    <Compile Include="Contracts\IDrawCounter.cs" />
     <Compile Include="Contracts\IEpidemicCard.cs" />
     <Compile Include="Contracts\IGame.cs" />
     <Compile Include="Contracts\IHand.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Implementations\Counter.cs" />
     <Compile Include="Implementations\Disease.cs" />
     <Compile Include="Implementations\Dispatcher.cs" />
+    <Compile Include="Implementations\DrawCounter.cs" />
     <Compile Include="Implementations\EpidemicCard.cs" />
     <Compile Include="Implementations\Game.cs" />
     <Compile Include="Implementations\Hand.cs" />

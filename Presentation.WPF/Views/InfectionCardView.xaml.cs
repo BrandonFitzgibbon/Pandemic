@@ -9,7 +9,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace Presentation.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for DecksView.xaml
+    /// Interaction logic for InfectionCardView.xaml
     /// </summary>
-    public partial class DeckView : UserControl
+    public partial class InfectionCardView : UserControl
     {
-        public DeckView()
+        public InfectionCardView()
         {
             InitializeComponent();
         }

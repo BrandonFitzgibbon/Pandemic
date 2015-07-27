@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,14 @@ namespace Engine.Contracts
         IEnumerable<ICity> Cities { get; }
         IEnumerable<IPlayer> Players { get; }
         IPlayer CurrentPlayer { get; }
+        IActions CurrentActions { get; }
+        DrawCounter CurrentDrawCounter { get; }
         int NumberOfResearchStations { get; }
         IOutbreakCounter OutbreakCounter { get; }
         IInfectionRateCounter InfectionRateCounter { get; }
         IPlayerDeck PlayerDeck { get; }
         
         void NextPlayer();
-        void DrawPhase();
-        void InfectionPhase();
 
         bool IsGameOn { get; }
     }

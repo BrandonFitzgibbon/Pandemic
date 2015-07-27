@@ -16,6 +16,11 @@ namespace Engine.Implementations
             get { return city.Name; }
         }
 
+        public IDisease Disease
+        {
+            get { return city.Disease; }
+        }
+
         public InfectionCard(ICity city)
         {
             this.city = city;
@@ -24,6 +29,7 @@ namespace Engine.Implementations
         public void Infect(int rate)
         {
             city.Counters.Single(i => i.Disease == city.Disease).Increase(rate);
+            this.Discard();
         }
 
         public override string ToString()

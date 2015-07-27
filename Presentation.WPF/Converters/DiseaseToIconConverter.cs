@@ -14,6 +14,8 @@ namespace Presentation.WPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (value == null)
+                return null;
             IDisease disease = (IDisease)value;
             Icons icons = new Icons();
             switch(disease.Type)

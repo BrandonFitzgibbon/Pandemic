@@ -7,46 +7,100 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <StackPanel>
-        <Button Content="Draw Card" BorderBrush="White" Command="{Binding DrawPlayerCardCommand}">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="Common">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <Storyboard>
-                                                    <ColorAnimation From="Transparent" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Pressed">
-                                                <Storyboard>
-                                                    <ColorAnimation From="Gray" To="Yellow" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Disabled">
-                                                <Storyboard>
-                                                    <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextElement.Foreground).Color" Duration="0:00:00"/>
-                                                    <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(BorderBrush).Color" Duration="0:00:00"/>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-
-                                    <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="2" TextElement.Foreground="White" TextElement.FontSize="14">
-                                        <ContentPresenter HorizontalAlignment="Center"/>
+        <Button Content="Draw Player Card" Style="{StaticResource StandardButtonStyle}" Margin="3" BorderBrush="White" Command="{Binding DrawPlayerCardCommand}"/>
+        <Grid>       
+            <Border x:Name="MovingInfectionDeck" Height="175" Opacity="0" Margin="3" BorderBrush="Green" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="8,8" MappingMode="Absolute" SpreadMethod="Repeat">
+                        <GradientStop Color="Transparent" Offset="0" />
+                        <GradientStop Color="Transparent" Offset="0.80" />
+                        <GradientStop Color="Green" Offset="0.80" />
+                        <GradientStop Color="Gray" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform x:Name="DeckTranslation" Y="0"/>
+                        <ScaleTransform x:Name="DeckScale" ScaleX="1" CenterX="125"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+            </Border>
+            <Button x:Name="InfectionButton" Margin="3" Command="{Binding DrawInfectionCardCommand}">
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="ButtonBase.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation BeginTime="0:00:0.00" From="1" To="0" Storyboard.TargetName="InfectionCard" Storyboard.TargetProperty="Opacity" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:0.00" From="1" To="0" Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleX" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:00" From="0" To="1" Storyboard.TargetName="MovingInfectionDeck" Storyboard.TargetProperty="Opacity" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:00" From="0" To="210" Storyboard.TargetName="DeckTranslation" Storyboard.TargetProperty="Y" Duration="0:00:0.125"/>
+                                <DoubleAnimation BeginTime="0:00:0.125" From="1" To="0" Storyboard.TargetName="DeckScale" Storyboard.TargetProperty="ScaleX" Duration="0:00:0.125"/>
+                                <DoubleAnimation BeginTime="0:00:0.25" From="1" To="0" Storyboard.TargetName="MovingInfectionDeck" Storyboard.TargetProperty="Opacity" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:0.25" From="210" To="0" Storyboard.TargetName="DeckTranslation" Storyboard.TargetProperty="Y" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:0.25" From="0" To="1" Storyboard.TargetName="DeckScale" Storyboard.TargetProperty="ScaleX" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:0.25" From="0" To="1" Storyboard.TargetName="InfectionCard" Storyboard.TargetProperty="Opacity" Duration="0:00:00"/>
+                                <DoubleAnimation BeginTime="0:00:0.25" From="0" To="1" Storyboard.TargetName="CardScale" Storyboard.TargetProperty="ScaleX" Duration="0:00:0.125"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Content" Value="Draw Infection Card"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="InfectionDeck" Height="175" TextElement.Foreground="White" TextElement.FontSize="16" BorderBrush="Green" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}">
+                                        <Border.Background>
+                                            <LinearGradientBrush EndPoint="0,0" StartPoint="8,8" MappingMode="Absolute" SpreadMethod="Repeat">
+                                                <GradientStop Color="Transparent" Offset="0" />
+                                                <GradientStop Color="Transparent" Offset="0.80" />
+                                                <GradientStop Color="Green" Offset="0.80" />
+                                                <GradientStop Color="Gray" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
-
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="InfectionDeck" Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0,0" StartPoint="8,8" MappingMode="Absolute" SpreadMethod="Repeat">
+                                                        <GradientStop Color="Gray" Offset="0" />
+                                                        <GradientStop Color="Gray" Offset="0.80" />
+                                                        <GradientStop Color="Green" Offset="0.80" />
+                                                        <GradientStop Color="Gray" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter TargetName="InfectionDeck" Property="Background">
+                                                <Setter.Value>
+                                                    <LinearGradientBrush EndPoint="0,0" StartPoint="8,8" MappingMode="Absolute" SpreadMethod="Repeat">
+                                                        <GradientStop Color="Transparent" Offset="0" />
+                                                        <GradientStop Color="Transparent" Offset="0.80" />
+                                                        <GradientStop Color="Gray" Offset="0.80" />
+                                                        <GradientStop Color="Gray" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter TargetName="InfectionDeck" Property="BorderBrush" Value="Gray"/>
+                                            <Setter Property="Content" Value="Infection Deck"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+        <ContentControl x:Name="InfectionCard" Content="{Binding InfectionCardViewModel}" Margin="3" Opacity="0">
+            <ContentControl.RenderTransform>
+                <ScaleTransform x:Name="CardScale" ScaleX="0" CenterX="125"/>
+            </ContentControl.RenderTransform>
+        </ContentControl>
     </StackPanel>
     
 </UserControl>

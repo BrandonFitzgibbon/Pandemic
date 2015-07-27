@@ -42,6 +42,18 @@ namespace Engine.Implementations
             get { return currentPlayer; }
         }
 
+        private IActions currentActions;
+        public IActions CurrentActions
+        {
+            get { return currentActions; }
+        }
+
+        private DrawCounter currentDrawCounter;
+        public DrawCounter CurrentDrawCounter
+        {
+            get { return currentDrawCounter; }
+        }
+
         private IPlayerDeck playerDeck;
         public IPlayerDeck PlayerDeck
         {
@@ -101,34 +113,8 @@ namespace Engine.Implementations
             foreach (IPlayer player in playerQueue.NextPlayer)
             {
                 currentPlayer = player;
-            }
-        }
-
-        public void DrawPhase()
-        {
-            ICard drawn;
-            currentPlayer.Hand.Draw(playerDeck, out drawn);
-            if (drawn is IEpidemicCard)
-            {
-                infectionRateCounter.Increase();
-                IInfectionCard infectionCard = (IInfectionCard)infectionDeck.DrawBottom();
-                infectionCard.Infect(3);
-                infectionCard.Discard();
-                infectionDeck.Intensify();
-            }
-        }
-
-        public void InfectionPhase()
-        {
-            for (int i = 0; i < infectionRateCounter.InfectionRate; i++)
-            {
-                ICard card = infectionDeck.Draw();
-                if(card is IInfectionCard)
-                {
-                    IInfectionCard iCard = (IInfectionCard)card;
-                    iCard.Infect(1);
-                }
-                card.Discard();
+                currentActions = new Actions((Player)currentPlayer);
+                currentDrawCounter = new DrawCounter(PlayerDeck, InfectionDeck, InfectionRateCounter, CurrentPlayer);
             }
         }
 

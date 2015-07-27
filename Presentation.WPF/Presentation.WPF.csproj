@@ -62,6 +62,7 @@
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\IGameStatusViewModel.cs" />
     <Compile Include="Contracts\IHandViewModel.cs" />
+    <Compile Include="Contracts\IInfectionCardViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
     <Compile Include="Controls\Icons.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\HandViewModel.cs" />
+    <Compile Include="Implementations\InfectionCardViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
@@ -91,6 +93,9 @@
     </Compile>
     <Compile Include="Views\HandView.xaml.cs">
       <DependentUpon>HandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InfectionCardView.xaml.cs">
+      <DependentUpon>InfectionCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
@@ -135,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InfectionCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

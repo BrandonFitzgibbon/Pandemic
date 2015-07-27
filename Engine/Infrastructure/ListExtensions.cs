@@ -34,7 +34,21 @@ namespace Engine.Infrastructure
             }
         }
 
-        public static Dictionary<ICity, int> DriveDestinations(ICity location, int actionsAvailable)
+        public static Dictionary<IDisease, int> GetDiseaseTreatmentOptions(ICity location, int actionCount)
+        {
+            Dictionary<IDisease, int> diseaseTreatmentOptions = new Dictionary<IDisease, int>();
+            if (actionCount > 0)
+            {
+                foreach (IDiseaseCounter dc in location.Counters)
+                {
+                    if (dc.Count > 0)
+                        diseaseTreatmentOptions.Add(dc.Disease, dc.Count);
+                }
+            }
+            return diseaseTreatmentOptions;
+        }
+
+        public static Dictionary<ICity, int> GetDriveDestinations(ICity location, int actionsAvailable)
         {
             Dictionary<ICity, int> driveDestinations = new Dictionary<ICity, int>();
             if (actionsAvailable == 0)
