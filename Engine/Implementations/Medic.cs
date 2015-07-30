@@ -10,26 +10,22 @@ namespace Engine.Implementations
 {
     public class Medic : Player, IMedic
     {
-        public Medic(string name) : base(name) 
+        public Medic(IGame game, string name, IHand hand) : base(game, name, hand) 
         {
             Moved += MedicMoved;
         }
 
         private void MedicMoved(object sender, PlayerMovedEventArgs e)
         {
-            foreach (IDiseaseCounter counter in e.ArrivedCity.Counters)
-            {
-                if (counter.Disease.IsCured)
-                    TreatDisease(counter.Disease);
-            }
+            
         }
 
-        internal override void TreatDisease(IDisease disease)
+        public override void TreatDisease(IDisease disease)
         {
-            IDiseaseCounter treatTarget = location.Counters.SingleOrDefault(i => i.Disease == disease);
+            INodeDiseaseCounter treatTarget = game.NodeCounters.Single(i => i.Node == Location); 
             if (treatTarget != null)
             {
-                treatTarget.Decrease(treatTarget.Count);
+                treatTarget.RaiseTreatment(treatTarget.Count);
             }
         }
     }

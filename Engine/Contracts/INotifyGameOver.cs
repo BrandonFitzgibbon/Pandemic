@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface ICity
+    public interface INotifyGameOver
     {
-        string Name { get; }
-        string Country { get; }
-        int Population { get; }
+        event EventHandler GameOver;
     }
 }

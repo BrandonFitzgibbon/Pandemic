@@ -8,33 +8,26 @@ using System.Threading.Tasks;
 
 namespace Engine.Factories
 {
-    public class DeckFactory : IDeckFactory
+    public static class DeckFactory
     {
-        private IList<ICity> cities;
-
-        public IInfectionDeck GetInfectionDeck()
+        public static IInfectionDeck GetInfectionDeck(IEnumerable<INodeDiseaseCounter> nodeDiseaseCounters)
         {
             List<IInfectionCard> infectionCards = new List<IInfectionCard>();
-            foreach (ICity city in this.cities)
+            foreach (INodeDiseaseCounter nodeDiseaseCounter in nodeDiseaseCounters)
             {
-                infectionCards.Add(new InfectionCard(city));
+                infectionCards.Add(new InfectionCard(nodeDiseaseCounter));
             }
             return new InfectionDeck(infectionCards);
         }
 
-        public IPlayerDeck GetPlayerDeck()
+        public static IPlayerDeck GetPlayerDeck(IEnumerable<INode> nodes)
         {
             List<ICityCard> cityCards = new List<ICityCard>();
-            foreach (ICity city in this.cities)
+            foreach (INode node in nodes)
             {
-                cityCards.Add(new CityCard(city));
+                cityCards.Add(new CityCard(node.City));
             }
             return new PlayerDeck(cityCards);
-        }
-
-        public DeckFactory(IList<ICity> cities)
-        {
-            this.cities = cities;
         }
     }
 }

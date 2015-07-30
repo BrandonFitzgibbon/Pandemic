@@ -10,18 +10,8 @@ namespace Engine.Contracts
     public interface IGame
     {
         IEnumerable<IDisease> Diseases { get; }
-        IEnumerable<ICity> Cities { get; }
-        IEnumerable<IPlayer> Players { get; }
-        IPlayer CurrentPlayer { get; }
-        IActions CurrentActions { get; }
-        DrawCounter CurrentDrawCounter { get; }
-        int NumberOfResearchStations { get; }
-        IOutbreakCounter OutbreakCounter { get; }
-        IInfectionRateCounter InfectionRateCounter { get; }
-        IPlayerDeck PlayerDeck { get; }
-        
-        void NextPlayer();
-
-        bool IsGameOn { get; }
+        IEnumerable<IDiseaseCounter> DiseaseCounters { get; }
+        IEnumerable<INode> Nodes { get; }
+        IEnumerable<INodeDiseaseCounter> NodeCounters { get; }
     }
 }

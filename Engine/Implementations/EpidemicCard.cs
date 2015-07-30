@@ -9,6 +9,13 @@ namespace Engine.Implementations
 {
     public class EpidemicCard : Card, IEpidemicCard
     {
+        public EpidemicCard()
+        {
 
+        }
+
+        public event EventHandler Increase;
+        public event EventHandler Infect;
+        public event EventHandler Intensify;
     }
 }

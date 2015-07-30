@@ -9,22 +9,22 @@ namespace Engine.CustomEventArgs
 {
     public class PlayerMovedEventArgs : EventArgs
     {
-        private ICity departedCity;
-        public ICity DepartedCity
+        private INode departedNode;
+        public INode DepartedNode
         {
-            get { return departedCity; }
+            get { return departedNode; }
         }
 
-        private ICity arrivedCity;
-        public ICity ArrivedCity
+        private INode arrivedNode;
+        public INode ArrivedNode
         {
-            get { return arrivedCity; }
+            get { return arrivedNode; }
         }
 
-        public PlayerMovedEventArgs(ICity departedCity, ICity arrivedCity)
+        public PlayerMovedEventArgs(INode departedCity, INode arrivedCity)
         {
-            this.departedCity = departedCity;
-            this.arrivedCity = arrivedCity;
+            this.departedNode = departedCity;
+            this.arrivedNode = arrivedCity;
         }
     }
 }

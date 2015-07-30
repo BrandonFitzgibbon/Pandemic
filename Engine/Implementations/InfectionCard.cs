@@ -9,45 +9,43 @@ namespace Engine.Implementations
 {
     public class InfectionCard : Card, IInfectionCard
     {
-        private ICity city;
-        
+        private INodeDiseaseCounter nodeDiseaseCounter;
+
         public string Name
         {
-            get { return city.Name; }
+            get { return nodeDiseaseCounter.Node.City.Name; }
         }
 
         public IDisease Disease
         {
-            get { return city.Disease; }
+            get { return nodeDiseaseCounter.Node.Disease; }
         }
 
-        public InfectionCard(ICity city)
+        public InfectionCard(INodeDiseaseCounter nodeDiseaseCounter)
         {
-            this.city = city;
+            this.nodeDiseaseCounter = nodeDiseaseCounter;
         }
 
         public void Infect(int rate)
         {
-            city.Counters.Single(i => i.Disease == city.Disease).Increase(rate);
+            nodeDiseaseCounter.RaiseInfection(rate);
             this.Discard();
         }
 
         public override string ToString()
         {
-            return city.ToString();
+            return Name;
         }
 
         public override int GetHashCode()
         {
-            return city.GetHashCode();
+            return nodeDiseaseCounter.Node.City.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            IInfectionCard compare = (IInfectionCard)obj;
-            if (compare != null)
-                return compare.Name == this.Name;
-            return false;
+            IInfectionCard compareCard = (IInfectionCard)obj;
+            return compareCard != null ? compareCard.Name == this.Name : false;
         }
     }
 }

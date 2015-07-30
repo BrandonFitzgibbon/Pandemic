@@ -8,7 +8,9 @@ namespace Engine.Contracts
 {
     public interface IDataAccess
     {
-        IList<IDisease> GetDiseases();
-        IList<ICity> GetCities();
+        IEnumerable<IDisease> GetDiseases();
+        IEnumerable<INode> GetNodes();
+        IEnumerable<IDiseaseCounter> GetDiseaseCounters();
+        IEnumerable<INodeDiseaseCounter> GetNodeDiseaseCounters();
     }
 }

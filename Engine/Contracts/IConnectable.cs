@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IPlayerFactory
+    public interface IConnectable
     {
-        IList<IPlayer> GetPlayers(IList<string> names);
+        void Connect(INode city);
     }
 }

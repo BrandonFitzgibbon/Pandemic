@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Engine.Factories
 {
-    public class PlayerFactory : IPlayerFactory
+    public static class PlayerFactory
     {
-        private List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist" };
+        private static List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist" };
 
-        public IList<IPlayer> GetPlayers(IList<string> names)
+        public static IEnumerable<IPlayer> GetPlayers(IList<string> names, IGame game)
         {
             List<IPlayer> players = new List<IPlayer>();
             roles.Shuffle();
@@ -24,13 +24,13 @@ namespace Engine.Factories
                 switch(role)
                 {
                     case "Medic":
-                        players.Add(new Medic(name));
+                        players.Add(new Medic(game, name, new Hand()));
                         break;
                     case "Dispatcher":
-                        players.Add(new Dispatcher(name));
+                        players.Add(new Dispatcher(game, name, new Hand()));
                         break;
                     case "Scientist":
-                        players.Add(new Scientist(name));
+                        players.Add(new Scientist(game, name, new Hand()));
                         break;
                 }
             }

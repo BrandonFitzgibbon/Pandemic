@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionRateCounter
+    public interface IInfectionRateCounter : ICount
     {
-        int Count { get; }
         int InfectionRate { get; }
-        void Increase();
     }
 }

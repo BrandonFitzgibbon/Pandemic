@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IDiseaseCounter
+    public interface IDiseaseCounter : ICount
     {
         IDisease Disease { get; }
-        int Count { get; }
-        void Increase(int rate);
-        void Decrease(int rate);
-        event EventHandler<OutbreakEventArgs> Outbreak;
     }
 }

@@ -9,6 +9,6 @@ namespace Engine.Implementations
 {
     public class Scientist : Player, IScientist
     {
-        public Scientist(string name) : base(name) { }
+        public Scientist(IGame game, string name, IHand hand) : base(game, name, hand) { }
     }
 }

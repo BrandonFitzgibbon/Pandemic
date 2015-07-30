@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Factories;
 using Engine.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -11,29 +12,15 @@ namespace Engine.Implementations
 {
     public class Game : IGame
     {
-        private bool isGameOn;
-        public bool IsGameOn
-        {
-            get { return isGameOn; }
-        }
-
-        private IList<IDisease> diseases;
-        public IEnumerable<IDisease> Diseases
-        {
-            get { return diseases; }
-        }
-
-        private IList<ICity> cities;
-        public IEnumerable<ICity> Cities
-        {
-            get { return cities; }
-        }
-
-        private IList<IPlayer> players;
-        public IEnumerable<IPlayer> Players
-        {
-            get { return players; }
-        }
+        public IEnumerable<IDisease> Diseases { get; private set; }
+        public IEnumerable<IDiseaseCounter> DiseaseCounters { get; private set; }
+        public IEnumerable<INode> Nodes { get; private set; }
+        public IEnumerable<INodeDiseaseCounter> NodeCounters { get; private set; }
+        public IEnumerable<IPlayer> Players { get; private set; }
+        public IPlayerDeck PlayerDeck { get; private set; }
+        public IInfectionDeck InfectionDeck { get; private set; }
+        public ICount OutbreakCounter { get; private set; }
+        public IInfectionRateCounter InfectionRateCounter { get; private set; }
 
         private PlayerQueue playerQueue;
         private IPlayer currentPlayer;
@@ -42,69 +29,32 @@ namespace Engine.Implementations
             get { return currentPlayer; }
         }
 
-        private IActions currentActions;
-        public IActions CurrentActions
+        public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
-            get { return currentActions; }
-        }
+            Diseases = dataAccess.GetDiseases();
+            DiseaseCounters = dataAccess.GetDiseaseCounters();
+            Nodes = dataAccess.GetNodes();
+            NodeCounters = dataAccess.GetNodeDiseaseCounters();
+            Players = PlayerFactory.GetPlayers(playerNames, this);
 
-        private DrawCounter currentDrawCounter;
-        public DrawCounter CurrentDrawCounter
-        {
-            get { return currentDrawCounter; }
-        }
+            Implementations.OutbreakCounter outbreakCounter = new OutbreakCounter(NodeCounters);
+            outbreakCounter.GameOver += GameOver;
+            OutbreakCounter = outbreakCounter;
 
-        private IPlayerDeck playerDeck;
-        public IPlayerDeck PlayerDeck
-        {
-            get { return playerDeck; }
-        }
+            InfectionRateCounter = new InfectionRateCounter();
 
-        private IInfectionDeck infectionDeck;
-        public IInfectionDeck InfectionDeck
-        {
-            get { return infectionDeck; }
-        }
-
-        private IOutbreakCounter outbreakCounter;
-        public IOutbreakCounter OutbreakCounter
-        {
-            get { return outbreakCounter; }
-        }
-
-        private IInfectionRateCounter infectionRateCounter;
-        public IInfectionRateCounter InfectionRateCounter
-        {
-            get { return infectionRateCounter; }
-        }
-
-        public int NumberOfResearchStations
-        {
-            get { return cities.Where(i => i.HasResearchStation == true).Count(); }
-        }
-
-        public Game(IList<IDisease> diseases, IList<ICity> cities, IPlayerFactory playerFactory, IList<string> playerNames, IDeckFactory deckFactory, IOutbreakCounter outbreakCounter, IInfectionRateCounter infectionRateCounter, Difficulty difficulty)
-        {
-            this.diseases = diseases;
-            this.cities = cities;
-            this.outbreakCounter = outbreakCounter;
-            this.infectionRateCounter = infectionRateCounter;
-            this.players = playerFactory.GetPlayers(playerNames);
-            this.infectionDeck = deckFactory.GetInfectionDeck();
-            this.playerDeck = deckFactory.GetPlayerDeck();
+            PlayerDeck = DeckFactory.GetPlayerDeck(Nodes);
+            InfectionDeck = DeckFactory.GetInfectionDeck(NodeCounters);
 
             //adds epidemics to player deck and gives players initial hands
-            this.playerDeck.Setup(this.players, (int)difficulty);
+            PlayerDeck.Setup(Players.ToList(), (int)difficulty);
 
             //subscribes cities to plyaer movements
-            this.cities.SubscribeCitiesToPlayerMovements(this.players);
             SetStartingLocation();
 
-            this.players = players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
-            this.playerQueue = new PlayerQueue(this.players);
-            SubscribeToGameOver();
+            Players = Players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
+            this.playerQueue = new PlayerQueue(Players.ToList());
             InitialInfection();
-            isGameOn = true;
             NextPlayer();
         }
 
@@ -113,18 +63,16 @@ namespace Engine.Implementations
             foreach (IPlayer player in playerQueue.NextPlayer)
             {
                 currentPlayer = player;
-                currentActions = new Actions((Player)currentPlayer);
-                currentDrawCounter = new DrawCounter(PlayerDeck, InfectionDeck, InfectionRateCounter, CurrentPlayer);
             }
         }
 
         private void SetStartingLocation()
         {
-            ICity atlanta = this.cities.Single(i => i.Name == "Atlanta");
+            INode atlanta = this.Nodes.Single(i => i.City.Name == "Atlanta");
 
-            foreach (IPlayer player in this.players)
+            foreach (Player player in Players)
             {
-                player.SetStartingLocation(atlanta);
+                player.Location = atlanta;
             }
         }
 
@@ -155,21 +103,9 @@ namespace Engine.Implementations
             }
         }
 
-        private void SubscribeToGameOver()
-        {
-            //subscribe to disease counter game over
-            foreach (IDisease disease in diseases)
-            {
-                disease.GameOver += GameOver;
-            }
-
-            //subscribe to outbreak counter game over
-            outbreakCounter.GameOver += GameOver;
-        }
-
         private void GameOver(object sender, EventArgs e)
         {
-            isGameOn = false;
+            
         }
     }
 

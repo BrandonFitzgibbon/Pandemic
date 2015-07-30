@@ -9,22 +9,11 @@ namespace Engine.CustomEventArgs
 {
     public class OutbreakEventArgs
     {
-        private ICity outbreakOrigin;
-        public ICity OutbreakOrigin
-        {
-            get { return OutbreakOrigin; }
-        }
+        public INodeDiseaseCounter OriginCounter { get; private set; }
 
-        private IDisease outbreakDisease;
-        public IDisease OutbreakDisease
+        public OutbreakEventArgs(INodeDiseaseCounter originCounter)
         {
-            get { return outbreakDisease; }
-        }
-
-        public OutbreakEventArgs(ICity outbreakOrigin, IDisease outbreakDisease)
-        {
-            this.outbreakOrigin = outbreakOrigin;
-            this.outbreakDisease = outbreakDisease;
+            OriginCounter = originCounter;            
         }
     }
 }

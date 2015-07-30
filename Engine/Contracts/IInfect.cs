@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IOutbreakCounter
+    public interface IInfect
     {
-        int Count { get; }
-        event EventHandler GameOver;
+        void RaiseInfection(int rate);
+        void RaiseTreatment(int rate);
+        event EventHandler Infection;
+        event EventHandler Treatment;
     }
 }
