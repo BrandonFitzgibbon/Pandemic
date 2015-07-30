@@ -13,5 +13,10 @@ namespace Engine.Contracts
         IEnumerable<IDiseaseCounter> DiseaseCounters { get; }
         IEnumerable<INode> Nodes { get; }
         IEnumerable<INodeDiseaseCounter> NodeCounters { get; }
+        IEnumerable<IPlayer> Players { get; }
+        IPlayerDeck PlayerDeck { get; }
+        IInfectionDeck InfectionDeck { get; }
+        ICount OutbreakCounter { get; }
+        IInfectionRateCounter InfectionRateCounter { get; }
     }
 }

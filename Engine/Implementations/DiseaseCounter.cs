@@ -41,12 +41,12 @@ namespace Engine.Implementations
 
         private void InfectionNotification(object sender, EventArgs e)
         {
-            Increase();
+            Decrease();
         }
 
         private void TreatmentNotification(object sender, EventArgs e)
         {
-            Decrease();
+            Increase();
         }
 
         public void Increase()

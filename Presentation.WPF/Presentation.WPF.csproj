@@ -57,9 +57,11 @@
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Controls\Icons.cs" />
+    <Compile Include="Converters\DiseaseStatusToIconConverter.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
+    <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
     <Compile Include="Views\ActionsView.xaml.cs">
       <DependentUpon>ActionsView.xaml</DependentUpon>

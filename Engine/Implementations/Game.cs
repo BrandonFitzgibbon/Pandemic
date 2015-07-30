@@ -44,13 +44,10 @@ namespace Engine.Implementations
             InfectionRateCounter = new InfectionRateCounter();
 
             PlayerDeck = DeckFactory.GetPlayerDeck(Nodes);
-            InfectionDeck = DeckFactory.GetInfectionDeck(NodeCounters);
+            InfectionDeck = DeckFactory.GetInfectionDeck(NodeCounters.Where(i => i.Disease == i.Node.Disease));
 
             //adds epidemics to player deck and gives players initial hands
             PlayerDeck.Setup(Players.ToList(), (int)difficulty);
-
-            //subscribes cities to plyaer movements
-            SetStartingLocation();
 
             Players = Players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
             this.playerQueue = new PlayerQueue(Players.ToList());
@@ -83,7 +80,6 @@ namespace Engine.Implementations
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
                 card.Infect(3);
-                card.Discard();
             }
 
             //infection 3 cities with 2 counters each
@@ -91,7 +87,6 @@ namespace Engine.Implementations
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
                 card.Infect(2);
-                card.Discard();
             }
 
             //infection 3 cities with 1 counters each
@@ -99,7 +94,6 @@ namespace Engine.Implementations
             {
                 IInfectionCard card = (IInfectionCard)InfectionDeck.Draw();
                 card.Infect(1);
-                card.Discard();
             }
         }
 

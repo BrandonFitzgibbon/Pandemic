@@ -17,10 +17,23 @@ namespace Presentation.WPF.Implementations
         private IGame game;
         private IDataAccess data;
 
+        private GameStatusViewModel gameStatusViewModel;
+        public GameStatusViewModel GameStatusViewModel
+        {
+            get { return gameStatusViewModel; }
+            set { gameStatusViewModel = value; NotifyPropertyChanged(); }
+        }
+
         public MainViewModel()
         {
             data = new DataAccess.Data();
             game = new Game(data, new List<string> { "Jessica", "Jack" }, Difficulty.Standard);
+            
+            GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
+                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Yellow), 
+                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Red), 
+                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Blue), 
+                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Black));
         }
     }
 }

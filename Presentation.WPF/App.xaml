@@ -80,6 +80,10 @@
                 </Grid>
             </DataTemplate>         
             
+            <DataTemplate DataType="{x:Type i:GameStatusViewModel}">
+                <v:GameStatusView/>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
     
