@@ -9,6 +9,7 @@ namespace Engine.Contracts
 {
     public interface IMove
     {
+        void SetStartingLocation(INode startingNode);
         event EventHandler<PlayerMovedEventArgs> Moved;
     }
 }

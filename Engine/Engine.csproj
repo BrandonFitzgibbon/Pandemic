@@ -72,6 +72,7 @@
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
     <Compile Include="CustomEventArgs\ResearchStationChangedEventArgs.cs" />
     <Compile Include="Factories\DeckFactory.cs" />
+    <Compile Include="Factories\EpidemicCardFactory.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\Card.cs" />
     <Compile Include="Implementations\City.cs" />

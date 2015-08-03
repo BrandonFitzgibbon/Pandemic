@@ -61,6 +61,7 @@
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
+    <Compile Include="Converters\InfectionCountToBoolean.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
     <Compile Include="Views\ActionsView.xaml.cs">

@@ -37,6 +37,9 @@ namespace Engine.Implementations
             NodeCounters = dataAccess.GetNodeDiseaseCounters();
             Players = PlayerFactory.GetPlayers(playerNames, this);
 
+            SubscribeNodesToMovers();
+            SetStartingLocation();
+
             Implementations.OutbreakCounter outbreakCounter = new OutbreakCounter(NodeCounters);
             outbreakCounter.GameOver += GameOver;
             OutbreakCounter = outbreakCounter;
@@ -47,11 +50,12 @@ namespace Engine.Implementations
             InfectionDeck = DeckFactory.GetInfectionDeck(NodeCounters.Where(i => i.Disease == i.Node.Disease));
 
             //adds epidemics to player deck and gives players initial hands
-            PlayerDeck.Setup(Players.ToList(), (int)difficulty);
+            PlayerDeck.Setup(Players.ToList(), (int)difficulty, EpidemicCardFactory.EpidemicCards());
+
+            InitialInfection();
 
             Players = Players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.City.Population).First().City.Population).ToList();
             this.playerQueue = new PlayerQueue(Players.ToList());
-            InitialInfection();
             NextPlayer();
         }
 
@@ -63,13 +67,24 @@ namespace Engine.Implementations
             }
         }
 
+        private void SubscribeNodesToMovers()
+        {
+            foreach (INode node in Nodes)
+            {
+                foreach (IMove mover in Players)
+                {
+                    node.SubscribeToMover(mover);
+                }
+            }
+        }
+
         private void SetStartingLocation()
         {
             INode atlanta = this.Nodes.Single(i => i.City.Name == "Atlanta");
 
-            foreach (Player player in Players)
+            foreach (IMove mover in Players)
             {
-                player.Location = atlanta;
+                mover.SetStartingLocation(atlanta);
             }
         }
 

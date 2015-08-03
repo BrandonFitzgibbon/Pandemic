@@ -15,6 +15,7 @@ namespace Presentation.WPF.Implementations
         public IDiseaseCounter RedCounter { get; private set; }
         public IDiseaseCounter BlueCounter { get; private set; }
         public IDiseaseCounter BlackCounter { get; private set; }
+        public int InfectionCount { get; private set; }
 
         public GameStatusViewModel(ICount outbreakCounter, IInfectionRateCounter infectionRateCounter, IDiseaseCounter yellowCounter, IDiseaseCounter redCounter, IDiseaseCounter blueCounter, IDiseaseCounter blackCounter)
         {
@@ -24,6 +25,7 @@ namespace Presentation.WPF.Implementations
             RedCounter = redCounter;
             BlueCounter = blueCounter;
             BlackCounter = blackCounter;
+            InfectionCount = infectionRateCounter.Count;
         }
     }
 }

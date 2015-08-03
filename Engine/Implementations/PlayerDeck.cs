@@ -42,7 +42,7 @@ namespace Engine.Implementations
         }
 
         //Provides players with starting hand and sets up the deck with epidemics
-        public void Setup(IList<IPlayer> players, int difficulty)
+        public void Setup(IList<IPlayer> players, int difficulty, Stack<IEpidemicCard> epidemicCards)
         {
             if (IsSet)
                 return;
@@ -102,7 +102,7 @@ namespace Engine.Implementations
                 {
                     miniPile.Add(cardPile.Pop());
                 }
-                IEpidemicCard card = new EpidemicCard();
+                IEpidemicCard card = epidemicCards.Pop();
                 card.Discarded += CardDiscarded;
                 miniPile.Add(card);
                 miniPile.Shuffle();

@@ -8,5 +8,8 @@ namespace Engine.Contracts
 {
     public interface IEpidemicCard : ICard
     {
+        event EventHandler Increase;
+        event EventHandler Infect;
+        event EventHandler Intensify;
     }
 }

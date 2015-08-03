@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    interface IInfectionDeck
     {
-        ICard DrawBottom();
-        void Intensify();
     }
 }

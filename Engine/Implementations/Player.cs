@@ -14,7 +14,7 @@ namespace Engine.Implementations
         protected IGame game;
 
         public string Name { get; protected set; }
-        public INode Location { get; internal set; }
+        public INode Location { get; protected set; }
         public IHand Hand { get; protected set; }
 
         public Player(IGame game, string name, IHand hand)
@@ -24,12 +24,11 @@ namespace Engine.Implementations
             Hand = hand;
         }
 
-        public override string ToString()
+        public void SetStartingLocation(INode startingNode)
         {
-            return Name;
+            Location = startingNode;
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(null, startingNode));
         }
-
-        public event EventHandler<PlayerMovedEventArgs> Moved;
 
         public void Drive()
         {
@@ -79,5 +78,12 @@ namespace Engine.Implementations
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public event EventHandler<PlayerMovedEventArgs> Moved;
     }
 }
