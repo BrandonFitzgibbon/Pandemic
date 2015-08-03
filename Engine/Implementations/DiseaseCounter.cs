@@ -24,8 +24,8 @@ namespace Engine.Implementations
 
             foreach (INodeDiseaseCounter nodeCounter in nodeCounters)
             {
-                nodeCounter.Infection += InfectionNotification;
-                nodeCounter.Treatment += TreatmentNotification;
+                nodeCounter.Infected += InfectionNotification;
+                nodeCounter.Treated += TreatmentNotification;
                 nodeCounter.Outbreak += OutbreakNotification;              
             }
         }
@@ -35,7 +35,7 @@ namespace Engine.Implementations
             IEnumerable<INodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
             foreach (INodeDiseaseCounter nodeCounter in outbreakCounters)
             {
-                nodeCounter.RaiseInfection(1);
+                nodeCounter.Infection(1);
             }
         }
 

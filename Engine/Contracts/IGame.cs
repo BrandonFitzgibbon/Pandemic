@@ -14,8 +14,8 @@ namespace Engine.Contracts
         IEnumerable<INode> Nodes { get; }
         IEnumerable<INodeDiseaseCounter> NodeCounters { get; }
         IEnumerable<IPlayer> Players { get; }
-        IPlayerDeck PlayerDeck { get; }
-        IInfectionDeck InfectionDeck { get; }
+        IDeck PlayerDeck { get; }
+        IDeck InfectionDeck { get; }
         ICount OutbreakCounter { get; }
         IInfectionRateCounter InfectionRateCounter { get; }
     }

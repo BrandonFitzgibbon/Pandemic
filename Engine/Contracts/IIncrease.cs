@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface IInfectionDeck : IDeck
+    public interface IIncrease
     {
-        ICard DrawBottom();
-        void Intensify();
-        event EventHandler Intensified;
+        void Increase();
+        event EventHandler Increased;
     }
 }

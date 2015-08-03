@@ -9,9 +9,9 @@ namespace Engine.Contracts
 {
     public interface IInfect
     {
-        void RaiseInfection(int rate);
-        void RaiseTreatment(int rate);
-        event EventHandler Infection;
-        event EventHandler Treatment;
+        void Infection(int rate);
+        void Treatment(int rate);
+        event EventHandler Infected;
+        event EventHandler Treated;
     }
 }

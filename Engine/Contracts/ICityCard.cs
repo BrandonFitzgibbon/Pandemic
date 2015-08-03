@@ -8,6 +8,6 @@ namespace Engine.Contracts
 {
     public interface ICityCard : ICard
     {
-        ICity City { get; }
+        INode Node { get; }
     }
 }

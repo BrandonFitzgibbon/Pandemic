@@ -21,34 +21,34 @@ namespace Engine.Implementations
             Count = 0;
         }
 
-        public void RaiseInfection(int rate)
+        public void Infection(int rate)
         {
             for (int i = 0; i < rate; i++)
             {
                 if (Count < 3)
                 {
                     Count++;
-                    if (Infection != null) Infection(this, EventArgs.Empty);
+                    if (Infected != null) Infected(this, EventArgs.Empty);
                 }
                 else
                     if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(this));
             }
         }
 
-        public void RaiseTreatment(int rate)
+        public void Treatment(int rate)
         {
             for (int i = 0; i < rate; i++)
             {
                 if (Count > 0)
                 {
                     Count--;
-                    if (Treatment != null) Treatment(this, EventArgs.Empty);
+                    if (Treated != null) Treated(this, EventArgs.Empty);
                 }
             }
         }
 
         public event EventHandler<OutbreakEventArgs> Outbreak;
-        public event EventHandler Infection;
-        public event EventHandler Treatment;
+        public event EventHandler Infected;
+        public event EventHandler Treated;
     }
 }

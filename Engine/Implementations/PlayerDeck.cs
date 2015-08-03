@@ -13,7 +13,6 @@ namespace Engine.Implementations
     {
         private Stack<ICard> cardPile;
         private Stack<ICard> discardPile;
-        private bool IsSet;
 
         public PlayerDeck(IList<ICityCard> cityCards)
         {
@@ -24,7 +23,6 @@ namespace Engine.Implementations
             }
             cardPile = new Stack<ICard>(cityCards);
             discardPile = new Stack<ICard>();
-            IsSet = false;
         }
 
         public ICard Draw()
@@ -41,41 +39,8 @@ namespace Engine.Implementations
             discardPile.Push(e.Card);
         }
 
-        //Provides players with starting hand and sets up the deck with epidemics
-        public void Setup(IList<IPlayer> players, int difficulty, Stack<IEpidemicCard> epidemicCards)
+        public void AddEpidemics(int difficulty, Stack<IEpidemicCard> epidemicCards)
         {
-            if (IsSet)
-                return;
-
-            int i;
-
-            //determine initial hand size
-            switch(players.Count)
-            {
-                case 4:
-                    i = 2;
-                    break;
-                case 3:
-                    i = 1;
-                    break;
-                case 2:
-                    i = 0;
-                    break;
-                default:
-                    i = 4;
-                    break;
-            }
-
-            //issue initial cards
-            while(i < 4)
-            {
-                foreach (IPlayer player in players)
-                {
-                    player.Hand.AddToHand(this.Draw());
-                }
-                i++;
-            }
-
             //Calculate the size of epidemic piles
             int deckDivision = cardPile.Count / difficulty;
             int remainder = cardPile.Count - (deckDivision * difficulty);
@@ -119,8 +84,6 @@ namespace Engine.Implementations
             }
 
             cardPile = new Stack<ICard>(setCardPile);
-
-            IsSet = true;
         }
 
         public event EventHandler<EventArgs> GameOver;

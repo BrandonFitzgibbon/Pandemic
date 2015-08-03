@@ -9,16 +9,16 @@ namespace Engine.Implementations
 {
     public class Dispatcher : Player, IDispatcher
     {
-        public Dispatcher(IGame game, string name, IHand hand) : base(game, name, hand) { }
+        public Dispatcher(string name, IHand hand) : base(name, hand) { }
 
         public void DispatchDrive(Player player, ICity destinationCity)
         {
-            player.Drive();
+            
         }
 
         public void Dispatch(Player player, Player playerDestination)
         {
-            player.ShuttleFlight();
+            
         }
     }
 }

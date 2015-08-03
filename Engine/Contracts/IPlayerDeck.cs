@@ -8,7 +8,7 @@ namespace Engine.Contracts
 {
     public interface IPlayerDeck : IDeck
     {
+        void AddEpidemics(int difficulty, Stack<IEpidemicCard> epidemicCards);
         event EventHandler<EventArgs> GameOver;
-        void Setup(IList<IPlayer> players, int difficulty, Stack<IEpidemicCard> epidemicCards);
     }
 }

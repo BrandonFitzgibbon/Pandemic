@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionDeck : IDeck
+    public class InfectionDeck : IInfectionDeck
     {
         private Stack<ICard> cardPile;
         private Stack<ICard> discardPile;
@@ -23,22 +23,6 @@ namespace Engine.Implementations
             }
             cardPile = new Stack<ICard>(infectionCards);
             discardPile = new Stack<ICard>();
-        }
-
-        public void SubscribeToEpidemic(IEpidemicCard epidemicCard)
-        {
-            epidemicCard.Infect += epidemicCard_Infect;
-            epidemicCard.Intensify += epidemicCard_Intensify;
-        }
-
-        private void epidemicCard_Intensify(object sender, EventArgs e)
-        {
-            Intensify();
-        }
-
-        private void epidemicCard_Infect(object sender, EventArgs e)
-        {
-            EpidemicInfection();
         }
 
         public ICard Draw()
@@ -69,13 +53,7 @@ namespace Engine.Implementations
             discardPile.Push(e.Card);
         }
 
-        private void EpidemicInfection()
-        {
-            IInfectionCard iCard = (IInfectionCard)DrawBottom();
-            iCard.Infect(3);
-        }
-
-        private void Intensify()
+        public void Intensify()
         {
             List<ICard> cards = discardPile.ToList();
             cards.Shuffle();
@@ -85,6 +63,10 @@ namespace Engine.Implementations
                 cardPile.Push(cards[i]);
             }
             discardPile = new Stack<ICard>();
+
+            if (Intensified != null) Intensified(this, EventArgs.Empty);
         }
+
+        public event EventHandler Intensified;
     }
 }

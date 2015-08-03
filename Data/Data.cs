@@ -69,7 +69,7 @@ namespace DataAccess
 
             foreach (Disease disease in diseases)
             {
-               diseaseCounters.Add(new DiseaseCounter(disease, nodeCounters.Where(i => i.Node.Disease == disease).Where(i => i.Disease == disease).ToList()));
+               diseaseCounters.Add(new DiseaseCounter(disease, nodeCounters.Where(i => i.Disease == disease).ToList()));
             }
 
         }

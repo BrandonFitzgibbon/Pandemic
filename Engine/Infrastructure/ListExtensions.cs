@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace Engine.Infrastructure
 {
     public static class ListExtensions
     {
+        static Random rng = new Random();
+
         public static void Shuffle<T>(this IList<T> list)
         {
-            Random rng = new Random();
             int n = list.Count;
             while (n > 1)
             {

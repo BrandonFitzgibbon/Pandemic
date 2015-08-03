@@ -9,33 +9,27 @@ namespace Engine.Implementations
 {
     public class CityCard : Card, ICityCard
     {
-        private ICity city;
-        public ICity City
-        {
-            get { return city; }
-        }
+        public INode Node { get; private set; }
 
-        public CityCard(ICity city)
+        public CityCard(INode node)
         {
-            this.city = city;
+            Node = node;
         }
 
         public override string ToString()
         {
-            return city.ToString();
+            return Node.ToString();
         }
 
         public override int GetHashCode()
         {
-            return city.GetHashCode();
+            return Node.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             ICityCard compare = obj as ICityCard;
-            if (compare != null)
-                return city.Equals(compare.City);
-            return false;
+            return compare != null ? compare.Node == Node : false;
         }
     }
 }

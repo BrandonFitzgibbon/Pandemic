@@ -9,74 +9,23 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public abstract class Player : IPlayer, IMove, IAct
+    public abstract class Player : IPlayer, IMove
     {
-        protected IGame game;
-
         public string Name { get; protected set; }
         public INode Location { get; protected set; }
         public IHand Hand { get; protected set; }
 
-        public Player(IGame game, string name, IHand hand)
+        public Player(string name, IHand hand)
         {
-            this.game = game;
             Name = name;
             Hand = hand;
         }
 
-        public void SetStartingLocation(INode startingNode)
+        public void Move(INode node)
         {
-            Location = startingNode;
-            if (Moved != null) Moved(this, new PlayerMovedEventArgs(null, startingNode));
-        }
-
-        public void Drive()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DirectFlight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CharterFlight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShuttleFlight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void BuildResearchStation()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void TreatDisease(IDisease disease)
-        {
-            INodeDiseaseCounter treatTarget = game.NodeCounters.Single(i => i.Node == Location);
-            if (treatTarget != null)
-            {
-                treatTarget.RaiseTreatment(1);
-            }
-        }
-
-        public void GiveKnowledge()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TakeKnowledge()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DiscoverCure()
-        {
-            throw new NotImplementedException();
+            INode departedNode = Location;
+            Location = node;
+            if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedNode, node));
         }
 
         public override string ToString()

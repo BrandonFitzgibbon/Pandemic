@@ -28,7 +28,7 @@ namespace Engine.Implementations
 
         public void Infect(int rate)
         {
-            nodeDiseaseCounter.RaiseInfection(rate);
+            nodeDiseaseCounter.Infection(rate);
             this.Discard();
         }
 

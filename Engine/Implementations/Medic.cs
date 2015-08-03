@@ -10,7 +10,7 @@ namespace Engine.Implementations
 {
     public class Medic : Player, IMedic
     {
-        public Medic(IGame game, string name, IHand hand) : base(game, name, hand) 
+        public Medic(string name, IHand hand) : base(name, hand) 
         {
             Moved += MedicMoved;
         }
@@ -20,13 +20,9 @@ namespace Engine.Implementations
             
         }
 
-        public override void TreatDisease(IDisease disease)
+        public void TreatDisease(IDisease disease)
         {
-            INodeDiseaseCounter treatTarget = game.NodeCounters.Single(i => i.Node == Location); 
-            if (treatTarget != null)
-            {
-                treatTarget.RaiseTreatment(treatTarget.Count);
-            }
+
         }
     }
 }
