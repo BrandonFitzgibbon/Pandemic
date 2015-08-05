@@ -12,5 +12,6 @@ namespace Engine.Contracts
         string Name { get; }
         INode Location { get; }
         IHand Hand { get; }
+        IActionCounter ActionCounter { get; }
     }
 }

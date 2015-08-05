@@ -7,18 +7,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Dispatcher : Player, IDispatcher
+    public class Dispatcher : Player
     {
         public Dispatcher(string name, IHand hand) : base(name, hand) { }
-
-        public void DispatchDrive(Player player, ICity destinationCity)
-        {
-            
-        }
-
-        public void Dispatch(Player player, Player playerDestination)
-        {
-            
-        }
     }
 }

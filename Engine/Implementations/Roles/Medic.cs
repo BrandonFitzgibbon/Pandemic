@@ -17,12 +17,7 @@ namespace Engine.Implementations
 
         private void MedicMoved(object sender, PlayerMovedEventArgs e)
         {
-            
-        }
-
-        public void TreatDisease(IDisease disease)
-        {
-
+              
         }
     }
 }

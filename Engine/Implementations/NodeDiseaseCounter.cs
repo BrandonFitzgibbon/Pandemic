@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Contracts.Roles;
 using Engine.CustomEventArgs;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,33 @@ namespace Engine.Implementations
             Count = 0;
         }
 
+        private bool CanInfect()
+        {
+            foreach (IPlayer player in Node.Players)
+            {
+                if (Disease.IsCured == true && player is IMedic)
+                    return false;
+                if (player is IQuarantineSpecialist)
+                    return false;
+            }
+
+            foreach (INode node in Node.Connections)
+            {
+                foreach (IPlayer player in node.Players)
+                {
+                    if (player is IQuarantineSpecialist)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         public void Infection(int rate)
         {
+            if (!CanInfect())
+                return;
+
             for (int i = 0; i < rate; i++)
             {
                 if (Count < 3)
@@ -50,5 +76,10 @@ namespace Engine.Implementations
         public event EventHandler<OutbreakEventArgs> Outbreak;
         public event EventHandler Infected;
         public event EventHandler Treated;
+
+        public override string ToString()
+        {
+            return Node.City + " {" + Disease + ": " + Count + "}";
+        }
     }
 }

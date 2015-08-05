@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Contracts
+namespace Engine.Implementations.ActionManagers
 {
-    public interface IConnectable
+    public class ShuttleFlightManager
     {
-        void Connect(INode city);
+
     }
 }

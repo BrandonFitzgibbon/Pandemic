@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Engine.Contracts
 {
-    public interface ITurn
+    public interface IActionCounter : ICount
     {
+        void ResetActions();
+        void UseAction(int value);
+        event EventHandler ActionsDepleted;
     }
 }

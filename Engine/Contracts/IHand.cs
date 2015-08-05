@@ -11,5 +11,6 @@ namespace Engine.Contracts
         IEnumerable<ICard> Cards { get; }
         IEnumerable<ICityCard> CityCards { get; }
         void AddToHand(ICard card);
+        event EventHandler HandChanged;
     }
 }

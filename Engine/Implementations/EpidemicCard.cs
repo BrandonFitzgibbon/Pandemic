@@ -10,9 +10,9 @@ namespace Engine.Implementations
     public class EpidemicCard : Card, IEpidemicCard
     {
         private IIncrease infectionRateCounter;
-        private IInfectionDeck infectionDeck;
+        private InfectionDeck infectionDeck;
 
-        public EpidemicCard(IIncrease infectionRateCounter, IInfectionDeck infectionDeck)
+        public EpidemicCard(IIncrease infectionRateCounter, InfectionDeck infectionDeck)
         {
             this.infectionRateCounter = infectionRateCounter;
             this.infectionDeck = infectionDeck;

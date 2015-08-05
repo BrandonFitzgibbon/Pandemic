@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engine.Contracts
+namespace Engine.Contracts.Roles
 {
-    interface IValidateActions
+    public interface IQuarantineSpecialist : IPlayer
     {
     }
 }

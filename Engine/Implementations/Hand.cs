@@ -36,6 +36,9 @@ namespace Engine.Implementations
         private void cardDiscarded(object sender, DiscardedEventArgs e)
         {
             cards.Remove(e.Card);
+            if (HandChanged != null) HandChanged(this, EventArgs.Empty);
         }
+
+        public event EventHandler HandChanged;
     }
 }

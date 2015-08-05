@@ -52,12 +52,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.csproj">
-      <Project>{c72d0eca-4385-4332-bfe8-5cf3856c707a}</Project>
-      <Name>Engine</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

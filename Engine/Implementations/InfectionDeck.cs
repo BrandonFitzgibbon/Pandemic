@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionDeck : IInfectionDeck
+    public class InfectionDeck : IDeck
     {
-        private Stack<ICard> cardPile;
-        private Stack<ICard> discardPile;
+        private Stack<Card> cardPile;
+        private Stack<Card> discardPile;
 
-        public InfectionDeck(IList<IInfectionCard> infectionCards)
+        public InfectionDeck(IList<InfectionCard> infectionCards)
         {
             infectionCards.Shuffle();
-            foreach (IInfectionCard card in infectionCards)
+            foreach (InfectionCard card in infectionCards)
             {
                 card.Discarded += CardDiscarded;
             }
-            cardPile = new Stack<ICard>(infectionCards);
-            discardPile = new Stack<ICard>();
+            cardPile = new Stack<Card>(infectionCards);
+            discardPile = new Stack<Card>();
         }
 
-        public ICard Draw()
+        public Card Draw()
         {
             if (cardPile.Count > 0)
                 return cardPile.Pop();
@@ -33,15 +33,15 @@ namespace Engine.Implementations
                 return null;
         }
 
-        public ICard DrawBottom()
+        public Card DrawBottom()
         {
             if (cardPile.Count > 0)
             {
-                ICard drawn = cardPile.Last();
-                List<ICard> cards = new List<ICard>(cardPile.ToList());
+                Card drawn = cardPile.Last();
+                List<Card> cards = new List<Card>(cardPile.ToList());
                 cards.Remove(drawn);
                 cards.Reverse();
-                cardPile = new Stack<ICard>(cards);
+                cardPile = new Stack<Card>(cards);
                 return drawn;
             }
             else
@@ -55,14 +55,14 @@ namespace Engine.Implementations
 
         public void Intensify()
         {
-            List<ICard> cards = discardPile.ToList();
+            List<Card> cards = discardPile.ToList();
             cards.Shuffle();
             cards.Reverse();
             for (int i = cards.Count - 1; i >= 0; i--)
             {
                 cardPile.Push(cards[i]);
             }
-            discardPile = new Stack<ICard>();
+            discardPile = new Stack<Card>();
 
             if (Intensified != null) Intensified(this, EventArgs.Empty);
         }

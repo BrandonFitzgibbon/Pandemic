@@ -79,22 +79,22 @@ namespace DataAccess
             return connectionDictionary[node];
         }
 
-        public IEnumerable<IDisease> GetDiseases()
+        public IEnumerable<Disease> GetDiseases()
         {
-            return (IEnumerable<IDisease>)this.diseases;
+            return this.diseases;
         }
 
-        public IEnumerable<INode> GetNodes()
+        public IEnumerable<Node> GetNodes()
         {
-            return (IEnumerable<INode>)this.nodes;
+            return this.nodes;
         }
 
-        public IEnumerable<IDiseaseCounter> GetDiseaseCounters()
+        public IEnumerable<DiseaseCounter> GetDiseaseCounters()
         {
             return this.diseaseCounters;
         }
 
-        public IEnumerable<INodeDiseaseCounter> GetNodeDiseaseCounters()
+        public IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounters()
         {
             return this.nodeCounters;
         }

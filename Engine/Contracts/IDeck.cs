@@ -8,6 +8,6 @@ namespace Engine.Contracts
 {
     public interface IDeck
     {
-        ICard Draw();
+        
     }
 }

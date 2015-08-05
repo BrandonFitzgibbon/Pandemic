@@ -14,11 +14,13 @@ namespace Engine.Implementations
         public string Name { get; protected set; }
         public INode Location { get; protected set; }
         public IHand Hand { get; protected set; }
+        public IActionCounter ActionCounter { get; protected set; }
 
         public Player(string name, IHand hand)
         {
             Name = name;
             Hand = hand;
+            ActionCounter = new ActionCounter();
         }
 
         public void Move(INode node)

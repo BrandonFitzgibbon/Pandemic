@@ -10,10 +10,8 @@ namespace Engine.Contracts
     {
         ICity City { get; }
         IDisease Disease { get; }
-        bool ResearchStation { get; }
         IEnumerable<INode> Connections { get; }
         IEnumerable<IPlayer> Players { get; }
-
-        void SubscribeToMover(IMove mover);
+        bool ResearchStation { get; }
     }
 }

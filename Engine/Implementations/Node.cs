@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Node : INode, IConnectable
+    public class Node : INode
     {
         public ICity City { get; private set; }
         public IDisease Disease { get; private set; }
-        public bool ResearchStation { get; private set; }
+        public bool ResearchStation { get; internal set; }
 
         private List<INode> connections;
         public IEnumerable<INode> Connections

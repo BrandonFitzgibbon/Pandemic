@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class PlayerDeck : IPlayerDeck
+    public class PlayerDeck : IDeck
     {
-        private Stack<ICard> cardPile;
-        private Stack<ICard> discardPile;
+        private Stack<Card> cardPile;
+        private Stack<Card> discardPile;
 
-        public PlayerDeck(IList<ICityCard> cityCards)
+        public PlayerDeck(IList<CityCard> cityCards)
         {
             cityCards.Shuffle();
-            foreach (ICityCard card in cityCards)
+            foreach (CityCard card in cityCards)
             {
                 card.Discarded += CardDiscarded;
             }
-            cardPile = new Stack<ICard>(cityCards);
-            discardPile = new Stack<ICard>();
+            cardPile = new Stack<Card>(cityCards);
+            discardPile = new Stack<Card>();
         }
 
-        public ICard Draw()
+        public Card Draw()
         {
             if (cardPile.Count > 0)
                 return cardPile.Pop();
@@ -39,7 +39,7 @@ namespace Engine.Implementations
             discardPile.Push(e.Card);
         }
 
-        public void AddEpidemics(int difficulty, Stack<IEpidemicCard> epidemicCards)
+        public void AddEpidemics(int difficulty, Stack<EpidemicCard> epidemicCards)
         {
             //Calculate the size of epidemic piles
             int deckDivision = cardPile.Count / difficulty;
@@ -59,31 +59,31 @@ namespace Engine.Implementations
             }
 
             //Add cards to epidemic piles
-            List<IList<ICard>> epidemicPiles = new List<IList<ICard>>();
+            List<List<Card>> epidemicPiles = new List<List<Card>>();
             foreach (int k in deckSize)
             {
-                IList<ICard> miniPile = new List<ICard>();
+                List<Card> miniPile = new List<Card>();
                 for (int v = 0; v < k; v++)
                 {
                     miniPile.Add(cardPile.Pop());
                 }
-                IEpidemicCard card = epidemicCards.Pop();
+                EpidemicCard card = epidemicCards.Pop();
                 card.Discarded += CardDiscarded;
                 miniPile.Add(card);
                 miniPile.Shuffle();
                 epidemicPiles.Add(miniPile);
             }
 
-            IList<ICard> setCardPile = new List<ICard>();
-            foreach (IList<ICard> list in epidemicPiles)
+            IList<Card> setCardPile = new List<Card>();
+            foreach (IList<Card> list in epidemicPiles)
             {
-                foreach (ICard card in list)
+                foreach (Card card in list)
                 {
                     setCardPile.Add(card);
                 }
             }
 
-            cardPile = new Stack<ICard>(setCardPile);
+            cardPile = new Stack<Card>(setCardPile);
         }
 
         public event EventHandler<EventArgs> GameOver;

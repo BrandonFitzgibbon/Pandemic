@@ -11,18 +11,8 @@ namespace Engine.Implementations
     {
         public string Name { get; private set; }
         public DiseaseType Type { get; private set; }
-
-        private bool isCured;
-        public bool IsCured
-        {
-            get { return isCured; }
-        }
-
-        private bool isEradicated;
-        public bool IsEradicated
-        {
-            get { return isEradicated; }
-        }
+        public bool IsCured { get; internal set; }
+        public bool IsEradicated { get; internal set; }
 
         public Disease(string name, DiseaseType type)
         {
