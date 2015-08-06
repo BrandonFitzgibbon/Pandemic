@@ -8,26 +8,25 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Hand : IHand
+    public class Hand
     {
-        private IList<ICard> cards;
-        
-        public IEnumerable<ICard> Cards
+        internal IList<Card> cards;     
+        public IEnumerable<Card> Cards
         {
             get { return cards; }
         }
 
-        public IEnumerable<ICityCard> CityCards
+        public IEnumerable<CityCard> CityCards
         {
-            get { return cards.Where(i => i is ICityCard).OfType<ICityCard>(); }
+            get { return cards.Where(i => i is CityCard).OfType<CityCard>(); }
         }
 
         public Hand()
         {
-            cards = new List<ICard>();
+            cards = new List<Card>();
         }
 
-        public void AddToHand(ICard card)
+        internal void AddToHand(Card card)
         {
             card.Discarded += cardDiscarded;
             cards.Add(card);

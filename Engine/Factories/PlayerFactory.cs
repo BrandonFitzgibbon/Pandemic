@@ -25,16 +25,16 @@ namespace Engine.Factories
                 switch(role)
                 {
                     case "Medic":
-                        players.Add(new Medic(name, new Hand()));
+                        players.Add(new Medic(name));
                         break;
                     case "Dispatcher":
-                        players.Add(new Dispatcher(name, new Hand()));
+                        players.Add(new Dispatcher(name));
                         break;
                     case "Scientist":
-                        players.Add(new Scientist(name, new Hand()));
+                        players.Add(new Scientist(name));
                         break;
                     case "QuarantineSpecialist":
-                        players.Add(new QuarantineSpecialist(name, new Hand()));
+                        players.Add(new QuarantineSpecialist(name));
                         break;
                 }
             }

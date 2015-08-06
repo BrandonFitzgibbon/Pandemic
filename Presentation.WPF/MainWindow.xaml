@@ -8,9 +8,25 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0,0,0,1">
             <ContentControl Content="{Binding GameStatusViewModel}"/>
         </Border>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
+                <ContentControl Content="{Binding PlayersViewModel}"/>
+            </Border>
+            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
+                <ContentControl Content="{Binding ActionsViewModel}"/>
+            </Border>
+        </Grid>
     </Grid>
     
 </Window>

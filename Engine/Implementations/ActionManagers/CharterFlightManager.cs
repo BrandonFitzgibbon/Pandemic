@@ -8,34 +8,35 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations.ActionManagers
 {
-    public class CharterFlightManager
+    internal class CharterFlightManager
     {
         private Player player;
-        private IEnumerable<INode> nodes;
-        public Dictionary<INode, ICityCard> Destinations { get; private set; }
+        private IEnumerable<Node> nodes;
 
-        public CharterFlightManager(Player player, IEnumerable<INode> nodes)
+        internal Dictionary<Node, CityCard> Destinations { get; private set; }
+
+        internal CharterFlightManager(Player player, IEnumerable<Node> nodes)
         {
             this.player = player;
             this.nodes = nodes;
             player.Moved += PlayerMoved;
             player.Hand.HandChanged += HandChanged;
+            player.ActionCounter.ActionUsed += ActionUsed;
             Destinations = GetDestinations(player.ActionCounter.Count, player);
         }
 
-        internal bool CanCharterFlight(INode node, ICityCard cityCard)
+        internal bool CanCharterFlight(Node node, CityCard cityCard)
         {
             return Destinations.ContainsKey(node) && Destinations[node] == cityCard;
         }
 
-        internal void CharterFlight(INode node, ICityCard cityCard)
+        internal void CharterFlight(Node node, CityCard cityCard)
         {
             if (CanCharterFlight(cityCard.Node, cityCard))
             {
-                player.ActionCounter.UseAction(1);
                 cityCard.Discard();
                 player.Move(node);
-                Update();
+                player.ActionCounter.UseAction(1);
             }
         }
 
@@ -54,18 +55,23 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private Dictionary<INode, ICityCard> GetDestinations(int actionsLeft, IPlayer player)
+        private void ActionUsed(object sender, EventArgs e)
         {
-            Dictionary<INode, ICityCard> destinations = new Dictionary<INode, ICityCard>();
+            Update();
+        }
+
+        private Dictionary<Node, CityCard> GetDestinations(int actionsLeft, Player player)
+        {
+            Dictionary<Node, CityCard> destinations = new Dictionary<Node, CityCard>();
 
             if (actionsLeft <= 0)
                 return destinations;
 
-            foreach (ICityCard cityCard in player.Hand.CityCards)
+            foreach (CityCard cityCard in player.Hand.CityCards)
             {
                 if(cityCard.Node == player.Location)
                 {
-                    foreach (INode node in nodes)
+                    foreach (Node node in nodes)
                     {
                         destinations.Add(node, cityCard);
                     }

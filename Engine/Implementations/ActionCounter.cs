@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class ActionCounter : IActionCounter
+    public class ActionCounter
     {
         private int count;
         public int Count
@@ -21,16 +21,18 @@ namespace Engine.Implementations
             }
         }
 
-        public void ResetActions()
+        internal void ResetActions()
         {
             Count = 4;
         }
 
-        public void UseAction(int value)
+        internal void UseAction(int value)
         {
             Count = Count - value;
+            if (ActionUsed != null) ActionUsed(this, EventArgs.Empty);
         }
 
         public event EventHandler ActionsDepleted;
+        public event EventHandler ActionUsed;
     }
 }

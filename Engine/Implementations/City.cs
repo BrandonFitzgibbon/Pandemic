@@ -8,50 +8,33 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class City : ICity
+    public class City
     {
-        private string name;
-        public string Name
-        {
-            get { return name; }
-        }
-
-        private string country;
-        public string Country
-        {
-            get { return country; }
-        }
-
-        private int population;
-        public int Population
-        {
-            get { return population; }
-        }
+        public string Name { get; private set; }
+        public string Country { get; private set; }
+        public int Population { get; private set; }
 
         public City(string name, string country, int population)
         {
-            this.name = name;
-            this.country = country;
-            this.population = population;
+            Name = name;
+            Country = country;
+            Population = population;
         }
 
         public override string ToString()
         {
-            return name + ", " + country;
+            return Name + ", " + Country;
         }
 
         public override int GetHashCode()
         {
-            return (name + country).GetHashCode();
+            return (Name + Country).GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            ICity equalsTarget = (ICity)obj;
-            if (equalsTarget != null)
-                return equalsTarget.Name == this.name;
-            else
-                return false;
+            City equalsTarget = (City)obj;
+            return equalsTarget != null ? equalsTarget.Name == Name : false;
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class CityCard : Card, ICityCard
+    public class CityCard : Card
     {
-        public INode Node { get; private set; }
+        public Node Node { get; internal set; }
 
-        public CityCard(INode node)
+        public CityCard(Node node)
         {
             Node = node;
         }
@@ -28,7 +28,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            ICityCard compare = obj as ICityCard;
+            CityCard compare = obj as CityCard;
             return compare != null ? compare.Node == Node : false;
         }
     }

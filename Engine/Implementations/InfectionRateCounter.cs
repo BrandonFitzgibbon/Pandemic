@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionRateCounter : IInfectionRateCounter, IIncrease
+    public class InfectionRateCounter
     {
         public InfectionRateCounter()
         {

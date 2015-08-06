@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class PlayerDeck : IDeck
+    public class PlayerDeck
     {
         private Stack<Card> cardPile;
         private Stack<Card> discardPile;

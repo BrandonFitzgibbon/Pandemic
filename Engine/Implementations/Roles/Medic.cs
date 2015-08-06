@@ -8,16 +8,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Medic : Player, IMedic
+    internal class Medic : Player
     {
-        public Medic(string name, IHand hand) : base(name, hand) 
-        {
-            Moved += MedicMoved;
-        }
-
-        private void MedicMoved(object sender, PlayerMovedEventArgs e)
-        {
-              
-        }
+        public Medic(string name) : base(name) { Role = "Medic"; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public abstract class Card : ICard
+    public abstract class Card
     {
         public void Discard()
         {

@@ -1,6 +1,6 @@
 ﻿using Engine.Contracts;
-using Engine.Contracts.Roles;
 using Engine.CustomEventArgs;
+using Engine.Implementations.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class NodeDiseaseCounter : INodeDiseaseCounter
+    public class NodeDiseaseCounter
     {
-        public INode Node { get; private set; }
-        public IDisease Disease { get; private set; }
+        public Node Node { get; private set; }
+        public Disease Disease { get; private set; }
         public int Count { get; private set; }
 
-        public NodeDiseaseCounter(IDisease disease, INode node)
+        public NodeDiseaseCounter(Disease disease, Node node)
         {
             Disease = disease;
             Node = node;
@@ -24,19 +24,19 @@ namespace Engine.Implementations
 
         private bool CanInfect()
         {
-            foreach (IPlayer player in Node.Players)
+            foreach (Player player in Node.Players)
             {
-                if (Disease.IsCured == true && player is IMedic)
+                if (Disease.IsCured == true && player is Medic)
                     return false;
-                if (player is IQuarantineSpecialist)
+                if (player is QuarantineSpecialist)
                     return false;
             }
 
-            foreach (INode node in Node.Connections)
+            foreach (Node node in Node.Connections)
             {
-                foreach (IPlayer player in node.Players)
+                foreach (Player player in node.Players)
                 {
-                    if (player is IQuarantineSpecialist)
+                    if (player is QuarantineSpecialist)
                         return false;
                 }
             }

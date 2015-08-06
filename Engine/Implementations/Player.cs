@@ -9,23 +9,26 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public abstract class Player : IPlayer, IMove
+    public abstract class Player
     {
         public string Name { get; protected set; }
-        public INode Location { get; protected set; }
-        public IHand Hand { get; protected set; }
-        public IActionCounter ActionCounter { get; protected set; }
+        public string Role { get; protected set; }
+        public Node Location { get; internal set; }
+        public Hand Hand { get; internal set; }
+        public ActionCounter ActionCounter { get; internal set; }
 
-        public Player(string name, IHand hand)
+        internal Player() { }
+
+        internal Player(string name)
         {
             Name = name;
-            Hand = hand;
+            Hand = new Hand();
             ActionCounter = new ActionCounter();
         }
 
-        public void Move(INode node)
+        internal void Move(Node node)
         {
-            INode departedNode = Location;
+            Node departedNode = Location;
             Location = node;
             if (Moved != null) Moved(this, new PlayerMovedEventArgs(departedNode, node));
         }
@@ -35,6 +38,6 @@ namespace Engine.Implementations
             return Name;
         }
 
-        public event EventHandler<PlayerMovedEventArgs> Moved;
+        internal event EventHandler<PlayerMovedEventArgs> Moved;
     }
 }

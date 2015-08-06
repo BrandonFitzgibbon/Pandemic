@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class DiseaseCounter : IDiseaseCounter, INotifyGameOver
+    public class DiseaseCounter
     {
-        private IEnumerable<INodeDiseaseCounter> nodeCounters;
+        private IEnumerable<NodeDiseaseCounter> nodeCounters;
 
-        public IDisease Disease { get; private set; }
+        public Disease Disease { get; private set; }
         public int Count { get; private set; }
 
-        public DiseaseCounter(IDisease disease, IEnumerable<INodeDiseaseCounter> nodeCounters)
+        public DiseaseCounter(Disease disease, IEnumerable<NodeDiseaseCounter> nodeCounters)
         {
             this.nodeCounters = nodeCounters;
 
             Disease = disease;
             Count = 24;
 
-            foreach (INodeDiseaseCounter nodeCounter in nodeCounters)
+            foreach (NodeDiseaseCounter nodeCounter in nodeCounters)
             {
                 nodeCounter.Infected += InfectionNotification;
                 nodeCounter.Treated += TreatmentNotification;
@@ -32,8 +32,8 @@ namespace Engine.Implementations
 
         private void OutbreakNotification(object sender, OutbreakEventArgs e)
         {
-            IEnumerable<INodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
-            foreach (INodeDiseaseCounter nodeCounter in outbreakCounters)
+            IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
+            foreach (NodeDiseaseCounter nodeCounter in outbreakCounters)
             {
                 nodeCounter.Infection(1);
             }
@@ -49,13 +49,13 @@ namespace Engine.Implementations
             Increase();
         }
 
-        public void Increase()
+        internal void Increase()
         {
             if (Count < 24)
                 Count++;
         }
 
-        public void Decrease()
+        internal void Decrease()
         {
             if (Count > 0)
                 Count--;

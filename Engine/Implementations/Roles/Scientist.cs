@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Scientist : Player, IScientist
+    internal class Scientist : Player
     {
-        public Scientist(string name, IHand hand) : base(name, hand) { }
+        public Scientist(string name) : base(name) { Role = "Scientist"; }
     }
 }

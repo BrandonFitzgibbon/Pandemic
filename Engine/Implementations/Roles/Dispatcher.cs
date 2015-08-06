@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Dispatcher : Player
+    internal class Dispatcher : Player
     {
-        public Dispatcher(string name, IHand hand) : base(name, hand) { }
+        public Dispatcher(string name) : base(name) { Role = "Dispatcher"; }
     }
 }

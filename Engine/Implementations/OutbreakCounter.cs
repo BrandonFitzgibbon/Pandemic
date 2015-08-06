@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class OutbreakCounter : ICount, INotifyGameOver
+    public class OutbreakCounter
     {
         public int Count { get; private set; }
 
-        public OutbreakCounter(IEnumerable<IOutbreak> outbreakNotifiers)
+        internal OutbreakCounter() { }
+
+        internal OutbreakCounter(IEnumerable<NodeDiseaseCounter> outbreakNotifiers)
         {
             Count = 0;
 
-            foreach (IOutbreak outbreak in outbreakNotifiers)
+            foreach (NodeDiseaseCounter ndc in outbreakNotifiers)
             {
-                outbreak.Outbreak += Outbreak;
+                ndc.Outbreak += Outbreak;
             }
         }
 

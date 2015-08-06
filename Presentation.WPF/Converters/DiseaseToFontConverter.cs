@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Presentation.WPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            IDisease disease = (IDisease)value;
+            Disease disease = (Disease)value;
             if (disease != null)
             {
                 switch (disease.Type)

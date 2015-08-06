@@ -84,6 +84,14 @@
                 <v:GameStatusView/>
             </DataTemplate>
             
+            <DataTemplate DataType="{x:Type i:PlayersViewModel}">
+                <v:PlayersView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:ActionsViewModel}">
+                <v:ActionsView/>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
     

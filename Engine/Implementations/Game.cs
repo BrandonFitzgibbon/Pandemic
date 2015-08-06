@@ -10,87 +10,58 @@ using System.Xml.Linq;
 
 namespace Engine.Implementations
 {
-    public class Game : IGame
+    public class Game
     {
-        private ActionManager actionManager;
-        
-        public IEnumerable<IDisease> Diseases { get; private set; }
-        public IEnumerable<IDiseaseCounter> DiseaseCounters { get; private set; }
-
-        private IEnumerable<NodeDiseaseCounter> nodeCounters;
-        public IEnumerable<INodeDiseaseCounter> NodeCounters
-        {
-            get { return nodeCounters; }
-        }
-
-        private IEnumerable<Node> nodes;
-        public IEnumerable<INode> Nodes
-        {
-            get { return nodes; }
-        }
-
-        private IEnumerable<Player> players;
-        public IEnumerable<IPlayer> Players
-        {
-            get { return players; }
-        }
-
-        public ICount OutbreakCounter { get; private set; }
-        public IInfectionRateCounter InfectionRateCounter { get; private set; }
+        public ActionManager ActionManager { get; private set; }
+        public IEnumerable<Disease> Diseases { get; private set; }
+        public IEnumerable<DiseaseCounter> DiseaseCounters { get; private set; }
+        public IEnumerable<NodeDiseaseCounter> NodeCounters { get; private set; }
+        public IEnumerable<Node> Nodes { get; private set; }
+        public IEnumerable<Player> Players { get; private set; }
+        public OutbreakCounter OutbreakCounter { get; private set; }
+        public InfectionRateCounter InfectionRateCounter { get; private set; }
 
         private IEnumerable<CityCard> cityCards;
         private IEnumerable<InfectionCard> infectionCards;
         private IEnumerable<EpidemicCard> epidemicCards;
 
         private PlayerDeck playerDeck;
-        public IDeck PlayerDeck
-        {
-            get { return playerDeck; }
-        }
-
         private InfectionDeck infectionDeck;
-        public IDeck InfectionDeck
-        {
-            get { return infectionDeck; }
-        }
  
         private PlayerQueue playerQueue;
-        
-        private Player currentPlayer;
-        public IPlayer CurrentPlayer
-        {
-            get { return currentPlayer; }
-        }
+
+        public Player CurrentPlayer { get; private set; }
 
         public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
             Diseases = dataAccess.GetDiseases();
             DiseaseCounters = dataAccess.GetDiseaseCounters();
-            this.nodes = dataAccess.GetNodes();
-            this.nodeCounters = dataAccess.GetNodeDiseaseCounters();
-            players = PlayerFactory.GetPlayers(playerNames);
+            Nodes = dataAccess.GetNodes();
+            NodeCounters = dataAccess.GetNodeDiseaseCounters();
+            Players = PlayerFactory.GetPlayers(playerNames);
 
             SubscribeNodesToMovers();
 
-            Implementations.OutbreakCounter outbreakCounter = new OutbreakCounter(nodeCounters);
+            Implementations.OutbreakCounter outbreakCounter = new OutbreakCounter(NodeCounters);
             outbreakCounter.GameOver += GameOver;
-            OutbreakCounter = outbreakCounter;
+            OutbreakCounter = OutbreakCounter;
 
             InfectionRateCounter = new InfectionRateCounter();
 
-            cityCards = GetCityCards(this.nodes);
-            infectionCards = GetInfectionCards(this.nodeCounters);            
+            cityCards = GetCityCards(Nodes);
+            infectionCards = GetInfectionCards(NodeCounters);            
 
             this.playerDeck = new PlayerDeck(cityCards.ToList());
             this.infectionDeck = new InfectionDeck(infectionCards.ToList());
 
-            epidemicCards = GetEpidemicCards((IIncrease)InfectionRateCounter, this.infectionDeck);
+            epidemicCards = GetEpidemicCards(InfectionRateCounter, this.infectionDeck);
 
             StartGame((int)difficulty);
 
-            this.playerQueue = new PlayerQueue(players.ToList());
+            this.playerQueue = new PlayerQueue(Players.ToList());
 
-            actionManager = new ActionManager();
+            ActionManager = new ActionManager();
+            NodeCounters.Single(i => i.Node.City.Name == "Atlanta" && i.Disease.Name == "Red").Infection(2);
 
             NextPlayer();
         }
@@ -107,9 +78,9 @@ namespace Engine.Implementations
         {
             foreach (Player player in playerQueue.NextPlayer)
             {
-                currentPlayer = player;
-                currentPlayer.ActionCounter.ResetActions();
-                actionManager.SetPlayer(currentPlayer, Nodes);
+                CurrentPlayer = player;
+                CurrentPlayer.ActionCounter.ResetActions();
+                ActionManager.SetPlayer(CurrentPlayer, Nodes, NodeCounters);
             }
         }
 
@@ -134,7 +105,7 @@ namespace Engine.Implementations
             return infectionCards;
         }
 
-        private IEnumerable<EpidemicCard> GetEpidemicCards(IIncrease infectionRateCounter, InfectionDeck infectionDeck)
+        private IEnumerable<EpidemicCard> GetEpidemicCards(InfectionRateCounter infectionRateCounter, InfectionDeck infectionDeck)
         {
             List<EpidemicCard> epidemicCards = new List<EpidemicCard>();
             for (int i = 0; i < 6; i++)
@@ -146,9 +117,9 @@ namespace Engine.Implementations
 
         private void SubscribeNodesToMovers()
         {
-            foreach (Node node in nodes)
+            foreach (Node node in Nodes)
             {
-                foreach (Player player in players)
+                foreach (Player player in Players)
                 {
                     node.SubscribeToMover(player);
                 }
@@ -157,9 +128,9 @@ namespace Engine.Implementations
 
         private void SetStartingLocation()
         {
-            Node atlanta = this.nodes.Single(i => i.City.Name == "Atlanta");
+            Node atlanta = Nodes.Single(i => i.City.Name == "Atlanta");
 
-            foreach (Player player in players)
+            foreach (Player player in Players)
             {
                 player.Move(atlanta);
             }
@@ -172,21 +143,21 @@ namespace Engine.Implementations
             //infect 3 cities with 3 counters each
             for (int i = 0; i < 3; i++)
             {
-                IInfectionCard card = (IInfectionCard)this.infectionDeck.Draw();
+                InfectionCard card = this.infectionDeck.Draw();
                 card.Infect(3);
             }
 
             //infection 3 cities with 2 counters each
             for (int i = 0; i < 3; i++)
             {
-                IInfectionCard card = (IInfectionCard)this.infectionDeck.Draw();
+                InfectionCard card = this.infectionDeck.Draw();
                 card.Infect(2);
             }
 
             //infection 3 cities with 1 counters each
             for (int i = 0; i < 3; i++)
             {
-                IInfectionCard card = (IInfectionCard)this.infectionDeck.Draw();
+                InfectionCard card = this.infectionDeck.Draw();
                 card.Infect(1);
             }
         }
@@ -213,7 +184,7 @@ namespace Engine.Implementations
             //issue initial cards
             while (i < 4)
             {
-                foreach (IPlayer player in Players)
+                foreach (Player player in Players)
                 {
                     player.Hand.AddToHand(this.playerDeck.Draw());
                 }

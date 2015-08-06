@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionCard : Card, IInfectionCard
+    public class InfectionCard : Card
     {
-        private INodeDiseaseCounter nodeDiseaseCounter;
+        private NodeDiseaseCounter nodeDiseaseCounter;
 
         public string Name
         {
             get { return nodeDiseaseCounter.Node.City.Name; }
         }
 
-        public IDisease Disease
+        public Disease Disease
         {
             get { return nodeDiseaseCounter.Node.Disease; }
         }
 
-        public InfectionCard(INodeDiseaseCounter nodeDiseaseCounter)
+        public InfectionCard(NodeDiseaseCounter nodeDiseaseCounter)
         {
             this.nodeDiseaseCounter = nodeDiseaseCounter;
         }
@@ -44,7 +44,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            IInfectionCard compareCard = (IInfectionCard)obj;
+            InfectionCard compareCard = (InfectionCard)obj;
             return compareCard != null ? compareCard.Name == this.Name : false;
         }
     }

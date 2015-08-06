@@ -1,4 +1,6 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
+using Engine.Implementations.ActionItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,31 +9,29 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations.ActionManagers
 {
-    public class DriveManager
+    internal class DriveManager
     {
         private Player player;
-        public Dictionary<INode, int> Destinations { get; private set; }
 
-        public DriveManager(Player player)
+        internal IEnumerable<DriveDestinationItem> Destinations { get; private set; }
+
+        internal DriveManager(Player player)
         {
             this.player = player;
-            player.Moved += PlayerMoved;
-            Destinations = GetDestinations(player.ActionCounter.Count);
+            this.player.Moved += PlayerMoved;
+            this.player.ActionCounter.ActionUsed += ActionUsed;
+            Update();
         }
 
-        internal bool CanDrive(INode node)
+        internal bool CanDrive(DriveDestinationItem driveDestinationItem)
         {
-            return Destinations.ContainsKey(node) && player.ActionCounter.Count >= Destinations[node];
+            return driveDestinationItem != null;
         }
 
-        internal void Drive(INode node)
+        internal void Drive(DriveDestinationItem driveDestinationItem)
         {
-            if (CanDrive(node))
-            {
-                player.ActionCounter.UseAction(Destinations[node]);
-                player.Move(node);
-                Update();
-            }
+            this.player.Location = driveDestinationItem.Node;
+            this.player.ActionCounter.UseAction(driveDestinationItem.Cost);
         }
 
         private void Update()
@@ -39,42 +39,46 @@ namespace Engine.Implementations.ActionManagers
             Destinations = GetDestinations(player.ActionCounter.Count);
         }
 
-        private void PlayerMoved(object sender, CustomEventArgs.PlayerMovedEventArgs e)
+        private void PlayerMoved(object sender, PlayerMovedEventArgs e)
         {
             Update();
         }
 
-        private Dictionary<INode, int> GetDestinations(int actionsLeft)
+        private void ActionUsed(object sender, EventArgs e)
         {
-            Dictionary<INode, int> destinations = new Dictionary<INode, int>();
+            Update();
+        }
+
+        private IEnumerable<DriveDestinationItem> GetDestinations(int actionsLeft)
+        {
+            List<DriveDestinationItem> destinations = new List<DriveDestinationItem>();
             AddDestinations(destinations, 1, actionsLeft, player.Location, player.Location);
             return destinations;
         }
 
-        private void AddDestinations(Dictionary<INode, int> dictionary, int cost, int actionsLeft, INode node, INode origin)
+        private void AddDestinations(List<DriveDestinationItem> items, int cost, int actionsLeft, Node node, Node origin)
         {
+            if (actionsLeft == 0)
+                return;
+
             int initialCost = cost;
 
-            foreach (INode connection in node.Connections)
+            foreach (Node connection in node.Connections)
             {
                 cost = initialCost;
 
                 if (connection == origin)
                     continue;
 
-                if (!dictionary.ContainsKey(connection))
-                {
-                    dictionary.Add(connection, cost);
-                }
-                else if(dictionary.ContainsKey(connection) && dictionary[connection] > cost)
-                {
-                    dictionary[connection] = cost;
-                }
+                if (items.Where(i => i.Node == connection).Count() == 0)
+                    items.Add(new DriveDestinationItem(connection, cost));
+                else if (items.SingleOrDefault(i => i.Node == connection) != null && items.Single(i => i.Node == connection).Cost > cost)
+                    items.Single(i => i.Node == connection).ChangeCost(cost);
 
                 cost++;
 
                 if (cost <= actionsLeft)
-                    AddDestinations(dictionary, cost, actionsLeft, connection, origin);
+                    AddDestinations(items, cost, actionsLeft, connection, origin);
             }
         }
     }

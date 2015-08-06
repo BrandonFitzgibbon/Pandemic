@@ -1,5 +1,4 @@
 ﻿using Engine.Contracts;
-using Engine.Contracts.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations.Roles
 {
-    public class QuarantineSpecialist : Player, IQuarantineSpecialist
+    internal class QuarantineSpecialist : Player
     {
-        public QuarantineSpecialist(string name, IHand hand) : base(name, hand) { }
+        public QuarantineSpecialist(string name) : base(name) { Role = "Quarantine Specialist"; }
     }
 }

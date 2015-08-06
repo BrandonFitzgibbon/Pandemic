@@ -8,45 +8,45 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Node : INode
+    public class Node
     {
-        public ICity City { get; private set; }
-        public IDisease Disease { get; private set; }
+        public City City { get; private set; }
+        public Disease Disease { get; private set; }
         public bool ResearchStation { get; internal set; }
 
-        private List<INode> connections;
-        public IEnumerable<INode> Connections
+        private List<Node> connections;
+        public IEnumerable<Node> Connections
         {
             get { return connections; }
         }
 
-        private List<IPlayer> players;
-        public IEnumerable<IPlayer> Players
+        private List<Player> players;
+        public IEnumerable<Player> Players
         {
             get { return players; }
         }
 
-        public Node(ICity city, IDisease disease)
+        public Node(City city, Disease disease)
         {
             City = city;
             Disease = disease;
-            connections = new List<INode>();
-            players = new List<IPlayer>();
+            connections = new List<Node>();
+            players = new List<Player>();
         }
 
-        public void Connect(INode node)
+        public void Connect(Node node)
         {
             this.connections.Add(node);
         }
 
-        public void SubscribeToMover(IMove mover)
+        public void SubscribeToMover(Player mover)
         {
             mover.Moved += moverMoved;
         }
 
         private void moverMoved(object sender, PlayerMovedEventArgs e)
         {
-            IPlayer player = sender as IPlayer;
+            Player player = sender as Player;
             if (player != null)
             {
                 if (e.DepartedNode == this)
@@ -58,7 +58,7 @@ namespace Engine.Implementations
 
         public override string ToString()
         {
-            return City.ToString();
+            return City.Name;
         }
 
         public override int GetHashCode()
@@ -68,7 +68,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            INode compareNode = (INode)obj;
+            Node compareNode = (Node)obj;
             return compareNode != null && compareNode.City != null ? compareNode.City == this.City : false;
         }
     }

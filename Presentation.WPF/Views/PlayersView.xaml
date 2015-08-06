@@ -35,10 +35,24 @@
             </Viewbox>
         </StackPanel>
         <Separator Grid.Row="1" HorizontalAlignment="Stretch"/>
-        <ListView Grid.Row="2" ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer}" Width="300" BorderBrush="Transparent" Background="Transparent">
+        <ListView Grid.Row="2" ItemsSource="{Binding Players}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding}"/>
+                    <StackPanel Background="Transparent">
+                        <TextBlock x:Name="text" Text="{Binding Name}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                                <ContentControl Content="{StaticResource id}"/>
+                            </Viewbox>
+                            <TextBlock Text="{Binding Role, StringFormat={} : {0}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                                <ContentControl Content="{StaticResource pin}"/>
+                            </Viewbox>
+                            <TextBlock Text="{Binding Location, StringFormat={} : {0}}"/>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>
@@ -80,7 +94,7 @@
             <Viewbox Height="25" Margin="15,0,0,0">
                 <ContentControl Content="{StaticResource actions}"/>
             </Viewbox>
-            <Label Content="{Binding CurrentPlayerActionsRemaining}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
+            <Label Content="{Binding CurrentPlayer.ActionCounter.Count}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
     

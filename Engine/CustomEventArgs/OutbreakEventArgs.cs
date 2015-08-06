@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Engine.CustomEventArgs
 {
     public class OutbreakEventArgs
     {
-        public INodeDiseaseCounter OriginCounter { get; private set; }
+        public NodeDiseaseCounter OriginCounter { get; private set; }
 
-        public OutbreakEventArgs(INodeDiseaseCounter originCounter)
+        public OutbreakEventArgs(NodeDiseaseCounter originCounter)
         {
             OriginCounter = originCounter;            
         }

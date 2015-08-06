@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class EpidemicCard : Card, IEpidemicCard
+    public class EpidemicCard : Card
     {
-        private IIncrease infectionRateCounter;
+        private InfectionRateCounter infectionRateCounter;
         private InfectionDeck infectionDeck;
 
-        public EpidemicCard(IIncrease infectionRateCounter, InfectionDeck infectionDeck)
+        public EpidemicCard(InfectionRateCounter infectionRateCounter, InfectionDeck infectionDeck)
         {
             this.infectionRateCounter = infectionRateCounter;
             this.infectionDeck = infectionDeck;
@@ -25,7 +25,7 @@ namespace Engine.Implementations
 
         public void Infect()
         {
-            IInfectionCard infectionCard = (IInfectionCard)infectionDeck.DrawBottom();
+            InfectionCard infectionCard = infectionDeck.DrawBottom();
             infectionCard.Infect(3);
         }
 

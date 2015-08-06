@@ -7,31 +7,32 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations.ActionManagers
 {
-    public class DirectFlightManager
+    internal class DirectFlightManager
     {
         private Player player;
-        public Dictionary<INode, ICityCard> Destinations { get; private set; }
 
-        public DirectFlightManager(Player player)
+        internal Dictionary<Node, CityCard> Destinations { get; private set; }
+
+        internal DirectFlightManager(Player player)
         {
             this.player = player;
-            player.Hand.HandChanged += HandChanged;
+            this.player.Hand.HandChanged += HandChanged;
+            this.player.ActionCounter.ActionUsed += ActionUsed;
             Destinations = GetDestinations(player.ActionCounter.Count, player.Hand);
         }
 
-        internal bool CanDirectFlight(INode node)
+        internal bool CanDirectFlight(Node node)
         {
             return Destinations.ContainsKey(node);
         }
 
-        internal void DirectFlight(ICityCard cityCard)
+        internal void DirectFlight(CityCard cityCard)
         {
             if (CanDirectFlight(cityCard.Node))
             {
-                player.ActionCounter.UseAction(1);
                 cityCard.Discard();
                 player.Move(cityCard.Node);
-                Update();
+                player.ActionCounter.UseAction(1);
             }
         }
 
@@ -45,14 +46,19 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private Dictionary<INode, ICityCard> GetDestinations(int actionsLeft, IHand hand)
+        private void ActionUsed(object sender, EventArgs e)
         {
-            Dictionary<INode, ICityCard> destinations = new Dictionary<INode, ICityCard>();
+            Update();
+        }
+
+        private Dictionary<Node, CityCard> GetDestinations(int actionsLeft, Hand hand)
+        {
+            Dictionary<Node, CityCard> destinations = new Dictionary<Node, CityCard>();
 
             if (actionsLeft <= 0)
                 return destinations;
 
-            foreach (ICityCard cityCard in hand.CityCards)
+            foreach (CityCard cityCard in hand.CityCards)
             {
                 destinations.Add(cityCard.Node, cityCard);
             }

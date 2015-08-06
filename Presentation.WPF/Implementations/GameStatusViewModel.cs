@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,15 @@ namespace Presentation.WPF.Implementations
 {
     public class GameStatusViewModel : ViewModelBase
     {
-        public ICount OutbreakCounter { get; private set; }
-        public IInfectionRateCounter InfectionRateCounter { get; private set; }
-        public IDiseaseCounter YellowCounter { get; private set; }
-        public IDiseaseCounter RedCounter { get; private set; }
-        public IDiseaseCounter BlueCounter { get; private set; }
-        public IDiseaseCounter BlackCounter { get; private set; }
+        public OutbreakCounter OutbreakCounter { get; private set; }
+        public InfectionRateCounter InfectionRateCounter { get; private set; }
+        public DiseaseCounter YellowCounter { get; private set; }
+        public DiseaseCounter RedCounter { get; private set; }
+        public DiseaseCounter BlueCounter { get; private set; }
+        public DiseaseCounter BlackCounter { get; private set; }
         public int InfectionCount { get; private set; }
 
-        public GameStatusViewModel(ICount outbreakCounter, IInfectionRateCounter infectionRateCounter, IDiseaseCounter yellowCounter, IDiseaseCounter redCounter, IDiseaseCounter blueCounter, IDiseaseCounter blackCounter)
+        public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, DiseaseCounter yellowCounter, DiseaseCounter redCounter, DiseaseCounter blueCounter, DiseaseCounter blackCounter)
         {
             OutbreakCounter = outbreakCounter;
             InfectionRateCounter = infectionRateCounter;

@@ -56,13 +56,17 @@
     <Compile Include="Context\ContextBase.cs" />
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
+    <Compile Include="Contracts\IActionsViewModel.cs" />
+    <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Controls\Icons.cs" />
     <Compile Include="Converters\DiseaseStatusToIconConverter.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
     <Compile Include="Converters\InfectionCountToBoolean.cs" />
+    <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
+    <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
     <Compile Include="Views\ActionsView.xaml.cs">
       <DependentUpon>ActionsView.xaml</DependentUpon>
@@ -84,9 +88,6 @@
     </Compile>
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlayerView.xaml.cs">
-      <DependentUpon>PlayerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Icons.xaml">
       <SubType>Designer</SubType>
@@ -136,10 +137,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PlayerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -176,10 +173,6 @@
     <ProjectReference Include="..\Engine\Engine.csproj">
       <Project>{c72d0eca-4385-4332-bfe8-5cf3856c707a}</Project>
       <Name>Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Validation\Validation.csproj">
-      <Project>{5a359aab-8fdf-41c3-9cc8-596395e15d84}</Project>
-      <Name>Validation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
