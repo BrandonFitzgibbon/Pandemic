@@ -7,78 +7,38 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class Disease : IDisease
+    public class Disease
     {
-        private string name;
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        private DiseaseType type;
-        public DiseaseType Type
-        {
-            get { return type; }
-        }
-
-        private int count;
-        public int Count
-        {
-            get { return count; }
-        }
-
-        private bool isCured;
-        public bool IsCured
-        {
-            get { return isCured; }
-        }
-
-        private bool isEradicated;
-        public bool IsEradicated
-        {
-            get { return isEradicated; }
-        }
+        public string Name { get; private set; }
+        public DiseaseType Type { get; private set; }
+        public bool IsCured { get; internal set; }
+        public bool IsEradicated { get; internal set; }
 
         public Disease(string name, DiseaseType type)
         {
-            this.name = name;
-            this.type = type;
-            count = 24;
+            this.Name = name;
+            this.Type = type;
         }
 
         public override string ToString()
         {
-            return name;
+            return Name;
         }
 
         public override int GetHashCode()
         {
-            return name.GetHashCode();
+            return Type.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            IDisease equalsTarget = (IDisease)obj;
-            if (equalsTarget != null)
-                return equalsTarget.Type == this.Type;
-            return false;
+            Disease compareDisease = (Disease)obj;
+            return compareDisease != null ? compareDisease.Type == this.Type : false;
         }
+    }
 
-        public void Decrease()
-        {
-            if (count > 0)
-                count--;
-            else
-                if (GameOver != null) GameOver(this, EventArgs.Empty);
-        }
-
-        public void Increase()
-        {
-            if (count < 24)
-                count++;
-        }
-
-        public event EventHandler GameOver;
+    public enum DiseaseType
+    {
+        Yellow, Red, Blue, Black
     }
 }

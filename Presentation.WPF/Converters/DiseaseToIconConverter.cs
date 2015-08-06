@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using Presentation.WPF.Controls;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Presentation.WPF.Converters
         {
             if (value == null)
                 return null;
-            IDisease disease = (IDisease)value;
+            Disease disease = (Disease)value;
             Icons icons = new Icons();
             switch(disease.Type)
             {

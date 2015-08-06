@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +10,11 @@ namespace Engine.CustomEventArgs
 {
     public class OutbreakEventArgs
     {
-        private ICity outbreakOrigin;
-        public ICity OutbreakOrigin
-        {
-            get { return OutbreakOrigin; }
-        }
+        public NodeDiseaseCounter OriginCounter { get; private set; }
 
-        private IDisease outbreakDisease;
-        public IDisease OutbreakDisease
+        public OutbreakEventArgs(NodeDiseaseCounter originCounter)
         {
-            get { return outbreakDisease; }
-        }
-
-        public OutbreakEventArgs(ICity outbreakOrigin, IDisease outbreakDisease)
-        {
-            this.outbreakOrigin = outbreakOrigin;
-            this.outbreakDisease = outbreakDisease;
+            OriginCounter = originCounter;            
         }
     }
 }

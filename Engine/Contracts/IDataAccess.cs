@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace Engine.Contracts
 {
     public interface IDataAccess
     {
-        IList<IDisease> GetDiseases();
-        IList<ICity> GetCities();
+        IEnumerable<Disease> GetDiseases();
+        IEnumerable<Node> GetNodes();
+        IEnumerable<DiseaseCounter> GetDiseaseCounters();
+        IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounters();
     }
 }

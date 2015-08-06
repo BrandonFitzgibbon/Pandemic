@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionDeck : IInfectionDeck
+    public class InfectionDeck
     {
-        private Stack<ICard> cardPile;
-        private Stack<ICard> discardPile;
+        private Stack<InfectionCard> cardPile;
+        private Stack<InfectionCard> discardPile;
 
-        public InfectionDeck(IList<IInfectionCard> infectionCards)
+        public InfectionDeck(IList<InfectionCard> infectionCards)
         {
             infectionCards.Shuffle();
-            foreach (IInfectionCard card in infectionCards)
+            foreach (InfectionCard card in infectionCards)
             {
                 card.Discarded += CardDiscarded;
             }
-            cardPile = new Stack<ICard>(infectionCards);
-            discardPile = new Stack<ICard>();
+            cardPile = new Stack<InfectionCard>(infectionCards);
+            discardPile = new Stack<InfectionCard>();
         }
 
-        public ICard Draw()
+        public InfectionCard Draw()
         {
             if (cardPile.Count > 0)
                 return cardPile.Pop();
@@ -33,41 +33,40 @@ namespace Engine.Implementations
                 return null;
         }
 
-        public ICard DrawBottom()
+        public InfectionCard DrawBottom()
         {
             if (cardPile.Count > 0)
             {
-                ICard drawn = cardPile.Last();
-                List<ICard> cards = new List<ICard>(cardPile.ToList());
+                InfectionCard drawn = cardPile.Last();
+                List<InfectionCard> cards = new List<InfectionCard>(cardPile.ToList());
                 cards.Remove(drawn);
                 cards.Reverse();
-                cardPile = new Stack<ICard>(cards);
+                cardPile = new Stack<InfectionCard>(cards);
                 return drawn;
             }
             else
                 return null;
         }
 
-        private void ShuffleDiscardPileOntoCardPile()
+        private void CardDiscarded(object sender, DiscardedEventArgs e)
         {
-            List<ICard> cards = discardPile.ToList();
+            discardPile.Push((InfectionCard)e.Card);
+        }
+
+        public void Intensify()
+        {
+            List<InfectionCard> cards = discardPile.ToList();
             cards.Shuffle();
             cards.Reverse();
             for (int i = cards.Count - 1; i >= 0; i--)
             {
                 cardPile.Push(cards[i]);
             }
-            discardPile = new Stack<ICard>();
+            discardPile = new Stack<InfectionCard>();
+
+            if (Intensified != null) Intensified(this, EventArgs.Empty);
         }
 
-        private void CardDiscarded(object sender, DiscardedEventArgs e)
-        {
-            discardPile.Push(e.Card);
-        }
-
-        public void Intensify()
-        {
-            ShuffleDiscardPileOntoCardPile();
-        }
+        public event EventHandler Intensified;
     }
 }

@@ -1,18 +1,17 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
+using Presentation.WPF.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Presentation.WPF.Contracts
 {
     public interface IPlayersViewModel : IViewModelBase
     {
-        IEnumerable<IPlayerViewModel> Players { get; }
-        IPlayerViewModel SelectedPlayer { get; set; }
-        IPlayer CurrentPlayer { get; }
-        int CurrentPlayerActionsRemaining { get; }
+        Player CurrentPlayer { get; }
+        IEnumerable<Player> Players { get; }
     }
 }

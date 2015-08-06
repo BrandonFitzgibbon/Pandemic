@@ -1,5 +1,6 @@
 ﻿using Engine.Contracts;
 using Engine.Implementations;
+using Engine.Implementations.Roles;
 using Engine.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Engine.Factories
 {
-    public class PlayerFactory : IPlayerFactory
+    public static class PlayerFactory
     {
-        private List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist" };
+        private static List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist", "QuarantineSpecialist" };
 
-        public IList<IPlayer> GetPlayers(IList<string> names)
+        public static IEnumerable<Player> GetPlayers(IList<string> names)
         {
-            List<IPlayer> players = new List<IPlayer>();
+            List<Player> players = new List<Player>();
             roles.Shuffle();
             Stack<string> roleStack = new Stack<string>(roles);
             foreach (string name in names)
@@ -31,6 +32,9 @@ namespace Engine.Factories
                         break;
                     case "Scientist":
                         players.Add(new Scientist(name));
+                        break;
+                    case "QuarantineSpecialist":
+                        players.Add(new QuarantineSpecialist(name));
                         break;
                 }
             }

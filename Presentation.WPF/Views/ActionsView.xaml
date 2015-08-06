@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:c="clr-namespace:Presentation.WPF.Converters"
+             xmlns:e="clr-namespace:Engine.Implementations;assembly=Engine"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Margin="5,0,5,0">
     
     <UserControl.Resources>
 
@@ -63,11 +64,11 @@
                 </Border>
 
             </Grid>
-        </ControlTemplate>
+        </ControlTemplate>      
 
     </UserControl.Resources>
 
-    <TabControl Grid.Row="5" Width="275" Margin="0,5,0,5" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Loaded="TabControl_Loaded">
+    <TabControl Grid.Row="5" MinWidth="275" Margin="0,5,0,5" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Loaded="TabControl_Loaded">
         <TabControl.Resources>
             <Style TargetType="TabItem">
                 <Setter Property="Template">
@@ -138,9 +139,9 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Key.Name}"/>
+                                <TextBlock Text="{Binding Node}"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <TextBlock x:Name="Text" Text="{Binding Value}"/>
+                                    <TextBlock x:Name="Text" Text="{Binding Cost}"/>
                                     <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
                                         <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
                                     </Viewbox>
@@ -154,7 +155,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem.Key}">
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="Drive"/>
@@ -184,14 +185,14 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DiseaseTreatmentOptions.Count}" Value="0">
+                                <DataTrigger Binding="{Binding TreatmentTargets.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <ListBox x:Name="LocationDiseaseCounters" Margin="5,0,5,0" ItemsSource="{Binding DiseaseTreatmentOptions}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListBox x:Name="LocationDiseaseCounters" Margin="5,0,5,0" ItemsSource="{Binding TreatmentTargets}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -201,7 +202,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="0,3,4,0">
-                                        <ContentControl Content="{Binding Key, Converter={StaticResource DiseaseToIconConverter}}"/>
+                                        <ContentControl Content="{Binding NodeDiseaseCounter.Disease , Converter={StaticResource DiseaseToIconConverter}}"/>
                                     </Viewbox>
                                     <TextBlock Text="{Binding Value}"/>
                                 </StackPanel>

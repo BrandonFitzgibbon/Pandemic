@@ -1,4 +1,5 @@
-﻿using Engine.Contracts;
+﻿using Engine.Implementations;
+using Engine.Implementations.ActionItems;
 using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
 using System;
@@ -12,67 +13,49 @@ namespace Presentation.WPF.Implementations
 {
     public class ActionsViewModel : ViewModelBase, IActionsViewModel
     {
-        IContext<IActions> actionContext;
-        IContext<IPlayer> currentPlayerContext;
+        private IContext<ActionManager> actionManager;
 
-        public IDictionary<ICity, int> DriveDestinations
+        public ActionManager ActionManager
         {
-            get { return actionContext.Context.DriveDestinations; }
+            get { return actionManager != null ? actionManager.Context : null; }
         }
 
-        public IDictionary<IDisease, int> DiseaseTreatmentOptions
+        public IEnumerable<DriveDestinationItem> DriveDestinations
         {
-            get { return actionContext.Context.DiseaseTreatmentOptions; }
+            get { return ActionManager != null ? ActionManager.DriveDestinations : null; }
         }
 
-        public ActionsViewModel(IContext<IActions> actionContext, IContext<IPlayer> currentPlayerContext)
+        public ActionsViewModel(IContext<ActionManager> actionManager)
         {
-            this.actionContext = actionContext;
-            this.currentPlayerContext = currentPlayerContext;
+            this.actionManager = actionManager;
+            this.actionManager.ContextChanged += ContextChanged;
+        }
+
+        private void ContextChanged(object sender, ContextChangedEventArgs<ActionManager> e)
+        {
+            NotifyPropertyChanged("ActionManager");
         }
 
         private RelayCommand driveCommand;
         public ICommand DriveCommand
         {
-            get
+            get 
             {
                 if (driveCommand == null)
-                    driveCommand = new RelayCommand(driveDestination => Drive((ICity)driveDestination), driveDestination => CanDrive((ICity)driveDestination));
+                    driveCommand = new RelayCommand(ddi => Drive((DriveDestinationItem)ddi), ddi => CanDrive((DriveDestinationItem)ddi));
                 return driveCommand;
             }
         }
 
-        private void Drive(ICity destination)
+        private bool CanDrive(DriveDestinationItem ddi)
         {
-            actionContext.Context.Drive.Invoke(destination);
+            return ActionManager.CanDrive(ddi);
+        }
+
+        private void Drive(DriveDestinationItem ddi)
+        {
+            ActionManager.Drive(ddi);
             RaiseChangeNotificationRequested();
-        }
-
-        private bool CanDrive(ICity destination)
-        {
-            return actionContext.Context.CanDrive(destination);
-        }
-
-        private RelayCommand treatDiseaseCommand;
-        public ICommand TreatDiseaseCommand
-        {
-            get
-            {
-                if (treatDiseaseCommand == null)
-                    treatDiseaseCommand = new RelayCommand(disease => TreatDisease((IDisease)disease), disease => CanTreatDisease((IDisease)disease));
-                return treatDiseaseCommand;
-            }
-        }
-
-        private void TreatDisease(IDisease disease)
-        {
-            actionContext.Context.TreatDisease.Invoke(disease, currentPlayerContext.Context.Location);
-            RaiseChangeNotificationRequested();
-        }
-
-        private bool CanTreatDisease(IDisease disease)
-        {
-            return disease != null; 
         }
     }
 }

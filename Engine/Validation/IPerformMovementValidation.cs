@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.WPF.Contracts
+namespace Engine.Validation
 {
-    public interface IMainViewModel
+    public interface IPerformMovementValidation
     {
 
     }

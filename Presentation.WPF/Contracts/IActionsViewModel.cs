@@ -1,4 +1,4 @@
-﻿using Engine.Contracts;
+﻿using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,7 @@ namespace Presentation.WPF.Contracts
 {
     public interface IActionsViewModel : IViewModelBase
     {
-        IDictionary<ICity, int> DriveDestinations { get; }
-        IDictionary<IDisease, int> DiseaseTreatmentOptions { get; }
+        ActionManager ActionManager { get; }
         ICommand DriveCommand { get; }
-        ICommand TreatDiseaseCommand { get; }
     }
 }

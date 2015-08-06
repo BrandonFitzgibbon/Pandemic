@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +10,22 @@ namespace Engine.CustomEventArgs
 {
     public class PlayerMovedEventArgs : EventArgs
     {
-        private ICity departedCity;
-        public ICity DepartedCity
+        private Node departedNode;
+        public Node DepartedNode
         {
-            get { return departedCity; }
+            get { return departedNode; }
         }
 
-        private ICity arrivedCity;
-        public ICity ArrivedCity
+        private Node arrivedNode;
+        public Node ArrivedNode
         {
-            get { return arrivedCity; }
+            get { return arrivedNode; }
         }
 
-        public PlayerMovedEventArgs(ICity departedCity, ICity arrivedCity)
+        public PlayerMovedEventArgs(Node departedCity, Node arrivedCity)
         {
-            this.departedCity = departedCity;
-            this.arrivedCity = arrivedCity;
+            this.departedNode = departedCity;
+            this.arrivedNode = arrivedCity;
         }
     }
 }

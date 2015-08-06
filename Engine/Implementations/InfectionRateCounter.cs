@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class InfectionRateCounter : IInfectionRateCounter
+    public class InfectionRateCounter
     {
         public InfectionRateCounter()
         {
@@ -49,7 +49,12 @@ namespace Engine.Implementations
         public void Increase()
         {
             if (count < 6)
+            {
                 count++;
+                if (Increased != null) Increased(this, EventArgs.Empty);
+            }
         }
+
+        public event EventHandler Increased;
     }
 }

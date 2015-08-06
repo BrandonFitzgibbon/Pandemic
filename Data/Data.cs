@@ -12,13 +12,15 @@ namespace DataAccess
 {
     public class Data : IDataAccess
     {
-        private List<IDisease> diseases;
-        private List<ICity> cities;
-        private Dictionary<ICity, IList<string>> connectionDictionary;
+        private List<Disease> diseases;
+        private List<Node> nodes;
+        private List<NodeDiseaseCounter> nodeCounters;
+        private List<DiseaseCounter> diseaseCounters;
+        private Dictionary<Node, IList<string>> connectionDictionary;
 
         public Data()
         {
-            diseases = new List<IDisease>()
+            diseases = new List<Disease>()
             {
                 new Disease("Yellow", DiseaseType.Yellow),
                 new Disease("Red", DiseaseType.Red),
@@ -26,9 +28,9 @@ namespace DataAccess
                 new Disease("Black", DiseaseType.Black)
             };
 
-            cities = new List<ICity>();
+            nodes = new List<Node>();
 
-            connectionDictionary = new Dictionary<ICity, IList<string>>();
+            connectionDictionary = new Dictionary<Node, IList<string>>();
 
             XDocument xmlCities = XDocument.Load("Cities.XML");
             foreach (XElement city in xmlCities.Descendants("City"))
@@ -43,34 +45,58 @@ namespace DataAccess
                     connectionNames.Add(con.Value);
                 }
 
-                ICity newCity = new City(cityName, countryName, population, diseases.Single(i => i.Type.ToString() == cityDisease), new DiseaseCounterFactory(diseases));
-                cities.Add(newCity);
-                connectionDictionary.Add(newCity, connectionNames);
+                Node newNode = new Node(new City(cityName, countryName, population), diseases.Single(i => i.Type.ToString() == cityDisease));
+                nodes.Add(newNode);
+                connectionDictionary.Add(newNode, connectionNames);
             }
 
-            foreach (ICity city in cities)
+            nodeCounters = new List<NodeDiseaseCounter>();
+
+            foreach (Node node in nodes)
             {
-                foreach (string cityName in ResolveCityConnections(city))
+                foreach (string cityName in ResolveCityConnections(node))
                 {
-                    city.Connect(cities.Single(i => i.Name == cityName));
+                    node.Connect(nodes.Single(i => i.City.Name == cityName));
                 }
+
+                foreach (Disease disease in diseases)
+                {
+                    nodeCounters.Add(new NodeDiseaseCounter(disease, node));
+                }
+            }
+
+            diseaseCounters = new List<DiseaseCounter>();
+
+            foreach (Disease disease in diseases)
+            {
+               diseaseCounters.Add(new DiseaseCounter(disease, nodeCounters.Where(i => i.Disease == disease).ToList()));
             }
 
         }
 
-        public IList<IDisease> GetDiseases()
+        private IList<string> ResolveCityConnections(Node node)
+        {
+            return connectionDictionary[node];
+        }
+
+        public IEnumerable<Disease> GetDiseases()
         {
             return this.diseases;
         }
 
-        public IList<ICity> GetCities()
+        public IEnumerable<Node> GetNodes()
         {
-            return this.cities;
+            return this.nodes;
         }
 
-        private IList<string> ResolveCityConnections(ICity city)
+        public IEnumerable<DiseaseCounter> GetDiseaseCounters()
         {
-            return connectionDictionary[city];
+            return this.diseaseCounters;
+        }
+
+        public IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounters()
+        {
+            return this.nodeCounters;
         }
     }
 }

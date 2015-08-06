@@ -8,36 +8,31 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class OutbreakCounter : IOutbreakCounter
+    public class OutbreakCounter
     {
-        private int count;
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count { get; private set; }
 
-        public OutbreakCounter(IList<ICity> cities)
-        {
-            this.count = 0;
+        internal OutbreakCounter() { }
 
-            foreach (ICity city in cities)
+        internal OutbreakCounter(IEnumerable<NodeDiseaseCounter> outbreakNotifiers)
+        {
+            Count = 0;
+
+            foreach (NodeDiseaseCounter ndc in outbreakNotifiers)
             {
-                foreach (IDiseaseCounter diseaseCounter in city.Counters)
-                {
-                    diseaseCounter.Outbreak += diseaseCounterOutbreak;
-                }
+                ndc.Outbreak += Outbreak;
             }
         }
 
-        private void diseaseCounterOutbreak(object sender, OutbreakEventArgs e)
+        private void Outbreak(object sender, OutbreakEventArgs e)
         {
             Increase();
         }
 
         private void Increase()
         {
-            if (count < 7)
-                count++;
+            if (Count < 7)
+                Count++;
             else
                 if (GameOver != null) GameOver(this, EventArgs.Empty);
         }

@@ -9,37 +9,22 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray">
+        <Border Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0,0,0,1">
             <ContentControl Content="{Binding GameStatusViewModel}"/>
         </Border>
-        <Border Grid.Row="1" Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="Gray">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <ContentControl Content="{Binding PlayersViewModel}"/>
-                <ContentControl Grid.Row="1" Content="{Binding ActionsViewModel}"/>
-            </Grid>
-        </Border>
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="250"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <ContentControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="10" Content="{Binding BoardViewModel}"/>
-            <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Width="250" BorderThickness="1,0,0,0" BorderBrush="Gray">
-                <ContentControl Content="{Binding DeckViewModel}"/>
+            <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
+                <ContentControl Content="{Binding PlayersViewModel}"/>
             </Border>
-            <Border Grid.Row="1" Grid.Column="0">
-                <ContentControl  Content="{Binding HandViewModel}"/>
+            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
+                <ContentControl Content="{Binding ActionsViewModel}"/>
             </Border>
         </Grid>
     </Grid>

@@ -7,35 +7,29 @@ using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
-    public class CityCard : Card, ICityCard
+    public class CityCard : Card
     {
-        private ICity city;
-        public ICity City
-        {
-            get { return city; }
-        }
+        public Node Node { get; internal set; }
 
-        public CityCard(ICity city)
+        public CityCard(Node node)
         {
-            this.city = city;
+            Node = node;
         }
 
         public override string ToString()
         {
-            return city.ToString();
+            return Node.ToString();
         }
 
         public override int GetHashCode()
         {
-            return city.GetHashCode();
+            return Node.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
-            ICityCard compare = obj as ICityCard;
-            if (compare != null)
-                return city.Equals(compare.City);
-            return false;
+            CityCard compare = obj as CityCard;
+            return compare != null ? compare.Node == Node : false;
         }
     }
 }

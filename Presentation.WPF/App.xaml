@@ -78,38 +78,18 @@
                         <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Population, StringFormat={}{0:###,###,###}}" FontSize="12" Margin="3"/>
                     </StackPanel>
                 </Grid>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type i:BoardViewModel}">
-                <v:BoardView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type i:HandViewModel}">
-                <v:HandView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type i:PlayersViewModel}">
-                <v:PlayersView/>
-            </DataTemplate>
+            </DataTemplate>         
             
             <DataTemplate DataType="{x:Type i:GameStatusViewModel}">
                 <v:GameStatusView/>
             </DataTemplate>
             
-            <DataTemplate DataType="{x:Type i:PlayerViewModel}">
-                <v:PlayerView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type i:DeckViewModel}">
-                <v:DeckView/>
+            <DataTemplate DataType="{x:Type i:PlayersViewModel}">
+                <v:PlayersView/>
             </DataTemplate>
             
             <DataTemplate DataType="{x:Type i:ActionsViewModel}">
                 <v:ActionsView/>
-            </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type i:InfectionCardViewModel}">
-                <v:InfectionCardView/>
             </DataTemplate>
             
         </ResourceDictionary>
