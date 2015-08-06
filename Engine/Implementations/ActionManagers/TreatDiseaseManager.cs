@@ -21,11 +21,14 @@ namespace Engine.Implementations.ActionManagers
             this.player = player;
             this.nodeDiseaseCounters = nodeDiseaseCounters;
             this.player.Moved += PlayerMoved;
+            this.player.ActionCounter.ActionUsed += ActionUsed;
             Update();
         }
 
         internal void Treat(TreatDiseaseItem treatDiseaseItem)
         {
+            treatDiseaseItem.NodeDiseaseCounter.Treatment(treatDiseaseItem.TreatmentValue);
+            player.ActionCounter.UseAction(treatDiseaseItem.Cost);         
         }
 
         internal void Update()
@@ -47,8 +50,10 @@ namespace Engine.Implementations.ActionManagers
         {
             List<TreatDiseaseItem> targets = new List<TreatDiseaseItem>();
 
+            if (player.ActionCounter.Count <= 0 || nodeDiseaseCounters.Where(i => i.Node == player.Location).Sum(i => i.Count) == 0)
                 return targets;
 
+            foreach (NodeDiseaseCounter ndc in nodeDiseaseCounters.Where(i => i.Node == player.Location))
             {
                 if (ndc.Count > 0)
                 {
@@ -70,4 +75,3 @@ namespace Engine.Implementations.ActionManagers
         }
     }
 }
-
