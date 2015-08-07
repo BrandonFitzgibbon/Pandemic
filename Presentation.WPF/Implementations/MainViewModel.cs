@@ -26,19 +26,21 @@ namespace Presentation.WPF.Implementations
             set { gameStatusViewModel = value; NotifyPropertyChanged(); }
         }
 
-        private PlayersViewModel playersViewModel;
-        public PlayersViewModel PlayersViewModel
+        private IPlayersViewModel playersViewModel;
+        public IPlayersViewModel PlayersViewModel
         {
             get { return playersViewModel; }
             set { playersViewModel = value; NotifyPropertyChanged(); }
         }
 
-        private ActionsViewModel actionsViewModel;
-        public ActionsViewModel ActionsViewModel
+        private IActionsViewModel actionsViewModel;
+        public IActionsViewModel ActionsViewModel
         {
             get { return actionsViewModel; }
             set { actionsViewModel = value; NotifyPropertyChanged(); }
         }
+
+        private IEnumerable<IPlayerViewModel> playerViewModels;
 
         public MainViewModel()
         {
@@ -51,13 +53,15 @@ namespace Presentation.WPF.Implementations
             actionManager = new ObjectContext<ActionManager>();
             actionManager.Context = game.ActionManager;
 
+            playerViewModels = CreatePlayerViewModels(game.Players);
+
             GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
                 game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Yellow), 
                 game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Red), 
                 game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Blue), 
                 game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Black));
 
-            PlayersViewModel = new PlayersViewModel(game.Players, currentPlayer);
+            PlayersViewModel = new PlayersViewModel(currentPlayer, playerViewModels);
             ActionsViewModel = new ActionsViewModel(actionManager);
 
             GameStatusViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
@@ -65,11 +69,28 @@ namespace Presentation.WPF.Implementations
             ActionsViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
         }
 
-        private void ChangeNotificationRequested(object sender, EventArgs e)
+        private IEnumerable<IPlayerViewModel> CreatePlayerViewModels(IEnumerable<Player> players)
+        {
+            List<IPlayerViewModel> playerViewModels = new List<IPlayerViewModel>();
+            foreach (Player player in players)
+            {
+                PlayerViewModel pvm = new PlayerViewModel(player);
+                pvm.ChangeNotificationRequested += ChangeNotificationRequested;
+                playerViewModels.Add(pvm);
+            }
+            return playerViewModels;
+        }
+
+        private new void ChangeNotificationRequested(object sender, EventArgs e)
         {
             GameStatusViewModel.NotifyChanges();
             PlayersViewModel.NotifyChanges();
             ActionsViewModel.NotifyChanges();
+
+            foreach (IPlayerViewModel playerViewModel in playerViewModels)
+            {
+                playerViewModel.NotifyChanges();
+            }
         }
     }
 }

@@ -56,12 +56,13 @@ namespace Engine.Implementations
 
             epidemicCards = GetEpidemicCards(InfectionRateCounter, this.infectionDeck);
 
+            NodeCounters.Single(i => i.Node.City.Name == "Atlanta" && i.Disease.Name == "Red").Infection(3);
+
             StartGame((int)difficulty);
 
             this.playerQueue = new PlayerQueue(Players.ToList());
 
             ActionManager = new ActionManager();
-            NodeCounters.Single(i => i.Node.City.Name == "Atlanta" && i.Disease.Name == "Red").Infection(2);
 
             NextPlayer();
         }

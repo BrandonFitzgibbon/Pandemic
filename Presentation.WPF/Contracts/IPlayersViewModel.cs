@@ -1,6 +1,7 @@
 ﻿using Engine.Contracts;
 using Engine.Implementations;
 using Presentation.WPF.Context;
+using Presentation.WPF.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace Presentation.WPF.Contracts
     public interface IPlayersViewModel : IViewModelBase
     {
         Player CurrentPlayer { get; }
-        IEnumerable<Player> Players { get; }
+        IEnumerable<IPlayerViewModel> PlayerViewModels { get; }
     }
 }

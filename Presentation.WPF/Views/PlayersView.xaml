@@ -35,7 +35,7 @@
             </Viewbox>
         </StackPanel>
         <Separator Grid.Row="1" HorizontalAlignment="Stretch"/>
-        <ListView Grid.Row="2" ItemsSource="{Binding Players}" BorderBrush="Transparent" Background="Transparent">
+        <ListView Grid.Row="2" ItemsSource="{Binding PlayerViewModels}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Background="Transparent">

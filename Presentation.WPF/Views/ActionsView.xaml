@@ -207,7 +207,7 @@
                                     <TextBlock Text="{Binding Value}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <TextBlock x:Name="Text" Text="{Binding Cost}"/>
                                     <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
                                         <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
                                     </Viewbox>
@@ -221,7 +221,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding TreatDiseaseCommand}" CommandParameter="{Binding ElementName=LocationDiseaseCounters, Path=SelectedItem.Key}">
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding TreatCommand}" CommandParameter="{Binding ElementName=LocationDiseaseCounters, Path=SelectedItem}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="Treat Disease"/>

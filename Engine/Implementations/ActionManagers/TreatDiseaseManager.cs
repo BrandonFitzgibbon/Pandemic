@@ -25,6 +25,11 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
+        internal bool CanTreat(TreatDiseaseItem treatDiseaseItem)
+        {
+            return treatDiseaseItem != null;
+        }
+
         internal void Treat(TreatDiseaseItem treatDiseaseItem)
         {
             treatDiseaseItem.NodeDiseaseCounter.Treatment(treatDiseaseItem.TreatmentValue);
@@ -59,13 +64,15 @@ namespace Engine.Implementations.ActionManagers
                 {
                     if(ndc.Disease.IsCured || player is Medic)
                     {
-                        targets.Add(new TreatDiseaseItem(ndc, ndc.Count, 1));
+                        if (player.ActionCounter.Count >= 1)
+                            targets.Add(new TreatDiseaseItem(ndc, ndc.Count, 1));
                     }
                     else
                     {
                         for (int i = 1; i <= ndc.Count; i++)
                         {
-                            targets.Add(new TreatDiseaseItem(ndc, i, i));
+                            if(i <= player.ActionCounter.Count)
+                                targets.Add(new TreatDiseaseItem(ndc, i, i));
                         }
                     }
                 }

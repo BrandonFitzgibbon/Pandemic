@@ -25,6 +25,11 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.DriveDestinations : null; }
         }
 
+        public IEnumerable<TreatDiseaseItem> TreatmentTargets
+        {
+            get { return ActionManager != null ? ActionManager.TreatmentTargets : null; }
+        }
+
         public ActionsViewModel(IContext<ActionManager> actionManager)
         {
             this.actionManager = actionManager;
@@ -55,6 +60,28 @@ namespace Presentation.WPF.Implementations
         private void Drive(DriveDestinationItem ddi)
         {
             ActionManager.Drive(ddi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand treatCommand;
+        public ICommand TreatCommand
+        {
+            get 
+            {
+                if (treatCommand == null)
+                    treatCommand = new RelayCommand(tdi => Treat((TreatDiseaseItem)tdi), tdi => CanTreat((TreatDiseaseItem)tdi));
+                return treatCommand;
+            }
+        }
+
+        private bool CanTreat(TreatDiseaseItem tdi)
+        {
+           return ActionManager.CanTreatDisease(tdi);
+        }
+
+        private void Treat(TreatDiseaseItem tdi)
+        {
+            ActionManager.TreatDisease(tdi);
             RaiseChangeNotificationRequested();
         }
     }

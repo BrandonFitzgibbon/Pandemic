@@ -45,7 +45,7 @@ namespace Engine.Implementations
             get { return shuttleFlightManager != null ? shuttleFlightManager.Destinations : null; }
         }
 
-        public Func<NodeDiseaseCounter, bool> CanTreatDisease { get; private set; }
+        public Func<TreatDiseaseItem, bool> CanTreatDisease { get; private set; }
         public Action<TreatDiseaseItem> TreatDisease { get; private set; }
         public IEnumerable<TreatDiseaseItem> TreatmentTargets
         {
@@ -71,6 +71,7 @@ namespace Engine.Implementations
             ShuttleFlight = shuttleFlightManager.ShuttleFlight;
 
             treatDiseaseManager = new TreatDiseaseManager(player, nodeDiseaseCounters);
+            CanTreatDisease = treatDiseaseManager.CanTreat;
             TreatDisease = treatDiseaseManager.Treat;
         }
     }
