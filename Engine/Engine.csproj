@@ -45,6 +45,7 @@
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\ActionCounter.cs" />
+    <Compile Include="Implementations\ActionItems\DirectFlightItem.cs" />
     <Compile Include="Implementations\ActionItems\DriveDestinationItem.cs" />
     <Compile Include="Implementations\ActionManager.cs" />
     <Compile Include="Implementations\ActionManagers\CharterFlightManager.cs" />

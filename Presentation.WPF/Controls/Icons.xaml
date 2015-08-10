@@ -38,8 +38,10 @@
         </Path.LayoutTransform>
     </Path>
 
+    <Path x:Key="plane" x:Shared="false"  Width="24" Height="22.53" Stretch="Uniform" UseLayoutRounding="False" Fill="White" Data="F1 M 0,15.345L 1.92001,11.2274L 0,7.18497L 2.41501,7.18497L 5.08502,9.58496L 9.375,9.58496L 6.39752,-3.05176e-005L 8.79001,-3.05176e-005L 14.175,9.58496L 20.415,9.58496L 20.79,9.58496C 20.945,9.58496 21.2337,9.61621 21.6563,9.67871C 22.0787,9.74121 22.45,9.8212 22.77,9.9187C 23.09,10.0162 23.375,10.18 23.625,10.41C 23.875,10.64 24,10.9149 24,11.235C 24,11.755 23.6987,12.155 23.0963,12.435C 22.4937,12.715 21.905,12.87 21.33,12.9L 20.415,12.945L 14.175,12.945L 8.79001,22.53L 6.39752,22.53L 9.375,12.945L 5.08502,12.945L 2.41501,15.345L 0,15.345 Z "/>
+
     <!--The following icons were created by Rohan Gupta from the Noun Project-->
-    <Canvas x:Key="cards" Name="svg2" Width="91.513268" Height="85.510002" Canvas.Left="0" Canvas.Top="0">
+    <Canvas x:Key="cards" x:Shared="false"  Name="svg2" Width="91.513268" Height="85.510002" Canvas.Left="0" Canvas.Top="0">
         <Canvas.RenderTransform>
             <TranslateTransform X="0" Y="0"/>
         </Canvas.RenderTransform>

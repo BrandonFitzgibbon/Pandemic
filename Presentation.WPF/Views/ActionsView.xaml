@@ -172,6 +172,67 @@
         <TabItem>
             <TabItem.Header>
                 <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource plane}"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="No Actions Left" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DriveDestinations.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox Margin="5,0,5,0" ItemsSource="{Binding DirectFlightDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding CityCard.Node}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                        <ContentControl x:Name="Content" Content="{StaticResource cards}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource cards}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DirectFlightCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Drive"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Content" Value="Select Destination"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <Viewbox Height="20">
                     <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center" ToolTip="Treat Disease"/>
                 </Viewbox>
             </TabItem.Header>

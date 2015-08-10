@@ -25,6 +25,11 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.DriveDestinations : null; }
         }
 
+        public IEnumerable<DirectFlightItem> DirectFlightDestinations
+        {
+            get { return ActionManager != null ? ActionManager.DirectFlightDestinations : null; }
+        }
+
         public IEnumerable<TreatDiseaseItem> TreatmentTargets
         {
             get { return ActionManager != null ? ActionManager.TreatmentTargets : null; }
@@ -57,9 +62,9 @@ namespace Presentation.WPF.Implementations
             return ActionManager.CanDrive(ddi);
         }
 
-        private void Drive(DriveDestinationItem ddi)
+        private async void Drive(DriveDestinationItem ddi)
         {
-            ActionManager.Drive(ddi);
+            await Task.Run(() => ActionManager.Drive(ddi));
             RaiseChangeNotificationRequested();
         }
 

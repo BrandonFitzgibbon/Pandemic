@@ -30,13 +30,16 @@ namespace Engine.Implementations.ActionManagers
 
         internal void Drive(DriveDestinationItem driveDestinationItem)
         {
-            this.player.Location = driveDestinationItem.Node;
-            this.player.ActionCounter.UseAction(driveDestinationItem.Cost);
+            if (CanDrive(driveDestinationItem))
+            {
+                this.player.Location = driveDestinationItem.Node;
+                this.player.ActionCounter.UseAction(driveDestinationItem.Cost);
+            }
         }
 
         private void Update()
         {
-            Destinations = GetDestinations(player.ActionCounter.Count);
+            Destinations = GetDestinations();
         }
 
         private void PlayerMoved(object sender, PlayerMovedEventArgs e)
@@ -49,10 +52,10 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private IEnumerable<DriveDestinationItem> GetDestinations(int actionsLeft)
+        private IEnumerable<DriveDestinationItem> GetDestinations()
         {
             List<DriveDestinationItem> destinations = new List<DriveDestinationItem>();
-            AddDestinations(destinations, 1, actionsLeft, player.Location, player.Location);
+            AddDestinations(destinations, 1, player.ActionCounter.Count, player.Location, player.Location);
             return destinations;
         }
 

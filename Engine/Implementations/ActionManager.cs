@@ -24,9 +24,9 @@ namespace Engine.Implementations
             get { return driveManager != null ? driveManager.Destinations.OrderBy(i => i.Cost).ThenBy(i => i.Node.City.Name) : null; }
         }
 
-        public Func<Node, bool> CanDirectFlight { get; private set; }
-        public Action<CityCard> DirectFlight { get; private set; }
-        public Dictionary<Node, CityCard> DirectFlightDestinations
+        public Func<DirectFlightItem, bool> CanDirectFlight { get; private set; }
+        public Action<DirectFlightItem> DirectFlight { get; private set; }
+        public IEnumerable<DirectFlightItem> DirectFlightDestinations
         {
             get { return directFlightManager != null ? directFlightManager.Destinations : null; }
         }
