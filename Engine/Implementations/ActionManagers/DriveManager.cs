@@ -32,7 +32,7 @@ namespace Engine.Implementations.ActionManagers
         {
             if (CanDrive(driveDestinationItem))
             {
-                this.player.Location = driveDestinationItem.Node;
+                player.Move(driveDestinationItem.Node);
                 this.player.ActionCounter.UseAction(driveDestinationItem.Cost);
             }
         }

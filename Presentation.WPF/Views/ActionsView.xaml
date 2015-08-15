@@ -108,7 +108,7 @@
                 </Setter>
             </Style>
         </TabControl.Style>
-        <TabItem>
+        <TabItem x:Name="Drive">
             <TabItem.Header>
                 <Viewbox Height="20">
                     <ContentControl Content="{StaticResource car}" HorizontalAlignment="Center"/>
@@ -131,7 +131,7 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <ListBox x:Name="PossibleDestinations" Margin="5,0,5,0" ItemsSource="{Binding DriveDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListBox x:Name="DriveDestinations" Margin="5,0,5,0" ItemsSource="{Binding DriveDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -155,7 +155,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}">
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DriveCommand}" CommandParameter="{Binding ElementName=DriveDestinations, Path=SelectedItem}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="Drive"/>
@@ -169,7 +169,7 @@
                 </Button>
             </Grid>
         </TabItem>
-        <TabItem>
+        <TabItem x:Name="DirectFlight">
             <TabItem.Header>
                 <Viewbox Height="20">
                     <ContentControl Content="{StaticResource plane}"/>
@@ -185,14 +185,14 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DriveDestinations.Count}" Value="0">
+                                <DataTrigger Binding="{Binding DirectFlightDestinations.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <ListBox Margin="5,0,5,0" ItemsSource="{Binding DirectFlightDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListBox x:Name="DirectFlightDestinations" Margin="5,0,5,0" ItemsSource="{Binding DirectFlightDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -216,10 +216,10 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DirectFlightCommand}" CommandParameter="{Binding ElementName=PossibleDestinations, Path=SelectedItem}">
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DirectFlightCommand}" CommandParameter="{Binding ElementName=DirectFlightDestinations, Path=SelectedItem}">
                     <Button.Style>
                         <Style TargetType="Button">
-                            <Setter Property="Content" Value="Drive"/>
+                            <Setter Property="Content" Value="Direct Flight"/>
                             <Style.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Content" Value="Select Destination"/>
@@ -230,7 +230,7 @@
                 </Button>
             </Grid>
         </TabItem>
-        <TabItem>
+        <TabItem x:Name="TreatDisease">
             <TabItem.Header>
                 <Viewbox Height="20">
                     <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center" ToolTip="Treat Disease"/>
@@ -241,13 +241,19 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="No Possible Targets" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Text" Value=""/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding TreatmentTargets.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Treatment Targets"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Actions Left"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

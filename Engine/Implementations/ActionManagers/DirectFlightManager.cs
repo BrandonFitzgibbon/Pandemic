@@ -35,6 +35,7 @@ namespace Engine.Implementations.ActionManagers
             {
                 directFlightItem.CityCard.Discard();
                 player.Move(directFlightItem.CityCard.Node);
+                player.ActionCounter.UseAction(1);
             }
         }
 

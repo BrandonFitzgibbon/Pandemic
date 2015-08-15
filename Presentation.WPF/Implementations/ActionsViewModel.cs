@@ -14,6 +14,12 @@ namespace Presentation.WPF.Implementations
     public class ActionsViewModel : ViewModelBase, IActionsViewModel
     {
         private IContext<ActionManager> actionManager;
+        private Player player;
+
+        public int ActionsCount
+        {
+            get { return player != null && player.ActionCounter != null ? player.ActionCounter.Count : 0; }
+        }
 
         public ActionManager ActionManager
         {
@@ -35,8 +41,9 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.TreatmentTargets : null; }
         }
 
-        public ActionsViewModel(IContext<ActionManager> actionManager)
+        public ActionsViewModel(IContext<ActionManager> actionManager, Player player)
         {
+            this.player = player;
             this.actionManager = actionManager;
             this.actionManager.ContextChanged += ContextChanged;
         }
@@ -66,6 +73,28 @@ namespace Presentation.WPF.Implementations
         {
             await Task.Run(() => ActionManager.Drive(ddi));
             RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand directFlightCommand;
+        public ICommand DirectFlightCommand
+        {
+            get
+            {
+                if (directFlightCommand == null)
+                    directFlightCommand = new RelayCommand(dfi => DirectFlight((DirectFlightItem)dfi), dfi => CanDirectFlight((DirectFlightItem)dfi));
+                return directFlightCommand;
+            }
+        }
+
+        public void DirectFlight(DirectFlightItem dfi)
+        {
+            ActionManager.DirectFlight(dfi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private bool CanDirectFlight(DirectFlightItem dfi)
+        {
+            return ActionManager.CanDirectFlight(dfi);
         }
 
         private RelayCommand treatCommand;

@@ -62,7 +62,7 @@ namespace Presentation.WPF.Implementations
                 game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Black));
 
             PlayersViewModel = new PlayersViewModel(currentPlayer, playerViewModels);
-            ActionsViewModel = new ActionsViewModel(actionManager);
+            ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer.Context);
 
             GameStatusViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             PlayersViewModel.ChangeNotificationRequested += ChangeNotificationRequested;

@@ -10,7 +10,13 @@ namespace Presentation.WPF.Implementations
 {
     public class GameStatusViewModel : ViewModelBase
     {
-        public OutbreakCounter OutbreakCounter { get; private set; }
+        private OutbreakCounter outbreakCounter;
+        
+        public int OutbreakCount
+        {
+            get { return outbreakCounter != null ? outbreakCounter.Count : 0; }
+        }
+
         public InfectionRateCounter InfectionRateCounter { get; private set; }
         public DiseaseCounter YellowCounter { get; private set; }
         public DiseaseCounter RedCounter { get; private set; }
@@ -20,7 +26,7 @@ namespace Presentation.WPF.Implementations
 
         public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, DiseaseCounter yellowCounter, DiseaseCounter redCounter, DiseaseCounter blueCounter, DiseaseCounter blackCounter)
         {
-            OutbreakCounter = outbreakCounter;
+            this.outbreakCounter = outbreakCounter;
             InfectionRateCounter = infectionRateCounter;
             YellowCounter = yellowCounter;
             RedCounter = redCounter;

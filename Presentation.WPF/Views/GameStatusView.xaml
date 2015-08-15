@@ -63,7 +63,7 @@
                 <Viewbox Margin="5,5,0,5">
                     <ContentControl Content="{StaticResource biohazard}" ToolTip="Outbreaks"/>
                 </Viewbox>
-                <TextBlock Margin="10,0,10,0" Text="{Binding OutbreakCounter.Count}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
+                <TextBlock Margin="10,0,10,0" Text="{Binding OutbreakCount}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
             </StackPanel>
         </Border>
         <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
