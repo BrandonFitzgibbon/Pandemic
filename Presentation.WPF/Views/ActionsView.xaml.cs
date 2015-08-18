@@ -22,35 +22,9 @@ namespace Presentation.WPF.Views
     /// </summary>
     public partial class ActionsView : UserControl
     {
-        private TabControl tc;
-
         public ActionsView()
         {
             InitializeComponent();
-        }
-
-        private void TabControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            TabControl tabControl = (TabControl)sender;
-            if (tabControl != null)
-            {
-                tc = tabControl;
-
-            }
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ActionsViewModel avm = DataContext as ActionsViewModel;
-            if (avm.SelectedCureTarget != null)
-            {
-                ListBox lb = sender as ListBox;
-                avm.SelectedCureTarget.Cards.Clear();
-                foreach (CityCard card in lb.SelectedItems)
-                {
-                    avm.SelectedCureTarget.Cards.Add(card);
-                }
-            }
         }
     }
 }

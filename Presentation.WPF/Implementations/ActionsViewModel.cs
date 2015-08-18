@@ -56,6 +56,11 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.TreatmentTargets : null; }
         }
 
+        public IEnumerable<ShareKnowledgeItem> ShareTargets
+        {
+            get { return ActionManager != null ? ActionManager.ShareTargets : null; }
+        }
+
         public IEnumerable<DiscoverCureItem> DiscoverTargets
         {
             get { return ActionManager != null ? ActionManager.DiscoverTargets : null; }
@@ -217,25 +222,56 @@ namespace Presentation.WPF.Implementations
             RaiseChangeNotificationRequested();
         }
 
+        private RelayCommand shareKnowledgeCommand;
+        public ICommand ShareKnowledgeCommand
+        {
+            get
+            {
+                if (shareKnowledgeCommand == null)
+                    shareKnowledgeCommand = new RelayCommand(ski => ShareKnowledge((ShareKnowledgeItem)ski), ski => CanShareKnowledge((ShareKnowledgeItem)ski));
+                return shareKnowledgeCommand;
+            }
+        }
+
+        private bool CanShareKnowledge(ShareKnowledgeItem ski)
+        {
+            return ActionManager.CanShareKnowledge(ski);
+        }
+
+        private void ShareKnowledge(ShareKnowledgeItem ski)
+        {
+            ActionManager.ShareKnowledge(ski);
+            RaiseChangeNotificationRequested();
+        }
+
         private RelayCommand discoverCureCommand;
         public ICommand DiscoverCureCommand
         {
             get 
             {
                 if (discoverCureCommand == null)
-                    discoverCureCommand = new RelayCommand(dci => DiscoverCure((DiscoverCureItem)dci), dci => CanDiscoverCure((DiscoverCureItem)dci));
+                    discoverCureCommand = new RelayCommand(cards => DiscoverCure((dynamic)cards), cards => CanDiscoverCure((dynamic)cards));
                 return discoverCureCommand;
             }
         }
 
-        private bool CanDiscoverCure(DiscoverCureItem dci)
+        private bool CanDiscoverCure(dynamic selectedCards)
         {
-            return ActionManager.CanDiscoverCure(dci);
+            if (SelectedCureTarget != null)
+            {
+                SelectedCureTarget.Cards.Clear();
+                foreach (CityCard cityCard in selectedCards)
+                {
+                    SelectedCureTarget.Cards.Add(cityCard);
+                }
+            }
+
+            return ActionManager.CanDiscoverCure(SelectedCureTarget);
         }
 
-        private void DiscoverCure(DiscoverCureItem dci)
+        private void DiscoverCure(dynamic selectedCards)
         {
-            ActionManager.DiscoverCure(dci);
+            ActionManager.DiscoverCure(SelectedCureTarget);
             RaiseChangeNotificationRequested();
         }
     }

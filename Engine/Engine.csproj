@@ -51,12 +51,14 @@
     <Compile Include="Implementations\ActionItems\DriveDestinationItem.cs" />
     <Compile Include="Implementations\ActionItems\ResearchStationConstructionItem.cs" />
     <Compile Include="Implementations\ActionItems\ShuttleFlightItem.cs" />
+    <Compile Include="Implementations\ActionItems\ShareKnowledgeItem.cs" />
     <Compile Include="Implementations\ActionManager.cs" />
     <Compile Include="Implementations\ActionManagers\CharterFlightManager.cs" />
     <Compile Include="Implementations\ActionManagers\DirectFlightManager.cs" />
     <Compile Include="Implementations\ActionManagers\DiscoverCureManager.cs" />
     <Compile Include="Implementations\ActionManagers\DriveManager.cs" />
     <Compile Include="Implementations\ActionManagers\ResearchStationConstructionManager.cs" />
+    <Compile Include="Implementations\ActionManagers\ShareKnowledgeManager.cs" />
     <Compile Include="Implementations\ActionManagers\ShuttleFlightManager.cs" />
     <Compile Include="Implementations\ActionItems\TreatDiseaseItem.cs" />
     <Compile Include="Implementations\ActionManagers\TreatDiseaseManager.cs" />

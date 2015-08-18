@@ -70,7 +70,7 @@ namespace Engine.Implementations
             CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "London"));
             CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Chicago"));
             CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Paris"));
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Washington"));
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Atlanta"));
         }
 
         private void StartGame(int diff)
@@ -87,7 +87,7 @@ namespace Engine.Implementations
             {
                 CurrentPlayer = player;
                 CurrentPlayer.ActionCounter.ResetActions();
-                ActionManager.SetPlayer(CurrentPlayer, Nodes, NodeCounters, ResearchStationCounter, Diseases);
+                ActionManager.SetPlayer(CurrentPlayer, Players, Nodes, NodeCounters, ResearchStationCounter, Diseases);
             }
         }
 

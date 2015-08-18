@@ -17,6 +17,7 @@ namespace Engine.Implementations
         private ShuttleFlightManager shuttleFlightManager;
         private ResearchStationConstructionManager researchStationConstructionManager;
         private TreatDiseaseManager treatDiseaseManager;
+        private ShareKnowledgeManager shareKnowledgeManager;
         private DiscoverCureManager discoverCureManager;
 
         public Func<DriveDestinationItem, bool> CanDrive { get; private set; }
@@ -61,6 +62,13 @@ namespace Engine.Implementations
             get { return treatDiseaseManager != null ? treatDiseaseManager.Targets : null; }
         }
 
+        public Func<ShareKnowledgeItem, bool> CanShareKnowledge { get; private set; }
+        public Action<ShareKnowledgeItem> ShareKnowledge { get; private set; }
+        public IEnumerable<ShareKnowledgeItem> ShareTargets
+        {
+            get { return shareKnowledgeManager != null ? shareKnowledgeManager.Targets : null; }
+        }
+
         public Func<DiscoverCureItem, bool> CanDiscoverCure { get; private set; }
         public Action<DiscoverCureItem> DiscoverCure { get; private set; }
         public IEnumerable<DiscoverCureItem> DiscoverTargets
@@ -68,7 +76,7 @@ namespace Engine.Implementations
             get { return discoverCureManager != null ? discoverCureManager.Targets : null; }
         }
 
-        public void SetPlayer(Player player, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
+        public void SetPlayer(Player player, IEnumerable<Player> players, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
         {
             driveManager = new DriveManager(player);
             CanDrive = driveManager.CanDrive;
@@ -93,6 +101,10 @@ namespace Engine.Implementations
             treatDiseaseManager = new TreatDiseaseManager(player, nodeDiseaseCounters);
             CanTreatDisease = treatDiseaseManager.CanTreat;
             TreatDisease = treatDiseaseManager.Treat;
+
+            shareKnowledgeManager = new ShareKnowledgeManager(player, players);
+            CanShareKnowledge = shareKnowledgeManager.CanShareKnowledge;
+            ShareKnowledge = shareKnowledgeManager.ShareKnowledge;
 
             discoverCureManager = new DiscoverCureManager(player, diseases);
             CanDiscoverCure = discoverCureManager.CanDiscoverCure;

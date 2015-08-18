@@ -17,6 +17,7 @@ namespace Engine.Implementations.ActionManagers
         internal DiscoverCureManager(Player player, IEnumerable<Disease> diseases)
         {
             this.player = player;
+            this.player.ActionCounter.ActionUsed += ActionUsed;
             this.diseases = diseases;
 
             foreach (Disease disease in diseases)
@@ -54,6 +55,11 @@ namespace Engine.Implementations.ActionManagers
         private void Update()
         {
             Targets = GetTargets();
+        }
+
+        private void ActionUsed(object sender, EventArgs e)
+        {
+            Update();
         }
 
         private void Cured(object sender, EventArgs e)

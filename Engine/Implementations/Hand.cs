@@ -32,6 +32,12 @@ namespace Engine.Implementations
             cards.Add(card);
         }
 
+        internal void RemoveFromHand(Card card)
+        {
+            card.Discarded -= cardDiscarded;
+            cards.Remove(card);
+        }
+
         private void cardDiscarded(object sender, DiscardedEventArgs e)
         {
             cards.Remove(e.Card);
