@@ -1,5 +1,6 @@
 ﻿using Engine.Contracts;
 using Engine.CustomEventArgs;
+using Engine.Implementations.ActionItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Engine.Implementations.ActionManagers
         private Player player;
         private IEnumerable<Node> nodes;
 
-        internal Dictionary<Node, int> Destinations { get; private set; }
+        internal IEnumerable<ShuttleFlightItem> Destinations { get; private set; }
 
         internal ShuttleFlightManager(Player player, IEnumerable<Node> nodes)
         {
@@ -21,26 +22,26 @@ namespace Engine.Implementations.ActionManagers
             this.nodes = nodes;
             this.player.Moved += PlayerMoved;
             this.player.ActionCounter.ActionUsed += ActionUsed;
-            Destinations = GetDestinations(player.ActionCounter.Count, player.Location);
+            Update();
         }
 
-        internal bool CanShuttleFlight(Node node)
+        internal bool CanShuttleFlight(ShuttleFlightItem shuttleFlightItem)
         {
-            return Destinations.ContainsKey(node);
+            return shuttleFlightItem != null;
         }
 
-        internal void ShuttleFlight(Node node)
+        internal void ShuttleFlight(ShuttleFlightItem shuttleFlightItem)
         {
-            if (CanShuttleFlight(node))
+            if (CanShuttleFlight(shuttleFlightItem))
             {
-                player.Move(node);
+                player.Move(shuttleFlightItem.Node);
                 player.ActionCounter.UseAction(1);
             }
         }
 
         private void Update()
         {
-            Destinations = GetDestinations(player.ActionCounter.Count, player.Location);
+            Destinations = GetDestinations();
         }
 
         private void PlayerMoved(object sender, PlayerMovedEventArgs e)
@@ -53,17 +54,17 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private Dictionary<Node, int> GetDestinations(int actionsLeft, Node location)
+        private IEnumerable<ShuttleFlightItem> GetDestinations()
         {
-            Dictionary<Node, int> destinations = new Dictionary<Node, int>();
+            List<ShuttleFlightItem> destinations = new List<ShuttleFlightItem>();
 
-            if (actionsLeft <= 0 && !location.ResearchStation)
+            if (player.ActionCounter.Count < 1 || !player.Location.ResearchStation)
                 return destinations;
 
             foreach (Node node in nodes)
             {
-                if (node.ResearchStation && node != location)
-                    destinations.Add(node, 1);
+                if (node.ResearchStation && node != player.Location)
+                    destinations.Add(new ShuttleFlightItem(node));
             }
 
             return destinations;

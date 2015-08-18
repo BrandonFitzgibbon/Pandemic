@@ -66,9 +66,8 @@ namespace Engine.Implementations.ActionManagers
             if (player.ActionCounter.Count < 1)
                 return destinations;
 
-            foreach (CityCard cityCard in player.Hand.CityCards)
-            {
-                if (cityCard.Node != player.Location)
+            foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node != player.Location))
+            {        
                     destinations.Add(new DirectFlightItem(cityCard));
             }
 

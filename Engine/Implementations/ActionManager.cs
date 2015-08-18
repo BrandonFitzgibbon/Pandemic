@@ -15,7 +15,9 @@ namespace Engine.Implementations
         private DirectFlightManager directFlightManager;
         private CharterFlightManager charterFlightManager;
         private ShuttleFlightManager shuttleFlightManager;
+        private ResearchStationConstructionManager researchStationConstructionManager;
         private TreatDiseaseManager treatDiseaseManager;
+        private DiscoverCureManager discoverCureManager;
 
         public Func<DriveDestinationItem, bool> CanDrive { get; private set; }
         public Action<DriveDestinationItem> Drive { get; private set; }
@@ -28,21 +30,28 @@ namespace Engine.Implementations
         public Action<DirectFlightItem> DirectFlight { get; private set; }
         public IEnumerable<DirectFlightItem> DirectFlightDestinations
         {
-            get { return directFlightManager != null ? directFlightManager.Destinations : null; }
+            get { return directFlightManager != null ? directFlightManager.Destinations.OrderBy(i => i.CityCard.Node.City.Name) : null; }
         }
 
-        public Func<Node, CityCard, bool> CanCharterFlight { get; private set; }
-        public Action<Node, CityCard> CharterFlight { get; private set; }
-        public Dictionary<Node, CityCard> CharterFlightDestinations
+        public Func<CharterFlightItem, bool> CanCharterFlight { get; private set; }
+        public Action<CharterFlightItem> CharterFlight { get; private set; }
+        public IEnumerable<CharterFlightItem> CharterFlightDestinations
         {
-            get { return charterFlightManager != null ? charterFlightManager.Destinations : null; }
+            get { return charterFlightManager != null ? charterFlightManager.Destinations.OrderBy(i => i.Node.City.Name) : null; }
         }
 
-        public Func<Node, bool> CanShuttleFlight { get; private set; }
-        public Action<Node> ShuttleFlight { get; private set; }
-        public Dictionary<Node, int> ShuttleDestinations
+        public Func<ShuttleFlightItem, bool> CanShuttleFlight { get; private set; }
+        public Action<ShuttleFlightItem> ShuttleFlight { get; private set; }
+        public IEnumerable<ShuttleFlightItem> ShuttleFlightDestinations
         {
             get { return shuttleFlightManager != null ? shuttleFlightManager.Destinations : null; }
+        }
+
+        public Func<ResearchStationConstructionItem, bool> CanBuildResearchStation { get; private set; }
+        public Action<ResearchStationConstructionItem> BuildResearchStation { get; private set; }
+        public IEnumerable<ResearchStationConstructionItem> ResearchStationTargets
+        {
+            get { return researchStationConstructionManager != null ? researchStationConstructionManager.Targets : null; }
         }
 
         public Func<TreatDiseaseItem, bool> CanTreatDisease { get; private set; }
@@ -52,7 +61,14 @@ namespace Engine.Implementations
             get { return treatDiseaseManager != null ? treatDiseaseManager.Targets : null; }
         }
 
-        public void SetPlayer(Player player, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters)
+        public Func<DiscoverCureItem, bool> CanDiscoverCure { get; private set; }
+        public Action<DiscoverCureItem> DiscoverCure { get; private set; }
+        public IEnumerable<DiscoverCureItem> DiscoverTargets
+        {
+            get { return discoverCureManager != null ? discoverCureManager.Targets : null; }
+        }
+
+        public void SetPlayer(Player player, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
         {
             driveManager = new DriveManager(player);
             CanDrive = driveManager.CanDrive;
@@ -70,9 +86,17 @@ namespace Engine.Implementations
             CanShuttleFlight = shuttleFlightManager.CanShuttleFlight;
             ShuttleFlight = shuttleFlightManager.ShuttleFlight;
 
+            researchStationConstructionManager = new ResearchStationConstructionManager(player, researchStationCounter, nodes);
+            CanBuildResearchStation = researchStationConstructionManager.CanBuildResearchStation;
+            BuildResearchStation = researchStationConstructionManager.BuildResearchStation;
+
             treatDiseaseManager = new TreatDiseaseManager(player, nodeDiseaseCounters);
             CanTreatDisease = treatDiseaseManager.CanTreat;
             TreatDisease = treatDiseaseManager.Treat;
+
+            discoverCureManager = new DiscoverCureManager(player, diseases);
+            CanDiscoverCure = discoverCureManager.CanDiscoverCure;
+            DiscoverCure = discoverCureManager.DiscoverCure;
         }
     }
 }

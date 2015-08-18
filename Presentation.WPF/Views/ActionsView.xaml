@@ -110,7 +110,7 @@
         </TabControl.Style>
         <TabItem x:Name="Drive">
             <TabItem.Header>
-                <Viewbox Height="20">
+                <Viewbox Height="20" Width="20">
                     <ContentControl Content="{StaticResource car}" HorizontalAlignment="Center"/>
                 </Viewbox>
             </TabItem.Header>
@@ -210,7 +210,7 @@
                             </Grid>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource cards}"/>
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource cardsBlack}"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
@@ -230,9 +230,224 @@
                 </Button>
             </Grid>
         </TabItem>
-        <TabItem x:Name="TreatDisease">
+        <TabItem x:Name="CharterFlight">
             <TabItem.Header>
                 <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource train}"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value=""/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CharterFlightDestinations.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Possible Destinations"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Actions Left"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox x:Name="CharterFlightDestinations" Margin="5,0,5,0" ItemsSource="{Binding CharterFlightDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Node}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                        <ContentControl x:Name="Content" Content="{StaticResource cards}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource cardsBlack}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding CharterFlightCommand}" CommandParameter="{Binding ElementName=CharterFlightDestinations, Path=SelectedItem}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Charter Train"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Content" Value="Select Destination"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="ShuttleFlight">
+            <TabItem.Header>
+                <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource bus}"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value=""/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShuttleFlightDestinations.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Possible Destinations"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Actions Left"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox x:Name="ShuttleFlightDestinations" Margin="5,0,5,0" ItemsSource="{Binding ShuttleFlightDestinations}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Node}"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                        <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource actionsBlack}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding ShuttleFlightCommand}" CommandParameter="{Binding ElementName=ShuttleFlightDestinations, Path=SelectedItem}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Shuttle Bus"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Content" Value="Select Destination"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="BuildResearchStation">
+            <TabItem.Header>
+                <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource lightbuld}"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value=""/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ResearchStationTargets.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Possible Targets"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Actions Left"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox x:Name="ResearchStationTargets" Margin="5,0,5,0" ItemsSource="{Binding ResearchStationTargets}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding CityCard.Node}"/>
+                                    <TextBlock Text="{Binding Node, StringFormat={}/{0}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Node}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                        <ContentControl x:Name="Content" Content="{StaticResource cards}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource cardsBlack}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Grid.Row="1" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding BuildResearchStationCommand}" CommandParameter="{Binding ElementName=ResearchStationTargets, Path=SelectedItem}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Build Research Station"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Content" Value="Select Target"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="TreatDisease">
+            <TabItem.Header>
+                <Viewbox Height="20" Width="25">
                     <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center" ToolTip="Treat Disease"/>
                 </Viewbox>
             </TabItem.Header>
@@ -268,7 +483,8 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="0,3,4,0">
+                                    <TextBlock Text="{Binding TreatmentValue}"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,4,0">
                                         <ContentControl Content="{Binding NodeDiseaseCounter.Disease , Converter={StaticResource DiseaseToIconConverter}}"/>
                                     </Viewbox>
                                     <TextBlock Text="{Binding Value}"/>
@@ -295,6 +511,102 @@
                             <Style.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Content" Value="Select Disease"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="DiscoverCure">
+            <TabItem.Header>
+                <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource discover}" HorizontalAlignment="Center" ToolTip="Discover Cure"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Text" Value=""/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DiscoverTargets.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="All Cures Discovered!"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="No Actions Left"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ListBox x:Name="DiscoverTargets" Margin="5,0,5,0" ItemsSource="{Binding DiscoverTargets}" SelectedItem="{Binding SelectedCureTarget}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,4,0">
+                                        <ContentControl Content="{Binding Disease , Converter={StaticResource DiseaseToIconConverter}}"/>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Value}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock x:Name="Text" Text="1"/>
+                                    <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                        <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Content" Property="Content" Value="{StaticResource actionsBlack}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Border Grid.Row="1" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
+                    <TextBlock Text="Possible Cards" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
+                </Border>
+                <ListBox Grid.Row="2" Margin="5,0,5,0" ItemsSource="{Binding CityCards}" SelectionMode="Multiple" SelectionChanged="ListBox_SelectionChanged" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock x:Name="Text" Text="{Binding Node}" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Text" Property="Foreground" Value="Black"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource TabItemListStyle}">
+                            <Setter Property="Margin" Value="1"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+                <Button Grid.Row="3" Margin="5,5,5,0" Template="{StaticResource ActionButton}" Command="{Binding DiscoverCureCommand}" CommandParameter="{Binding ElementName=DiscoverTargets, Path=SelectedItem}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Discover Cure"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Content" Value="Select Disease and Cards to Discard"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>

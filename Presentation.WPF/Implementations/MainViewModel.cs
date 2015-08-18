@@ -41,6 +41,7 @@ namespace Presentation.WPF.Implementations
         }
 
         private IEnumerable<IPlayerViewModel> playerViewModels;
+        private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
 
         public MainViewModel()
         {
@@ -54,12 +55,13 @@ namespace Presentation.WPF.Implementations
             actionManager.Context = game.ActionManager;
 
             playerViewModels = CreatePlayerViewModels(game.Players);
+            diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
 
             GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
-                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Yellow), 
-                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Red), 
-                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Blue), 
-                game.DiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Black));
+                diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Yellow), 
+                diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Red), 
+                diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Blue), 
+                diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Black));
 
             PlayersViewModel = new PlayersViewModel(currentPlayer, playerViewModels);
             ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer.Context);
@@ -81,6 +83,18 @@ namespace Presentation.WPF.Implementations
             return playerViewModels;
         }
 
+        private IEnumerable<IDiseaseCounterViewModel> CreateDiseaseCounterViewModels(IEnumerable<DiseaseCounter> diseases)
+        {
+            List<IDiseaseCounterViewModel> diseaseCounterViewModels = new List<IDiseaseCounterViewModel>();
+            foreach (DiseaseCounter disease in diseases)
+            {
+                DiseaseCounterViewModel dcvm = new DiseaseCounterViewModel(disease);
+                dcvm.ChangeNotificationRequested += ChangeNotificationRequested;
+                diseaseCounterViewModels.Add(dcvm);
+            }
+            return diseaseCounterViewModels;
+        }
+
         private new void ChangeNotificationRequested(object sender, EventArgs e)
         {
             GameStatusViewModel.NotifyChanges();
@@ -90,6 +104,11 @@ namespace Presentation.WPF.Implementations
             foreach (IPlayerViewModel playerViewModel in playerViewModels)
             {
                 playerViewModel.NotifyChanges();
+            }
+
+            foreach (IDiseaseCounterViewModel diseaseCounterViewModel in diseaseCounterViewModels)
+            {
+                diseaseCounterViewModel.NotifyChanges();
             }
         }
     }

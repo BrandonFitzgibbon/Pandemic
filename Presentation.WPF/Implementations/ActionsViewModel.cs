@@ -36,9 +36,41 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.DirectFlightDestinations : null; }
         }
 
+        public IEnumerable<CharterFlightItem> CharterFlightDestinations
+        {
+            get { return ActionManager != null ? ActionManager.CharterFlightDestinations : null;}
+        }
+
+        public IEnumerable<ShuttleFlightItem> ShuttleFlightDestinations
+        {
+            get { return ActionManager != null ? ActionManager.ShuttleFlightDestinations : null; }
+        }
+
+        public IEnumerable<ResearchStationConstructionItem> ResearchStationTargets
+        {
+            get { return ActionManager != null ? ActionManager.ResearchStationTargets : null; }
+        }
+
         public IEnumerable<TreatDiseaseItem> TreatmentTargets
         {
             get { return ActionManager != null ? ActionManager.TreatmentTargets : null; }
+        }
+
+        public IEnumerable<DiscoverCureItem> DiscoverTargets
+        {
+            get { return ActionManager != null ? ActionManager.DiscoverTargets : null; }
+        }
+
+        private DiscoverCureItem selectedCureTarget;
+        public DiscoverCureItem SelectedCureTarget
+        {
+            get { return selectedCureTarget; }
+            set { selectedCureTarget = value; NotifyPropertyChanged(); NotifyPropertyChanged("CityCards"); }
+        }
+
+        public IEnumerable<CityCard> CityCards
+        {
+            get { return player != null && player.Hand != null && player.Hand.CityCards != null && SelectedCureTarget != null ? player.Hand.CityCards.Where(i => i.Node.Disease == SelectedCureTarget.Disease) : null; }
         }
 
         public ActionsViewModel(IContext<ActionManager> actionManager, Player player)
@@ -86,15 +118,81 @@ namespace Presentation.WPF.Implementations
             }
         }
 
+        private bool CanDirectFlight(DirectFlightItem dfi)
+        {
+            return ActionManager.CanDirectFlight(dfi);
+        }
+
         public void DirectFlight(DirectFlightItem dfi)
         {
             ActionManager.DirectFlight(dfi);
             RaiseChangeNotificationRequested();
         }
 
-        private bool CanDirectFlight(DirectFlightItem dfi)
+        private RelayCommand charterFlightCommand;
+        public ICommand CharterFlightCommand
         {
-            return ActionManager.CanDirectFlight(dfi);
+            get
+            {
+                if (charterFlightCommand == null)
+                    charterFlightCommand = new RelayCommand(cfi => CharterFlight((CharterFlightItem)cfi), cfi => CanCharterFlight((CharterFlightItem)cfi));
+                return charterFlightCommand;
+            }
+        }
+
+        public bool CanCharterFlight(CharterFlightItem cfi)
+        {
+            return ActionManager.CanCharterFlight(cfi);
+        }
+
+        public void CharterFlight(CharterFlightItem cfi)
+        {
+            ActionManager.CharterFlight(cfi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand shuttleFlightCommand;
+        public ICommand ShuttleFlightCommand
+        {
+            get
+            {
+                if (shuttleFlightCommand == null)
+                    shuttleFlightCommand = new RelayCommand(sfi => ShuttleFlight((ShuttleFlightItem)sfi), sfi => CanShuttleFlight((ShuttleFlightItem)sfi));
+                return shuttleFlightCommand;
+            }
+        }
+
+        public bool CanShuttleFlight(ShuttleFlightItem sfi)
+        {
+            return ActionManager.CanShuttleFlight(sfi);
+        }
+
+        public void ShuttleFlight(ShuttleFlightItem sfi)
+        {
+            ActionManager.ShuttleFlight(sfi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand buildResearchStationCommand;
+        public ICommand BuildResearchStationCommand
+        {
+            get 
+            {
+                if(buildResearchStationCommand == null)
+                    buildResearchStationCommand = new RelayCommand(rci => BuildResearchStation((ResearchStationConstructionItem)rci), rci => CanBuildResearchStation((ResearchStationConstructionItem)rci));
+                return buildResearchStationCommand;
+            }
+        }
+
+        public bool CanBuildResearchStation(ResearchStationConstructionItem rci)
+        {
+            return ActionManager.CanBuildResearchStation(rci);
+        }
+
+        public void BuildResearchStation(ResearchStationConstructionItem rci)
+        {
+            ActionManager.BuildResearchStation(rci);
+            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand treatCommand;
@@ -116,6 +214,28 @@ namespace Presentation.WPF.Implementations
         private void Treat(TreatDiseaseItem tdi)
         {
             ActionManager.TreatDisease(tdi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand discoverCureCommand;
+        public ICommand DiscoverCureCommand
+        {
+            get 
+            {
+                if (discoverCureCommand == null)
+                    discoverCureCommand = new RelayCommand(dci => DiscoverCure((DiscoverCureItem)dci), dci => CanDiscoverCure((DiscoverCureItem)dci));
+                return discoverCureCommand;
+            }
+        }
+
+        private bool CanDiscoverCure(DiscoverCureItem dci)
+        {
+            return ActionManager.CanDiscoverCure(dci);
+        }
+
+        private void DiscoverCure(DiscoverCureItem dci)
+        {
+            ActionManager.DiscoverCure(dci);
             RaiseChangeNotificationRequested();
         }
     }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:e="clr-namespace:Engine.Implementations;assembly=Engine"
+             xmlns:vm="clr-namespace:Presentation.WPF.Implementations"
              xmlns:c="clr-namespace:Presentation.WPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
@@ -14,7 +15,7 @@
         <c:DiseaseStatusToIconConverter x:Key="DiseaseStatusToIconConverter"/>
         <c:InfectionCountToBoolean x:Key="InfectionCountToBoolean"/>
         
-        <DataTemplate DataType="{x:Type e:DiseaseCounter}">
+        <DataTemplate DataType="{x:Type vm:DiseaseCounterViewModel}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -32,10 +33,10 @@
                                 <Setter Property="Content" Value="{Binding Disease, Converter={StaticResource DiseaseStatusToIconConverter}}"/>
                                 <Setter Property="Visibility" Value="Hidden"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Disease.IsCured}" Value="True">
+                                    <DataTrigger Binding="{Binding IsCured}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Disease.IsEradicated}" Value="True">
+                                    <DataTrigger Binding="{Binding IsEradicated}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                         <Setter Property="Content" Value="{Binding Disease, Converter={StaticResource DiseaseStatusToIconConverter}}"/>
                                     </DataTrigger>

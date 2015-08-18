@@ -1,5 +1,6 @@
 ﻿using Engine.Contracts;
 using Engine.CustomEventArgs;
+using Engine.Implementations.ActionItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,36 +14,36 @@ namespace Engine.Implementations.ActionManagers
         private Player player;
         private IEnumerable<Node> nodes;
 
-        internal Dictionary<Node, CityCard> Destinations { get; private set; }
+        internal IEnumerable<CharterFlightItem> Destinations { get; private set; }
 
         internal CharterFlightManager(Player player, IEnumerable<Node> nodes)
         {
             this.player = player;
             this.nodes = nodes;
-            player.Moved += PlayerMoved;
-            player.Hand.HandChanged += HandChanged;
-            player.ActionCounter.ActionUsed += ActionUsed;
-            Destinations = GetDestinations(player.ActionCounter.Count, player);
+            this.player.Hand.HandChanged += HandChanged;
+            this.player.Moved += PlayerMoved;
+            this.player.ActionCounter.ActionUsed += ActionUsed;
+            Update();
         }
 
-        internal bool CanCharterFlight(Node node, CityCard cityCard)
+        internal bool CanCharterFlight(CharterFlightItem charterFlightItem)
         {
-            return Destinations.ContainsKey(node) && Destinations[node] == cityCard;
+            return charterFlightItem != null;
         }
 
-        internal void CharterFlight(Node node, CityCard cityCard)
+        internal void CharterFlight(CharterFlightItem charterFlightItem)
         {
-            if (CanCharterFlight(cityCard.Node, cityCard))
+            if (CanCharterFlight(charterFlightItem))
             {
-                cityCard.Discard();
-                player.Move(node);
+                charterFlightItem.CityCard.Discard();
+                player.Move(charterFlightItem.Node);
                 player.ActionCounter.UseAction(1);
             }
         }
 
         private void Update()
         {
-            Destinations = GetDestinations(player.ActionCounter.Count, player);
+            Destinations = GetDestinations();
         }
 
         private void PlayerMoved(object sender, PlayerMovedEventArgs e)
@@ -60,20 +61,20 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private Dictionary<Node, CityCard> GetDestinations(int actionsLeft, Player player)
+        private IEnumerable<CharterFlightItem> GetDestinations()
         {
-            Dictionary<Node, CityCard> destinations = new Dictionary<Node, CityCard>();
+            List<CharterFlightItem> destinations = new List<CharterFlightItem>();
 
-            if (actionsLeft <= 0)
+            if (player.ActionCounter.Count < 1)
                 return destinations;
 
             foreach (CityCard cityCard in player.Hand.CityCards)
             {
                 if(cityCard.Node == player.Location)
                 {
-                    foreach (Node node in nodes)
+                    foreach (Node node in nodes.Where(i => i != player.Location))
                     {
-                        destinations.Add(node, cityCard);
+                        destinations.Add(new CharterFlightItem(cityCard, node));
                     }
                 }
             }

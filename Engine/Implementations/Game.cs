@@ -20,6 +20,7 @@ namespace Engine.Implementations
         public IEnumerable<Player> Players { get; private set; }
         public OutbreakCounter OutbreakCounter { get; private set; }
         public InfectionRateCounter InfectionRateCounter { get; private set; }
+        public ResearchStationCounter ResearchStationCounter { get; private set; }
 
         private IEnumerable<CityCard> cityCards;
         private IEnumerable<InfectionCard> infectionCards;
@@ -47,6 +48,7 @@ namespace Engine.Implementations
             OutbreakCounter = OutbreakCounter;
 
             InfectionRateCounter = new InfectionRateCounter();
+            ResearchStationCounter = new ResearchStationCounter();
 
             cityCards = GetCityCards(Nodes);
             infectionCards = GetInfectionCards(NodeCounters);            
@@ -56,8 +58,6 @@ namespace Engine.Implementations
 
             epidemicCards = GetEpidemicCards(InfectionRateCounter, this.infectionDeck);
 
-            NodeCounters.Single(i => i.Node.City.Name == "Atlanta" && i.Disease.Name == "Red").Infection(3);
-
             StartGame((int)difficulty);
 
             this.playerQueue = new PlayerQueue(Players.ToList());
@@ -65,6 +65,12 @@ namespace Engine.Implementations
             ActionManager = new ActionManager();
 
             NextPlayer();
+
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Montreal"));
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "London"));
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Chicago"));
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Paris"));
+            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Washington"));
         }
 
         private void StartGame(int diff)
@@ -81,7 +87,7 @@ namespace Engine.Implementations
             {
                 CurrentPlayer = player;
                 CurrentPlayer.ActionCounter.ResetActions();
-                ActionManager.SetPlayer(CurrentPlayer, Nodes, NodeCounters);
+                ActionManager.SetPlayer(CurrentPlayer, Nodes, NodeCounters, ResearchStationCounter, Diseases);
             }
         }
 
@@ -136,7 +142,7 @@ namespace Engine.Implementations
                 player.Move(atlanta);
             }
 
-            atlanta.ResearchStation = true;
+            ResearchStationCounter.BuildResearchStation(atlanta);
         }
 
         private void InitialInfection()
