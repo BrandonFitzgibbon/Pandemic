@@ -67,6 +67,9 @@
     <Compile Include="Implementations\CityCard.cs" />
     <Compile Include="Implementations\DiseaseCounter.cs" />
     <Compile Include="Implementations\Disease.cs" />
+    <Compile Include="Implementations\DrawCounter.cs" />
+    <Compile Include="Implementations\DrawManager.cs" />
+    <Compile Include="Implementations\InfectionManager.cs" />
     <Compile Include="Implementations\ResearchStationCounter.cs" />
     <Compile Include="Implementations\Roles\Dispatcher.cs" />
     <Compile Include="Implementations\EpidemicCard.cs" />

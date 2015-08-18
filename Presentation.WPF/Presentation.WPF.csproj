@@ -58,6 +58,8 @@
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IActionsViewModel.cs" />
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
+    <Compile Include="Contracts\IDrawViewModel.cs" />
+    <Compile Include="Contracts\IInfectionViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
     <Compile Include="Controls\Icons.cs" />
@@ -68,7 +70,9 @@
     <Compile Include="Converters\InfectionCountToBoolean.cs" />
     <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
+    <Compile Include="Implementations\DrawViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
+    <Compile Include="Implementations\InfectionViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
@@ -81,6 +85,9 @@
     <Compile Include="Views\DeckView.xaml.cs">
       <DependentUpon>DeckView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DrawView.xaml.cs">
+      <DependentUpon>DrawView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GameStatusView.xaml.cs">
       <DependentUpon>GameStatusView.xaml</DependentUpon>
     </Compile>
@@ -89,6 +96,9 @@
     </Compile>
     <Compile Include="Views\InfectionCardView.xaml.cs">
       <DependentUpon>InfectionCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InfectionView.xaml.cs">
+      <DependentUpon>InfectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
@@ -125,6 +135,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DrawView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\GameStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -134,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InfectionCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InfectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

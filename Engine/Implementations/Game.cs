@@ -13,6 +13,8 @@ namespace Engine.Implementations
     public class Game
     {
         public ActionManager ActionManager { get; private set; }
+        public DrawManager DrawManager { get; private set; }
+        public InfectionManager InfectionManager { get; private set; }
         public IEnumerable<Disease> Diseases { get; private set; }
         public IEnumerable<DiseaseCounter> DiseaseCounters { get; private set; }
         public IEnumerable<NodeDiseaseCounter> NodeCounters { get; private set; }
@@ -30,6 +32,7 @@ namespace Engine.Implementations
         private InfectionDeck infectionDeck;
  
         private PlayerQueue playerQueue;
+        public bool CanNextPlayer { get; private set; }
 
         public Player CurrentPlayer { get; private set; }
 
@@ -42,10 +45,10 @@ namespace Engine.Implementations
             Players = PlayerFactory.GetPlayers(playerNames);
 
             SubscribeNodesToMovers();
+            SubscribeToPlayerCounters();
 
-            Implementations.OutbreakCounter outbreakCounter = new OutbreakCounter(NodeCounters);
-            outbreakCounter.GameOver += GameOver;
-            OutbreakCounter = OutbreakCounter;
+            OutbreakCounter = new OutbreakCounter(NodeCounters);
+            OutbreakCounter.GameOver += GameOver;
 
             InfectionRateCounter = new InfectionRateCounter();
             ResearchStationCounter = new ResearchStationCounter();
@@ -63,14 +66,11 @@ namespace Engine.Implementations
             this.playerQueue = new PlayerQueue(Players.ToList());
 
             ActionManager = new ActionManager();
+            DrawManager = new DrawManager(this.playerDeck);
+            InfectionManager = new InfectionManager(this.InfectionRateCounter, this.infectionDeck);
+            InfectionManager.InfectionPhaseCompleted += InfectionPhaseCompleted;
 
             NextPlayer();
-
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Montreal"));
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "London"));
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Chicago"));
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Paris"));
-            CurrentPlayer.Hand.AddToHand(cityCards.Single(i => i.Node.City.Name == "Atlanta"));
         }
 
         private void StartGame(int diff)
@@ -85,10 +85,27 @@ namespace Engine.Implementations
         {
             foreach (Player player in playerQueue.NextPlayer)
             {
+                CanNextPlayer = false;
                 CurrentPlayer = player;
                 CurrentPlayer.ActionCounter.ResetActions();
                 ActionManager.SetPlayer(CurrentPlayer, Players, Nodes, NodeCounters, ResearchStationCounter, Diseases);
             }
+        }
+
+        private void ActionsDepleted(object sender, EventArgs e)
+        {
+            CurrentPlayer.DrawCounter.ResetDraws();
+            DrawManager.SetPlayer(CurrentPlayer);
+        }
+
+        private void DrawsDepleted(object sender, EventArgs e)
+        {
+            InfectionManager.ResetInfectionManager();
+        }
+
+        private void InfectionPhaseCompleted(object sender, EventArgs e)
+        {
+            CanNextPlayer = true;
         }
 
         private IEnumerable<CityCard> GetCityCards(IEnumerable<Node> nodes)
@@ -130,6 +147,15 @@ namespace Engine.Implementations
                 {
                     node.SubscribeToMover(player);
                 }
+            }
+        }
+
+        private void SubscribeToPlayerCounters()
+        {
+            foreach (Player player in Players)
+            {
+                player.ActionCounter.ActionsDepleted += ActionsDepleted;
+                player.DrawCounter.DrawsDepleted += DrawsDepleted;
             }
         }
 

@@ -15,7 +15,8 @@ namespace Engine.Implementations
         public string Role { get; protected set; }
         public Node Location { get; internal set; }
         public Hand Hand { get; internal set; }
-        public ActionCounter ActionCounter { get; internal set; }
+        public ActionCounter ActionCounter { get; private set; }
+        public DrawCounter DrawCounter { get; private set; }
 
         internal Player() { }
 
@@ -24,6 +25,7 @@ namespace Engine.Implementations
             Name = name;
             Hand = new Hand();
             ActionCounter = new ActionCounter();
+            DrawCounter = new DrawCounter();
         }
 
         internal void Move(Node node)

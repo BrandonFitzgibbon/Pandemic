@@ -10,7 +10,7 @@ namespace Engine.Implementations
 {
     public abstract class Card
     {
-        public void Discard()
+        internal void Discard()
         {
             if (Discarded != null) Discarded(this, new DiscardedEventArgs(this));
         }

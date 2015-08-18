@@ -76,7 +76,7 @@ namespace Engine.Implementations
             get { return discoverCureManager != null ? discoverCureManager.Targets : null; }
         }
 
-        public void SetPlayer(Player player, IEnumerable<Player> players, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
+        internal void SetPlayer(Player player, IEnumerable<Player> players, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
         {
             driveManager = new DriveManager(player);
             CanDrive = driveManager.CanDrive;

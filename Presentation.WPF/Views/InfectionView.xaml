@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Presentation.WPF.Views.InfectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="InfectionButton" TargetType="Button">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="Common">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="MouseOver">
+                            <Storyboard>
+                                <ColorAnimation From="Transparent" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ColorAnimation From="Gray" To="Yellow" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <Storyboard>
+                                <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextElement.Foreground).Color" Duration="0:00:00"/>
+                                <ColorAnimation From="White" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(BorderBrush).Color" Duration="0:00:00"/>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="2" TextElement.Foreground="White" TextElement.FontSize="14">
+                    <ContentPresenter HorizontalAlignment="Center"/>
+                </Border>
+
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Button Content="Draw Infection Card" Template="{StaticResource InfectionButton}" Command="{Binding InfectionCommand}" VerticalAlignment="Center" Margin="5"/>
+    </Grid>
+
+</UserControl>

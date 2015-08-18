@@ -12,24 +12,25 @@ namespace Engine.Implementations
         private InfectionRateCounter infectionRateCounter;
         private InfectionDeck infectionDeck;
 
-        public EpidemicCard(InfectionRateCounter infectionRateCounter, InfectionDeck infectionDeck)
+        internal EpidemicCard(InfectionRateCounter infectionRateCounter, InfectionDeck infectionDeck)
         {
             this.infectionRateCounter = infectionRateCounter;
             this.infectionDeck = infectionDeck;
         }
 
-        public void Increase()
+        internal void Increase()
         {
             infectionRateCounter.Increase();
         }
 
-        public void Infect()
+        internal void Infect()
         {
             InfectionCard infectionCard = infectionDeck.DrawBottom();
             infectionCard.Infect(3);
+            infectionCard.Discard();
         }
 
-        public void Intensify()
+        internal void Intensify()
         {
             infectionDeck.Intensify();
         }

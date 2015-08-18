@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Presentation.WPF.Implementations
 {
@@ -18,6 +19,8 @@ namespace Presentation.WPF.Implementations
         private IDataAccess data;
         private IContext<Player> currentPlayer;
         private IContext<ActionManager> actionManager;
+        private IContext<DrawManager> drawManager;
+        private IContext<InfectionManager> infectionManager;
 
         private GameStatusViewModel gameStatusViewModel;
         public GameStatusViewModel GameStatusViewModel
@@ -40,6 +43,20 @@ namespace Presentation.WPF.Implementations
             set { actionsViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IDrawViewModel drawViewModel;
+        public IDrawViewModel DrawViewModel
+        {
+            get { return drawViewModel; }
+            set { drawViewModel = value; NotifyPropertyChanged(); }
+        }
+
+        private IInfectionViewModel infectionViewModel;
+        public IInfectionViewModel InfectionViewModel
+        {
+            get { return infectionViewModel; }
+            set { infectionViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
 
@@ -54,6 +71,12 @@ namespace Presentation.WPF.Implementations
             actionManager = new ObjectContext<ActionManager>();
             actionManager.Context = game.ActionManager;
 
+            drawManager = new ObjectContext<DrawManager>();
+            drawManager.Context = game.DrawManager;
+
+            infectionManager = new ObjectContext<InfectionManager>();
+            infectionManager.Context = game.InfectionManager;
+
             playerViewModels = CreatePlayerViewModels(game.Players);
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
 
@@ -64,11 +87,15 @@ namespace Presentation.WPF.Implementations
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Black));
 
             PlayersViewModel = new PlayersViewModel(currentPlayer, playerViewModels);
-            ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer.Context);
+            ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer);
+            DrawViewModel = new DrawViewModel(drawManager);
+            InfectionViewModel = new InfectionViewModel(infectionManager);
 
             GameStatusViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             PlayersViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             ActionsViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+            DrawViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+            InfectionViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
         }
 
         private IEnumerable<IPlayerViewModel> CreatePlayerViewModels(IEnumerable<Player> players)
@@ -100,6 +127,8 @@ namespace Presentation.WPF.Implementations
             GameStatusViewModel.NotifyChanges();
             PlayersViewModel.NotifyChanges();
             ActionsViewModel.NotifyChanges();
+            DrawViewModel.NotifyChanges();
+            InfectionViewModel.NotifyChanges();
 
             foreach (IPlayerViewModel playerViewModel in playerViewModels)
             {
@@ -110,6 +139,31 @@ namespace Presentation.WPF.Implementations
             {
                 diseaseCounterViewModel.NotifyChanges();
             }
+
+            NotifyChanges();
+        }
+
+        private RelayCommand nextTurnCommand;
+        public ICommand NextTurnCommand
+        {
+            get
+            {
+                if (nextTurnCommand == null)
+                    nextTurnCommand = new RelayCommand(a => NextTurn(), p => CanNextTurn());
+                return nextTurnCommand;
+            }
+        }
+
+        public bool CanNextTurn()
+        {
+            return game.CanNextPlayer;
+        }
+
+        public void NextTurn()
+        {
+            game.NextPlayer();
+            currentPlayer.Context = game.CurrentPlayer;
+            ChangeNotificationRequested(this, EventArgs.Empty);
         }
     }
 }

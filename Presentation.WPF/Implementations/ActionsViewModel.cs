@@ -14,11 +14,11 @@ namespace Presentation.WPF.Implementations
     public class ActionsViewModel : ViewModelBase, IActionsViewModel
     {
         private IContext<ActionManager> actionManager;
-        private Player player;
+        private IContext<Player> currentPlayer;
 
         public int ActionsCount
         {
-            get { return player != null && player.ActionCounter != null ? player.ActionCounter.Count : 0; }
+            get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.ActionCounter != null ? currentPlayer.Context.ActionCounter.Count : 0; }
         }
 
         public ActionManager ActionManager
@@ -75,12 +75,12 @@ namespace Presentation.WPF.Implementations
 
         public IEnumerable<CityCard> CityCards
         {
-            get { return player != null && player.Hand != null && player.Hand.CityCards != null && SelectedCureTarget != null ? player.Hand.CityCards.Where(i => i.Node.Disease == SelectedCureTarget.Disease) : null; }
+            get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.Hand != null && currentPlayer.Context.Hand.CityCards != null && SelectedCureTarget != null ? currentPlayer.Context.Hand.CityCards.Where(i => i.Node.Disease == SelectedCureTarget.Disease) : null; }
         }
 
-        public ActionsViewModel(IContext<ActionManager> actionManager, Player player)
+        public ActionsViewModel(IContext<ActionManager> actionManager, IContext<Player> currentPlayer)
         {
-            this.player = player;
+            this.currentPlayer = currentPlayer;
             this.actionManager = actionManager;
             this.actionManager.ContextChanged += ContextChanged;
         }

@@ -7,6 +7,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400"/>
@@ -15,7 +16,7 @@
         <Border Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0,0,0,1">
             <ContentControl Content="{Binding GameStatusViewModel}"/>
         </Border>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -25,6 +26,21 @@
             </Border>
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
                 <ContentControl Content="{Binding ActionsViewModel}"/>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" Width="200">
+                        <ContentControl Content="{Binding DrawViewModel}"/>
+                        <ContentControl Content="{Binding InfectionViewModel}"/>
+                        <Button Content="End Turn" Template="{StaticResource ActionButtonTemplate}" Command="{Binding NextTurnCommand}" Margin="5"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Grid>
