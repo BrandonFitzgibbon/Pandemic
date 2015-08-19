@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="Contracts\IDataAccess.cs" />
     <Compile Include="CustomEventArgs\DiscardedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\InfectionEventArgs.cs" />
     <Compile Include="CustomEventArgs\OutbreakEventArgs.cs" />
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\TreatedEventArgs.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\ActionCounter.cs" />
     <Compile Include="Implementations\ActionItems\CharterFlightItem.cs" />

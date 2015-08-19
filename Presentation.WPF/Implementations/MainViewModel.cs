@@ -1,4 +1,5 @@
 ﻿using Engine.Contracts;
+using Engine.CustomEventArgs;
 using Engine.Factories;
 using Engine.Implementations;
 using Presentation.WPF.Context;
@@ -18,9 +19,11 @@ namespace Presentation.WPF.Implementations
         private Game game;
         private IDataAccess data;
         private IContext<Player> currentPlayer;
+        private IContext<Player> selectedPlayer;
         private IContext<ActionManager> actionManager;
         private IContext<DrawManager> drawManager;
         private IContext<InfectionManager> infectionManager;
+        private IContext<StringBuilder> messageContext;
 
         private GameStatusViewModel gameStatusViewModel;
         public GameStatusViewModel GameStatusViewModel
@@ -43,6 +46,13 @@ namespace Presentation.WPF.Implementations
             set { actionsViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IHandViewModel handViewModel;
+        public IHandViewModel HandViewModel
+        {
+            get { return handViewModel; }
+            set { handViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IDrawViewModel drawViewModel;
         public IDrawViewModel DrawViewModel
         {
@@ -57,6 +67,13 @@ namespace Presentation.WPF.Implementations
             set { infectionViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IMessageViewModel messageViewModel;
+        public IMessageViewModel MessageViewModel
+        {
+            get { return messageViewModel; }
+            set { messageViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
 
@@ -68,6 +85,8 @@ namespace Presentation.WPF.Implementations
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
 
+            selectedPlayer = new ObjectContext<Player>();
+
             actionManager = new ObjectContext<ActionManager>();
             actionManager.Context = game.ActionManager;
 
@@ -76,6 +95,9 @@ namespace Presentation.WPF.Implementations
 
             infectionManager = new ObjectContext<InfectionManager>();
             infectionManager.Context = game.InfectionManager;
+
+            messageContext = new ObjectContext<StringBuilder>();
+            messageContext.Context = new StringBuilder();
 
             playerViewModels = CreatePlayerViewModels(game.Players);
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
@@ -86,16 +108,47 @@ namespace Presentation.WPF.Implementations
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Blue), 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Black));
 
-            PlayersViewModel = new PlayersViewModel(currentPlayer, playerViewModels);
+            PlayersViewModel = new PlayersViewModel(currentPlayer, selectedPlayer, playerViewModels);
             ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer);
+            HandViewModel = new HandViewModel(selectedPlayer);
             DrawViewModel = new DrawViewModel(drawManager);
             InfectionViewModel = new InfectionViewModel(infectionManager);
+            MessageViewModel = new MessageViewModel(messageContext);
 
             GameStatusViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             PlayersViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             ActionsViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+            HandViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             DrawViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             InfectionViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+            MessageViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+
+            foreach (NodeDiseaseCounter ndc in game.NodeCounters)
+            {
+                ndc.Infected += ndc_Infected;
+                ndc.Treated += ndc_Treated;
+                ndc.Outbreak += ndc_Outbreak;
+            }
+        }
+
+        void ndc_Outbreak(object sender, OutbreakEventArgs e)
+        {
+            messageContext.Context.AppendLine("An outbreak has occurred in " + e.OriginCounter + "!");
+            messageContext.Context.AppendLine("\tAffected Cities");
+            foreach (NodeDiseaseCounter ndc in e.AffectedCities)
+            {
+                messageContext.Context.AppendLine("\t\t" + ndc);
+            }
+        }
+
+        void ndc_Treated(object sender, TreatedEventArgs e)
+        {
+            messageContext.Context.AppendLine(e.NodeDiseaseCounter + " has been treated!");
+        }
+
+        private void ndc_Infected(object sender, InfectionEventArgs e)
+        {
+            messageContext.Context.AppendLine(e.NodeDiseaseCounter + " has been infected!");
         }
 
         private IEnumerable<IPlayerViewModel> CreatePlayerViewModels(IEnumerable<Player> players)
@@ -124,11 +177,15 @@ namespace Presentation.WPF.Implementations
 
         private new void ChangeNotificationRequested(object sender, EventArgs e)
         {
+            NotifyChanges();
+
             GameStatusViewModel.NotifyChanges();
             PlayersViewModel.NotifyChanges();
             ActionsViewModel.NotifyChanges();
+            HandViewModel.NotifyChanges();
             DrawViewModel.NotifyChanges();
             InfectionViewModel.NotifyChanges();
+            MessageViewModel.NotifyChanges();
 
             foreach (IPlayerViewModel playerViewModel in playerViewModels)
             {
@@ -139,8 +196,6 @@ namespace Presentation.WPF.Implementations
             {
                 diseaseCounterViewModel.NotifyChanges();
             }
-
-            NotifyChanges();
         }
 
         private RelayCommand nextTurnCommand;

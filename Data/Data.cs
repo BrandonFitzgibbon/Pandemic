@@ -14,8 +14,6 @@ namespace DataAccess
     {
         private List<Disease> diseases;
         private List<Node> nodes;
-        private List<NodeDiseaseCounter> nodeCounters;
-        private List<DiseaseCounter> diseaseCounters;
         private Dictionary<Node, IList<string>> connectionDictionary;
 
         public Data()
@@ -50,28 +48,13 @@ namespace DataAccess
                 connectionDictionary.Add(newNode, connectionNames);
             }
 
-            nodeCounters = new List<NodeDiseaseCounter>();
-
             foreach (Node node in nodes)
             {
                 foreach (string cityName in ResolveCityConnections(node))
                 {
                     node.Connect(nodes.Single(i => i.City.Name == cityName));
                 }
-
-                foreach (Disease disease in diseases)
-                {
-                    nodeCounters.Add(new NodeDiseaseCounter(disease, node));
-                }
             }
-
-            diseaseCounters = new List<DiseaseCounter>();
-
-            foreach (Disease disease in diseases)
-            {
-               diseaseCounters.Add(new DiseaseCounter(disease, nodeCounters.Where(i => i.Disease == disease).ToList()));
-            }
-
         }
 
         private IList<string> ResolveCityConnections(Node node)
@@ -87,16 +70,6 @@ namespace DataAccess
         public IEnumerable<Node> GetNodes()
         {
             return this.nodes;
-        }
-
-        public IEnumerable<DiseaseCounter> GetDiseaseCounters()
-        {
-            return this.diseaseCounters;
-        }
-
-        public IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounters()
-        {
-            return this.nodeCounters;
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Engine.Implementations
                     ec.Increase();
                     ec.Infect();
                     ec.Intensify();
-                    ec.Discard();
                 }
 
                 else

@@ -12,16 +12,14 @@ namespace Engine.Implementations
     {
         public int Count { get; private set; }
 
-        internal OutbreakCounter() { }
-
-        internal OutbreakCounter(IEnumerable<NodeDiseaseCounter> outbreakNotifiers)
+        internal OutbreakCounter()
         {
             Count = 0;
+        }
 
-            foreach (NodeDiseaseCounter ndc in outbreakNotifiers)
-            {
-                ndc.Outbreak += Outbreak;
-            }
+        internal void SubcribeToNodeDiseaseCounter(NodeDiseaseCounter ndc)
+        {
+            ndc.Outbreak += Outbreak;
         }
 
         private void Outbreak(object sender, OutbreakEventArgs e)

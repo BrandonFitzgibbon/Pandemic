@@ -11,13 +11,15 @@ namespace Engine.Implementations
     public class DiseaseCounter
     {
         private IEnumerable<NodeDiseaseCounter> nodeCounters;
+        private OutbreakCounter outbreakCounter;
 
         public Disease Disease { get; private set; }
         public int Count { get; private set; }
 
-        public DiseaseCounter(Disease disease, IEnumerable<NodeDiseaseCounter> nodeCounters)
+        public DiseaseCounter(Disease disease, IEnumerable<NodeDiseaseCounter> nodeCounters, OutbreakCounter outbreakCounter)
         {
             this.nodeCounters = nodeCounters;
+            this.outbreakCounter = outbreakCounter;
 
             Disease = disease;
             Count = 24;
@@ -33,9 +35,15 @@ namespace Engine.Implementations
         private void OutbreakNotification(object sender, OutbreakEventArgs e)
         {
             IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
-            foreach (NodeDiseaseCounter nodeCounter in outbreakCounters)
+            foreach (NodeDiseaseCounter nodeCounter in outbreakCounters.Where(i => !e.OriginList.Contains(i)))
             {
-                nodeCounter.Infection(1);
+                if (this.Count == 0)
+                    return;
+
+                if (outbreakCounter.Count == 7)
+                    return;
+
+                nodeCounter.OutbreakInfection(e);
             }
         }
 

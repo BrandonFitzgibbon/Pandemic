@@ -9,6 +9,7 @@ namespace Presentation.WPF.Contracts
 {
     public interface IPlayerViewModel : IViewModelBase
     {
+        Player Player { get; }
         string Name { get; }
         string Role { get; }
         Node Location { get; }

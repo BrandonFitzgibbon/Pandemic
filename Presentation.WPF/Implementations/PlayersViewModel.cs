@@ -13,10 +13,13 @@ namespace Presentation.WPF.Implementations
     public class PlayersViewModel : ViewModelBase, IPlayersViewModel
     {
         private IContext<Player> currentPlayer;
+
         public Player CurrentPlayer 
         { 
             get { return currentPlayer != null ? currentPlayer.Context : null; } 
         }
+
+        private IContext<Player> selectedPlayer;
 
         private IEnumerable<IPlayerViewModel> playerViewModels;
         public IEnumerable<IPlayerViewModel> PlayerViewModels
@@ -24,10 +27,18 @@ namespace Presentation.WPF.Implementations
             get { return playerViewModels; }
         }
 
-        public PlayersViewModel(IContext<Player> currentPlayer, IEnumerable<IPlayerViewModel> playerViewModels)
+        private IPlayerViewModel selectedPlayerViewModel;
+        public IPlayerViewModel SelectedPlayerViewModel
+        {
+            get { return selectedPlayerViewModel; }
+            set { selectedPlayerViewModel = value; selectedPlayer.Context = selectedPlayerViewModel.Player; NotifyPropertyChanged(); }
+        }
+
+        public PlayersViewModel(IContext<Player> currentPlayer, IContext<Player> selectedPlayer, IEnumerable<IPlayerViewModel> playerViewModels)
         {
             this.currentPlayer = currentPlayer;
             this.currentPlayer.ContextChanged += ContextChanged;
+            this.selectedPlayer = selectedPlayer;
             this.playerViewModels = playerViewModels;
         }
 

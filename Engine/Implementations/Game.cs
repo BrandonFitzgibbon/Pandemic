@@ -38,17 +38,18 @@ namespace Engine.Implementations
 
         public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
+            OutbreakCounter = new OutbreakCounter();
+            OutbreakCounter.GameOver += GameOver;
+
             Diseases = dataAccess.GetDiseases();
-            DiseaseCounters = dataAccess.GetDiseaseCounters();
             Nodes = dataAccess.GetNodes();
-            NodeCounters = dataAccess.GetNodeDiseaseCounters();
             Players = PlayerFactory.GetPlayers(playerNames);
+
+            NodeCounters = GetNodeDiseaseCounter(Nodes, Diseases, OutbreakCounter);
+            DiseaseCounters = GetDiseaseCounters(Diseases, NodeCounters, OutbreakCounter);
 
             SubscribeNodesToMovers();
             SubscribeToPlayerCounters();
-
-            OutbreakCounter = new OutbreakCounter(NodeCounters);
-            OutbreakCounter.GameOver += GameOver;
 
             InfectionRateCounter = new InfectionRateCounter();
             ResearchStationCounter = new ResearchStationCounter();
@@ -106,6 +107,31 @@ namespace Engine.Implementations
         private void InfectionPhaseCompleted(object sender, EventArgs e)
         {
             CanNextPlayer = true;
+        }
+
+        private IEnumerable<DiseaseCounter> GetDiseaseCounters(IEnumerable<Disease> diseases, IEnumerable<NodeDiseaseCounter> nodeCounters, OutbreakCounter outbreakCounter)
+        {
+            List<DiseaseCounter> diseaseCounters = new List<DiseaseCounter>();
+            foreach (Disease disease in diseases)
+            {
+                diseaseCounters.Add(new DiseaseCounter(disease, nodeCounters.Where(i => i.Disease == disease).ToList(), outbreakCounter));
+            }
+            return diseaseCounters;
+        }
+
+        private IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounter(IEnumerable<Node> nodes, IEnumerable<Disease> diseases, OutbreakCounter outbreakCounter)
+        {
+            List<NodeDiseaseCounter> nodeDiseaseCounters = new List<NodeDiseaseCounter>();
+            foreach (Disease disease in diseases)
+            {
+                foreach (Node node in nodes)
+                {
+                    NodeDiseaseCounter ndc = new NodeDiseaseCounter(disease, node);
+                    nodeDiseaseCounters.Add(ndc);
+                    outbreakCounter.SubcribeToNodeDiseaseCounter(ndc);
+                }
+            }
+            return nodeDiseaseCounters;
         }
 
         private IEnumerable<CityCard> GetCityCards(IEnumerable<Node> nodes)

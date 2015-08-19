@@ -40,7 +40,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Button Content="Draw Infection Card" Template="{StaticResource InfectionButton}" Command="{Binding InfectionCommand}" VerticalAlignment="Center" Margin="5"/>
+        <Button Content="Infect" Template="{StaticResource InfectionButton}" Command="{Binding InfectionCommand}" VerticalAlignment="Center" Margin="0"/>
     </Grid>
 
 </UserControl>

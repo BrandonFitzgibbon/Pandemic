@@ -44,6 +44,20 @@ namespace Engine.Implementations
             return true;
         }
 
+        public void OutbreakInfection(OutbreakEventArgs e)
+        {
+            if (!CanInfect())
+                return;
+
+            if (Count < 3)
+            {
+                Count++;
+                e.AffectedCities.Add(this);
+            }
+            else
+                if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(this, e));
+        }
+
         public void Infection(int rate)
         {
             if (!CanInfect())
@@ -54,7 +68,7 @@ namespace Engine.Implementations
                 if (Count < 3)
                 {
                     Count++;
-                    if (Infected != null) Infected(this, EventArgs.Empty);
+                    if (Infected != null) Infected(this, new InfectionEventArgs(this));
                 }
                 else
                     if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(this));
@@ -68,18 +82,18 @@ namespace Engine.Implementations
                 if (Count > 0)
                 {
                     Count--;
-                    if (Treated != null) Treated(this, EventArgs.Empty);
+                    if (Treated != null) Treated(this, new TreatedEventArgs(this));
                 }
             }
         }
 
         public event EventHandler<OutbreakEventArgs> Outbreak;
-        public event EventHandler Infected;
-        public event EventHandler Treated;
+        public event EventHandler<InfectionEventArgs> Infected;
+        public event EventHandler<TreatedEventArgs> Treated;
 
         public override string ToString()
         {
-            return Node.City + " {" + Disease + ": " + Count + "}";
+            return Node.City + " (" + Disease + ": " + Count + ")";
         }
     }
 }

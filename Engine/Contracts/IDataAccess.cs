@@ -11,7 +11,5 @@ namespace Engine.Contracts
     {
         IEnumerable<Disease> GetDiseases();
         IEnumerable<Node> GetNodes();
-        IEnumerable<DiseaseCounter> GetDiseaseCounters();
-        IEnumerable<NodeDiseaseCounter> GetNodeDiseaseCounters();
     }
 }

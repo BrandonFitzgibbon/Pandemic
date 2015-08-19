@@ -20,12 +20,25 @@
         <Storyboard x:Key="CollapseB">
             <DoubleAnimation From="1" To="0" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
         </Storyboard>
+        
+        <DataTemplate DataType="{x:Type e:CityCard}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="Text" Text="{Binding}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Viewbox Grid.Column="1" Margin="5" Height="{Binding ElementName=Text, Path=ActualHeight}" VerticalAlignment="Center">
+                    <ContentControl Content="{Binding Node.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                </Viewbox>
+            </Grid>
+        </DataTemplate>
 
     </UserControl.Resources>
     
-    <Expander ExpandDirection="Right">
+    <Expander ExpandDirection="Right" IsExpanded="True">
         <Expander.Header>
-            <Viewbox Width="50">
+            <Viewbox Width="50" Height="30">
                 <ContentControl Content="{StaticResource cards}"/>
             </Viewbox>
         </Expander.Header>
@@ -55,16 +68,16 @@
                                     <ColumnDefinition Width="30"/>
                                     <ColumnDefinition x:Name="ContentColumn" Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="{StaticResource Background}" BorderBrush="Gray" BorderThickness="0,1,0,0">
+                                <Border Background="{StaticResource Background}">
                                     <ContentPresenter ContentSource="Header" Margin="5"/>
                                 </Border>
-                                <Border x:Name="ContentSite" Background="{StaticResource Background}" Grid.Column="2" BorderBrush="Gray" BorderThickness="0,1,0,0">
+                                <Border x:Name="ContentSite" Background="{StaticResource Background}" Grid.Column="2">
                                     <Border.RenderTransform>
                                         <ScaleTransform ScaleX="0" ScaleY="1"/>
                                     </Border.RenderTransform>
                                     <ContentPresenter x:Name="Content"/>
                                 </Border>
-                                <Border x:Name="ToggleBorder" Background="{StaticResource Background}" Grid.Column="1" BorderBrush="Gray" BorderThickness="1,1,1,0">
+                                <Border x:Name="ToggleBorder" Background="{StaticResource Background}" Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,1,0">
                                     <ToggleButton Background="Transparent" Template="{StaticResource ExpanderToggle}" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsExpanded, Mode=TwoWay}"/>
                                 </Border> 
                                 <Border Grid.Row="3"/>
@@ -84,31 +97,20 @@
                 </Setter>
             </Style>
         </Expander.Style>
-        <ListBox ItemsSource="{Binding Cards}" Height="250" BorderBrush="Transparent" Background="Transparent">
+        <ListBox ItemsSource="{Binding Hand}" BorderBrush="Transparent" Background="Transparent" IsHitTestVisible="False">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
+                    <UniformGrid Columns="4" Rows="2"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="BorderBrush" Value="White"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
-                                <Border x:Name="Border" Height="225" Width="175" Background="Transparent" BorderBrush="White" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}">
-                                    <ContentPresenter Margin="5"/>
+                                <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
+                                    <ContentPresenter Content="{TemplateBinding Content}"/>
                                 </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="Gray"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="4"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>

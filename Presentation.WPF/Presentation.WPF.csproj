@@ -53,13 +53,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Context\ContextBase.cs" />
+    <Compile Include="Context\ObjectContext.cs" />
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IActionsViewModel.cs" />
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\IDrawViewModel.cs" />
+    <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IInfectionViewModel.cs" />
+    <Compile Include="Contracts\IMessageViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
     <Compile Include="Controls\Icons.cs" />
@@ -72,7 +74,9 @@
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\DrawViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
+    <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\InfectionViewModel.cs" />
+    <Compile Include="Implementations\MessageViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />
@@ -81,9 +85,6 @@
     </Compile>
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DeckView.xaml.cs">
-      <DependentUpon>DeckView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DrawView.xaml.cs">
       <DependentUpon>DrawView.xaml</DependentUpon>
@@ -94,11 +95,11 @@
     <Compile Include="Views\HandView.xaml.cs">
       <DependentUpon>HandView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InfectionCardView.xaml.cs">
-      <DependentUpon>InfectionCardView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\InfectionView.xaml.cs">
       <DependentUpon>InfectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
@@ -131,10 +132,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DeckView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DrawView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,11 +144,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InfectionCardView.xaml">
+    <Page Include="Views\InfectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\InfectionView.xaml">
+    <Page Include="Views\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

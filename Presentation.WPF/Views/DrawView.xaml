@@ -40,7 +40,7 @@
     </UserControl.Resources>
     
     <Grid>       
-        <Button Content="Draw Card" Template="{StaticResource DrawButton}" Command="{Binding DrawCommand}" VerticalAlignment="Center" Margin="5"/>
+        <Button Content="Draw Card" Template="{StaticResource DrawButton}" Command="{Binding DrawCommand}" VerticalAlignment="Center" Margin="0"/>
     </Grid>
     
 </UserControl>

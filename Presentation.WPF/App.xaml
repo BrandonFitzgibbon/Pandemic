@@ -89,27 +89,7 @@
                     </Border>
 
                 </Grid>
-            </ControlTemplate>
-
-            <DataTemplate DataType="{x:Type e:Card}">
-                <Grid x:Name="Grid" TextElement.Foreground="White">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Viewbox Grid.RowSpan="2">
-                        <ContentControl Content="{Binding City.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                    </Viewbox>
-                    <StackPanel VerticalAlignment="Top" Background="Transparent">
-                        <TextBlock VerticalAlignment="Top" Text="{Binding City.Name}" FontSize="16" Margin="3"/>
-                        <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Country}" FontSize="12" FontWeight="SemiBold" Margin="3"/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Background="Transparent">
-                        <TextBlock VerticalAlignment="Top" Text="Population" FontSize="12" Margin="3"/>
-                        <TextBlock VerticalAlignment="Bottom" Text="{Binding City.Population, StringFormat={}{0:###,###,###}}" FontSize="12" Margin="3"/>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>         
+            </ControlTemplate>     
             
             <DataTemplate DataType="{x:Type i:GameStatusViewModel}">
                 <v:GameStatusView/>
@@ -129,6 +109,14 @@
 
             <DataTemplate DataType="{x:Type i:InfectionViewModel}">
                 <v:InfectionView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:HandViewModel}">
+                <v:HandView/>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type i:MessageViewModel}">
+                <v:MessageView/>
             </DataTemplate>
             
         </ResourceDictionary>
