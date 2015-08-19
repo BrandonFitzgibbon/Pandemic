@@ -36,6 +36,12 @@ namespace Engine.Implementations
 
         public Player CurrentPlayer { get; private set; }
 
+        private bool isGameOver;
+        public bool IsGameOver
+        {
+            get { return isGameOver; }
+        }
+
         public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
             OutbreakCounter = new OutbreakCounter();
@@ -253,7 +259,7 @@ namespace Engine.Implementations
 
         private void GameOver(object sender, EventArgs e)
         {
-            
+            isGameOver = true;
         }
     }
 

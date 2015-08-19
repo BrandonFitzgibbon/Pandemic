@@ -2,95 +2,62 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:c="clr-namespace:Presentation.WPF.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Presentation.WPF.Implementations"
+             xmlns:con="clr-namespace:Presentation.WPF.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1280">
+             d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <ImageBrush x:Key="worldmap" ImageSource="pack://application:,,,/Controls/worldmap.bmp"/>
-        <c:DiseaseToColorConverter x:Key="DiseaseToColorConverter"/>
+        <con:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
+        
+        <DataTemplate DataType="{x:Type vm:NodeDiseaseCounterViewModel}">
+            <StackPanel Orientation="Horizontal" TextElement.Foreground="White">
+                <TextBlock Text="{Binding Node}"/>
+                <TextBlock Text="{Binding Count}" Margin="5,0,0,0"/>
+            </StackPanel>
+        </DataTemplate>
+        
     </UserControl.Resources>
     
     <Grid>
-        <ListView ItemsSource="{Binding Cities}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock DataContext="{Binding}" Foreground="{Binding Disease, Converter={StaticResource DiseaseToColorConverter}}">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}">
-                                    <Binding Path="Name"/>
-                                    <Binding Path="Country"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                        <StackPanel Grid.Row="2" Orientation="Vertical">
-                            <HeaderedItemsControl Header="Connections" Margin="5" Foreground="White" ItemsSource="{Binding Connections}">
-                                <HeaderedItemsControl.Template>
-                                    <ControlTemplate TargetType="HeaderedItemsControl">
-                                        <Border>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="auto" />
-                                                    <RowDefinition Height="auto" />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <ContentPresenter ContentSource="Header" />
-                                                <Separator Grid.Row="1" />
-                                                <ItemsPresenter Grid.Row="2" />
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </HeaderedItemsControl.Template>
-                                <ItemsControl.ItemContainerStyle>
-                                    <Style TargetType="ContentPresenter">
-                                        <Setter Property="Margin" Value="0,0,5,0"/>
-                                    </Style>
-                                </ItemsControl.ItemContainerStyle>
-                            </HeaderedItemsControl>
-                            <HeaderedItemsControl Header="Counters" Margin="5" Foreground="White" ItemsSource="{Binding Counters}">
-                                <HeaderedItemsControl.Template>
-                                    <ControlTemplate TargetType="HeaderedItemsControl">
-                                        <Border>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="auto" />
-                                                    <RowDefinition Height="auto" />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <ContentPresenter ContentSource="Header" />
-                                                <Separator Grid.Row="1" />
-                                                <ItemsPresenter Grid.Row="2" />
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </HeaderedItemsControl.Template>
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Rows="2" Columns="2"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </HeaderedItemsControl>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.ItemsPanel>
+        <ListBox Background="{StaticResource Background}" BorderBrush="Transparent" BorderThickness="0" Foreground="White">
+            <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="8" Columns="6"/>
+                    <UniformGrid Columns="4"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+            </ListBox.ItemsPanel>
+            <ListBox.Items>
+                <StackPanel IsHitTestVisible="False">
+                    <ContentControl Margin="3" Height="20" HorizontalAlignment="Center"  Content="{StaticResource compoundYellow}"/>
+                    <ListBox ItemsSource="{Binding YellowCounters}" Background="{StaticResource Background}" BorderBrush="Transparent" BorderThickness="0"/>
+                </StackPanel>
+                <StackPanel IsHitTestVisible="False">
+                    <ContentControl Margin="3" Height="20" HorizontalAlignment="Center" Content="{StaticResource compoundRed}"/>
+                    <ListBox ItemsSource="{Binding RedCounters}" Background="{StaticResource Background}" BorderBrush="Transparent" BorderThickness="0"/>
+                </StackPanel>
+                <StackPanel IsHitTestVisible="False">
+                    <ContentControl Margin="3" Height="20" HorizontalAlignment="Center" Content="{StaticResource compoundBlue}"/>
+                    <ListBox ItemsSource="{Binding BlueCounters}" Background="{StaticResource Background}" BorderBrush="Transparent" BorderThickness="0"/>
+                </StackPanel>
+                <StackPanel IsHitTestVisible="False">
+                    <ContentControl Margin="3" Height="20" HorizontalAlignment="Center" Content="{StaticResource compoundBlack}"/>
+                    <ListBox ItemsSource="{Binding BlackCounters}" Background="{StaticResource Background}" BorderBrush="Transparent" BorderThickness="0"/>
+                </StackPanel>
+            </ListBox.Items>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+            </ListBox.ItemContainerStyle>
+        </ListBox>     
     </Grid>
     
 </UserControl>

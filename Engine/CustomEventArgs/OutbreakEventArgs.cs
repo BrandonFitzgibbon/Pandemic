@@ -13,20 +13,14 @@ namespace Engine.CustomEventArgs
         public List<NodeDiseaseCounter> OriginList { get; private set; }
         public NodeDiseaseCounter OriginCounter { get; private set; }
         public List<NodeDiseaseCounter> AffectedCities { get; private set; }
+        public List<NodeDiseaseCounter> ChainCities { get; private set; }
 
-        public OutbreakEventArgs(NodeDiseaseCounter originCounter, OutbreakEventArgs outbreakEventArgs = null)
+        public OutbreakEventArgs(NodeDiseaseCounter originCounter)
         {
             OriginCounter = originCounter;
             OriginList = new List<NodeDiseaseCounter>(){originCounter};
             AffectedCities = new List<NodeDiseaseCounter>();
-
-            if(outbreakEventArgs != null)
-            {
-                foreach (NodeDiseaseCounter ndc in outbreakEventArgs.OriginList)
-                {
-                    OriginList.Add(ndc);
-                }
-            }
+            ChainCities = new List<NodeDiseaseCounter>();
         }
     }
 }

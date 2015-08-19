@@ -20,6 +20,7 @@ namespace Engine.Implementations
         internal void SubcribeToNodeDiseaseCounter(NodeDiseaseCounter ndc)
         {
             ndc.Outbreak += Outbreak;
+            ndc.ChainOutbreak += Outbreak;
         }
 
         private void Outbreak(object sender, OutbreakEventArgs e)

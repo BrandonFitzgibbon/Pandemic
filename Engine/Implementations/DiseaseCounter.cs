@@ -26,13 +26,14 @@ namespace Engine.Implementations
 
             foreach (NodeDiseaseCounter nodeCounter in nodeCounters)
             {
-                nodeCounter.Infected += InfectionNotification;
-                nodeCounter.Treated += TreatmentNotification;
-                nodeCounter.Outbreak += OutbreakNotification;              
+                nodeCounter.Infected += Infection;
+                nodeCounter.Treated += Treatment;
+                nodeCounter.Outbreak += Outbreak;
+                nodeCounter.ChainOutbreak += ChainOutbreak;
             }
         }
 
-        private void OutbreakNotification(object sender, OutbreakEventArgs e)
+        private void ChainOutbreak(object sender, OutbreakEventArgs e)
         {
             IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
             foreach (NodeDiseaseCounter nodeCounter in outbreakCounters.Where(i => !e.OriginList.Contains(i)))
@@ -47,12 +48,27 @@ namespace Engine.Implementations
             }
         }
 
-        private void InfectionNotification(object sender, EventArgs e)
+        private void Outbreak(object sender, OutbreakEventArgs e)
+        {
+            IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
+            foreach (NodeDiseaseCounter nodeCounter in outbreakCounters.Where(i => !e.OriginList.Contains(i)))
+            {
+                if (this.Count == 0)
+                    return;
+
+                if (outbreakCounter.Count == 7)
+                    return;
+
+                nodeCounter.OutbreakInfection(e);
+            }
+        }
+
+        private void Infection(object sender, EventArgs e)
         {
             Decrease();
         }
 
-        private void TreatmentNotification(object sender, EventArgs e)
+        private void Treatment(object sender, EventArgs e)
         {
             Increase();
         }

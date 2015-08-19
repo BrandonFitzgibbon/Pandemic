@@ -119,6 +119,10 @@
                 <v:MessageView/>
             </DataTemplate>
             
+            <DataTemplate DataType="{x:Type i:BoardViewModel}">
+                <v:BoardView/>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
     

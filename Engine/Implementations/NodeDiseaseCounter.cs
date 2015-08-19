@@ -55,7 +55,11 @@ namespace Engine.Implementations
                 e.AffectedCities.Add(this);
             }
             else
-                if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(this, e));
+            {
+                e.ChainCities.Add(this);
+                e.OriginList.Add(this);
+                if (ChainOutbreak != null) ChainOutbreak(this, e);
+            }
         }
 
         public void Infection(int rate)
@@ -88,6 +92,7 @@ namespace Engine.Implementations
         }
 
         public event EventHandler<OutbreakEventArgs> Outbreak;
+        public event EventHandler<OutbreakEventArgs> ChainOutbreak;
         public event EventHandler<InfectionEventArgs> Infected;
         public event EventHandler<TreatedEventArgs> Treated;
 
