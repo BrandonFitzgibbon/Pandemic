@@ -12,11 +12,6 @@ namespace Presentation.WPF.Implementations
     {
         private NodeDiseaseCounter nodeDiseaseCounter;
 
-        public Node Node
-        {
-            get { return nodeDiseaseCounter != null ? nodeDiseaseCounter.Node : null; }
-        }
-
         public Disease Disease
         {
             get { return nodeDiseaseCounter != null ? nodeDiseaseCounter.Disease : null; }

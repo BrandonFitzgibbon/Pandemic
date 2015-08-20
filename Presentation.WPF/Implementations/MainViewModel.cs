@@ -84,7 +84,7 @@ namespace Presentation.WPF.Implementations
 
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
-        private IEnumerable<INodeDiseaseCounterViewModel> nodeDiseaseCounterViewModels;
+        private IEnumerable<INodeViewModel> nodeViewModels;
 
         public MainViewModel()
         {
@@ -110,7 +110,8 @@ namespace Presentation.WPF.Implementations
 
             playerViewModels = CreatePlayerViewModels(game.Players);
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
-            nodeDiseaseCounterViewModels = CreateNodeDiseaseCounterViewModels(game.NodeCounters);
+            nodeViewModels = CreateNodeViewModels(game.Nodes, game.NodeCounters);
+            
 
             GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Yellow), 
@@ -120,7 +121,7 @@ namespace Presentation.WPF.Implementations
 
             PlayersViewModel = new PlayersViewModel(currentPlayer, selectedPlayer, playerViewModels);
             ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer);
-            BoardViewModel = new BoardViewModel(nodeDiseaseCounterViewModels);
+            BoardViewModel = new BoardViewModel(nodeViewModels);
             HandViewModel = new HandViewModel(selectedPlayer);
             DrawViewModel = new DrawViewModel(drawManager);
             InfectionViewModel = new InfectionViewModel(infectionManager);
@@ -192,16 +193,23 @@ namespace Presentation.WPF.Implementations
             return diseaseCounterViewModels;
         }
 
-        private IEnumerable<INodeDiseaseCounterViewModel> CreateNodeDiseaseCounterViewModels(IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters)
+        private IEnumerable<INodeViewModel> CreateNodeViewModels(IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters)
         {
-            List<INodeDiseaseCounterViewModel> nodeDiseaseCounterViewModels = new List<INodeDiseaseCounterViewModel>();
-            foreach (NodeDiseaseCounter ndc in nodeDiseaseCounters)
+            List<INodeViewModel> nodeViewModels = new List<INodeViewModel>();
+            foreach (Node node in nodes)
             {
-                NodeDiseaseCounterViewModel ndcvm = new NodeDiseaseCounterViewModel(ndc);
-                ndcvm.ChangeNotificationRequested += ChangeNotificationRequested;
-                nodeDiseaseCounterViewModels.Add(ndcvm);
+                List<INodeDiseaseCounterViewModel> nodeDiseaseCounterViewModels = new List<INodeDiseaseCounterViewModel>();
+                foreach (NodeDiseaseCounter ndc in nodeDiseaseCounters.Where(i => i.Node == node))
+                {
+                    NodeDiseaseCounterViewModel ndcvm = new NodeDiseaseCounterViewModel(ndc);
+                    ndcvm.ChangeNotificationRequested += ChangeNotificationRequested;
+                    nodeDiseaseCounterViewModels.Add(ndcvm);
+                }
+                NodeViewModel nvm = new NodeViewModel(node, nodeDiseaseCounterViewModels);
+                nvm.ChangeNotificationRequested += ChangeNotificationRequested;
+                nodeViewModels.Add(nvm);
             }
-            return nodeDiseaseCounterViewModels;
+            return nodeViewModels;
         }
 
         private new void ChangeNotificationRequested(object sender, EventArgs e)
@@ -227,9 +235,13 @@ namespace Presentation.WPF.Implementations
                 diseaseCounterViewModel.NotifyChanges();
             }
 
-            foreach (INodeDiseaseCounterViewModel nodeDiseaseCounterViewModel in nodeDiseaseCounterViewModels)
+            foreach (INodeViewModel nodeViewModel in nodeViewModels)
             {
-                nodeDiseaseCounterViewModel.NotifyChanges();
+                nodeViewModel.NotifyChanges();
+                foreach (INodeDiseaseCounterViewModel ndcvm in nodeViewModel.NodeCounters)
+                {
+                    ndcvm.NotifyChanges();
+                }
             }
         }
 

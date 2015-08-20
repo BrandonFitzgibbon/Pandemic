@@ -10,36 +10,15 @@ namespace Presentation.WPF.Implementations
 {
     public class BoardViewModel : ViewModelBase, IBoardViewModel
     {
-        private IEnumerable<INodeDiseaseCounterViewModel> nodeCounters;
-
-        public IEnumerable<INodeDiseaseCounterViewModel> NodeCounters
+        private IEnumerable<INodeViewModel> nodes;
+        public IEnumerable<INodeViewModel> Nodes
         {
-            get { return nodeCounters; }
+            get { return nodes;  }
         }
 
-        public IEnumerable<INodeDiseaseCounterViewModel> YellowCounters
+        public BoardViewModel(IEnumerable<INodeViewModel> nodes)
         {
-            get { return nodeCounters != null ? nodeCounters.Where(i => i.Disease.Type == DiseaseType.Yellow).OrderByDescending(i => i.Count) : null; }
-        }
-
-        public IEnumerable<INodeDiseaseCounterViewModel> RedCounters
-        {
-            get { return nodeCounters != null ? nodeCounters.Where(i => i.Disease.Type == DiseaseType.Red).OrderByDescending(i => i.Count) : null; }
-        }
-
-        public IEnumerable<INodeDiseaseCounterViewModel> BlueCounters
-        {
-            get { return nodeCounters != null ? nodeCounters.Where(i => i.Disease.Type == DiseaseType.Blue).OrderByDescending(i => i.Count) : null; }
-        }
-
-        public IEnumerable<INodeDiseaseCounterViewModel> BlackCounters
-        {
-            get { return nodeCounters != null ? nodeCounters.Where(i => i.Disease.Type == DiseaseType.Black).OrderByDescending(i => i.Count) : null; }
-        }
-
-        public BoardViewModel(IEnumerable<INodeDiseaseCounterViewModel> nodeCounters)
-        {
-            this.nodeCounters = nodeCounters;
+            this.nodes = nodes;
         }
     }
 }
