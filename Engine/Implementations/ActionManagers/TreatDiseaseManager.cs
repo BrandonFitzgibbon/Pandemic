@@ -32,7 +32,7 @@ namespace Engine.Implementations.ActionManagers
 
         internal void Treat(TreatDiseaseItem treatDiseaseItem)
         {
-            treatDiseaseItem.NodeDiseaseCounter.Treatment(treatDiseaseItem.TreatmentValue);
+            treatDiseaseItem.NodeDiseaseCounter.Treatment(treatDiseaseItem.TreatmentValue, player);
             player.ActionCounter.UseAction(treatDiseaseItem.Cost);         
         }
 

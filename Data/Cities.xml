@@ -94,7 +94,7 @@
     <Connections>
       <Connection>Chicago</Connection>
       <Connection>Mexico City</Connection>
-      <Connection>San Franciso</Connection>
+      <Connection>San Francisco</Connection>
       <Connection>Sydney</Connection>
     </Connections>
   </City>
@@ -222,7 +222,7 @@
     <Connections>
       <Connection>Ho Chi Minh City</Connection>
       <Connection>Hong Kong</Connection>
-      <Connection>San Franciso</Connection>
+      <Connection>San Francisco</Connection>
       <Connection>Sydney</Connection>
       <Connection>Taipei</Connection>
     </Connections>
@@ -297,7 +297,7 @@
     <Disease>Red</Disease>
     <Connections>
       <Connection>Osaka</Connection>
-      <Connection>San Franciso</Connection>
+      <Connection>San Francisco</Connection>
       <Connection>Seoul</Connection>
       <Connection>Shanghai</Connection>
     </Connections>
@@ -325,7 +325,7 @@
       <Connection>Los Angeles</Connection>
       <Connection>Mexico City</Connection>
       <Connection>Montreal</Connection>
-      <Connection>San Franciso</Connection>
+      <Connection>San Francisco</Connection>
     </Connections>
   </City>
 
@@ -421,7 +421,7 @@
   </City>
 
   <City>
-    <Name>San Franciso</Name>
+    <Name>San Francisco</Name>
     <Country>United States</Country>
     <Population>5864000</Population>
     <Disease>Blue</Disease>

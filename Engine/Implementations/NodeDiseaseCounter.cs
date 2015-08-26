@@ -22,14 +22,14 @@ namespace Engine.Implementations
             Count = 0;
         }
 
-        private bool CanInfect()
+        public void OutbreakInfection(OutbreakEventArgs e)
         {
             foreach (Player player in Node.Players)
             {
                 if (Disease.IsCured == true && player is Medic)
-                    return false;
+                    return;
                 if (player is QuarantineSpecialist)
-                    return false;
+                    return;
             }
 
             foreach (Node node in Node.Connections)
@@ -37,17 +37,9 @@ namespace Engine.Implementations
                 foreach (Player player in node.Players)
                 {
                     if (player is QuarantineSpecialist)
-                        return false;
+                        return;
                 }
             }
-
-            return true;
-        }
-
-        public void OutbreakInfection(OutbreakEventArgs e)
-        {
-            if (!CanInfect())
-                return;
 
             if (Count < 3)
             {
@@ -64,37 +56,67 @@ namespace Engine.Implementations
 
         public void Infection(int rate)
         {
-            if (!CanInfect())
-                return;
+            foreach (Player player in Node.Players)
+            {
+                if ((Disease.IsCured == true && player is Medic) || player is QuarantineSpecialist)
+                {
+                    if (Prevented != null) Prevented(this, new PreventionEventArgs(player, Disease, Node));
+                    return;
+                }
+            }
 
+            foreach (Node node in Node.Connections)
+            {
+                foreach (Player player in node.Players)
+                {
+                    if (player is QuarantineSpecialist)
+                    {
+                        if (Prevented != null) Prevented(this, new PreventionEventArgs(player, Disease, Node));
+                        return;
+                    }
+                }
+            }
+
+            int j = 0;
             for (int i = 0; i < rate; i++)
             {
                 if (Count < 3)
                 {
                     Count++;
-                    if (Infected != null) Infected(this, new InfectionEventArgs(this));
+                    j++;
                 }
                 else
+                {
+                    if (j > 0)
+                        if (Infected != null) Infected(this, new InfectionEventArgs(this, j));
                     if (Outbreak != null) Outbreak(this, new OutbreakEventArgs(this));
+                }
             }
+
+            if (j > 0)
+                if (Infected != null) Infected(this, new InfectionEventArgs(this, j));
         }
 
-        public void Treatment(int rate)
+        public void Treatment(int rate, Player treater)
         {
+            int j = 0;
             for (int i = 0; i < rate; i++)
             {
                 if (Count > 0)
                 {
                     Count--;
-                    if (Treated != null) Treated(this, new TreatedEventArgs(this));
+                    j++;
                 }
             }
+            if(j > 0)
+                if (Treated != null) Treated(this, new TreatedEventArgs(this, treater, j));
         }
 
         public event EventHandler<OutbreakEventArgs> Outbreak;
         public event EventHandler<OutbreakEventArgs> ChainOutbreak;
         public event EventHandler<InfectionEventArgs> Infected;
         public event EventHandler<TreatedEventArgs> Treated;
+        public event EventHandler<PreventionEventArgs> Prevented;
 
         public override string ToString()
         {

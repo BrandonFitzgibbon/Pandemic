@@ -6,14 +6,16 @@
              xmlns:vm="clr-namespace:Presentation.WPF.Implementations"
              xmlns:con="clr-namespace:Presentation.WPF.Converters"
              xmlns:c="clr-namespace:Presentation.WPF.Controls"
+             xmlns:v="clr-namespace:Presentation.WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Padding="10">
 
     <UserControl.Resources>
-        <con:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
+        
+        <con:NodeStatusToColorConverter x:Key="StatusToColorConverter"/>
         <con:NameToNodeConverter x:Key="NameToNodeConverter"/>
 
-        <DataTemplate x:Key="dcvm" DataType="{x:Type vm:DiseaseCounterViewModel}">
+        <DataTemplate x:Key="DiseaseCounterTemplate" DataType="{x:Type vm:DiseaseCounterViewModel}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -26,162 +28,354 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vm:NodeViewModel}">
-            <Border Width="100" Height="120" BorderThickness="2" Padding="3" CornerRadius="0" BorderBrush="White">
-                <Border HorizontalAlignment="Center">
-                    <Grid TextElement.Foreground="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                <Viewbox Grid.Column="1" Height="15" Margin="10,0,0,0">
-                                    <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                                </Viewbox>
-                            </Grid>
-                            <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="White" BorderThickness="0,1,0,1" Padding="0,3,0,3" TextElement.FontSize="12">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Viewbox Height="17.5">
-                                        <ContentControl Content="{StaticResource lightbuld}"/>
-                                    </Viewbox>
-                                    <TextBlock Grid.Column="1" Text="{Binding ResearchStation, StringFormat={} : {0}}" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </Border>
-                        </Grid>
-                        <UniformGrid Grid.Row="1" Rows="2" Columns="2" Margin="0,5,0,0">
-                            <ContentControl Content="{Binding YellowCounter}" ContentTemplate="{StaticResource dcvm}"/>
-                            <ContentControl Content="{Binding RedCounter}" ContentTemplate="{StaticResource dcvm}"/>
-                            <ContentControl Content="{Binding BlueCounter}" ContentTemplate="{StaticResource dcvm}"/>
-                            <ContentControl Content="{Binding BlackCounter}" ContentTemplate="{StaticResource dcvm}"/>
-                        </UniformGrid>
+        <DataTemplate x:Key="InfectionDataTemplate" DataType="{x:Type vm:NodeViewModel}">
+            <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                <Grid TextElement.Foreground="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
+                            <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                        </Viewbox>
                     </Grid>
-                </Border>
+                    <UniformGrid Grid.Row="1" Rows="2" Columns="2" VerticalAlignment="Center">
+                        <ContentControl Content="{Binding YellowCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
+                        <ContentControl Content="{Binding RedCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
+                        <ContentControl Content="{Binding BlueCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
+                        <ContentControl Content="{Binding BlackCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
+                    </UniformGrid>
+                </Grid>
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="PlayerDataTemplate" DataType="{x:Type vm:NodeViewModel}">
+            <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                <Grid TextElement.Foreground="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
+                            <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="0,3,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                            <StackPanel.Resources>
+                                <Style TargetType="ContentControl">
+                                    <Setter Property="Content" Value="{StaticResource greenMan}"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Viewbox Height="15">
+                                <ContentControl x:Name="man1"/>
+                            </Viewbox>
+                            <Viewbox Height="20">
+                                <ContentControl x:Name="man2"/>
+                            </Viewbox>
+                            <Viewbox Height="15">
+                                <ContentControl x:Name="man3"/>
+                            </Viewbox>
+                        </StackPanel>
+                        <ListBox BorderBrush="White" BorderThickness="0,0,0,0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Column="1" Background="{StaticResource Background}" Foreground="White" FontSize="12" ItemsSource="{Binding Players}" IsHitTestVisible="False"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Players.Count}" Value="0">
+                    <Setter TargetName="man1" Property="Content" Value="{StaticResource man}"/>
+                    <Setter TargetName="man2" Property="Content" Value="{StaticResource man}"/>
+                    <Setter TargetName="man3" Property="Content" Value="{StaticResource man}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
     </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,0,0">
+            <Grid Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="RadioButton">
+                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}" Width="30" Height="30" Margin="1">
+                                        <ContentPresenter Margin="2"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource StandardBorderBrush}"/>
+                                        </Trigger>
+                                        <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Grid.Resources>
+                <RadioButton x:Name="InfectionViewButton" IsChecked="True" HorizontalAlignment="Center">
+                    <RadioButton.Content>
+                        <Viewbox Height="20" Width="20">
+                            <ContentControl Content="{StaticResource compoundWhite}"/>
+                        </Viewbox>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Grid.Row="1" x:Name="PlayerViewButton" HorizontalAlignment="Center">
+                    <RadioButton.Content>
+                        <Viewbox Height="20" Width="20">
+                            <ContentControl Content="{StaticResource man}"/>
+                        </Viewbox>
+                    </RadioButton.Content>
+                </RadioButton>
+            </Grid>
+        </Border>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer.Resources>
+                <Style TargetType="c:ConnectedContent">
+                    <Setter Property="ContentTemplate" Value="{StaticResource InfectionDataTemplate}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=PlayerViewButton, Path=IsChecked}" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource PlayerDataTemplate}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Resources>
+            <Canvas Width="2500" Height="600" VerticalAlignment="Center" Background="{StaticResource Background}">
+                
+                <c:ConnectedContent x:Name="SF" Width="100" Height="120" Canvas.Left="50" Canvas.Top="0" Content="{Binding Nodes, ConverterParameter=San Francisco, Converter={StaticResource NameToNodeConverter}}" 
+                                    RightConnection="{Binding ElementName=CHI}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=LA}" BottomType="Top"/>    
+                <TextBlock Text="Tokyo" Canvas.Left="0" Canvas.Top="25" Foreground="White" FontSize="10"/>
+                <TextBlock Text="Manila" Canvas.Left="0" Canvas.Top="80" Foreground="White" FontSize="10"/>
+                <Line X1="0" X2="50" Y1="40" Y2="40" Stroke="White" StrokeThickness="1"/>
+                <Line X1="0" X2="50" Y1="80" Y2="80" Stroke="White" StrokeThickness="1"/>
+                
+                <c:ConnectedContent x:Name="CHI" Width="100" Height="120" Canvas.Left="200" Canvas.Top="0" Content="{Binding Nodes, ConverterParameter=Chicago, Converter={StaticResource NameToNodeConverter}}"
+                                    BottomLeftCornerConnection="{Binding ElementName=LA}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=MEXC}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=ATL}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="MTL" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Montreal}" Canvas.Left="500" Canvas.Top="0"
+                                    LeftConnection="{Binding ElementName=CHI}" LeftType="Right"
+                                    RightConnection="{Binding ElementName=NY}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=WSH}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="NY" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=New York}" Canvas.Left="650" Canvas.Top="0"
+                                    BottomLeftCornerConnection="{Binding ElementName=WSH}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=MAD}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=LON}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="LON" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=London}" Canvas.Left="800" Canvas.Top="0"
+                                    BottomLeftCornerConnection="{Binding ElementName=MAD}" BottomLeftCornerType="TopRightCorner"
+                                    RightConnection="{Binding ElementName=ESS}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=PAR}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="ESS" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Essen}" Canvas.Left="950" Canvas.Top="0"/>
+                
+                <c:ConnectedContent x:Name="STP" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=St. Petersburg}" Canvas.Left="1100" Canvas.Top="0"
+                                    RightConnection="{Binding ElementName=MOS}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=IST}" BottomType="Top"
+                                    LeftConnection="{Binding ElementName=ESS}" LeftType="Right"/>
+                
+                <c:ConnectedContent x:Name="MOS" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Moscow}" Canvas.Left="1250" Canvas.Top="0"
+                                    RightConnection="{Binding ElementName=TEH}" RightType="Left"
+                                    BottomLeftCornerConnection="{Binding ElementName=IST}" BottomLeftCornerType="TopRightCorner"/>
+                
+                <c:ConnectedContent x:Name="TEH" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Tehran}" Canvas.Left="1400" Canvas.Top="0"
+                                    BottomConnection="{Binding ElementName=KARA}" BottomType="Top"
+                                    BottomRightCornerConnection="{Binding ElementName=DEL}" TopLeftCornerType="BottomRightCorner"
+                                    BottomLeftCornerConnection="{Binding ElementName=BAG}" BottomLeftCornerType="TopRightCorner"/>
+                
+                <c:ConnectedContent x:Name="SHG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Shanghai}" Canvas.Left="2100" Canvas.Top="0"/>
+                
+                <c:ConnectedContent x:Name="BEI" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Beijing}" Canvas.Left="2350" Canvas.Top="0"
+                                    LeftConnection="{Binding ElementName=SHG}" LeftType="Right"
+                                    BottomConnection="{Binding ElementName=SEO}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="ATL" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Atlanta}" Canvas.Left="350" Canvas.Top="80"
+                                    RightConnection="{Binding ElementName=WSH}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=MIA}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="MIA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Miami}" Canvas.Left="350" Canvas.Top="240"
+                                    LeftConnection="{Binding ElementName=BOG}" LeftType="Right"
+                                    RightConnection="{Binding ElementName=WSH}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="LA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Los Angeles}" Canvas.Left="50" Canvas.Top="160"/>
+                <TextBlock Text="Sydney" Canvas.Left="0" Canvas.Top="220" Foreground="White" FontSize="10"/>
+                <Line X1="0" X2="50" Y1="220" Y2="220" Stroke="White" StrokeThickness="1"/>
+                
+                <c:ConnectedContent x:Name="MEXC" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Mexico City}" Canvas.Left="200" Canvas.Top="160"
+                                    RightConnection="{Binding ElementName=MIA}" RightType="Left"
+                                    LeftConnection="{Binding ElementName=LA}" LeftType="Right"
+                                    BottomConnection="{Binding ElementName=BOG}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="WSH" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Washington}" TextElement.FontSize="10" Canvas.Left="500" Canvas.Top="160"/>
+               
+                <c:ConnectedContent x:Name="MAD" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Madrid}" Canvas.Left="650" Canvas.Top="160"
+                                    RightConnection="{Binding ElementName=PAR}" RightType="Left"
+                                    BottomRightCornerConnection="{Binding ElementName=ALG}" BottomRightCornerType="Left"
+                                    BottomLeftCornerConnection="{Binding ElementName=SAOP}" BottomLeftCornerType="TopRightCorner"/>
+                
+                <c:ConnectedContent x:Name="PAR" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Paris}" Canvas.Left="800" Canvas.Top="160"
+                                    RightConnection="{Binding ElementName=MIL}" RightType="Left"
+                                    TopRightCornerConnection="{Binding ElementName=ESS}" TopRightCornerType="BottomLeftCorner"/>
+                
+                <c:ConnectedContent x:Name="MIL" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Milan}" Canvas.Left="950" Canvas.Top="160"
+                                    TopConnection="{Binding ElementName=ESS}" TopType="Bottom"
+                                    RightConnection="{Binding ElementName=IST}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="IST" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Istanbul}" Canvas.Left="1100" Canvas.Top="160"
+                                    RightConnection="{Binding ElementName=BAG}" RightType="Left"
+                                    BottomConnection="{Binding ElementName=CAI}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="BAG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Baghdad}" Canvas.Left="1250" Canvas.Top="160"
+                                    BottomLeftCornerConnection="{Binding ElementName=CAI}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=RIY}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=KARA}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="KARA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Karachi}" Canvas.Left="1400" Canvas.Top="160"
+                                    BottomLeftCornerConnection="{Binding ElementName=RIY}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=MUM}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=DEL}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="DEL" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Delhi}" Canvas.Left="1550" Canvas.Top="160"
+                                    BottomLeftCornerConnection="{Binding ElementName=MUM}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=CHE}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=KOL}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="KOL" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Kolkata}" Canvas.Left="1700" Canvas.Top="160"
+                                    BottomLeftCornerConnection="{Binding ElementName=CHE}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=BANG}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=HK}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="HK" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Hong Kong}" Canvas.Left="1850" Canvas.Top="160"
+                                    BottomLeftCornerConnection="{Binding ElementName=BANG}" BottomLeftCornerType="TopRightCorner"
+                                    BottomConnection="{Binding ElementName=HCM}" BottomType="Top"
+                                    BottomRightCornerConnection="{Binding ElementName=MAN}" BottomRightCornerType="TopLeftCorner"
+                                    RightConnection="{Binding ElementName=TAI}" RightType="Left"
+                                    TopRightCornerConnection="{Binding ElementName=SHG}" TopRightCornerType="Left"/>
+                
+                <c:ConnectedContent x:Name="TAI" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Taipei}" Canvas.Left="2000" Canvas.Top="160"
+                                    RightConnection="{Binding ElementName=OSA}" RightType="Left"
+                                    TopConnection="{Binding ElementName=SHG}" TopType="BottomLeftCorner"
+                                    BottomConnection="{Binding ElementName=MAN}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="TOK" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Tokyo}" Canvas.Left="2200" Canvas.Top="160"
+                                    TopConnection="{Binding ElementName=SHG}" TopType="BottomRightCorner"
+                                    BottomConnection="{Binding ElementName=OSA}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=SEO}" RightType="Left"/>
+                <TextBlock Text="San" Canvas.Left="2150" Canvas.Top="205" Foreground="White" FontSize="10"/>
+                <TextBlock Text="Francisco" Canvas.Left="2150" Canvas.Top="220" Foreground="White" FontSize="10"/>
+                <Line X1="2150" X2="2200" Y1="220" Y2="220" Stroke="White" StrokeThickness="1"/>
+                
+                <c:ConnectedContent x:Name="SEO" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Seoul}" Canvas.Left="2350" Canvas.Top="160"
+                                    TopLeftCornerConnection="{Binding ElementName=SHG}" TopLeftCornerType="Right"/>
+                
+                <c:ConnectedContent x:Name="LIMA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Lima}" Canvas.Left="50" Canvas.Top="320"
+                                    TopRightCornerConnection="{Binding ElementName=MEXC}" TopRightCornerType="BottomLeftCorner"
+                                    BottomConnection="{Binding ElementName=SAN}" BottomType="Top"/>
+                
+                <c:ConnectedContent x:Name="BOG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Bogota}" Canvas.Left="200" Canvas.Top="320"
+                                    RightConnection="{Binding ElementName=SAOP}" RightType="Left"
+                                    LeftConnection="{Binding ElementName=LIMA}" LeftType="Right"/>
+                
+                <c:ConnectedContent x:Name="SAOP" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Sao Paulo}" Canvas.Left="500" Canvas.Top="320"
+                                    RightConnection="{Binding ElementName=LAG}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="LAG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Lagos}" Canvas.Left="700" Canvas.Top="320"
+                                    BottomRightCornerConnection="{Binding ElementName=KHAR}" BottomRightCornerType="TopLeftCorner"/>
+                
+                <c:ConnectedContent x:Name="ALG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Algiers}" Canvas.Left="950" Canvas.Top="320"
+                                    TopLeftCornerConnection="{Binding ElementName=PAR}" TopLeftCornerType="BottomRightCorner"
+                                    TopRightCornerConnection="{Binding ElementName=IST}" TopRightCornerType="BottomLeftCorner"/>
+                
+                <c:ConnectedContent x:Name="CAI" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Cairo}" Canvas.Left="1100" Canvas.Top="320"
+                                    LeftConnection="{Binding ElementName=ALG}" LeftType="Right"/>
+                
+                <c:ConnectedContent x:Name="RIY" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Riyadh}" Canvas.Left="1250" Canvas.Top="320"
+                                    LeftConnection="{Binding ElementName=CAI}" LeftType="Right"/>
+                
+                <c:ConnectedContent x:Name="MUM" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Mumbai}" Canvas.Left="1400" Canvas.Top="320"
+                                    RightConnection="{Binding ElementName=CHE}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="CHE" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Chennai}" Canvas.Left="1550" Canvas.Top="320"
+                                    RightConnection="{Binding ElementName=BANG}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="BANG" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Bangkok}" Canvas.Left="1700" Canvas.Top="320"
+                                    BottomConnection="{Binding ElementName=JAK}" BottomType="Top"
+                                    RightConnection="{Binding ElementName=HCM}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="HCM" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Ho Chi Minh City}" Canvas.Left="1850" Canvas.Top="320"
+                                    BottomLeftCornerConnection="{Binding ElementName=JAK}" BottomLeftCornerType="TopRightCorner"
+                                    RightConnection="{Binding ElementName=MAN}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="OSA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Osaka}" Canvas.Left="2200" Canvas.Top="320"/>
+                
+                <c:ConnectedContent x:Name="MAN" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Manila}" Canvas.Left="2000" Canvas.Top="320"
+                                    BottomConnection="{Binding ElementName=SYD}" BottomType="Top"/>
+                <TextBlock Text="San" Canvas.Left="2105" Canvas.Top="365" Foreground="White" FontSize="10"/>
+                <TextBlock Text="Francisco" Canvas.Left="2105" Canvas.Top="380" Foreground="White" FontSize="10"/>
+                <Line X1="2100" X2="2150" Y1="380" Y2="380" Stroke="White" StrokeThickness="1"/>
+                
+                <c:ConnectedContent x:Name="BUEA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Buenos Aires}" Canvas.Left="350" Canvas.Top="480"
+                                    TopLeftCornerConnection="{Binding ElementName=BOG}" TopLeftCornerType="BottomRightCorner"
+                                    TopRightCornerConnection="{Binding ElementName=SAOP}" TopRightCornerType="BottomLeftCorner"/>
+                
+                <c:ConnectedContent x:Name="SAN" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Santiago}" Canvas.Left="50" Canvas.Top="480"/>
+                
+                <c:ConnectedContent x:Name="KIN" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Kinshasa}" Canvas.Left="550" Canvas.Top="480"
+                                    TopRightCornerConnection="{Binding ElementName=LAG}" TopRightCornerType="BottomLeftCorner"/>
+                <TextBlock Text="Khartoum" Canvas.Left="500" Canvas.Top="540" Foreground="White" FontSize="10"/>
+                <Line X1="500" X2="550" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
+                
+                <c:ConnectedContent x:Name="JO" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Johannesburg}" Canvas.Left="700" Canvas.Top="480"
+                                    LeftConnection="{Binding ElementName=KIN}" LeftType="Right"
+                                    RightConnection="{Binding ElementName=KHAR}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="KHAR" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Khartoum}" Canvas.Left="850" Canvas.Top="480"
+                                    RightConnection="{Binding ElementName=CAI}" RightType="BottomLeftCorner"/>
+                <TextBlock Text="Kinshasa" Canvas.Left="955" Canvas.Top="540" Foreground="White" FontSize="10"/>
+                <Line X1="950" X2="1000" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <c:ConnectionCanvas Width="2750" Height="655" Background="{StaticResource Background}">
-            
-            <ContentControl x:Name="SF" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=San Franciso}" Canvas.Left="50" Canvas.Top="0"/>
-            <ContentControl x:Name="CHI" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Chicago}" Canvas.Left="200" Canvas.Top="0"/>
-            <ContentControl x:Name="MTL" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Montreal}" Canvas.Left="500" Canvas.Top="0"/>
-            <ContentControl x:Name="NY" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=New York}" Canvas.Left="650" Canvas.Top="0"/>
-            <ContentControl x:Name="LON" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=London}" Canvas.Left="950" Canvas.Top="0"/>
-            <ContentControl x:Name="ESS" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Essen}" Canvas.Left="1100" Canvas.Top="0"/>
-            <ContentControl x:Name="STP" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=St. Petersburg}" Canvas.Left="1250" Canvas.Top="0"/>
-            <ContentControl x:Name="MOS" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Moscow}" Canvas.Left="1400" Canvas.Top="0"/>
-            <ContentControl x:Name="TEH" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Tehran}" Canvas.Left="1550" Canvas.Top="0"/>
-            <ContentControl x:Name="SHG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Shanghai}" Canvas.Left="2150" Canvas.Top="0"/>
-            <ContentControl x:Name="BEI" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Beijing}" Canvas.Left="2300" Canvas.Top="0"/>
-            <ContentControl x:Name="SEO" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Seoul}" Canvas.Left="2600" Canvas.Top="0"/>
-            
-            <ContentControl x:Name="ATL" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Atlanta}" Canvas.Left="350" Canvas.Top="80"/>                     
-            <ContentControl x:Name="MIA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Miami}" Canvas.Left="350" Canvas.Top="240"/>
-            <ContentControl x:Name="BUEA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Buenos Aires}" Canvas.Left="350" Canvas.Top="400"/>
-
-            <ContentControl x:Name="LA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Los Angeles}" Canvas.Left="50" Canvas.Top="160"/>
-            <ContentControl x:Name="MEXC" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Mexico City}" Canvas.Left="200" Canvas.Top="160"/>
-            <ContentControl x:Name="WSH" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Washington}" TextElement.FontSize="10" Canvas.Left="500" Canvas.Top="160"/>
-            <ContentControl x:Name="MAD" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Madrid}" Canvas.Left="650" Canvas.Top="160"/>
-            <ContentControl x:Name="PAR" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Paris}" Canvas.Left="950" Canvas.Top="160"/>
-            <ContentControl x:Name="MIL" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Milan}" Canvas.Left="1100" Canvas.Top="160"/>
-            <ContentControl x:Name="IST" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Istanbul}" Canvas.Left="1250" Canvas.Top="160"/>
-            <ContentControl x:Name="BAG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Baghdad}" Canvas.Left="1400" Canvas.Top="160"/>
-            <ContentControl x:Name="KARA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Karachi}" Canvas.Left="1550" Canvas.Top="160"/>
-            <ContentControl x:Name="DEL" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Delhi}" Canvas.Left="1700" Canvas.Top="160"/>
-            <ContentControl x:Name="KOL" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Kolkata}" Canvas.Left="1850" Canvas.Top="160"/>
-            <ContentControl x:Name="HK" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Hong Kong}" Canvas.Left="2150" Canvas.Top="160"/>
-            <ContentControl x:Name="TAI" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Taipei}" Canvas.Left="2300" Canvas.Top="160"/>
-            <ContentControl x:Name="OSA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Osaka}" Canvas.Left="2450" Canvas.Top="160"/>
-            <ContentControl x:Name="TOK" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Tokyo}" Canvas.Left="2600" Canvas.Top="160"/>
-            
-            <ContentControl x:Name="LIMA" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Lima}" Canvas.Left="50" Canvas.Top="320"/>
-            <ContentControl x:Name="BOG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Bogota}" Canvas.Left="200" Canvas.Top="320"/>
-            <ContentControl x:Name="SAOP" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Sao Paulo}" Canvas.Left="500" Canvas.Top="320"/>
-            <ContentControl x:Name="LAG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Lagos}" Canvas.Left="650" Canvas.Top="320"/>
-            <ContentControl x:Name="ALG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Algiers}" Canvas.Left="1100" Canvas.Top="320"/>
-            <ContentControl x:Name="CAI" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Cairo}" Canvas.Left="1250" Canvas.Top="320"/>
-            <ContentControl x:Name="RIY" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Riyadh}" Canvas.Left="1400" Canvas.Top="320"/>
-            <ContentControl x:Name="MUM" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Mumbai}" Canvas.Left="1550" Canvas.Top="320"/>
-            <ContentControl x:Name="CHE" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Chennai}" Canvas.Left="1700" Canvas.Top="320"/>
-            <ContentControl x:Name="BANG" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Bangkok}" Canvas.Left="2000" Canvas.Top="320"/>
-            <ContentControl x:Name="HCM" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Ho Chi Minh City}" Canvas.Left="2150" Canvas.Top="320"/>
-            <ContentControl x:Name="MAN" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Manila}" Canvas.Left="2300" Canvas.Top="320"/>
-
-            <ContentControl x:Name="SAN" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Santiago}" Canvas.Left="50" Canvas.Top="480"/>
-            <ContentControl x:Name="KIN" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Kinshasa}" Canvas.Left="650" Canvas.Top="480"/>
-            <ContentControl x:Name="JO" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Johannesburg}" TextElement.FontSize="10" Canvas.Left="800" Canvas.Top="480"/>
-            <ContentControl x:Name="KHAR" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Khartoum}" Canvas.Left="950" Canvas.Top="480"/>
-            <ContentControl x:Name="JAK" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Jakarta}" Canvas.Left="2000" Canvas.Top="480"/>
-            <ContentControl x:Name="SYD" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Sydney}" Canvas.Left="2300" Canvas.Top="480"/>
-            
-            <c:ConnectionCanvas.Connections>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference SF}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference CHI}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference SF}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference LA}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LA}}" FirstConnectionType="TopRightCorner"  SecondControl="{Binding Source={x:Reference CHI}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LA}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference MEXC}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CHI}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference MEXC}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CHI}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference ATL}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CHI}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference MTL}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MEXC}}" FirstConnectionType="BottomLeftCorner" SecondControl="{Binding Source={x:Reference LIMA}}" SecondConnectionType="TopRightCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MEXC}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference MIA}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MEXC}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference BOG}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LIMA}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference SAN}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LIMA}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference BOG}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference BOG}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference MIA}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference BOG}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference BUEA}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference BOG}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference SAOP}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference SAOP}}" FirstConnectionType="LeftMiddle" SecondControl="{Binding Source={x:Reference BUEA}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MIA}}" FirstConnectionType="TopMiddle" SecondControl="{Binding Source={x:Reference ATL}}" SecondConnectionType="BottomMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MIA}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference WSH}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference ATL}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference WSH}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference WSH}}" FirstConnectionType="TopMiddle" SecondControl="{Binding Source={x:Reference MTL}}" SecondConnectionType="BottomMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference WSH}}" FirstConnectionType="TopRightCorner" SecondControl="{Binding Source={x:Reference NY}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MTL}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference NY}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference NY}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference LON}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference SAOP}}" FirstConnectionType="TopRightCorner" SecondControl="{Binding Source={x:Reference MAD}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference SAOP}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference LAG}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MAD}}" FirstConnectionType="TopMiddle" SecondControl="{Binding Source={x:Reference NY}}" SecondConnectionType="BottomMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MAD}}" FirstConnectionType="TopRightCorner" SecondControl="{Binding Source={x:Reference LON}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference MAD}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference PAR}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LAG}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference KIN}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference LAG}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference KHAR}}" SecondConnectionType="TopLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference JO}}" FirstConnectionType="LeftMiddle" SecondControl="{Binding Source={x:Reference KIN}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference JO}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference KHAR}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference PAR}}" FirstConnectionType="TopMiddle" SecondControl="{Binding Source={x:Reference LON}}" SecondConnectionType="BottomMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference PAR}}" FirstConnectionType="BottomRightCorner" SecondControl="{Binding Source={x:Reference ALG}}" SecondConnectionType="TopLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference ESS}}" FirstConnectionType="LeftMiddle" SecondControl="{Binding Source={x:Reference LON}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference ESS}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference STP}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference ESS}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference MIL}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="LeftMiddle" SecondControl="{Binding Source={x:Reference MIL}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="TopMiddle" SecondControl="{Binding Source={x:Reference STP}}" SecondConnectionType="BottomMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="TopRightCorner" SecondControl="{Binding Source={x:Reference MOS}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference BAG}}" SecondConnectionType="LeftMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="BottomLeftCorner" SecondControl="{Binding Source={x:Reference ALG}}" SecondConnectionType="TopRightCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference IST}}" FirstConnectionType="BottomMiddle" SecondControl="{Binding Source={x:Reference CAI}}" SecondConnectionType="TopMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CAI}}" FirstConnectionType="LeftMiddle" SecondControl="{Binding Source={x:Reference ALG}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CAI}}" FirstConnectionType="BottomLeftCorner" SecondControl="{Binding Source={x:Reference KHAR}}" SecondConnectionType="RightMiddle"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CAI}}" FirstConnectionType="TopRightCorner" SecondControl="{Binding Source={x:Reference BAG}}" SecondConnectionType="BottomLeftCorner"/>
-                <c:ContentConnection FirstControl="{Binding Source={x:Reference CAI}}" FirstConnectionType="RightMiddle" SecondControl="{Binding Source={x:Reference RIY}}" SecondConnectionType="LeftMiddle"/>
-            </c:ConnectionCanvas.Connections>
-            
-        </c:ConnectionCanvas>
-    </ScrollViewer>
+                <c:ConnectedContent x:Name="JAK" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Jakarta}" Canvas.Left="1700" Canvas.Top="480"
+                                    TopLeftCornerConnection="{Binding ElementName=CHE}" TopLeftCornerType="BottomRightCorner"
+                                    RightConnection="{Binding ElementName=SYD}" RightType="Left"/>
+                
+                <c:ConnectedContent x:Name="SYD" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Sydney}" Canvas.Left="2000" Canvas.Top="480"/>
+                <TextBlock Text="Los" Canvas.Left="2105" Canvas.Top="525" Foreground="White" FontSize="10"/>
+                <TextBlock Text="Angeles" Canvas.Left="2105" Canvas.Top="540" Foreground="White" FontSize="10"/>
+                <Line X1="2100" X2="2150" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
+            </Canvas>
+        </ScrollViewer>
+    </Grid>
     
 </UserControl>

@@ -14,5 +14,6 @@ namespace Presentation.WPF.Contracts
     {
         Player CurrentPlayer { get; }
         IEnumerable<IPlayerViewModel> PlayerViewModels { get; }
+        IPlayerViewModel SelectedPlayerViewModel { get; set; }
     }
 }

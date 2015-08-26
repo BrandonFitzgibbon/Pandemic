@@ -10,10 +10,14 @@ namespace Engine.CustomEventArgs
     public class TreatedEventArgs : EventArgs
     {
         public NodeDiseaseCounter NodeDiseaseCounter { get; private set; }
+        public Player Treater { get; private set; }
+        public int Value { get; private set; }
 
-        public TreatedEventArgs(NodeDiseaseCounter nodeDiseaseCounter)
+        public TreatedEventArgs(NodeDiseaseCounter nodeDiseaseCounter, Player treater, int value)
         {
             NodeDiseaseCounter = nodeDiseaseCounter;
+            Treater = treater;
+            Value = value;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Presentation.WPF.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,40 @@ namespace Presentation.WPF.Implementations
             get { return node.ResearchStation; }
         }
 
+        public ICollection<Player> Players
+        {
+            get { return new ObservableCollection<Player>(node.Players); }
+        }
+
+        public NodeStatus Status
+        {
+            get
+            {
+                NodeStatus status = NodeStatus.White;
+
+                if (nodeCounters == null)
+                    return status;
+
+                foreach (INodeDiseaseCounterViewModel nodeCounter in nodeCounters)
+                {
+                    switch(nodeCounter.Count)
+                    {
+                        case 1:
+                            status = NodeStatus.Yellow;
+                            break;
+                        case 2:
+                            status = NodeStatus.Orange;
+                            break;
+                        case 3:
+                            status = NodeStatus.Red;
+                            break;
+                    }
+                }
+
+                return status;
+            }
+        }
+
         public INodeDiseaseCounterViewModel YellowCounter
         {
             get { return nodeCounters != null ? nodeCounters.Single(i => i.Disease.Type == DiseaseType.Yellow) : null; }
@@ -58,5 +93,7 @@ namespace Presentation.WPF.Implementations
             this.node = node;
             this.nodeCounters = nodeCounters;
         }
+
+        public enum NodeStatus {White, Yellow, Orange, Red}
     }
 }

@@ -89,7 +89,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack" }, Difficulty.Standard);
+            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Standard);
 
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
@@ -141,32 +141,47 @@ namespace Presentation.WPF.Implementations
                 ndc.Infected += ndc_Infected;
                 ndc.Treated += ndc_Treated;
                 ndc.Outbreak += ndc_Outbreak;
+                ndc.Prevented += ndc_Prevented;
             }
+
+            drawManager.Context.EpidemicDrawn += EpidemicDrawn;
+
+            PlayersViewModel.SelectedPlayerViewModel = PlayersViewModel.PlayerViewModels.Single(i => i.Player == currentPlayer.Context);
+        }
+
+        private void EpidemicDrawn(object sender, EventArgs e)
+        {
+            messageContext.Context.AppendLine("Epidemic!\nThe infection rate counter has increased.\nThe infection deck has intensified.");
+        }
+
+        private void ndc_Prevented(object sender, PreventionEventArgs e)
+        {
+            messageContext.Context.AppendLine(e.Player.Role + " in " + e.Player.Location.City + " has prevented a " + e.Disease + " infection from occuring in " + e.Node.City);
         }
 
         private void ndc_Outbreak(object sender, OutbreakEventArgs e)
         {
-            messageContext.Context.AppendLine("An outbreak has occurred in " + e.OriginCounter + "!");
+            messageContext.Context.AppendLine("An outbreak has occurred in " + e.OriginCounter.Node.City + "!");
 
             foreach (NodeDiseaseCounter ndc in e.ChainCities)
             {
-                messageContext.Context.AppendLine("\tA chain outbreak has occured in " + ndc);
+                messageContext.Context.AppendLine("\tA chain outbreak has occured in " + ndc.Node.City);
             }
             messageContext.Context.AppendLine("\t\tAffected Cities");
             foreach (NodeDiseaseCounter ndc in e.AffectedCities.Distinct())
             {
-                messageContext.Context.AppendLine("\t\t\t" + ndc);
+                messageContext.Context.AppendLine("\t\t\t" + ndc.Node.City);
             }
         }
 
         private void ndc_Treated(object sender, TreatedEventArgs e)
         {
-            messageContext.Context.AppendLine(e.NodeDiseaseCounter + " has been treated!");
+            messageContext.Context.AppendLine(e.Treater.Role + " has treated " + e.Value + " unit(s) of " + e.NodeDiseaseCounter.Disease + " infection in " + e.NodeDiseaseCounter.Node.City);
         }
 
         private void ndc_Infected(object sender, InfectionEventArgs e)
         {
-            messageContext.Context.AppendLine(e.NodeDiseaseCounter + " has been infected!");
+            messageContext.Context.AppendLine(e.Value + " unit(s) of " + e.NodeDiseaseCounter.Disease + " have infected " + e.NodeDiseaseCounter.Node.City);
         }
 
         private IEnumerable<IPlayerViewModel> CreatePlayerViewModels(IEnumerable<Player> players)
@@ -265,6 +280,7 @@ namespace Presentation.WPF.Implementations
         {
             game.NextPlayer();
             currentPlayer.Context = game.CurrentPlayer;
+            PlayersViewModel.SelectedPlayerViewModel = PlayersViewModel.PlayerViewModels.Single(i => i.Player == currentPlayer.Context);
             ChangeNotificationRequested(this, EventArgs.Empty);
         }
     }

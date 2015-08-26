@@ -89,7 +89,7 @@
                         <Style x:Key="InfectionEllipse" TargetType="Ellipse">
                             <Setter Property="Height" Value="50"/>
                             <Setter Property="Width" Value="50"/>
-                            <Setter Property="Fill" Value="Green"/>
+                            <Setter Property="Fill" Value="LimeGreen"/>
                         </Style>
                     </Viewbox.Resources>
                     <StackPanel Orientation="Horizontal">

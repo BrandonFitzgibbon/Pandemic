@@ -44,6 +44,7 @@
     <Compile Include="CustomEventArgs\InfectionEventArgs.cs" />
     <Compile Include="CustomEventArgs\OutbreakEventArgs.cs" />
     <Compile Include="CustomEventArgs\PlayerMovedEventArgs.cs" />
+    <Compile Include="CustomEventArgs\PreventionEventArgs.cs" />
     <Compile Include="CustomEventArgs\TreatedEventArgs.cs" />
     <Compile Include="Factories\PlayerFactory.cs" />
     <Compile Include="Implementations\ActionCounter.cs" />
