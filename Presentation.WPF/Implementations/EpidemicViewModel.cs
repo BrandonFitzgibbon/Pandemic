@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Presentation.WPF.Implementations
 {
@@ -16,6 +18,13 @@ namespace Presentation.WPF.Implementations
         public EpidemicManager Manager
         {
             get { return manager; }
+        }
+
+        private bool isOpen = true;
+        public bool IsOpen
+        {
+            get { return isOpen; }
+            set { isOpen = value; NotifyPropertyChanged(); }
         }
 
         public EpidemicViewModel(EpidemicManager manager)
@@ -87,6 +96,7 @@ namespace Presentation.WPF.Implementations
         {
             Manager.Intensify();
             RaiseChangeNotificationRequested();
+            IsOpen = false;
         }
     }
 }

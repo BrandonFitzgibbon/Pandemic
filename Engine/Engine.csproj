@@ -68,6 +68,7 @@
     <Compile Include="Implementations\Card.cs" />
     <Compile Include="Implementations\City.cs" />
     <Compile Include="Implementations\CityCard.cs" />
+    <Compile Include="Implementations\DiscardManager.cs" />
     <Compile Include="Implementations\DiseaseCounter.cs" />
     <Compile Include="Implementations\Disease.cs" />
     <Compile Include="Implementations\DrawCounter.cs" />

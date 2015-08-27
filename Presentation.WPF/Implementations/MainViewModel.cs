@@ -89,6 +89,13 @@ namespace Presentation.WPF.Implementations
             set { epidemicViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IDiscardViewModel discardViewModel;
+        public IDiscardViewModel DiscardViewModel
+        {
+            get { return discardViewModel; }
+            set { discardViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
         private IEnumerable<INodeViewModel> nodeViewModels;
@@ -96,7 +103,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Standard);
+            game = new Game(data, new List<string> { "Jessica", "Jack"}, Difficulty.Standard);
 
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
@@ -150,9 +157,29 @@ namespace Presentation.WPF.Implementations
                 ndc.Prevented += ndc_Prevented;
             }
 
+            foreach (Player player in game.Players)
+            {
+                player.Hand.DiscardManager.Block += DiscardManagerBlock;
+                player.Hand.DiscardManager.Release += DiscardManagerRelease;
+            }
+
             drawManager.Context.EpidemicDrawn += EpidemicDrawn;
 
             PlayersViewModel.SelectedPlayerViewModel = PlayersViewModel.PlayerViewModels.Single(i => i.Player == currentPlayer.Context);
+        }
+
+        private void DiscardManagerBlock(object sender, EventArgs e)
+        {
+            ChangeNotificationRequested(this, EventArgs.Empty);
+            DiscardViewModel dvm = new DiscardViewModel((DiscardManager)sender);
+            dvm.ChangeNotificationRequested += ChangeNotificationRequested;
+            DiscardViewModel = dvm;
+        }
+
+        private void DiscardManagerRelease(object sender, EventArgs e)
+        {
+            ChangeNotificationRequested(this, EventArgs.Empty);
+            DiscardViewModel = null;
         }
 
         private void EpidemicDrawn(object sender, EventArgs e)

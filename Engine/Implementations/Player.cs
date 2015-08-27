@@ -23,7 +23,7 @@ namespace Engine.Implementations
         internal Player(string name)
         {
             Name = name;
-            Hand = new Hand();
+            Hand = new Hand(this);
             ActionCounter = new ActionCounter();
             DrawCounter = new DrawCounter();
         }

@@ -58,6 +58,7 @@
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Contracts\IActionsViewModel.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
+    <Compile Include="Contracts\IDiscardViewModel.cs" />
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\IDrawViewModel.cs" />
     <Compile Include="Contracts\IEpidemicViewModel.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Converters\NodeStatusToColorConverter.cs" />
     <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
+    <Compile Include="Implementations\DiscardViewModel.cs" />
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\DrawViewModel.cs" />
     <Compile Include="Implementations\EpidemicViewModel.cs" />
@@ -97,14 +99,17 @@
     <Compile Include="Views\BoardView.xaml.cs">
       <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DiscardDialog.xaml.cs">
+      <DependentUpon>DiscardDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DrawView.xaml.cs">
       <DependentUpon>DrawView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EpidemicDialog.xaml.cs">
       <DependentUpon>EpidemicDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EpidemicModal.xaml.cs">
-      <DependentUpon>EpidemicModal.xaml</DependentUpon>
+    <Compile Include="Views\DialogController.xaml.cs">
+      <DependentUpon>DialogController.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GameStatusView.xaml.cs">
       <DependentUpon>GameStatusView.xaml</DependentUpon>
@@ -149,6 +154,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DiscardDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DrawView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,7 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EpidemicModal.xaml">
+    <Page Include="Views\DialogController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

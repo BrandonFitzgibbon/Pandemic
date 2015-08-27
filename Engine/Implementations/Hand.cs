@@ -10,6 +10,10 @@ namespace Engine.Implementations
 {
     public class Hand
     {
+        internal Player owner;
+
+        public DiscardManager DiscardManager { get; private set; }
+
         internal IList<Card> cards;     
         public IEnumerable<Card> Cards
         {
@@ -21,25 +25,30 @@ namespace Engine.Implementations
             get { return cards.Where(i => i is CityCard).OfType<CityCard>(); }
         }
 
-        public Hand()
+        public Hand(Player player)
         {
+            owner = player;
             cards = new List<Card>();
+            DiscardManager = new DiscardManager(this);
         }
 
         internal void AddToHand(Card card)
         {
             card.Discarded += cardDiscarded;
             cards.Add(card);
+            if (HandChanged != null) HandChanged(this, EventArgs.Empty);
         }
 
-        internal void RemoveFromHand(Card card)
+        internal void RemoveFromHand(Card card)     
         {
             card.Discarded -= cardDiscarded;
             cards.Remove(card);
+            if (HandChanged != null) HandChanged(this, EventArgs.Empty);
         }
 
         private void cardDiscarded(object sender, DiscardedEventArgs e)
         {
+            e.Card.Discarded -= cardDiscarded;
             cards.Remove(e.Card);
             if (HandChanged != null) HandChanged(this, EventArgs.Empty);
         }

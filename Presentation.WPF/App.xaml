@@ -67,12 +67,16 @@
                             <VisualState x:Name="Normal"/>
                             <VisualState x:Name="MouseOver">
                                 <Storyboard>
-                                    <ColorAnimation From="Transparent" To="Gray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="Transparent" To="LightGray" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="White" To="Black" Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextElement.Foreground).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="White" To="Black" Storyboard.TargetName="Border" Storyboard.TargetProperty="(BorderBrush).Color" Duration="0:00:00"/>
                                 </Storyboard>
                             </VisualState>
                             <VisualState x:Name="Pressed">
                                 <Storyboard>
-                                    <ColorAnimation From="Gray" To="Yellow" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="LightGray" To="Yellow" Storyboard.TargetName="Border" Storyboard.TargetProperty="(Background).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="White" To="Black" Storyboard.TargetName="Border" Storyboard.TargetProperty="(TextElement.Foreground).Color" Duration="0:00:00"/>
+                                    <ColorAnimation From="White" To="Black" Storyboard.TargetName="Border" Storyboard.TargetProperty="(BorderBrush).Color" Duration="0:00:00"/>
                                 </Storyboard>
                             </VisualState>
                             <VisualState x:Name="Disabled">
@@ -89,8 +93,21 @@
                     </Border>
 
                 </Grid>
-            </ControlTemplate>     
-            
+            </ControlTemplate>
+
+            <DataTemplate DataType="{x:Type e:CityCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="Text" Text="{Binding}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Viewbox Grid.Column="1" Margin="5" Height="{Binding ElementName=Text, Path=ActualHeight}" VerticalAlignment="Center">
+                        <ContentControl Content="{Binding Node.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                    </Viewbox>
+                </Grid>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type i:GameStatusViewModel}">
                 <v:GameStatusView/>
             </DataTemplate>
