@@ -11,16 +11,13 @@ namespace Engine.Implementations
         private Player player;
         private PlayerDeck playerDeck;
 
-        private bool canDraw;
-        public bool CanDraw
-        {
-            get { return canDraw; }
-        }
+        public EpidemicManager EpidemicManager { get; private set; }
+        public bool CanDraw { get; private set; }
 
         internal DrawManager(PlayerDeck playerDeck)
         {
             this.playerDeck = playerDeck;
-            this.canDraw = false;
+            CanDraw = false;
         }
 
         public void DrawPlayerCard()
@@ -31,11 +28,10 @@ namespace Engine.Implementations
 
                 if(drawnCard is EpidemicCard)
                 {
+                    EpidemicManager = new EpidemicManager((EpidemicCard)drawnCard);
+                    EpidemicManager.Resolved += EpidemicManagerResolved;
+                    CanDraw = false;
                     if (EpidemicDrawn != null) EpidemicDrawn(this, EventArgs.Empty);
-                    EpidemicCard ec = (EpidemicCard)drawnCard;
-                    ec.Increase();
-                    ec.Infect();
-                    ec.Intensify();
                 }
 
                 else
@@ -50,13 +46,19 @@ namespace Engine.Implementations
         internal void SetPlayer(Player player)
         {
             this.player = player;
-            canDraw = true;
+            CanDraw = true;
             this.player.DrawCounter.DrawsDepleted += DrawsDepleted;
+        }
+
+        private void EpidemicManagerResolved(object sender, EventArgs e)
+        {
+            CanDraw = true;
+            EpidemicManager = null;
         }
 
         private void DrawsDepleted(object sender, EventArgs e)
         {
-            canDraw = false;
+            CanDraw = false;
         }
 
         public event EventHandler EpidemicDrawn;

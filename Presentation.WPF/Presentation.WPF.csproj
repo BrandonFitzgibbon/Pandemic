@@ -60,6 +60,7 @@
     <Compile Include="Contracts\IBoardViewModel.cs" />
     <Compile Include="Contracts\IDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\IDrawViewModel.cs" />
+    <Compile Include="Contracts\IEpidemicViewModel.cs" />
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IInfectionViewModel.cs" />
     <Compile Include="Contracts\IMessageViewModel.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Implementations\DiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\DrawViewModel.cs" />
+    <Compile Include="Implementations\EpidemicViewModel.cs" />
     <Compile Include="Implementations\GameStatusViewModel.cs" />
     <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\InfectionViewModel.cs" />
@@ -97,6 +99,12 @@
     </Compile>
     <Compile Include="Views\DrawView.xaml.cs">
       <DependentUpon>DrawView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EpidemicDialog.xaml.cs">
+      <DependentUpon>EpidemicDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EpidemicModal.xaml.cs">
+      <DependentUpon>EpidemicModal.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GameStatusView.xaml.cs">
       <DependentUpon>GameStatusView.xaml</DependentUpon>
@@ -142,6 +150,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DrawView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EpidemicDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EpidemicModal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,7 +220,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Controls\worldmap.bmp" />
+    <Resource Include="Controls\monochrome_map_w1.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\bacteria.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

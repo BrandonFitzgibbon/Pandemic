@@ -35,69 +35,16 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    
-    <Expander ExpandDirection="Right" IsExpanded="True">
-        <Expander.Header>
-            <Viewbox Width="50" Height="30">
-                <ContentControl Content="{StaticResource cards}"/>
-            </Viewbox>
-        </Expander.Header>
-        <Expander.Resources>
-            <ControlTemplate x:Key="ExpanderToggle" TargetType="ToggleButton">
-                <Border x:Name="Border" Background="{TemplateBinding Background}">
-                    <ContentControl x:Name="Content" Content="{StaticResource rightArrow}"/>
-                </Border>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsChecked" Value="True">
-                        <Setter TargetName="Content" Property="Content" Value="{StaticResource leftArrow}"/>
-                    </Trigger>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter TargetName="Border" Property="Background" Value="Gray"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
-        </Expander.Resources>
-        <Expander.Style>
-            <Style TargetType="Expander">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Expander">
-                            <Grid>                                                                                       
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition x:Name="ContentColumn" Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Background="{StaticResource Background}">
-                                    <ContentPresenter ContentSource="Header" Margin="5"/>
-                                </Border>
-                                <Border x:Name="ContentSite" Background="{StaticResource Background}" Grid.Column="2">
-                                    <Border.RenderTransform>
-                                        <ScaleTransform ScaleX="0" ScaleY="1"/>
-                                    </Border.RenderTransform>
-                                    <ContentPresenter x:Name="Content"/>
-                                </Border>
-                                <Border x:Name="ToggleBorder" Background="{StaticResource Background}" Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,1,0">
-                                    <ToggleButton Background="Transparent" Template="{StaticResource ExpanderToggle}" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsExpanded, Mode=TwoWay}"/>
-                                </Border> 
-                                <Border Grid.Row="3"/>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsExpanded" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard Storyboard="{StaticResource ExpandB}"/>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard Storyboard="{StaticResource CollapseB}"/>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Expander.Style>
-        <ListBox ItemsSource="{Binding Hand}" BorderBrush="Transparent" Background="Transparent" IsHitTestVisible="False">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Width="50" Height="30">
+            <ContentControl Content="{StaticResource cards}"/>
+        </Viewbox>
+        <ListBox Grid.Column="1" ItemsSource="{Binding Hand}" BorderBrush="Transparent" Background="Transparent" IsHitTestVisible="False">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" Rows="2"/>
@@ -109,14 +56,17 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
                                 <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
-                                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    <Grid>
+                                        <Grid Background="{StaticResource Background}" Opacity="0.9" Margin="-2"/>
+                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    </Grid>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-        </ListBox>        
-    </Expander>
+        </ListBox>
+    </Grid>
     
 </UserControl>

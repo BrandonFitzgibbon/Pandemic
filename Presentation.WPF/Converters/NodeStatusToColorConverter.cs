@@ -26,7 +26,7 @@ namespace Presentation.WPF.Converters
                     return System.Windows.Media.Brushes.Red;
             }
 
-            return System.Windows.Media.Brushes.White;
+            return System.Windows.Media.Brushes.LimeGreen;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

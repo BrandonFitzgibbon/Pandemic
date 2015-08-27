@@ -82,6 +82,13 @@ namespace Presentation.WPF.Implementations
             set { messageViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IEpidemicViewModel epidemicViewModel;
+        public IEpidemicViewModel EpidemicViewModel
+        {
+            get { return epidemicViewModel; }
+            set { epidemicViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
         private IEnumerable<INodeViewModel> nodeViewModels;
@@ -110,8 +117,7 @@ namespace Presentation.WPF.Implementations
 
             playerViewModels = CreatePlayerViewModels(game.Players);
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
-            nodeViewModels = CreateNodeViewModels(game.Nodes, game.NodeCounters);
-            
+            nodeViewModels = CreateNodeViewModels(game.Nodes, game.NodeCounters);           
 
             GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Yellow), 
@@ -151,7 +157,12 @@ namespace Presentation.WPF.Implementations
 
         private void EpidemicDrawn(object sender, EventArgs e)
         {
-            messageContext.Context.AppendLine("Epidemic!\nThe infection rate counter has increased.\nThe infection deck has intensified.");
+            messageContext.Context.AppendLine("Epidemic!");
+            messageContext.Context.AppendLine("The infection counter has increased.");
+            EpidemicViewModel evm = new EpidemicViewModel(drawManager.Context.EpidemicManager);
+            evm.ChangeNotificationRequested += ChangeNotificationRequested;
+            EpidemicViewModel = evm;
+            messageContext.Context.AppendLine("The infection deck has intensified");
         }
 
         private void ndc_Prevented(object sender, PreventionEventArgs e)
