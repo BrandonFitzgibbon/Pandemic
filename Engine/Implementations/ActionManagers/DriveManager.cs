@@ -39,7 +39,7 @@ namespace Engine.Implementations.ActionManagers
 
         private void Update()
         {
-            Destinations = GetDestinations();
+            Destinations = GetDestinations(player.ActionCounter.Count);
         }
 
         private void PlayerMoved(object sender, PlayerMovedEventArgs e)
@@ -52,10 +52,10 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
-        private IEnumerable<DriveDestinationItem> GetDestinations()
+        internal IEnumerable<DriveDestinationItem> GetDestinations(int actionCount)
         {
             List<DriveDestinationItem> destinations = new List<DriveDestinationItem>();
-            AddDestinations(destinations, 1, player.ActionCounter.Count, player.Location, player.Location);
+            AddDestinations(destinations, 1, actionCount, player.Location, player.Location);
             return destinations;
         }
 

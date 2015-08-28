@@ -103,7 +103,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack"}, Difficulty.Standard);
+            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane"}, Difficulty.Standard);
 
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
@@ -126,14 +126,14 @@ namespace Presentation.WPF.Implementations
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
             nodeViewModels = CreateNodeViewModels(game.Nodes, game.NodeCounters);           
 
-            GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, 
+            GameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, game.ResearchStationCounter, 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Yellow), 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Red), 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Blue), 
                 diseaseCounterViewModels.Single(i => i.Disease.Type == DiseaseType.Black));
 
             PlayersViewModel = new PlayersViewModel(currentPlayer, selectedPlayer, playerViewModels);
-            ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer);
+            ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer, game.Players);
             BoardViewModel = new BoardViewModel(nodeViewModels);
             HandViewModel = new HandViewModel(selectedPlayer);
             DrawViewModel = new DrawViewModel(drawManager);

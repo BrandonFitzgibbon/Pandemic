@@ -58,6 +58,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
             <StackPanel Grid.Column="0" Orientation="Horizontal">
@@ -79,7 +80,15 @@
         <Border Grid.Column="4" BorderBrush="Gray" BorderThickness="0,0,1,0">
             <ContentControl Content="{Binding BlackCounter}"/>
         </Border>
-        <Border Grid.Column="5">
+        <Border Grid.Column="5" BorderBrush="Gray" BorderThickness="0,0,1,0">
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Viewbox Margin="5,5,0,5">
+                    <ContentControl Content="{StaticResource lightbulb}" ToolTip="Research Stations Available"/>
+                </Viewbox>
+                <TextBlock Margin="10,0,10,0" Text="{Binding ResearchStationCount}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="6">
             <StackPanel Orientation="Horizontal">
                 <Viewbox Margin="10,5,0,5">
                     <ContentControl Content="{StaticResource gasmask}"/>

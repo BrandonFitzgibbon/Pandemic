@@ -1,4 +1,5 @@
 ﻿using Engine.Implementations.ActionItems;
+using Engine.Implementations.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,19 +73,42 @@ namespace Engine.Implementations.ActionManagers
             if (player.ActionCounter.Count < 1)
                 return targets;
 
-            foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
+            if (player is Researcher)
             {
-                foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
+                foreach (CityCard cityCard in player.Hand.CityCards)
                 {
-                    targets.Add(new ShareKnowledgeItem(player, plyr, cityCard));
+                    foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
+                    {
+                        targets.Add(new ShareKnowledgeItem(player, plyr, cityCard));
+                    }
+                }
+            }
+            else
+            {
+                foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
+                {
+                    foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
+                    {
+                        targets.Add(new ShareKnowledgeItem(player, plyr, cityCard));
+                    }
                 }
             }
 
             foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
             {
-                foreach (CityCard cityCard in plyr.Hand.CityCards.Where(i => i.Node == player.Location))
+                if(plyr is Researcher)
                 {
-                    targets.Add(new ShareKnowledgeItem(plyr, player, cityCard));
+                    foreach (CityCard cityCard in plyr.Hand.CityCards)
+                    {
+                        targets.Add(new ShareKnowledgeItem(plyr, player, cityCard));
+                    }
+                }
+                else
+                {
+                    foreach (CityCard cityCard in plyr.Hand.CityCards.Where(i => i.Node == player.Location))
+                    {
+                        targets.Add(new ShareKnowledgeItem(plyr, player, cityCard));
+                    }
                 }
             }
 

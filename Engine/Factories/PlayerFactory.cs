@@ -12,7 +12,7 @@ namespace Engine.Factories
 {
     public static class PlayerFactory
     {
-        private static List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist", "QuarantineSpecialist" };
+        private static List<string> roles = new List<string>() { "Medic", "Dispatcher", "Scientist", "QuarantineSpecialist", "OperationsExpert", "Researcher" };
 
         public static IEnumerable<Player> GetPlayers(IList<string> names)
         {
@@ -35,6 +35,12 @@ namespace Engine.Factories
                         break;
                     case "QuarantineSpecialist":
                         players.Add(new QuarantineSpecialist(name));
+                        break;
+                    case "OperationsExpert":
+                        players.Add(new OperationsExpert(name));
+                        break;
+                    case "Researcher":
+                        players.Add(new Researcher(name));
                         break;
                 }
             }

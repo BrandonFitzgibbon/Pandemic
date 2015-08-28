@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Engine.CustomEventArgs
 {
-    public class OutbreakEventArgs
+    public class OutbreakEventArgs : EventArgs
     {
         public List<NodeDiseaseCounter> OriginList { get; private set; }
         public NodeDiseaseCounter OriginCounter { get; private set; }

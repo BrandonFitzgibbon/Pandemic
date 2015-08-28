@@ -13,6 +13,7 @@ namespace Presentation.WPF.Implementations
     {
         private OutbreakCounter outbreakCounter;
         private InfectionRateCounter infectionRateCounter;
+        private ResearchStationCounter researchStationCounter;
         private IDiseaseCounterViewModel yellowCounter;
         private IDiseaseCounterViewModel redCounter;
         private IDiseaseCounterViewModel blueCounter;
@@ -26,6 +27,11 @@ namespace Presentation.WPF.Implementations
         public int InfectionCount
         {
             get { return infectionRateCounter != null ? infectionRateCounter.Count : 0; }
+        }
+
+        public int ResearchStationCount
+        {
+            get { return researchStationCounter != null ? researchStationCounter.Count : 0; }
         }
 
         public IDiseaseCounterViewModel YellowCounter
@@ -48,10 +54,11 @@ namespace Presentation.WPF.Implementations
             get { return blackCounter; }
         }
 
-        public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, IDiseaseCounterViewModel yellowCounter, IDiseaseCounterViewModel redCounter, IDiseaseCounterViewModel blueCounter, IDiseaseCounterViewModel blackCounter)
+        public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, ResearchStationCounter researchStationCounter, IDiseaseCounterViewModel yellowCounter, IDiseaseCounterViewModel redCounter, IDiseaseCounterViewModel blueCounter, IDiseaseCounterViewModel blackCounter)
         {
             this.outbreakCounter = outbreakCounter;
             this.infectionRateCounter = infectionRateCounter;
+            this.researchStationCounter = researchStationCounter;
             this.yellowCounter = yellowCounter;
             this.redCounter = redCounter;
             this.blueCounter = blueCounter;

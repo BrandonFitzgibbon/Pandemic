@@ -78,6 +78,7 @@
     <Compile Include="Converters\InfectionCountToBoolean.cs" />
     <Compile Include="Converters\NameToNodeConverter.cs" />
     <Compile Include="Converters\NodeStatusToColorConverter.cs" />
+    <Compile Include="Converters\RoleToDispatcherConverter.cs" />
     <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Implementations\DiscardViewModel.cs" />

@@ -8,25 +8,12 @@
              xmlns:c="clr-namespace:Presentation.WPF.Controls"
              xmlns:v="clr-namespace:Presentation.WPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Padding="10">
+             d:DesignHeight="800" d:DesignWidth="2500" Padding="10">
 
     <UserControl.Resources>
 
         <con:NodeStatusToColorConverter x:Key="StatusToColorConverter"/>
         <con:NameToNodeConverter x:Key="NameToNodeConverter"/>
-
-        <DataTemplate x:Key="DiseaseCounterTemplate" DataType="{x:Type vm:DiseaseCounterViewModel}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Viewbox Height="10" HorizontalAlignment="Right" Margin="5,0,5,0">
-                    <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                </Viewbox>
-                <TextBlock Grid.Column="1" x:Name="Text" Text="{Binding Count}" FontSize="12" HorizontalAlignment="Left" Margin="5,0,5,0"/>
-            </Grid>
-        </DataTemplate>
 
         <DataTemplate x:Key="InfectionDataTemplate" DataType="{x:Type vm:NodeViewModel}">
             <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
@@ -35,7 +22,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.RowSpan="2" Background="{StaticResource Background}" Opacity=".9" Margin="-5"/>
+                    <Grid Grid.RowSpan="2" Background="Black" Opacity="0.5" Margin="-5"/>
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -47,10 +34,46 @@
                         </Viewbox>
                     </Grid>
                     <UniformGrid Grid.Row="1" Rows="2" Columns="2" VerticalAlignment="Center">
-                        <ContentControl Content="{Binding YellowCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
-                        <ContentControl Content="{Binding RedCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
-                        <ContentControl Content="{Binding BlueCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
-                        <ContentControl Content="{Binding BlackCounter}" ContentTemplate="{StaticResource DiseaseCounterTemplate}"/>
+                        <Grid DataContext="{Binding YellowCounter}" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Grid.Column="1" Height="14" HorizontalAlignment="Center">
+                                <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                            </Viewbox>
+                            <TextBlock Text="{Binding Count}" FontSize="14" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid DataContext="{Binding RedCounter}" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Height="14" HorizontalAlignment="Center">
+                                <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                            </Viewbox>
+                            <TextBlock Grid.Column="1" Text="{Binding Count}" FontSize="14" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid DataContext="{Binding BlueCounter}" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Grid.Column="1" Height="14" HorizontalAlignment="Center">
+                                <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                            </Viewbox>
+                            <TextBlock Text="{Binding Count}" FontSize="14" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <Grid DataContext="{Binding BlackCounter}" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Height="14" HorizontalAlignment="Center">
+                                <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                            </Viewbox>
+                            <TextBlock Grid.Column="1" Text="{Binding Count}" FontSize="14" HorizontalAlignment="Center"/>
+                        </Grid>
                     </UniformGrid>
                 </Grid>
             </Border>
@@ -63,7 +86,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.RowSpan="2" Background="{StaticResource Background}" Opacity=".9" Margin="-5"/>
+                    <Grid Grid.RowSpan="2" Background="Black" Opacity=".5" Margin="-5"/>
                     <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -75,35 +98,62 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Margin="0,3,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                             <StackPanel.Resources>
                                 <Style TargetType="ContentControl">
-                                    <Setter Property="Content" Value="{StaticResource greenMan}"/>
+                                    <Setter Property="Content" Value="{StaticResource man}"/>
                                 </Style>
                             </StackPanel.Resources>
-                            <Viewbox Height="15">
+                            <Viewbox Height="30">
                                 <ContentControl x:Name="man1"/>
                             </Viewbox>
-                            <Viewbox Height="20">
+                            <Viewbox Height="35">
                                 <ContentControl x:Name="man2"/>
                             </Viewbox>
-                            <Viewbox Height="15">
+                            <Viewbox Height="30">
                                 <ContentControl x:Name="man3"/>
                             </Viewbox>
                         </StackPanel>
-                        <ListBox BorderBrush="White" BorderThickness="0,0,0,0" Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Column="1" Background="Transparent" Foreground="White" FontSize="12" ItemsSource="{Binding Players}" IsHitTestVisible="False"/>
                     </Grid>
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Players.Count}" Value="0">
-                    <Setter TargetName="man1" Property="Content" Value="{StaticResource man}"/>
-                    <Setter TargetName="man2" Property="Content" Value="{StaticResource man}"/>
-                    <Setter TargetName="man3" Property="Content" Value="{StaticResource man}"/>
+                    <Setter TargetName="man1" Property="Content" Value=""/>
+                    <Setter TargetName="man2" Property="Content" Value=""/>
+                    <Setter TargetName="man3" Property="Content" Value=""/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ResearchStationDataTemplate" DataType="{x:Type vm:NodeViewModel}">
+            <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                <Grid TextElement.Foreground="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.RowSpan="2" Background="Black" Opacity=".5" Margin="-5"/>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
+                            <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="0,3,0,0">
+                        <Viewbox Height="50">
+                            <ContentControl x:Name="Lightbulb"/>
+                        </Viewbox>
+                    </Grid>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding ResearchStation}" Value="True">
+                    <Setter TargetName="Lightbulb" Property="Content" Value="{StaticResource lightbulb}"/>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -118,6 +168,7 @@
         <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,0,0">
             <Grid Margin="10,0,0,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -158,6 +209,13 @@
                         </Viewbox>
                     </RadioButton.Content>
                 </RadioButton>
+                <RadioButton Grid.Row="2" x:Name="ResearchViewButton" HorizontalAlignment="Center">
+                    <RadioButton.Content>
+                        <Viewbox Height="20" Width="20">
+                            <ContentControl Content="{StaticResource lightbulb}"/>
+                        </Viewbox>
+                    </RadioButton.Content>
+                </RadioButton>
             </Grid>
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -167,6 +225,9 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=PlayerViewButton, Path=IsChecked}" Value="True">
                             <Setter Property="ContentTemplate" Value="{StaticResource PlayerDataTemplate}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=ResearchViewButton, Path=IsChecked}" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource ResearchStationDataTemplate}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -178,8 +239,8 @@
                                     BottomConnection="{Binding ElementName=LA}" BottomType="Top"/>
                 <TextBlock Text="Tokyo" Canvas.Left="0" Canvas.Top="25" Foreground="White" FontSize="10"/>
                 <TextBlock Text="Manila" Canvas.Left="0" Canvas.Top="80" Foreground="White" FontSize="10"/>
-                <Line X1="0" X2="50" Y1="40" Y2="40" Stroke="White" StrokeThickness="1"/>
-                <Line X1="0" X2="50" Y1="80" Y2="80" Stroke="White" StrokeThickness="1"/>
+                <Line X1="0" X2="50" Y1="40" Y2="40" Stroke="LimeGreen" StrokeThickness="2"/>
+                <Line X1="0" X2="50" Y1="80" Y2="80" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="CHI" Width="100" Height="120" Canvas.Left="200" Canvas.Top="0" Content="{Binding Nodes, ConverterParameter=Chicago, Converter={StaticResource NameToNodeConverter}}"
                                     BottomLeftCornerConnection="{Binding ElementName=LA}" BottomLeftCornerType="TopRightCorner"
@@ -233,7 +294,7 @@
 
                 <c:ConnectedContent x:Name="LA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Los Angeles}" Canvas.Left="50" Canvas.Top="160"/>
                 <TextBlock Text="Sydney" Canvas.Left="0" Canvas.Top="220" Foreground="White" FontSize="10"/>
-                <Line X1="0" X2="50" Y1="220" Y2="220" Stroke="White" StrokeThickness="1"/>
+                <Line X1="0" X2="50" Y1="220" Y2="220" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="MEXC" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Mexico City}" Canvas.Left="200" Canvas.Top="160"
                                     RightConnection="{Binding ElementName=MIA}" RightType="Left"
@@ -297,7 +358,7 @@
                                     RightConnection="{Binding ElementName=SEO}" RightType="Left"/>
                 <TextBlock Text="San" Canvas.Left="2150" Canvas.Top="205" Foreground="White" FontSize="10"/>
                 <TextBlock Text="Francisco" Canvas.Left="2150" Canvas.Top="220" Foreground="White" FontSize="10"/>
-                <Line X1="2150" X2="2200" Y1="220" Y2="220" Stroke="White" StrokeThickness="1"/>
+                <Line X1="2150" X2="2200" Y1="220" Y2="220" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="SEO" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Seoul}" Canvas.Left="2350" Canvas.Top="160"
                                     TopLeftCornerConnection="{Binding ElementName=SHG}" TopLeftCornerType="Right"/>
@@ -346,7 +407,7 @@
                                     BottomConnection="{Binding ElementName=SYD}" BottomType="Top"/>
                 <TextBlock Text="San" Canvas.Left="2105" Canvas.Top="365" Foreground="White" FontSize="10"/>
                 <TextBlock Text="Francisco" Canvas.Left="2105" Canvas.Top="380" Foreground="White" FontSize="10"/>
-                <Line X1="2100" X2="2150" Y1="380" Y2="380" Stroke="White" StrokeThickness="1"/>
+                <Line X1="2100" X2="2150" Y1="380" Y2="380" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="BUEA" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Buenos Aires}" Canvas.Left="350" Canvas.Top="480"
                                     TopLeftCornerConnection="{Binding ElementName=BOG}" TopLeftCornerType="BottomRightCorner"
@@ -357,7 +418,7 @@
                 <c:ConnectedContent x:Name="KIN" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Kinshasa}" Canvas.Left="550" Canvas.Top="480"
                                     TopRightCornerConnection="{Binding ElementName=LAG}" TopRightCornerType="BottomLeftCorner"/>
                 <TextBlock Text="Khartoum" Canvas.Left="500" Canvas.Top="540" Foreground="White" FontSize="10"/>
-                <Line X1="500" X2="550" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
+                <Line X1="500" X2="550" Y1="540" Y2="540" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="JO" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Johannesburg}" Canvas.Left="700" Canvas.Top="480"
                                     LeftConnection="{Binding ElementName=KIN}" LeftType="Right"
@@ -366,7 +427,7 @@
                 <c:ConnectedContent x:Name="KHAR" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Khartoum}" Canvas.Left="850" Canvas.Top="480"
                                     RightConnection="{Binding ElementName=CAI}" RightType="BottomLeftCorner"/>
                 <TextBlock Text="Kinshasa" Canvas.Left="955" Canvas.Top="540" Foreground="White" FontSize="10"/>
-                <Line X1="950" X2="1000" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
+                <Line X1="950" X2="1000" Y1="540" Y2="540" Stroke="LimeGreen" StrokeThickness="2"/>
 
                 <c:ConnectedContent x:Name="JAK" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Jakarta}" Canvas.Left="1700" Canvas.Top="480"
                                     TopLeftCornerConnection="{Binding ElementName=CHE}" TopLeftCornerType="BottomRightCorner"
@@ -375,7 +436,7 @@
                 <c:ConnectedContent x:Name="SYD" Width="100" Height="120" Content="{Binding Nodes, Converter={StaticResource NameToNodeConverter}, ConverterParameter=Sydney}" Canvas.Left="2000" Canvas.Top="480"/>
                 <TextBlock Text="Los" Canvas.Left="2105" Canvas.Top="525" Foreground="White" FontSize="10"/>
                 <TextBlock Text="Angeles" Canvas.Left="2105" Canvas.Top="540" Foreground="White" FontSize="10"/>
-                <Line X1="2100" X2="2150" Y1="540" Y2="540" Stroke="White" StrokeThickness="1"/>
+                <Line X1="2100" X2="2150" Y1="540" Y2="540" Stroke="LimeGreen" StrokeThickness="2"/>
             </Canvas>
         </ScrollViewer>
     </Grid>

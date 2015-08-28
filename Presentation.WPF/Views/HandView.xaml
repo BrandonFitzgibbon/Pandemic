@@ -57,7 +57,7 @@
                             <ControlTemplate TargetType="ListBoxItem">
                                 <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
                                     <Grid>
-                                        <Grid Background="{StaticResource Background}" Opacity="0.9" Margin="-2"/>
+                                        <Grid Background="Black" Opacity="0.75" Margin="-2"/>
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
                                     </Grid>
                                 </Border>

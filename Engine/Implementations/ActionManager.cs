@@ -19,6 +19,7 @@ namespace Engine.Implementations
         private TreatDiseaseManager treatDiseaseManager;
         private ShareKnowledgeManager shareKnowledgeManager;
         private DiscoverCureManager discoverCureManager;
+        private DispatchManager dispatchManager;
 
         public Func<DriveDestinationItem, bool> CanDrive { get; private set; }
         public Action<DriveDestinationItem> Drive { get; private set; }
@@ -76,6 +77,13 @@ namespace Engine.Implementations
             get { return discoverCureManager != null ? discoverCureManager.Targets : null; }
         }
 
+        public Func<DispatchItem, bool> CanDispatch { get; private set; }
+        public Action<DispatchItem> Dispatch { get; private set; }
+        public IEnumerable<DispatchItem> DispatchDestinations
+        {
+            get { return dispatchManager != null && dispatchManager.Destinations != null ? dispatchManager.Destinations.OrderBy(i => i.Cost).ThenBy(i => i.DispatchDestination.City.Name) : null; }
+        }
+
         internal void SetPlayer(Player player, IEnumerable<Player> players, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
         {
             driveManager = new DriveManager(player);
@@ -109,6 +117,10 @@ namespace Engine.Implementations
             discoverCureManager = new DiscoverCureManager(player, diseases);
             CanDiscoverCure = discoverCureManager.CanDiscoverCure;
             DiscoverCure = discoverCureManager.DiscoverCure;
+
+            dispatchManager = new DispatchManager(player, players);
+            CanDispatch = dispatchManager.CanDispatch;
+            Dispatch = dispatchManager.Dispatch;
         }
     }
 }

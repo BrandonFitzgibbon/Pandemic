@@ -51,6 +51,7 @@
     <Compile Include="Implementations\ActionItems\CharterFlightItem.cs" />
     <Compile Include="Implementations\ActionItems\DirectFlightItem.cs" />
     <Compile Include="Implementations\ActionItems\DiscoverCureItem.cs" />
+    <Compile Include="Implementations\ActionItems\DispatchItem.cs" />
     <Compile Include="Implementations\ActionItems\DriveDestinationItem.cs" />
     <Compile Include="Implementations\ActionItems\ResearchStationConstructionItem.cs" />
     <Compile Include="Implementations\ActionItems\ShuttleFlightItem.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Implementations\ActionManagers\CharterFlightManager.cs" />
     <Compile Include="Implementations\ActionManagers\DirectFlightManager.cs" />
     <Compile Include="Implementations\ActionManagers\DiscoverCureManager.cs" />
+    <Compile Include="Implementations\ActionManagers\DispatchManager.cs" />
     <Compile Include="Implementations\ActionManagers\DriveManager.cs" />
     <Compile Include="Implementations\ActionManagers\ResearchStationConstructionManager.cs" />
     <Compile Include="Implementations\ActionManagers\ShareKnowledgeManager.cs" />
@@ -89,7 +91,9 @@
     <Compile Include="Implementations\OutbreakCounter.cs" />
     <Compile Include="Implementations\Player.cs" />
     <Compile Include="Implementations\PlayerDeck.cs" />
+    <Compile Include="Implementations\Roles\OperationsExpert.cs" />
     <Compile Include="Implementations\Roles\QuarantineSpecialist.cs" />
+    <Compile Include="Implementations\Roles\Researcher.cs" />
     <Compile Include="Implementations\Roles\Scientist.cs" />
     <Compile Include="Infrastructure\ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

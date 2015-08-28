@@ -8,12 +8,14 @@ namespace Engine.Implementations.ActionItems
 {
     public class ResearchStationConstructionItem
     {
-        public Node Node { get; private set; }
+        public Node DeconstructionNode { get; private set; }
+        public Node ConstructionNode { get; private set; }
         public CityCard CityCard { get; private set; }
 
-        public ResearchStationConstructionItem(CityCard cityCard, Node node)
+        public ResearchStationConstructionItem(CityCard cityCard, Node constructionNode, Node deconstructionNode)
         {
-            Node = node;
+            DeconstructionNode = deconstructionNode;
+            ConstructionNode = constructionNode;
             CityCard = cityCard;
         }
     }

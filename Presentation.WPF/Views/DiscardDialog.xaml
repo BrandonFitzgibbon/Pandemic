@@ -59,6 +59,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Button Grid.ColumnSpan="2" Grid.Row="1" Template="{StaticResource ActionButtonTemplate}" Content="Discard" Command="{Binding DiscardCommand}" CommandParameter="{Binding ElementName=CardList, Path=SelectedItem}"/>
+        <Button Grid.ColumnSpan="2" Grid.Row="1" Template="{StaticResource ActionButtonTemplate}" Content="Discard" Command="{Binding DiscardCommand}" CommandParameter="{Binding ElementName=CardList, Path=SelectedItem}" Margin="3"/>
     </Grid>
 </Window>

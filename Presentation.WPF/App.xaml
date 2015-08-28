@@ -5,6 +5,7 @@
              xmlns:v="clr-namespace:Presentation.WPF.Views"
              xmlns:e="clr-namespace:Engine.Implementations;assembly=Engine"
              xmlns:c="clr-namespace:Presentation.WPF.Converters"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     
     <Application.Resources>      
@@ -140,6 +141,11 @@
                 <v:BoardView/>
             </DataTemplate>
             
+            <Style TargetType="ScrollBar">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
     

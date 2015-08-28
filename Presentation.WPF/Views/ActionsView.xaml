@@ -11,6 +11,7 @@
     <UserControl.Resources>
 
         <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
+        <c:RoleToDispatcherConverter x:Key="RoleToDispatcher"/>
 
         <Style x:Key="TabItemListStyle" TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -442,7 +443,7 @@
         <TabItem x:Name="BuildResearchStation">
             <TabItem.Header>
                 <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource lightbuld}"/>
+                    <ContentControl Content="{StaticResource lightbulb}"/>
                 </Viewbox>
             </TabItem.Header>
             <Grid>
@@ -507,13 +508,13 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding CityCard.Node}"/>
-                                        <TextBlock Text="{Binding Node, StringFormat={}/{0}}">
+                                        <TextBlock Text="{Binding ConstructionNode}"/>
+                                        <TextBlock Text="{Binding DeconstructionNode, StringFormat={}/{0}}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Node}" Value="{x:Null}">
+                                                        <DataTrigger Binding="{Binding DeconstructionNode}" Value="{x:Null}">
                                                             <Setter Property="Visibility" Value="Hidden"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -522,8 +523,29 @@
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <TextBlock x:Name="Text" Text="1"/>
+                                        <TextBlock x:Name="Text" Text="1">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CityCard}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                         <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                            <Viewbox.Style>
+                                                <Style TargetType="Viewbox">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CityCard}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Viewbox.Style>
                                             <ContentControl x:Name="Content" Content="{StaticResource cards}"/>
                                         </Viewbox>
                                         <TextBlock x:Name="Text2" Text="1" Margin="2,0,0,0"/>
@@ -887,6 +909,132 @@
                                 <Style.Triggers>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter Property="Content" Value="Select Disease"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="Dispatch">
+            <TabItem.Header>
+                <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource suitcase}" HorizontalAlignment="Center" ToolTip="Dispatch Player"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToDispatcher}}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value=""/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToDispatcher}}" Value="False">
+                                        <Setter Property="Text" Value="Role must be Dispatcher"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                        <Setter Property="Text" Value="No Actions Left"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToDispatcher}}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
+                        <TextBlock Text="Dispatch Player" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
+                    </Border>
+                    <ListBox x:Name="Players" Grid.Row="1" Margin="5,0,5,0" ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedDispatchPlayer}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock x:Name="Content" Text="{Binding Name}" Foreground="White"/>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                        <Setter TargetName="Content" Property="Foreground" Value="Black"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Border Grid.Row="2" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
+                        <TextBlock Text="Dispatch Destinations" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
+                    </Border>
+                    <Grid Grid.Row="3">
+                        <ListBox x:Name="DispatchDestinations" Margin="5,0,5,0" ItemsSource="{Binding DispatchDestinations}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="Text" Text="{Binding DispatchDestination}" Foreground="White"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <TextBlock x:Name="Cost" Text="{Binding Cost}"/>
+                                            <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                                <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                                            </Viewbox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                            <Setter TargetName="Text" Property="Foreground" Value="Black"/>
+                                            <Setter TargetName="Cost" Property="Foreground" Value="Black"/>
+                                            <Setter TargetName="Content" Property="Content" Value="{StaticResource actionsBlack}"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource TabItemListStyle}">
+                                    <Setter Property="Margin" Value="1"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                    <Button Grid.Row="4" Margin="5,5,5,0" Template="{StaticResource ActionButtonTemplate}" Command="{Binding DispatchCommand}" CommandParameter="{Binding ElementName=DispatchDestinations, Path=SelectedItem}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Content" Value="Dipatch Player"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Content" Value="Select Player and Destination"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

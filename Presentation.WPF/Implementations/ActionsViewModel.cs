@@ -16,6 +16,11 @@ namespace Presentation.WPF.Implementations
         private IContext<ActionManager> actionManager;
         private IContext<Player> currentPlayer;
 
+        public Player CurrentPlayer
+        {
+            get { return currentPlayer != null && currentPlayer.Context != null ? currentPlayer.Context : null; }
+        }
+
         public int ActionsCount
         {
             get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.ActionCounter != null ? currentPlayer.Context.ActionCounter.Count : 0; }
@@ -66,6 +71,25 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.DiscoverTargets : null; }
         }
 
+        private Player selectedDispatchPlayer;
+        public Player SelectedDispatchPlayer
+        {
+            get { return selectedDispatchPlayer; }
+            set { selectedDispatchPlayer = value; NotifyPropertyChanged(); NotifyPropertyChanged("DispatchDestinations"); }
+        }
+
+        private IEnumerable<Player> players;
+        public IEnumerable<Player> Players
+        {
+            get { return players; }
+            set { players = value; NotifyPropertyChanged(); }
+        }
+
+        public IEnumerable<DispatchItem> DispatchDestinations
+        {
+            get { return ActionManager != null && SelectedDispatchPlayer != null && ActionManager.DispatchDestinations != null ? ActionManager.DispatchDestinations.Where(i => i.Player == SelectedDispatchPlayer) : null; }
+        }
+
         private DiscoverCureItem selectedCureTarget;
         public DiscoverCureItem SelectedCureTarget
         {
@@ -78,9 +102,10 @@ namespace Presentation.WPF.Implementations
             get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.Hand != null && currentPlayer.Context.Hand.CityCards != null && SelectedCureTarget != null ? currentPlayer.Context.Hand.CityCards.Where(i => i.Node.Disease == SelectedCureTarget.Disease) : null; }
         }
 
-        public ActionsViewModel(IContext<ActionManager> actionManager, IContext<Player> currentPlayer)
+        public ActionsViewModel(IContext<ActionManager> actionManager, IContext<Player> currentPlayer, IEnumerable<Player> players)
         {
             this.currentPlayer = currentPlayer;
+            this.players = players;
             this.actionManager = actionManager;
             this.actionManager.ContextChanged += ContextChanged;
         }
@@ -272,6 +297,28 @@ namespace Presentation.WPF.Implementations
         private void DiscoverCure(dynamic selectedCards)
         {
             ActionManager.DiscoverCure(SelectedCureTarget);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand dispatchCommand;
+        public ICommand DispatchCommand
+        {
+            get
+            {
+                if (dispatchCommand == null)
+                    dispatchCommand = new RelayCommand(dpi => Dispatch((DispatchItem)dpi), dpi => CanDispatch((DispatchItem)dpi));
+                return dispatchCommand;
+            }
+        }
+
+        private bool CanDispatch(DispatchItem dpi)
+        {
+            return ActionManager.CanDispatch(dpi);
+        }
+
+        private void Dispatch(DispatchItem dpi)
+        {
+            ActionManager.Dispatch(dpi);
             RaiseChangeNotificationRequested();
         }
     }

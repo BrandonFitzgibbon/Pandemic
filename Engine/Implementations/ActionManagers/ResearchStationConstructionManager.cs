@@ -1,5 +1,6 @@
 ﻿using Engine.CustomEventArgs;
 using Engine.Implementations.ActionItems;
+using Engine.Implementations.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +37,12 @@ namespace Engine.Implementations.ActionManagers
         {
             if(CanBuildResearchStation(researchStationConstructionItem))
             {
-                if (researchStationConstructionItem.Node != null)
-                    researchStationConstructionItem.Node.ResearchStation = false;
-                researchStationConstructionItem.CityCard.Discard();
-                researchStationConstructionItem.CityCard.Node.ResearchStation = true;
+                if (researchStationConstructionItem.DeconstructionNode != null)
+                    counter.MoveResearchStation(researchStationConstructionItem.DeconstructionNode, researchStationConstructionItem.ConstructionNode);
+                else
+                    counter.BuildResearchStation(researchStationConstructionItem.ConstructionNode);
+                if (researchStationConstructionItem.CityCard != null)
+                    researchStationConstructionItem.CityCard.Discard();
                 player.ActionCounter.UseAction(1);
             }
         }
@@ -71,17 +74,38 @@ namespace Engine.Implementations.ActionManagers
             if (player.ActionCounter.Count < 1)
                 return targets;
 
+            if (player is OperationsExpert)
+            {
+                if (!player.Location.ResearchStation)
+                {
+                    if (counter.Count > 0)
+                    {
+                        targets.Add(new ResearchStationConstructionItem(null, player.Location, null));
+                    }
+                    else
+                    {
+                        foreach (Node node in nodes.Where(i => i.ResearchStation == true))
+                        {
+                            targets.Add(new ResearchStationConstructionItem(null, player.Location, node));
+                        }
+                    }
+                }
+
+                return targets;
+
+            }
+
             foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location && i.Node.ResearchStation == false))
             {
                 if (counter.Count > 0)
                 {
-                    targets.Add(new ResearchStationConstructionItem(cityCard, null));
+                    targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, null));
                 }
                 else
                 {
                     foreach (Node node in nodes.Where(i => i.ResearchStation == true))
                     {
-                        targets.Add(new ResearchStationConstructionItem(cityCard, node));
+                        targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, node));
                     }
                 }
             }
