@@ -1,11 +1,5 @@
-﻿using Engine.Contracts;
-using Engine.CustomEventArgs;
+﻿using Engine.CustomEventArgs;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Engine.Implementations
 {
@@ -13,6 +7,7 @@ namespace Engine.Implementations
     {
         public string Name { get; protected set; }
         public string Role { get; protected set; }
+        public int TurnOrder { get; internal set; }
         public Node Location { get; internal set; }
         public Hand Hand { get; internal set; }
         public ActionCounter ActionCounter { get; private set; }

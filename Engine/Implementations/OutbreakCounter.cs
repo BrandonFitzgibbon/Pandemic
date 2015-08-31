@@ -32,8 +32,11 @@ namespace Engine.Implementations
         {
             if (Count < 7)
                 Count++;
-            else
+            else if(Count < 8)
+            {
+                Count++;
                 if (GameOver != null) GameOver(this, EventArgs.Empty);
+            }             
         }
 
         public event EventHandler GameOver;

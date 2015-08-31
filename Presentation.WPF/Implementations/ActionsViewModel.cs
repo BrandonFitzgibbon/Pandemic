@@ -2,10 +2,8 @@
 using Engine.Implementations.ActionItems;
 using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -71,6 +69,11 @@ namespace Presentation.WPF.Implementations
             get { return ActionManager != null ? ActionManager.DiscoverTargets : null; }
         }
 
+        public IEnumerable<OperationsRelocationItem> RelocationDestinations
+        {
+            get { return ActionManager != null ? ActionManager.RelocationDestinations : null; }
+        }
+
         private Player selectedDispatchPlayer;
         public Player SelectedDispatchPlayer
         {
@@ -94,12 +97,24 @@ namespace Presentation.WPF.Implementations
         public DiscoverCureItem SelectedCureTarget
         {
             get { return selectedCureTarget; }
-            set { selectedCureTarget = value; NotifyPropertyChanged(); NotifyPropertyChanged("CityCards"); }
+            set { selectedCureTarget = value; NotifyPropertyChanged(); NotifyPropertyChanged("CureCards"); }
         }
 
-        public IEnumerable<CityCard> CityCards
+        public IEnumerable<CityCard> CureCards
         {
             get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.Hand != null && currentPlayer.Context.Hand.CityCards != null && SelectedCureTarget != null ? currentPlayer.Context.Hand.CityCards.Where(i => i.Node.Disease == SelectedCureTarget.Disease) : null; }
+        }
+
+        private OperationsRelocationItem selectedRelocationTarget;
+        public OperationsRelocationItem SelectedRelocationTarget
+        {
+            get { return selectedRelocationTarget; }
+            set { selectedRelocationTarget = value;  NotifyPropertyChanged(); NotifyPropertyChanged("RelocationCards"); }
+        }
+
+        public IEnumerable<CityCard> RelocationCards
+        {
+            get { return currentPlayer != null && currentPlayer.Context != null && currentPlayer.Context.Hand != null && currentPlayer.Context.Hand.CityCards != null  ? currentPlayer.Context.Hand.CityCards : null; }
         }
 
         public ActionsViewModel(IContext<ActionManager> actionManager, IContext<Player> currentPlayer, IEnumerable<Player> players)
@@ -319,6 +334,33 @@ namespace Presentation.WPF.Implementations
         private void Dispatch(DispatchItem dpi)
         {
             ActionManager.Dispatch(dpi);
+            RaiseChangeNotificationRequested();
+        }
+
+        private RelayCommand relocateCommand;
+        public ICommand RelocateCommand
+        {
+            get
+            {
+                if (relocateCommand == null)
+                    relocateCommand = new RelayCommand(cc => Relocate(), cc => CanRelocate((CityCard)cc));
+                return relocateCommand;
+            }
+        }
+
+        private bool CanRelocate(CityCard cityCard)
+        {
+            if (SelectedRelocationTarget != null)
+            {
+                SelectedRelocationTarget.DiscardOption = cityCard;
+            }
+
+            return ActionManager.CanRelocate(SelectedRelocationTarget);
+        }
+
+        private void Relocate()
+        {
+            ActionManager.Relocate(SelectedRelocationTarget);
             RaiseChangeNotificationRequested();
         }
     }

@@ -1,12 +1,8 @@
 ﻿using Engine.Contracts;
 using Engine.Factories;
-using Engine.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Engine.Implementations
 {
@@ -36,16 +32,11 @@ namespace Engine.Implementations
 
         public Player CurrentPlayer { get; private set; }
 
-        private bool isGameOver;
-        public bool IsGameOver
-        {
-            get { return isGameOver; }
-        }
+        private CureTracker CureTracker;
 
         public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
             OutbreakCounter = new OutbreakCounter();
-            OutbreakCounter.GameOver += GameOver;
 
             Diseases = dataAccess.GetDiseases();
             Nodes = dataAccess.GetNodes();
@@ -61,23 +52,52 @@ namespace Engine.Implementations
             ResearchStationCounter = new ResearchStationCounter();
 
             cityCards = GetCityCards(Nodes);
-            infectionCards = GetInfectionCards(NodeCounters);            
+            infectionCards = GetInfectionCards(NodeCounters);
 
-            this.playerDeck = new PlayerDeck(cityCards.ToList());
-            this.infectionDeck = new InfectionDeck(infectionCards.ToList());
+            playerDeck = new PlayerDeck(cityCards.ToList());
+            infectionDeck = new InfectionDeck(infectionCards.ToList());
 
-            epidemicCards = GetEpidemicCards(InfectionRateCounter, this.infectionDeck);
+            epidemicCards = GetEpidemicCards(InfectionRateCounter, infectionDeck);
 
             StartGame((int)difficulty);
 
-            this.playerQueue = new PlayerQueue(Players.ToList());
+            playerQueue = new PlayerQueue(Players.ToList());
+            Players = Players.OrderBy(i => i.TurnOrder);
 
             ActionManager = new ActionManager();
             DrawManager = new DrawManager(this.playerDeck);
-            InfectionManager = new InfectionManager(this.InfectionRateCounter, this.infectionDeck);
+            InfectionManager = new InfectionManager(InfectionRateCounter, infectionDeck);
             InfectionManager.InfectionPhaseCompleted += InfectionPhaseCompleted;
 
+            //game over
+            OutbreakCounter.GameOver += GameOverNotified;
+            playerDeck.GameOver += GameOverNotified;
+
+            foreach (DiseaseCounter dc in DiseaseCounters)
+            {
+                dc.GameOver += GameOverNotified;
+            }
+
+            //game won
+            CureTracker = new CureTracker(Diseases);
+            CureTracker.GameWon += GameWonNotified;
+
             NextPlayer();
+        }
+
+        public event EventHandler GameOver;
+
+        private void GameOverNotified(object sender, EventArgs e)
+        {
+            if (GameOver != null) GameOver(this, e);
+            InfectionManager.gameOver = true;
+        }
+
+        public event EventHandler GameWon;
+
+        private void GameWonNotified(object sender, EventArgs e)
+        {
+            if (GameWon != null) GameWon(this, e);
         }
 
         private void StartGame(int diff)
@@ -85,7 +105,7 @@ namespace Engine.Implementations
             InitialInfection();
             InitialHands();
             SetStartingLocation();
-            this.playerDeck.AddEpidemics(diff, new Stack<EpidemicCard>(epidemicCards.ToList()));
+            playerDeck.AddEpidemics(diff, new Stack<EpidemicCard>(epidemicCards.ToList()));
         }
 
         public void NextPlayer()
@@ -251,15 +271,10 @@ namespace Engine.Implementations
             {
                 foreach (Player player in Players)
                 {
-                    player.Hand.AddToHand(this.playerDeck.Draw());
+                    player.Hand.AddToHand(playerDeck.Draw());
                 }
                 i++;
             }
-        }
-
-        private void GameOver(object sender, EventArgs e)
-        {
-            isGameOver = true;
         }
     }
 
@@ -269,7 +284,15 @@ namespace Engine.Implementations
 
         public PlayerQueue(IList<Player> players)
         {
-            this.players = new Queue<Player>(players.OrderBy(i => i.Hand.CityCards.OrderBy(j => j.Node.City.Population).First().Node.City.Population).ToList());
+            List<Player> temp = new List<Player>(players.OrderBy(i => i.Hand.CityCards.OrderByDescending(j => j.Node.City.Population).First().Node.City.Population));
+            this.players = new Queue<Player>();
+            int w = 1;
+            foreach (Player player in temp)
+            {
+                player.TurnOrder = w;
+                w++;
+                this.players.Enqueue(player);
+            }
         }
 
         public IEnumerable<Player> NextPlayer

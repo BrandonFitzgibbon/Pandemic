@@ -11,28 +11,7 @@
     
     <UserControl.Resources>     
 
-        <c:DiseaseToColorConverter x:Key="DiseaseToColorConverter"/>
-        
-        <Storyboard x:Key="ExpandB">
-            <DoubleAnimation From="0" To="1" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
-        </Storyboard>
-        
-        <Storyboard x:Key="CollapseB">
-            <DoubleAnimation From="1" To="0" Storyboard.TargetName="ContentSite" Storyboard.TargetProperty="(RenderTransform).ScaleX" Duration="0:00:0.25"/>
-        </Storyboard>
-        
-        <DataTemplate DataType="{x:Type e:CityCard}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock x:Name="Text" Text="{Binding}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <Viewbox Grid.Column="1" Margin="5" Height="{Binding ElementName=Text, Path=ActualHeight}" VerticalAlignment="Center">
-                    <ContentControl Content="{Binding Node.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                </Viewbox>
-            </Grid>
-        </DataTemplate>
+        <c:DiseaseToColorConverter x:Key="DiseaseToColorConverter"/>      
 
     </UserControl.Resources>
 

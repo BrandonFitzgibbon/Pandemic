@@ -65,7 +65,33 @@
                 <Viewbox Margin="5,5,0,5">
                     <ContentControl Content="{StaticResource biohazard}" ToolTip="Outbreaks"/>
                 </Viewbox>
-                <TextBlock Margin="10,0,10,0" Text="{Binding OutbreakCount}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
+                <Viewbox Margin="5,5,5,5">
+                    <ContentControl>
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="Content" Value="{StaticResource toxic}"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding OutbreakCount}" Value="8">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </Viewbox>
+                <TextBlock Margin="10,0,10,0" Text="{Binding OutbreakCount}" FontSize="16" Foreground="LimeGreen" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding OutbreakCount}" Value="8">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
         </Border>
         <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0">

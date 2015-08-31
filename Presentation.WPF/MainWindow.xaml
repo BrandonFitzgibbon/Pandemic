@@ -11,7 +11,7 @@
             </Grid.Background>
         </Grid>
         <Grid Background="Black" Opacity="0.55"/>
-        <Grid Background="Transparent">
+        <Grid Background="Transparent" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>

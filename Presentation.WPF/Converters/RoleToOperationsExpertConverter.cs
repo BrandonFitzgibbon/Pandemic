@@ -4,12 +4,12 @@ using System.Windows.Data;
 
 namespace Presentation.WPF.Converters
 {
-    public class RoleToDispatcherConverter : IValueConverter
+    public class RoleToOperationsExpertConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string role = (string)value;
-            if (role == "Dispatcher")
+            if (role == "Operations Expert")
                 return true;
             else
                 return false;

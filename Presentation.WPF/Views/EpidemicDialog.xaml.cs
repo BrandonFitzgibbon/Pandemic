@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation.WPF.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,6 +47,25 @@ namespace Presentation.WPF.Views
                 ed.Owner.Opacity = 1;
                 ed.Close();
             }
+        }
+
+        public static bool GetIsLoaded(DependencyObject o)
+        {
+            return (bool)o.GetValue(IsLoadedProperty);
+        }
+
+        public static void SetIsLoaded(DependencyObject o, bool value)
+        {
+            o.SetValue(IsLoadedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsLoadedProperty =
+            DependencyProperty.RegisterAttached("IsLoaded", typeof(bool), typeof(EpidemicDialog), new PropertyMetadata(false));
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            EpidemicDialog ed = (EpidemicDialog)sender;
+            ed.SetValue(IsLoadedProperty, true);
         }
     }
 }

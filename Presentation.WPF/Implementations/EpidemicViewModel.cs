@@ -14,6 +14,8 @@ namespace Presentation.WPF.Implementations
 {
     public class EpidemicViewModel : ViewModelBase, IEpidemicViewModel
     {
+        private IContext<StringBuilder> messageContext;
+
         private EpidemicManager manager;
         public EpidemicManager Manager
         {
@@ -27,9 +29,18 @@ namespace Presentation.WPF.Implementations
             set { isOpen = value; NotifyPropertyChanged(); }
         }
 
-        public EpidemicViewModel(EpidemicManager manager)
+        private bool isLoaded;
+        public bool IsLoaded
+        {
+            get { return isLoaded; }
+            set { isLoaded = value;  NotifyPropertyChanged(); RaiseChangeNotificationRequested(); }
+        }
+
+        public EpidemicViewModel(EpidemicManager manager, IContext<StringBuilder> messageContext)
         {
             this.manager = manager;
+            this.messageContext = messageContext;
+            messageContext.Context.AppendLine("Epidemic!");
         }
 
         private RelayCommand increaseCommand;
@@ -51,6 +62,7 @@ namespace Presentation.WPF.Implementations
         private void Increase()
         {
             Manager.Increase();
+            messageContext.Context.AppendLine("The infection counter has increased.");
             RaiseChangeNotificationRequested();
         }
 
@@ -95,6 +107,7 @@ namespace Presentation.WPF.Implementations
         private void Intensify()
         {
             Manager.Intensify();
+            messageContext.Context.AppendLine("The infection deck has intensified");
             RaiseChangeNotificationRequested();
             IsOpen = false;
         }

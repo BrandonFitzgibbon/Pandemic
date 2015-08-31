@@ -32,6 +32,11 @@ namespace Presentation.WPF.Implementations
             get { return player != null ? player.Location : null; }
         }
 
+        public int TurnOrder
+        {
+            get { return player != null ? player.TurnOrder : 0; }
+        }
+
         public PlayerViewModel(Player player)
         {
             this.player = player;

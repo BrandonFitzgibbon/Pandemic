@@ -20,6 +20,7 @@ namespace Engine.Implementations
         private ShareKnowledgeManager shareKnowledgeManager;
         private DiscoverCureManager discoverCureManager;
         private DispatchManager dispatchManager;
+        private OperationsRelocationManager operationsRelocationManager;
 
         public Func<DriveDestinationItem, bool> CanDrive { get; private set; }
         public Action<DriveDestinationItem> Drive { get; private set; }
@@ -84,6 +85,13 @@ namespace Engine.Implementations
             get { return dispatchManager != null && dispatchManager.Destinations != null ? dispatchManager.Destinations.OrderBy(i => i.Cost).ThenBy(i => i.DispatchDestination.City.Name) : null; }
         }
 
+        public Func<OperationsRelocationItem, bool> CanRelocate { get; private set; }
+        public Action<OperationsRelocationItem> Relocate { get; private set; }
+        public IEnumerable<OperationsRelocationItem> RelocationDestinations
+        {
+            get { return operationsRelocationManager != null && operationsRelocationManager.Destinations != null ? operationsRelocationManager.Destinations.OrderBy(i => i.Destination.City.Name) : null; }
+        }
+
         internal void SetPlayer(Player player, IEnumerable<Player> players, IEnumerable<Node> nodes, IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters, ResearchStationCounter researchStationCounter, IEnumerable<Disease> diseases)
         {
             driveManager = new DriveManager(player);
@@ -121,6 +129,10 @@ namespace Engine.Implementations
             dispatchManager = new DispatchManager(player, players);
             CanDispatch = dispatchManager.CanDispatch;
             Dispatch = dispatchManager.Dispatch;
+
+            operationsRelocationManager = new OperationsRelocationManager(player, nodes);
+            CanRelocate = operationsRelocationManager.CanRelocate;
+            Relocate = operationsRelocationManager.Relocate;
         }
     }
 }

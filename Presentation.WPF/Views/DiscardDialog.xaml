@@ -22,16 +22,24 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Discard or Play Cards" Foreground="White" FontSize="48" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <ListBox x:Name="CardList" Grid.Column="1" ItemsSource="{Binding Cards}" BorderBrush="Transparent" Background="Transparent">
+        <Viewbox Grid.Column="0" Height="150" HorizontalAlignment="Center">
+            <ContentControl Content="{StaticResource warning}"/>
+        </Viewbox>
+        <Viewbox Grid.Column="2" Height="150" HorizontalAlignment="Center">
+            <ContentControl Content="{StaticResource warning}"/>
+        </Viewbox>
+        <TextBlock Text="Discard or Play Cards" Grid.Column="1" Foreground="White" FontSize="48" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ListBox x:Name="CardList" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Cards}" BorderBrush="Transparent" Background="Transparent">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="2"/>
+                    <UniformGrid Rows="2"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
@@ -41,7 +49,7 @@
                             <ControlTemplate TargetType="ListBoxItem">
                                 <Border x:Name="Border" BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
                                     <Grid>
-                                        <Grid x:Name="Background" Background="{StaticResource Background}" Opacity="0.9" Margin="-2"/>
+                                        <Grid x:Name="Background" Background="Black" Opacity="0.75" Margin="-2"/>
                                         <ContentPresenter Content="{TemplateBinding Content}"/>
                                     </Grid>
                                 </Border>
@@ -59,6 +67,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Button Grid.ColumnSpan="2" Grid.Row="1" Template="{StaticResource ActionButtonTemplate}" Content="Discard" Command="{Binding DiscardCommand}" CommandParameter="{Binding ElementName=CardList, Path=SelectedItem}" Margin="3"/>
+        <Button Grid.ColumnSpan="3" Grid.Row="2" Template="{StaticResource ActionButtonTemplate}" Content="Discard" Command="{Binding DiscardCommand}" CommandParameter="{Binding ElementName=CardList, Path=SelectedItem}" Margin="3"/>
     </Grid>
 </Window>

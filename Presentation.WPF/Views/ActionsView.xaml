@@ -12,6 +12,7 @@
 
         <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
         <c:RoleToDispatcherConverter x:Key="RoleToDispatcher"/>
+        <c:RoleToOperationsExpertConverter x:Key="RoleToOperationsExpertConverter"/>
 
         <Style x:Key="TabItemListStyle" TargetType="ListBoxItem">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -883,7 +884,7 @@
                     <Border Grid.Row="2" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
                         <TextBlock Text="Cards of Selected Disease Type" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
                     </Border>
-                    <ListBox x:Name="Cards" Grid.Row="3" Margin="5,0,5,0" ItemsSource="{Binding CityCards}" SelectionMode="Multiple" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox x:Name="Cards" Grid.Row="3" Margin="5,0,5,0" ItemsSource="{Binding CureCards}" SelectionMode="Multiple" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -1035,6 +1036,144 @@
                                 <Style.Triggers>
                                     <Trigger Property="IsEnabled" Value="False">
                                         <Setter Property="Content" Value="Select Player and Destination"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem x:Name="OperationsRelocate">
+            <TabItem.Header>
+                <Viewbox Height="20">
+                    <ContentControl Content="{StaticResource anchor}" HorizontalAlignment="Center" ToolTip="Relocate Operations Expert"/>
+                </Viewbox>
+            </TabItem.Header>
+            <Grid>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToOperationsExpertConverter}}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Foreground="White">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value=""/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToOperationsExpertConverter}}" Value="False">
+                                        <Setter Property="Text" Value="Role must be Operations Expert"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelocationDestinations.Count}" Value="0">
+                                        <Setter Property="Text" Value="Not possible to relocate"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                        <Setter Property="Text" Value="No Actions Left"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelocationDestinations.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentPlayer.Role, Converter={StaticResource RoleToOperationsExpertConverter}}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ActionsCount}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
+                        <TextBlock Text="Discard Options" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
+                    </Border>
+                    <ListBox x:Name="DiscardOptions" Grid.Row="1" Margin="5,0,5,0" ItemsSource="{Binding RelocationCards}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock x:Name="Content" Text="{Binding Node}" Foreground="White"/>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                        <Setter TargetName="Content" Property="Foreground" Value="Black"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Border Grid.Row="2" BorderBrush="White" BorderThickness="0,0,0,1" Margin="5,0,5,0">
+                        <TextBlock Text="Relocation Destinations" Foreground="White" FontSize="14" HorizontalAlignment="Center" Margin="3"/>
+                    </Border>
+                    <Grid Grid.Row="3">
+                        <ListBox x:Name="RelocationDestinations" Margin="5,0,5,0" ItemsSource="{Binding RelocationDestinations}" SelectedItem="{Binding SelectedRelocationTarget}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="Text" Text="{Binding Destination}" Foreground="White"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <TextBlock x:Name="Text2" Text="1"/>
+                                            <Viewbox Height="{Binding ElementName=Text, Path=FontSize}" Margin="2,3,0,0">
+                                                <ContentControl x:Name="Content" Content="{StaticResource cards}"/>
+                                            </Viewbox>
+                                            <TextBlock x:Name="Text3" Text="1" Margin="2,0,0,0"/>
+                                            <Viewbox Height="{Binding ElementName=Text2, Path=FontSize}" Margin="2,3,0,0">
+                                                <ContentControl x:Name="Content2" Content="{StaticResource actions}"/>
+                                            </Viewbox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                            <Setter TargetName="Text" Property="Foreground" Value="Black"/>
+                                            <Setter TargetName="Text2" Property="Foreground" Value="Black"/>
+                                            <Setter TargetName="Text3" Property="Foreground" Value="Black"/>
+                                            <Setter TargetName="Content" Property="Content" Value="{StaticResource cardsBlack}"/>
+                                            <Setter TargetName="Content2" Property="Content" Value="{StaticResource actionsBlack}"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem" BasedOn="{StaticResource TabItemListStyle}">
+                                    <Setter Property="Margin" Value="1"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                    <Button Grid.Row="4" Margin="5,5,5,0" Template="{StaticResource ActionButtonTemplate}" Command="{Binding RelocateCommand}" CommandParameter="{Binding ElementName=DiscardOptions, Path=SelectedItem}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Content" Value="Relocate Player"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Content" Value="Select Card and Destination"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

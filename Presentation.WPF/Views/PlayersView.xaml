@@ -39,7 +39,14 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Background="Transparent">
-                        <TextBlock x:Name="text" Text="{Binding Name}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="text" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding TurnOrder, StringFormat={}#{0}}" HorizontalAlignment="Right"/>
+                        </Grid>
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
                                 <ContentControl Content="{StaticResource id}"/>

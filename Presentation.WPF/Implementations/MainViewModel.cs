@@ -103,7 +103,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane"}, Difficulty.Standard);
+            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Standard);
 
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
@@ -165,7 +165,21 @@ namespace Presentation.WPF.Implementations
 
             drawManager.Context.EpidemicDrawn += EpidemicDrawn;
 
+            game.GameOver += Game_GameOver;
+            game.GameWon += Game_GameWon;
+
             PlayersViewModel.SelectedPlayerViewModel = PlayersViewModel.PlayerViewModels.Single(i => i.Player == currentPlayer.Context);
+        }
+
+        private void Game_GameWon(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Game_GameOver(object sender, EventArgs e)
+        {
+            game = null;
+            ChangeNotificationRequested(this, EventArgs.Empty);
         }
 
         private void DiscardManagerBlock(object sender, EventArgs e)
@@ -184,12 +198,9 @@ namespace Presentation.WPF.Implementations
 
         private void EpidemicDrawn(object sender, EventArgs e)
         {
-            messageContext.Context.AppendLine("Epidemic!");
-            messageContext.Context.AppendLine("The infection counter has increased.");
-            EpidemicViewModel evm = new EpidemicViewModel(drawManager.Context.EpidemicManager);
+            EpidemicViewModel evm = new EpidemicViewModel(drawManager.Context.EpidemicManager, messageContext);
             evm.ChangeNotificationRequested += ChangeNotificationRequested;
             EpidemicViewModel = evm;
-            messageContext.Context.AppendLine("The infection deck has intensified");
         }
 
         private void ndc_Prevented(object sender, PreventionEventArgs e)
@@ -311,7 +322,7 @@ namespace Presentation.WPF.Implementations
 
         public bool CanNextTurn()
         {
-            return game.CanNextPlayer;
+            return game != null && game.CanNextPlayer;
         }
 
         public void NextTurn()
