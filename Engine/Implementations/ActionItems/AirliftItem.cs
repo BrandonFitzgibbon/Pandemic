@@ -8,7 +8,13 @@ namespace Engine.Implementations.ActionItems
 {
     public class AirliftItem
     {
-        public Player Player { get; set; }
-        public Node Node { get; set; }
+        public Player Player { get; private set; }
+        public Node Node { get; private set; }
+
+        public AirliftItem(Player player, Node node)
+        {
+            Player = player;
+            Node = node;
+        }
     }
 }

@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="Presentation.WPF.Views.GovernmentGrantView"
+﻿<UserControl x:Class="Presentation.WPF.Views.AirliftView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Presentation.WPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="400">
-
+             d:DesignHeight="300" d:DesignWidth="300">
+  
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -27,14 +27,21 @@
         <TextBlock Text="{Binding Name}" Foreground="White" FontSize="24" HorizontalAlignment="Center"/>
         <TextBlock Grid.Row="1" Text="{Binding Description}" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
         <Viewbox Margin="25" Grid.Row="2" Grid.RowSpan="2">
-            <ContentControl Content="{StaticResource governmentGrant}"/>
+            <ContentControl Content="{StaticResource helicopter}">
+                <ContentControl.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform Y="0" X="-33"/>
+                        <RotateTransform Angle="-45"/>
+                    </TransformGroup>
+                </ContentControl.RenderTransform>
+            </ContentControl>
         </Viewbox>
         <Grid Grid.Row="2" Margin="5,5,5,0">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Nodes.Count}" Value="0">
+                        <DataTrigger Binding="{Binding Players.Count}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -45,9 +52,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border BorderBrush="White" BorderThickness="0,0,0,1">
-                <TextBlock Text="Select a Research Station to Destroy" Foreground="White" HorizontalAlignment="Center" FontSize="14"/>
+                <TextBlock Text="Select a Player to Airlift" Foreground="White" HorizontalAlignment="Center" FontSize="14"/>
             </Border>
-            <ListBox Grid.Row="1" x:Name="Nodes" ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+            <ListBox Grid.Row="1" x:Name="Players" ItemsSource="{Binding Players}" SelectedItem="{Binding SelectedPlayer}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
         </Grid>
         <Grid Grid.Row="3" Margin="5,5,5,0">
             <Grid.RowDefinitions>
@@ -55,20 +62,20 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border BorderBrush="White" BorderThickness="0,0,0,1">
-                <TextBlock Text="Select a City to Build Research Station" Foreground="White" HorizontalAlignment="Center" FontSize="14"/>
+                <TextBlock Text="Select a Destination" Foreground="White" HorizontalAlignment="Center" FontSize="14"/>
             </Border>
             <ListBox Grid.Row="1" x:Name="Targets" ItemsSource="{Binding Targets}" ItemContainerStyle="{StaticResource TabItemListStyle}" Background="Transparent" BorderBrush="Transparent" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding ConstructionNode}"/>
+                        <TextBlock Text="{Binding Node}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Button Grid.Row="4" Margin="5,5,5,0" Template="{StaticResource ActionButtonTemplate}" Command="{Binding GovernmentGrantCommand}" CommandParameter="{Binding ElementName=Targets, Path=SelectedItem}">
+        <Button Grid.Row="4" Margin="5,5,5,0" Template="{StaticResource ActionButtonTemplate}" Command="{Binding AirliftCommand}" CommandParameter="{Binding ElementName=Targets, Path=SelectedItem}">
             <Button.Style>
                 <Style TargetType="Button">
-                    <Setter Property="Content" Value="Comission Research Station"/>
+                    <Setter Property="Content" Value="Airlift Player"/>
                     <Style.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Content" Value="Select City"/>
@@ -79,5 +86,5 @@
         </Button>
         <Button Grid.Row="5" Margin="5,5,5,5" Template="{StaticResource ActionButtonTemplate}" Content="Cancel" Command="{Binding CancelCommand}"/>
     </Grid>
-
+    
 </UserControl>

@@ -36,7 +36,7 @@ namespace Engine.Implementations
 
         public void Connect(Node node)
         {
-            this.connections.Add(node);
+            connections.Add(node);
         }
 
         public void SubscribeToMover(Player mover)
@@ -50,9 +50,9 @@ namespace Engine.Implementations
             if (player != null)
             {
                 if (e.DepartedNode == this)
-                    this.players.Remove(player);
+                    players.Remove(player);
                 else if (e.ArrivedNode == this)
-                    this.players.Add(player);
+                    players.Add(player);
             }
         }
 

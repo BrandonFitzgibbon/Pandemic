@@ -8,6 +8,13 @@ namespace Engine.Implementations.ActionItems
 {
     public class GovernmentGrantItem
     {
-        public Node Node { get; set; }
+        public Node ConstructionNode { get; private set; }
+        public Node DeconstructionNode { get; private set; }
+
+        public GovernmentGrantItem(Node constructionNode, Node deconstructionNode)
+        {
+            ConstructionNode = constructionNode;
+            DeconstructionNode = deconstructionNode;
+        }
     }
 }

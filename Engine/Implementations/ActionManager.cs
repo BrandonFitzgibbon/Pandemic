@@ -111,8 +111,8 @@ namespace Engine.Implementations
             ShuttleFlight = shuttleFlightManager.ShuttleFlight;
 
             researchStationConstructionManager = new ResearchStationConstructionManager(player, researchStationCounter, nodes);
-            CanBuildResearchStation = researchStationConstructionManager.CanBuildResearchStation;
-            BuildResearchStation = researchStationConstructionManager.BuildResearchStation;
+            CanBuildResearchStation = researchStationConstructionManager.CanConstructResearchStation;
+            BuildResearchStation = researchStationConstructionManager.ConstructResearchStation;
 
             treatDiseaseManager = new TreatDiseaseManager(player, nodeDiseaseCounters);
             CanTreatDisease = treatDiseaseManager.CanTreat;

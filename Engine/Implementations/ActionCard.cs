@@ -8,13 +8,9 @@ namespace Engine.Implementations
 {
     public class ActionCard<T> : BaseActionCard
     {
-        public Action<T, Card> Action { get; private set; }
-        public Func<T, bool> CanAction { get; private set; }
+        public Action<T> Action { get; internal set; }
+        public Func<T, bool> CanAction { get; internal set; }
 
-        public ActionCard(string name, string description, Action<T, Card> action, Func<T, bool> canAction) : base(name, description)
-        {
-            Action = action;
-            CanAction = canAction;
-        }
+        public ActionCard(string name, string description) : base(name, description) { }
     }
 }

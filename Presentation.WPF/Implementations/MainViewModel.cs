@@ -23,11 +23,11 @@ namespace Presentation.WPF.Implementations
 
         private IContext<Player> currentPlayer;
         private IContext<Player> selectedPlayer;
+        private IContext<BaseActionCard> selectedActionCard;
         private IContext<ActionManager> actionManager;
         private IContext<DrawManager> drawManager;
         private IContext<InfectionManager> infectionManager;
         private IContext<StringBuilder> messageContext;
-        private IContext<BaseActionCard> selectedActionCard;
 
         private bool actionCardViewOpen;
         public bool ActionCardViewOpen
@@ -160,7 +160,7 @@ namespace Presentation.WPF.Implementations
             HandViewModel = new HandViewModel(selectedPlayer, selectedActionCard);
             DrawViewModel = new DrawViewModel(drawManager);
             InfectionViewModel = new InfectionViewModel(infectionManager);
-            MessageViewModel = new MessageViewModel(messageContext);
+            MessageViewModel = new MessageViewModel(messageContext, game.NodeCounters);
 
             GameStatusViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             PlayersViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
@@ -170,14 +170,6 @@ namespace Presentation.WPF.Implementations
             DrawViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             InfectionViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
             MessageViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
-
-            foreach (NodeDiseaseCounter ndc in game.NodeCounters)
-            {
-                ndc.Infected += ndc_Infected;
-                ndc.Treated += ndc_Treated;
-                ndc.Outbreak += ndc_Outbreak;
-                ndc.Prevented += ndc_Prevented;
-            }
 
             foreach (Player player in game.Players)
             {
@@ -215,6 +207,9 @@ namespace Presentation.WPF.Implementations
                 {
                     if (first == typeof(GovernmentGrantItem))
                         ActionCardViewModel = new GovernmentGrantViewModel(selectedActionCard, actionCardManager);
+                    if (first == typeof(AirliftItem))
+                        ActionCardViewModel = new AirliftViewModel(selectedActionCard, actionCardManager);
+
                     if (ActionCardViewModel != null) ActionCardViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
                     ActionCardViewOpen = true;
                 }
@@ -242,36 +237,6 @@ namespace Presentation.WPF.Implementations
             EpidemicViewModel evm = new EpidemicViewModel(drawManager.Context.EpidemicManager, messageContext);
             evm.ChangeNotificationRequested += ChangeNotificationRequested;
             EpidemicViewModel = evm;
-        }
-
-        private void ndc_Prevented(object sender, PreventionEventArgs e)
-        {
-            messageContext.Context.AppendLine(e.Player.Role + " in " + e.Player.Location.City + " has prevented a " + e.Disease + " infection from occuring in " + e.Node.City);
-        }
-
-        private void ndc_Outbreak(object sender, OutbreakEventArgs e)
-        {
-            messageContext.Context.AppendLine("An outbreak has occurred in " + e.OriginCounter.Node.City + "!");
-
-            foreach (NodeDiseaseCounter ndc in e.ChainCities)
-            {
-                messageContext.Context.AppendLine("\tA chain outbreak has occured in " + ndc.Node.City);
-            }
-            messageContext.Context.AppendLine("\t\tAffected Cities");
-            foreach (NodeDiseaseCounter ndc in e.AffectedCities.Distinct())
-            {
-                messageContext.Context.AppendLine("\t\t\t" + ndc.Node.City);
-            }
-        }
-
-        private void ndc_Treated(object sender, TreatedEventArgs e)
-        {
-            messageContext.Context.AppendLine(e.Treater.Role + " has treated " + e.Value + " unit(s) of " + e.NodeDiseaseCounter.Disease + " infection in " + e.NodeDiseaseCounter.Node.City);
-        }
-
-        private void ndc_Infected(object sender, InfectionEventArgs e)
-        {
-            messageContext.Context.AppendLine(e.Value + " unit(s) of " + e.NodeDiseaseCounter.Disease + " have infected " + e.NodeDiseaseCounter.Node.City);
         }
 
         private IEnumerable<IPlayerViewModel> CreatePlayerViewModels(IEnumerable<Player> players)

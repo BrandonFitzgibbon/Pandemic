@@ -13,7 +13,7 @@ namespace Engine.Implementations.ActionManagers
     {
         private Player player;
         private ResearchStationCounter counter;
-        private IEnumerable<Node> nodes;
+        private IEnumerable<Node> nodes;     
 
         internal IEnumerable<ResearchStationConstructionItem> Targets { get; private set; }
 
@@ -23,19 +23,24 @@ namespace Engine.Implementations.ActionManagers
             this.player.Hand.HandChanged += HandChanged;
             this.player.Moved += PlayerMoved;
             this.player.ActionCounter.ActionUsed += ActionUsed;
+
             this.counter = counter;
+            this.counter.ResearchStationConstructed += ResearchStationChanged;
+            this.counter.ResearchStationDestroyed += ResearchStationChanged;
+
             this.nodes = nodes;
+
             Update();
         }
 
-        internal bool CanBuildResearchStation(ResearchStationConstructionItem researchStationConstructionItem)
+        internal bool CanConstructResearchStation(ResearchStationConstructionItem researchStationConstructionItem)
         {
             return researchStationConstructionItem != null;
         }
 
-        internal void BuildResearchStation(ResearchStationConstructionItem researchStationConstructionItem)
+        internal void ConstructResearchStation(ResearchStationConstructionItem researchStationConstructionItem)
         {
-            if(CanBuildResearchStation(researchStationConstructionItem))
+            if(CanConstructResearchStation(researchStationConstructionItem))
             {
                 if (researchStationConstructionItem.DeconstructionNode != null)
                     counter.MoveResearchStation(researchStationConstructionItem.DeconstructionNode, researchStationConstructionItem.ConstructionNode);
@@ -43,6 +48,7 @@ namespace Engine.Implementations.ActionManagers
                     counter.BuildResearchStation(researchStationConstructionItem.ConstructionNode);
                 if (researchStationConstructionItem.CityCard != null)
                     researchStationConstructionItem.CityCard.Discard();
+
                 player.ActionCounter.UseAction(1);
             }
         }
@@ -67,6 +73,11 @@ namespace Engine.Implementations.ActionManagers
             Update();
         }
 
+        private void ResearchStationChanged(object sender, ResearchStationChangedEventArgs e)
+        {
+            Update();
+        }
+
         private IEnumerable<ResearchStationConstructionItem> GetTargets()
         {
             List<ResearchStationConstructionItem> targets = new List<ResearchStationConstructionItem>();
@@ -76,34 +87,26 @@ namespace Engine.Implementations.ActionManagers
 
             if (player is OperationsExpert)
             {
-                if (!player.Location.ResearchStation)
-                {
-                    if (counter.Count > 0)
+                if (counter.CanBuildResearchStation(player.Location))
+                    targets.Add(new ResearchStationConstructionItem(null, player.Location, null));
+                else
+                    foreach (Node node in nodes.Where(i => counter.CanMoveResearchStation(i, player.Location)))
                     {
-                        targets.Add(new ResearchStationConstructionItem(null, player.Location, null));
+                        targets.Add(new ResearchStationConstructionItem(null, player.Location, node));
                     }
-                    else
-                    {
-                        foreach (Node node in nodes.Where(i => i.ResearchStation == true))
-                        {
-                            targets.Add(new ResearchStationConstructionItem(null, player.Location, node));
-                        }
-                    }
-                }
 
                 return targets;
-
             }
 
-            foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location && i.Node.ResearchStation == false))
+            foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
             {
-                if (counter.Count > 0)
+                if (counter.CanBuildResearchStation(cityCard.Node))
                 {
                     targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, null));
                 }
                 else
                 {
-                    foreach (Node node in nodes.Where(i => i.ResearchStation == true))
+                    foreach (Node node in nodes.Where(i => counter.CanMoveResearchStation(i, cityCard.Node)))
                     {
                         targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, node));
                     }

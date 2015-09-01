@@ -140,9 +140,6 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{Binding Name}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <Viewbox Grid.Column="1" Margin="5" Height="15" VerticalAlignment="Center">
-                        <ContentControl Content="{StaticResource wrench}"/>
-                    </Viewbox>
                 </Grid>
             </DataTemplate>
 
@@ -180,6 +177,10 @@
 
             <DataTemplate DataType="{x:Type i:GovernmentGrantViewModel}">
                 <v:GovernmentGrantView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type i:AirliftViewModel}">
+                <v:AirliftView/>
             </DataTemplate>
             
             <Style TargetType="ScrollBar">

@@ -65,9 +65,8 @@ namespace Engine.Implementations
             infectionDeck = new InfectionDeck(infectionCards.ToList());
 
             ActionCardManager = new ActionCardManager(Nodes, Players, ResearchStationCounter, infectionDeck);
-            ActionCardManager.OneQuietNightPlayed += OneQuietNightPlayed;
 
-            playerDeck = new PlayerDeck(new List<Card>(cityCards), ActionCardManager.GetActionCards());
+            playerDeck = new PlayerDeck(new List<Card>(cityCards), new List<Card>() { ActionCardManager.GovernmentGrant, ActionCardManager.Airlift });
 
             epidemicCards = GetEpidemicCards(InfectionRateCounter, infectionDeck);
 

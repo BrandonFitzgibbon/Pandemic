@@ -28,16 +28,21 @@ namespace Presentation.WPF.Implementations
             get { return actionCard != null ? actionCard.Description : null; }
         }
 
+        public IEnumerable<GovernmentGrantItem> Targets
+        {
+            get { return actionCardManager != null && actionCardManager.GovernmentGrantTargets != null ? actionCardManager.GovernmentGrantTargets.Where(i => i.DeconstructionNode == SelectedNode) : null; }
+        }
+
         public IEnumerable<Node> Nodes
         {
-            get { return actionCardManager != null && actionCardManager.Nodes != null ? actionCardManager.Nodes.Where(i => !i.ResearchStation).OrderBy(i => i.City.Name) : null; }
+            get { return actionCardManager != null && actionCardManager.GovernmentGrantTargets != null ? actionCardManager.GovernmentGrantTargets.Where(i => i.DeconstructionNode != null).Select(j => j.DeconstructionNode).Distinct() : null;  }
         }
 
         private Node selectedNode;
         public Node SelectedNode
         {
             get { return selectedNode; }
-            set { selectedNode = value;  NotifyPropertyChanged(); ggi.Node = value; }
+            set { selectedNode = value;  NotifyPropertyChanged(); NotifyPropertyChanged("Targets"); }
         }
 
         public GovernmentGrantViewModel(IContext<BaseActionCard>selectedActionCardContext, ActionCardManager actionCardManager)
@@ -47,7 +52,6 @@ namespace Presentation.WPF.Implementations
             actionCard = selectedActionCardContext.Context as ActionCard<GovernmentGrantItem>;
             if (actionCard == null)
                 this.selectedActionCardContext.Context = null;
-            ggi = new GovernmentGrantItem();
         }
 
         private RelayCommand cancelCommand;
@@ -72,19 +76,19 @@ namespace Presentation.WPF.Implementations
             get
             {
                 if (governmentGrantCommand == null)
-                    governmentGrantCommand = new RelayCommand(a => GovernmentGrant(), a => CanGovernmentGrant());
+                    governmentGrantCommand = new RelayCommand(a => GovernmentGrant((GovernmentGrantItem)a), a => CanGovernmentGrant((GovernmentGrantItem)a));
                 return governmentGrantCommand;
             }
         }
 
-        private bool CanGovernmentGrant()
+        private bool CanGovernmentGrant(GovernmentGrantItem ggi)
         {
             return actionCard.CanAction(ggi);
         }
 
-        private void GovernmentGrant()
+        private void GovernmentGrant(GovernmentGrantItem ggi)
         {
-            actionCard.Action(ggi, actionCard);
+            actionCard.Action(ggi);
             RaiseChangeNotificationRequested();
         }
     }
