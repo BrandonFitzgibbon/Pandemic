@@ -96,7 +96,7 @@ namespace Engine.Implementations.ActionManagers
 
             foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
             {
-                if(plyr is Researcher)
+                if(plyr is Researcher && plyr.Hand.CityCards != null)
                 {
                     foreach (CityCard cityCard in plyr.Hand.CityCards)
                     {
@@ -105,9 +105,12 @@ namespace Engine.Implementations.ActionManagers
                 }
                 else
                 {
-                    foreach (CityCard cityCard in plyr.Hand.CityCards.Where(i => i.Node == player.Location))
+                    if (plyr.Hand.CityCards != null)
                     {
-                        targets.Add(new ShareKnowledgeItem(plyr, player, cityCard));
+                        foreach (CityCard cityCard in plyr.Hand.CityCards.Where(i => i.Node == player.Location))
+                        {
+                            targets.Add(new ShareKnowledgeItem(plyr, player, cityCard));
+                        }
                     }
                 }
             }

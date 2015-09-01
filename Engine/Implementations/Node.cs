@@ -68,7 +68,7 @@ namespace Engine.Implementations
 
         public override bool Equals(object obj)
         {
-            Node compareNode = (Node)obj;
+            Node compareNode = obj as Node;
             return compareNode != null && compareNode.City != null ? compareNode.City == this.City : false;
         }
     }

@@ -2,6 +2,7 @@
 using Engine.CustomEventArgs;
 using Engine.Factories;
 using Engine.Implementations;
+using Engine.Implementations.ActionItems;
 using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
 using System;
@@ -17,6 +18,7 @@ namespace Presentation.WPF.Implementations
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
         private Game game;
+        private ActionCardManager actionCardManager;
         private IDataAccess data;
 
         private IContext<Player> currentPlayer;
@@ -25,6 +27,14 @@ namespace Presentation.WPF.Implementations
         private IContext<DrawManager> drawManager;
         private IContext<InfectionManager> infectionManager;
         private IContext<StringBuilder> messageContext;
+        private IContext<BaseActionCard> selectedActionCard;
+
+        private bool actionCardViewOpen;
+        public bool ActionCardViewOpen
+        {
+            get { return actionCardViewOpen; }
+            set { actionCardViewOpen = value;  NotifyPropertyChanged(); }
+        }
 
         private GameStatusViewModel gameStatusViewModel;
         public GameStatusViewModel GameStatusViewModel
@@ -96,6 +106,13 @@ namespace Presentation.WPF.Implementations
             set { discardViewModel = value; NotifyPropertyChanged(); }
         }
 
+        private IActionCardViewModel actionCardViewModel;
+        public IActionCardViewModel ActionCardViewModel
+        {
+            get { return actionCardViewModel; }
+            set { actionCardViewModel = value; NotifyPropertyChanged(); }
+        }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
         private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
         private IEnumerable<INodeViewModel> nodeViewModels;
@@ -104,6 +121,8 @@ namespace Presentation.WPF.Implementations
         {
             data = new DataAccess.Data();
             game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Standard);
+
+            actionCardManager = game.ActionCardManager;
 
             currentPlayer = new ObjectContext<Player>();
             currentPlayer.Context = game.CurrentPlayer;
@@ -122,6 +141,9 @@ namespace Presentation.WPF.Implementations
             messageContext = new ObjectContext<StringBuilder>();
             messageContext.Context = new StringBuilder();
 
+            selectedActionCard = new ObjectContext<BaseActionCard>();
+            selectedActionCard.ContextChanged += SelectedActionCard_ContextChanged;
+
             playerViewModels = CreatePlayerViewModels(game.Players);
             diseaseCounterViewModels = CreateDiseaseCounterViewModels(game.DiseaseCounters);
             nodeViewModels = CreateNodeViewModels(game.Nodes, game.NodeCounters);           
@@ -135,7 +157,7 @@ namespace Presentation.WPF.Implementations
             PlayersViewModel = new PlayersViewModel(currentPlayer, selectedPlayer, playerViewModels);
             ActionsViewModel = new ActionsViewModel(actionManager, currentPlayer, game.Players);
             BoardViewModel = new BoardViewModel(nodeViewModels);
-            HandViewModel = new HandViewModel(selectedPlayer);
+            HandViewModel = new HandViewModel(selectedPlayer, selectedActionCard);
             DrawViewModel = new DrawViewModel(drawManager);
             InfectionViewModel = new InfectionViewModel(infectionManager);
             MessageViewModel = new MessageViewModel(messageContext);
@@ -180,6 +202,25 @@ namespace Presentation.WPF.Implementations
         {
             game = null;
             ChangeNotificationRequested(this, EventArgs.Empty);
+        }
+
+        private void SelectedActionCard_ContextChanged(object sender, ContextChangedEventArgs<BaseActionCard> e)
+        {
+            if (e.NewContext != null)
+            {
+                ActionCardViewModel = null;
+                Type[] res = e.NewContext.GetType().GetGenericArguments();
+                Type first = res.First();
+                if (first != null)
+                {
+                    if (first == typeof(GovernmentGrantItem))
+                        ActionCardViewModel = new GovernmentGrantViewModel(selectedActionCard, actionCardManager);
+                    if (ActionCardViewModel != null) ActionCardViewModel.ChangeNotificationRequested += ChangeNotificationRequested;
+                    ActionCardViewOpen = true;
+                }
+            }
+            else
+                ActionCardViewOpen = false;
         }
 
         private void DiscardManagerBlock(object sender, EventArgs e)

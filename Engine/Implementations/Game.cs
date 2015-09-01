@@ -8,9 +8,11 @@ namespace Engine.Implementations
 {
     public class Game
     {
+        public Phase Phase { get; private set; }
         public ActionManager ActionManager { get; private set; }
         public DrawManager DrawManager { get; private set; }
         public InfectionManager InfectionManager { get; private set; }
+        public ActionCardManager ActionCardManager { get; private set; }
         public IEnumerable<Disease> Diseases { get; private set; }
         public IEnumerable<DiseaseCounter> DiseaseCounters { get; private set; }
         public IEnumerable<NodeDiseaseCounter> NodeCounters { get; private set; }
@@ -34,6 +36,12 @@ namespace Engine.Implementations
 
         private CureTracker CureTracker;
 
+        private bool skipNextInfectionPhase = false;
+        public bool SkipNextInfectionPhase
+        {
+            get { return skipNextInfectionPhase; }
+        }
+
         public Game(IDataAccess dataAccess, IList<string> playerNames, Difficulty difficulty)
         {
             OutbreakCounter = new OutbreakCounter();
@@ -54,8 +62,12 @@ namespace Engine.Implementations
             cityCards = GetCityCards(Nodes);
             infectionCards = GetInfectionCards(NodeCounters);
 
-            playerDeck = new PlayerDeck(cityCards.ToList());
             infectionDeck = new InfectionDeck(infectionCards.ToList());
+
+            ActionCardManager = new ActionCardManager(Nodes, Players, ResearchStationCounter, infectionDeck);
+            ActionCardManager.OneQuietNightPlayed += OneQuietNightPlayed;
+
+            playerDeck = new PlayerDeck(new List<Card>(cityCards), ActionCardManager.GetActionCards());
 
             epidemicCards = GetEpidemicCards(InfectionRateCounter, infectionDeck);
 
@@ -65,7 +77,8 @@ namespace Engine.Implementations
             Players = Players.OrderBy(i => i.TurnOrder);
 
             ActionManager = new ActionManager();
-            DrawManager = new DrawManager(this.playerDeck);
+            DrawManager = new DrawManager(playerDeck);
+            DrawManager.DrawPhaseCompleted += DrawPhaseComplete;
             InfectionManager = new InfectionManager(InfectionRateCounter, infectionDeck);
             InfectionManager.InfectionPhaseCompleted += InfectionPhaseCompleted;
 
@@ -85,12 +98,21 @@ namespace Engine.Implementations
             NextPlayer();
         }
 
+        private void OneQuietNightPlayed(object sender, EventArgs e)
+        {
+            if (Phase == Phase.InfectionPhase)
+                InfectionManager.SkipInfectionPhase();
+            else
+                skipNextInfectionPhase = true;
+        }
+
         public event EventHandler GameOver;
 
         private void GameOverNotified(object sender, EventArgs e)
         {
             if (GameOver != null) GameOver(this, e);
             InfectionManager.gameOver = true;
+            DrawManager.gameOver = true;
         }
 
         public event EventHandler GameWon;
@@ -121,13 +143,14 @@ namespace Engine.Implementations
 
         private void ActionsDepleted(object sender, EventArgs e)
         {
-            CurrentPlayer.DrawCounter.ResetDraws();
-            DrawManager.SetPlayer(CurrentPlayer);
+            DrawManager.ResetDrawManager(CurrentPlayer);
         }
 
-        private void DrawsDepleted(object sender, EventArgs e)
+        private void DrawPhaseComplete(object sender, EventArgs e)
         {
             InfectionManager.ResetInfectionManager();
+            if (SkipNextInfectionPhase)
+                InfectionManager.SkipInfectionPhase();
         }
 
         private void InfectionPhaseCompleted(object sender, EventArgs e)
@@ -207,7 +230,6 @@ namespace Engine.Implementations
             foreach (Player player in Players)
             {
                 player.ActionCounter.ActionsDepleted += ActionsDepleted;
-                player.DrawCounter.DrawsDepleted += DrawsDepleted;
             }
         }
 
@@ -284,10 +306,16 @@ namespace Engine.Implementations
 
         public PlayerQueue(IList<Player> players)
         {
-            List<Player> temp = new List<Player>(players.OrderBy(i => i.Hand.CityCards.OrderByDescending(j => j.Node.City.Population).First().Node.City.Population));
+            List<Player> temp = new List<Player>(players.Where(i => i.Hand.CityCards != null).OrderBy(i => i.Hand.CityCards.OrderByDescending(j => j.Node.City.Population).FirstOrDefault().Node.City.Population));
             this.players = new Queue<Player>();
             int w = 1;
             foreach (Player player in temp)
+            {
+                player.TurnOrder = w;
+                w++;
+                this.players.Enqueue(player);
+            }
+            foreach(Player player in players.Except(temp))
             {
                 player.TurnOrder = w;
                 w++;
@@ -309,5 +337,10 @@ namespace Engine.Implementations
     public enum Difficulty
     {
         Introductory = 4, Standard = 5, Heroic = 6
+    }
+
+    public enum Phase
+    {
+        ActionPhase, DrawPhase, InfectionPhase
     }
 }

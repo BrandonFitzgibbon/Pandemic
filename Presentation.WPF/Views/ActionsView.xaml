@@ -14,28 +14,7 @@
         <c:RoleToDispatcherConverter x:Key="RoleToDispatcher"/>
         <c:RoleToOperationsExpertConverter x:Key="RoleToOperationsExpertConverter"/>
 
-        <Style x:Key="TabItemListStyle" TargetType="ListBoxItem">
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="Border" Background="Transparent" CornerRadius="{StaticResource StandardCornerRadius}">
-                            <ContentPresenter x:Name="Content" Margin="3,1,3,1" TextElement.Foreground="White" TextElement.FontSize="14"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="White"/>
-                                <Setter TargetName="Content" Property="TextElement.Foreground" Value="Black"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>   
+
 
     </UserControl.Resources>
 
@@ -60,6 +39,10 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="ToolTip">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
         </TabControl.Resources>
         <TabControl.Style>
             <Style TargetType="TabControl">
@@ -81,9 +64,11 @@
         </TabControl.Style>
         <TabItem x:Name="Drive">
             <TabItem.Header>
-                <Viewbox Height="20" Width="20">
-                    <ContentControl Content="{StaticResource car}" HorizontalAlignment="Center"/>
-                </Viewbox>
+                <Border ToolTip="Drive" Background="Transparent">
+                    <Viewbox Height="20" Width="20">
+                        <ContentControl Content="{StaticResource car}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -159,9 +144,11 @@
         </TabItem>
         <TabItem x:Name="DirectFlight">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource plane}"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Direct Flight">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource plane}"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -242,9 +229,11 @@
         </TabItem>
         <TabItem x:Name="CharterFlight">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource train}"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Charter Train">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource train}"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -345,9 +334,11 @@
         </TabItem>
         <TabItem x:Name="ShuttleFlight">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource bus}"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Shuttle Bus">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource bus}"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -443,9 +434,11 @@
         </TabItem>
         <TabItem x:Name="BuildResearchStation">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource lightbulb}"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Build Research Station">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource lightbulb}"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -581,9 +574,11 @@
         </TabItem>
         <TabItem x:Name="TreatDisease">
             <TabItem.Header>
-                <Viewbox Height="20" Width="25">
-                    <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center" ToolTip="Treat Disease"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Treat Disease">
+                    <Viewbox Height="20" Width="25">
+                        <ContentControl Content="{StaticResource pill}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -685,9 +680,11 @@
         </TabItem>
         <TabItem x:Name="ShareKnowledge">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource share}" HorizontalAlignment="Center" ToolTip="Share Knowledge"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Share Knowledge">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource share}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -793,9 +790,11 @@
         </TabItem>
         <TabItem x:Name="DiscoverCure">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource discover}" HorizontalAlignment="Center" ToolTip="Discover Cure"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Discover Cure">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource discover}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -920,9 +919,11 @@
         </TabItem>
         <TabItem x:Name="Dispatch">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource suitcase}" HorizontalAlignment="Center" ToolTip="Dispatch Player"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Dispatch">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource suitcase}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>
@@ -1046,9 +1047,11 @@
         </TabItem>
         <TabItem x:Name="OperationsRelocate">
             <TabItem.Header>
-                <Viewbox Height="20">
-                    <ContentControl Content="{StaticResource anchor}" HorizontalAlignment="Center" ToolTip="Relocate Operations Expert"/>
-                </Viewbox>
+                <Border Background="Transparent" ToolTip="Relocate Operations Expert">
+                    <Viewbox Height="20">
+                        <ContentControl Content="{StaticResource anchor}" HorizontalAlignment="Center"/>
+                    </Viewbox>
+                </Border>
             </TabItem.Header>
             <Grid>
                 <Grid>

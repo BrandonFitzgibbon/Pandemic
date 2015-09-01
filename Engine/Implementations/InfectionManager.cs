@@ -10,10 +10,11 @@ namespace Engine.Implementations
     {
         private InfectionRateCounter infectionRateCounter;
         private InfectionDeck infectionDeck;
+        internal bool gameOver;
 
         public bool CanInfect
         {
-            get { return Count > 0; }
+            get { return Count > 0 && !gameOver; }
         }
 
         private int count;
@@ -37,6 +38,14 @@ namespace Engine.Implementations
         internal void ResetInfectionManager()
         {
             count = infectionRateCounter.InfectionRate;
+        }
+
+        internal void SkipInfectionPhase()
+        {
+            for(int i = Count; i > 0; i--)
+            {
+                Count--;
+            }
         }
 
         public void Infect()

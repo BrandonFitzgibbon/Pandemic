@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.WPF", "Presentation.WPF\Presentation.WPF.csproj", "{CFBD8C5D-AB5C-4ACD-ADFF-A040BC618D21}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C72D0ECA-4385-4332-BFE8-5CF3856C707A} = {C72D0ECA-4385-4332-BFE8-5CF3856C707A}
+		{14BD2BEC-23FB-4F7B-84CE-4B63782FF27C} = {14BD2BEC-23FB-4F7B-84CE-4B63782FF27C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{C72D0ECA-4385-4332-BFE8-5CF3856C707A}"
 EndProject

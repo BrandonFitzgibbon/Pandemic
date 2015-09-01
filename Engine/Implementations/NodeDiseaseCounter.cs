@@ -44,6 +44,7 @@ namespace Engine.Implementations
             if (Count < 3)
             {
                 Count++;
+                if (ChainInfected != null) ChainInfected(this, new InfectionEventArgs(this, 1));
                 e.AffectedCities.Add(this);
             }
             else
@@ -115,6 +116,7 @@ namespace Engine.Implementations
         public event EventHandler<OutbreakEventArgs> Outbreak;
         public event EventHandler<OutbreakEventArgs> ChainOutbreak;
         public event EventHandler<InfectionEventArgs> Infected;
+        public event EventHandler<InfectionEventArgs> ChainInfected;
         public event EventHandler<TreatedEventArgs> Treated;
         public event EventHandler<PreventionEventArgs> Prevented;
 

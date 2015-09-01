@@ -12,7 +12,18 @@ namespace Engine.Implementations
     public class InfectionDeck
     {
         private Stack<InfectionCard> cardPile;
+
+        internal IEnumerable<InfectionCard> TopSix
+        {
+            get { return cardPile.Take(6); }
+        }
+
         private Stack<InfectionCard> discardPile;
+
+        internal IEnumerable<InfectionCard> DiscardPile
+        {
+            get { return discardPile; }
+        }
 
         public InfectionDeck(IList<InfectionCard> infectionCards)
         {
@@ -53,7 +64,15 @@ namespace Engine.Implementations
             discardPile.Push((InfectionCard)e.Card);
         }
 
-        public void Intensify()
+        internal void RemoveFromDiscardPile(InfectionCard card)
+        {
+            List<InfectionCard> cards = new List<InfectionCard>(discardPile.ToList());
+            cards.Remove(card);
+            cards.Reverse();
+            discardPile = new Stack<InfectionCard>(cards);
+        }
+
+        internal void Intensify()
         {
             List<InfectionCard> cards = discardPile.ToList();
             cards.Shuffle();

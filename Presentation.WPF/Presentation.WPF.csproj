@@ -56,6 +56,7 @@
     <Compile Include="Context\ObjectContext.cs" />
     <Compile Include="Context\ContextChangedEventArgs.cs" />
     <Compile Include="Context\IContext.cs" />
+    <Compile Include="Contracts\IActionCardViewModel.cs" />
     <Compile Include="Contracts\IActionsViewModel.cs" />
     <Compile Include="Contracts\IBoardViewModel.cs" />
     <Compile Include="Contracts\IDiscardViewModel.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Contracts\INodeViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
+    <Compile Include="Controls\AttachedProperties.cs" />
     <Compile Include="Controls\ConnectedContent.cs" />
     <Compile Include="Controls\Icons.cs" />
     <Compile Include="Converters\DiseaseStatusToIconConverter.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Converters\NodeStatusToColorConverter.cs" />
     <Compile Include="Converters\RoleToDispatcherConverter.cs" />
     <Compile Include="Converters\RoleToOperationsExpertConverter.cs" />
+    <Compile Include="Implementations\GovernmentGrantViewModel.cs" />
     <Compile Include="Implementations\ActionsViewModel.cs" />
     <Compile Include="Implementations\BoardViewModel.cs" />
     <Compile Include="Implementations\DiscardViewModel.cs" />
@@ -115,6 +118,9 @@
     </Compile>
     <Compile Include="Views\GameStatusView.xaml.cs">
       <DependentUpon>GameStatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GovernmentGrantView.xaml.cs">
+      <DependentUpon>GovernmentGrantView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HandView.xaml.cs">
       <DependentUpon>HandView.xaml</DependentUpon>
@@ -173,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GameStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GovernmentGrantView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

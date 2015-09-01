@@ -14,13 +14,18 @@ namespace Engine.Implementations
         private Stack<Card> cardPile;
         private Stack<Card> discardPile;
 
-        public PlayerDeck(IList<CityCard> cityCards)
+        public PlayerDeck(IList<Card> cityCards, IList<Card> actionCards)
         {
-            cityCards.Shuffle();
-            foreach (CityCard card in cityCards)
+            foreach (Card card in cityCards)
             {
                 card.Discarded += CardDiscarded;
             }
+            foreach (Card card in actionCards)
+            {
+                card.Discarded += CardDiscarded;
+                cityCards.Add(card);
+            }
+            //cityCards.Shuffle();
             cardPile = new Stack<Card>(cityCards);
             discardPile = new Stack<Card>();
         }

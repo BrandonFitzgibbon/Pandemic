@@ -81,6 +81,21 @@
 
         <DataTemplate x:Key="PlayerDataTemplate" DataType="{x:Type vm:NodeViewModel}">
             <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                <Border.ToolTip>
+                    <ToolTip Background="Black" Foreground="White">
+                        <ToolTip.Style>
+                            <Style TargetType="ToolTip">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Players.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToolTip.Style>
+                        <HeaderedItemsControl ItemsSource="{Binding Players}"/>
+                    </ToolTip>
+                </Border.ToolTip>
                 <Grid TextElement.Foreground="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -128,6 +143,21 @@
 
         <DataTemplate x:Key="ResearchStationDataTemplate" DataType="{x:Type vm:NodeViewModel}">
             <Border BorderThickness="2" Padding="5" CornerRadius="0" BorderBrush="{Binding Status, Converter={StaticResource StatusToColorConverter}}">
+                <Border.ToolTip>
+                    <ToolTip Background="Black" Foreground="White">
+                        <ToolTip.Style>
+                            <Style TargetType="ToolTip">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ResearchStation}" Value="False">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToolTip.Style>
+                        <TextBlock Text="Has Research Station"/>
+                    </ToolTip>
+                </Border.ToolTip>
                 <Grid TextElement.Foreground="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -194,22 +224,26 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
+                    <Style TargetType="ToolTip">
+                        <Setter Property="Background" Value="Black"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
                 </Grid.Resources>
-                <RadioButton x:Name="InfectionViewButton" IsChecked="True" HorizontalAlignment="Center">
+                <RadioButton x:Name="InfectionViewButton" IsChecked="True" HorizontalAlignment="Center" ToolTip="Infections">
                     <RadioButton.Content>
                         <Viewbox Height="20" Width="20">
                             <ContentControl Content="{StaticResource compoundWhite}"/>
                         </Viewbox>
                     </RadioButton.Content>
                 </RadioButton>
-                <RadioButton Grid.Row="1" x:Name="PlayerViewButton" HorizontalAlignment="Center">
+                <RadioButton Grid.Row="1" x:Name="PlayerViewButton" HorizontalAlignment="Center" ToolTip="Players">
                     <RadioButton.Content>
                         <Viewbox Height="20" Width="20">
                             <ContentControl Content="{StaticResource man}"/>
                         </Viewbox>
                     </RadioButton.Content>
                 </RadioButton>
-                <RadioButton Grid.Row="2" x:Name="ResearchViewButton" HorizontalAlignment="Center">
+                <RadioButton Grid.Row="2" x:Name="ResearchViewButton" HorizontalAlignment="Center" ToolTip="Research Stations">
                     <RadioButton.Content>
                         <Viewbox Height="20" Width="20">
                             <ContentControl Content="{StaticResource lightbulb}"/>

@@ -12,17 +12,34 @@ namespace Engine.Implementations
         private PlayerDeck playerDeck;
 
         public EpidemicManager EpidemicManager { get; private set; }
-        public bool CanDraw { get; private set; }
+
+        internal bool gameOver;
+
+        public bool CanDraw
+        {
+            get { return Count > 0 && EpidemicManager == null && !gameOver; }
+        }
+
+        private int count;
+        public int Count
+        {
+            get { return count; }
+            set
+            {
+                count = value;
+                if (value == 0)
+                    if (DrawPhaseCompleted != null) DrawPhaseCompleted(this, EventArgs.Empty);
+            }
+        }
 
         internal DrawManager(PlayerDeck playerDeck)
         {
             this.playerDeck = playerDeck;
-            CanDraw = false;
         }
 
         public void DrawPlayerCard()
         {
-            if (player.DrawCounter.Count > 0)
+            if (Count > 0)
             {
                 Card drawnCard = playerDeck.Draw();
 
@@ -30,7 +47,6 @@ namespace Engine.Implementations
                 {
                     EpidemicManager = new EpidemicManager((EpidemicCard)drawnCard);
                     EpidemicManager.Resolved += EpidemicManagerResolved;
-                    CanDraw = false;
                     if (EpidemicDrawn != null) EpidemicDrawn(this, EventArgs.Empty);
                 }
 
@@ -39,28 +55,22 @@ namespace Engine.Implementations
                     player.Hand.AddToHand(drawnCard);
                 }
 
-                player.DrawCounter.Draw();
+                Count = Count - 1;
             }
         }
 
-        internal void SetPlayer(Player player)
+        internal void ResetDrawManager(Player player)
         {
             this.player = player;
-            CanDraw = true;
-            this.player.DrawCounter.DrawsDepleted += DrawsDepleted;
+            count = 2;
         }
 
         private void EpidemicManagerResolved(object sender, EventArgs e)
         {
-            CanDraw = true;
             EpidemicManager = null;
         }
 
-        private void DrawsDepleted(object sender, EventArgs e)
-        {
-            CanDraw = false;
-        }
-
         public event EventHandler EpidemicDrawn;
+        public event EventHandler DrawPhaseCompleted;
     }
 }

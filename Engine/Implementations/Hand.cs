@@ -22,7 +22,12 @@ namespace Engine.Implementations
 
         public IEnumerable<CityCard> CityCards
         {
-            get { return cards.Where(i => i is CityCard).OfType<CityCard>(); }
+            get { return cards.Where(i => i is CityCard).OfType<CityCard>().Count() > 0 ? cards.Where(i => i is CityCard).OfType<CityCard>() : null; }
+        }
+
+        public IEnumerable<BaseActionCard> ActionCards
+        {
+            get { return cards.Where(i => i is BaseActionCard).OfType<BaseActionCard>().Count() > 0 ? cards.Where(i => i is BaseActionCard).OfType<BaseActionCard>() : null; }
         }
 
         public Hand(Player player)

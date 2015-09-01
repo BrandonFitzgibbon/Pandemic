@@ -90,11 +90,35 @@
                     </VisualStateManager.VisualStateGroups>
 
                     <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="2" TextElement.Foreground="White" TextElement.FontSize="14">
-                        <ContentPresenter HorizontalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
 
                 </Grid>
             </ControlTemplate>
+
+            <Style x:Key="TabItemListStyle" TargetType="ListBoxItem">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Margin" Value="0,1,0,1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="Border" Background="Transparent" CornerRadius="2">
+                                <ContentPresenter x:Name="Content" Margin="2" TextElement.Foreground="White" TextElement.FontSize="14"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="White"/>
+                                    <Setter TargetName="Content" Property="TextElement.Foreground" Value="Black"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <DataTemplate DataType="{x:Type e:CityCard}">
                 <Grid>
@@ -105,6 +129,19 @@
                     <TextBlock x:Name="Text" Text="{Binding}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Viewbox Grid.Column="1" Margin="5" Height="{Binding ElementName=Text, Path=ActualHeight}" VerticalAlignment="Center">
                         <ContentControl Content="{Binding Node.Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
+                    </Viewbox>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type e:BaseActionCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Name}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Viewbox Grid.Column="1" Margin="5" Height="15" VerticalAlignment="Center">
+                        <ContentControl Content="{StaticResource wrench}"/>
                     </Viewbox>
                 </Grid>
             </DataTemplate>
@@ -139,6 +176,10 @@
             
             <DataTemplate DataType="{x:Type i:BoardViewModel}">
                 <v:BoardView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type i:GovernmentGrantViewModel}">
+                <v:GovernmentGrantView/>
             </DataTemplate>
             
             <Style TargetType="ScrollBar">

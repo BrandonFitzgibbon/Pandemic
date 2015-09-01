@@ -27,6 +27,7 @@ namespace Engine.Implementations
             foreach (NodeDiseaseCounter nodeCounter in nodeCounters)
             {
                 nodeCounter.Infected += Infection;
+                nodeCounter.ChainInfected += Infection;
                 nodeCounter.Treated += Treatment;
                 nodeCounter.Outbreak += Outbreak;
                 nodeCounter.ChainOutbreak += ChainOutbreak;
@@ -38,7 +39,7 @@ namespace Engine.Implementations
             IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
             foreach (NodeDiseaseCounter nodeCounter in outbreakCounters.Where(i => !e.OriginList.Contains(i)))
             {
-                if (this.Count == 0)
+                if (Count == 0)
                     return;
 
                 if (outbreakCounter.Count == 7)
@@ -53,7 +54,7 @@ namespace Engine.Implementations
             IEnumerable<NodeDiseaseCounter> outbreakCounters = nodeCounters.Where(i => e.OriginCounter.Node.Connections.Contains(i.Node));
             foreach (NodeDiseaseCounter nodeCounter in outbreakCounters.Where(i => !e.OriginList.Contains(i)))
             {
-                if (this.Count == 0)
+                if (Count == 0)
                     return;
 
                 if (outbreakCounter.Count == 7)
@@ -63,28 +64,34 @@ namespace Engine.Implementations
             }
         }
 
-        private void Infection(object sender, EventArgs e)
+        private void Infection(object sender, InfectionEventArgs e)
         {
-            Decrease();
+            Decrease(e.Value);
         }
 
-        private void Treatment(object sender, EventArgs e)
+        private void Treatment(object sender, TreatedEventArgs e)
         {
-            Increase();
+            Increase(e.Value);
         }
 
-        internal void Increase()
+        internal void Increase(int value)
         {
-            if (Count < 24)
-                Count++;
+            for (int i = value; i > 0; i--)
+            {
+                if (Count < 24)
+                    Count++;
+            }
         }
 
-        internal void Decrease()
+        internal void Decrease(int value)
         {
-            if (Count > 0)
-                Count--;
-            else
-                if (GameOver != null) GameOver(this, EventArgs.Empty);
+            for (int i = value; i > 0; i--)
+            {
+                if (Count > 0)
+                    Count--;
+                else
+                    if (GameOver != null) GameOver(this, EventArgs.Empty);
+            }
         }
 
         public event EventHandler GameOver;

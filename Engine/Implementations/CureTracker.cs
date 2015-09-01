@@ -12,6 +12,7 @@ namespace Engine.Implementations
 
         public CureTracker(IEnumerable<Disease> diseases)
         {
+            this.diseases = diseases;
             foreach (Disease disease in diseases)
             {
                 disease.Cured += Disease_Cured;
