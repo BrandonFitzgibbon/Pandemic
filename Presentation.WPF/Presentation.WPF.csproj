@@ -70,6 +70,7 @@
     <Compile Include="Contracts\INodeViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
+    <Compile Include="Controls\Anchor.cs" />
     <Compile Include="Controls\AttachedProperties.cs" />
     <Compile Include="Controls\ConnectedContent.cs" />
     <Compile Include="Controls\Icons.cs" />
@@ -158,6 +159,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ActionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -5,12 +5,7 @@
         xmlns:c="clr-namespace:Presentation.WPF.Controls"
         Title="MainWindow" Height="900" Width="1400" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
-    <Grid>
-        <Grid>
-            <Grid.Background>
-                <ImageBrush ImageSource="Controls/monochrome_map_w1.jpeg"/>
-            </Grid.Background>
-        </Grid>
+    <Grid Background="Black">
         <Grid Background="Black" Opacity="0.775"/>
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
@@ -28,6 +23,12 @@
                 <ContentControl Content="{Binding GameStatusViewModel}"/>
             </Border>
             <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.Background>
+                    <RadialGradientBrush RadiusX=".75" RadiusY=".75">
+                        <GradientStop Color="#FF0C3763"/>
+                        <GradientStop Color="Black" Offset="1"/>
+                    </RadialGradientBrush>
+                </Grid.Background>
                 <ContentControl Content="{Binding BoardViewModel}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.RowSpan="3">
@@ -77,5 +78,5 @@
             </Border>
         </Grid>
     </Grid>
-    
+
 </Window>

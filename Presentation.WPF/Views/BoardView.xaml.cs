@@ -35,21 +35,10 @@ namespace Presentation.WPF.Views
             Border bd = (Border)sender;
             Canvas canvas = (Canvas)bd.Child;
             var st = (ScaleTransform)((TransformGroup)canvas.RenderTransform).Children.First(i => i is ScaleTransform);
-            double zoom = e.Delta > 0 ? 0.1 : -0.1;
+            double zoom = e.Delta > 0 ? 0.05 : -0.05;
 
-            if (st.ScaleX + zoom < 0.6)
-                st.ScaleX = 0.6;
-            else if (st.ScaleX + zoom > 2.3)
-                st.ScaleX = 2.3;
-            else
-                st.ScaleX = st.ScaleX + zoom;
-
-            if (st.ScaleY + zoom < 0.6)
-                st.ScaleY = 0.6;
-            else if (st.ScaleY + zoom > 2.3)
-                st.ScaleY = 2.3;
-            else
-                st.ScaleY = st.ScaleY + zoom;
+            st.ScaleX = (double)Math.Round(st.ScaleY + zoom, 2);
+            st.ScaleY = (double)Math.Round(st.ScaleY + zoom, 2);
 
         }
 
@@ -76,9 +65,12 @@ namespace Presentation.WPF.Views
             if (canvas.IsMouseCaptured)
             {
                 var tr = (TranslateTransform)((TransformGroup)canvas.RenderTransform).Children.First(i => i is TranslateTransform);
+                var st = (ScaleTransform)((TransformGroup)canvas.RenderTransform).Children.First(i => i is ScaleTransform);
                 Vector translate = start - e.GetPosition(bd);
-                tr.X = origin.X - translate.X;
-                tr.Y = origin.Y - translate.Y;
+                double x = origin.X - translate.X;
+                double y = origin.Y - translate.Y;
+                tr.X = x;
+                tr.Y = y;
             }
         }
 
