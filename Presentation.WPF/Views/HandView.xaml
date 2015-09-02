@@ -7,7 +7,7 @@
              xmlns:c="clr-namespace:Presentation.WPF.Converters"
              xmlns:a="clr-namespace:Presentation.WPF.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" BorderBrush="Transparent">
+             d:DesignHeight="300" d:DesignWidth="700" MinWidth="500" MinHeight="250" BorderBrush="Transparent">
     
     <UserControl.Resources>     
 
@@ -17,77 +17,103 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="City" Foreground="White" HorizontalAlignment="Center"/>
-            <Viewbox Width="50" Height="30" Margin="0,5,0,0">
-                <ContentControl Content="{StaticResource cards}"/>
-            </Viewbox>
-        </StackPanel>
-        <ListBox Grid.Column="1" ItemsSource="{Binding CityCards}" BorderBrush="Gray" BorderThickness="1,0,1,0" Background="Transparent">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="4" Rows="2"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
-                                    <Grid>
-                                        <Grid Background="Black" Opacity="0.75" Margin="-2"/>
-                                        <ContentPresenter Content="{TemplateBinding Content}"/>
-                                    </Grid>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
-        <StackPanel Grid.Column="2" VerticalAlignment="Center">
-            <TextBlock Text="Action" Foreground="White" HorizontalAlignment="Center"/>
-            <Viewbox Width="50" Height="30" Margin="0,5,0,0">
-                <ContentControl Content="{StaticResource cards}"/>
-            </Viewbox>
-        </StackPanel>
-        <ListBox Grid.Column="3" ItemsSource="{Binding ActionCards}" SelectedItem="{Binding SelectedActionCard}" BorderBrush="Gray" BorderThickness="1,0,0,0" Background="Transparent">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="4" Rows="2"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border x:Name="Border" BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="2">
-                                    <Grid>
-                                        <Grid x:Name="Grid" Background="Black" Opacity="0.75" Margin="-2"/>
-                                        <ContentPresenter Content="{TemplateBinding Content}"/>
-                                    </Grid>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Grid" Property="Background" Value="Gray"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="Yellow"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Gray" Grid.ColumnSpan="2" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Viewbox Height="30" Margin="5">
+                    <ContentControl Content="{StaticResource man}"/>
+                </Viewbox>
+                <TextBlock Text="{Binding SelectedPlayerName, StringFormat={}: {0}}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="City" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Viewbox Width="50" Height="30" Margin="0,5,0,5">
+                        <ContentControl Content="{StaticResource cards}"/>
+                    </Viewbox>
+                </StackPanel>
+                <ListBox Grid.Row="1" ItemsSource="{Binding CityCards}" BorderBrush="Gray" BorderThickness="0,1,0,0" Background="Transparent">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" Rows="4"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border BorderBrush="White" BorderThickness="1" Margin="4" Padding="2">
+                                            <Grid>
+                                                <Grid Background="Black" Opacity="0.75" Margin="-2"/>
+                                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Text="Action" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Viewbox Width="50" Height="30" Margin="0,5,0,5">
+                        <ContentControl Content="{StaticResource cards}"/>
+                    </Viewbox>
+                </StackPanel>
+                <ListBox Grid.Row="1" ItemsSource="{Binding ActionCards}" SelectedItem="{Binding SelectedActionCard}" BorderBrush="Gray" BorderThickness="0,1,0,0" Background="Transparent">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="1" Rows="4"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Border" BorderBrush="White" BorderThickness="1" Margin="4" Padding="2">
+                                            <Grid>
+                                                <Grid x:Name="Grid" Background="Black" Opacity="0.75" Margin="-2"/>
+                                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Grid" Property="Background" Value="Gray"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="Yellow"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </Border>
     </Grid>
     
 </UserControl>

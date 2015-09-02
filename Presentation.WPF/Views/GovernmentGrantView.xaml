@@ -20,7 +20,7 @@
             <Border.Background>
                 <RadialGradientBrush RadiusX="0.75" RadiusY="0.75">
                     <GradientStop Color="#FF0E5D8B" Offset="0"/>
-                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="Black" Offset="0.85"/>
                 </RadialGradientBrush>
             </Border.Background>
         </Border>

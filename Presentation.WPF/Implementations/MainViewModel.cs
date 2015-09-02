@@ -120,7 +120,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Standard);
+            game = new Game(data, new List<string> { "Jessica", "Jack" }, Difficulty.Standard);
 
             actionCardManager = game.ActionCardManager;
 

@@ -11,7 +11,7 @@
                 <ImageBrush ImageSource="Controls/monochrome_map_w1.jpeg"/>
             </Grid.Background>
         </Grid>
-        <Grid Background="Black" Opacity="0.55"/>
+        <Grid Background="Black" Opacity="0.775"/>
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -48,25 +48,31 @@
                     <ContentControl Content="{Binding ActionCardViewModel}"/>
                 </Border>
             </Grid>
-            <Grid Grid.Column="1" Grid.Row="2">
-                <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
-                    <ContentControl Content="{Binding HandViewModel}"/>
-                </Border>
-            </Grid>
             <Border Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0,1,0,0">
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Width="200" Margin="5">
-                        <ContentControl Content="{Binding DrawViewModel}" Margin="2"/>
-                        <ContentControl Content="{Binding InfectionViewModel}" Margin="2"/>
-                        <Button Content="End Turn" Template="{StaticResource ActionButtonTemplate}" Command="{Binding NextTurnCommand}" Margin="2"/>
-                    </StackPanel>
-                    <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,0,0">
-                        <ContentControl Content="{Binding MessageViewModel}"/>
+                    <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
+                        <ContentControl Content="{Binding HandViewModel}"/>
                     </Border>
+                    <StackPanel Grid.Column="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ContentControl Content="{Binding DrawViewModel}" Margin="2"/>
+                            <ContentControl Grid.Column="1" Content="{Binding InfectionViewModel}" Margin="2"/>
+                        </Grid>
+                        <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
+                            <ContentControl Content="{Binding MessageViewModel}"/>
+                        </Border>
+                        <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
+                            <Button Content="End Turn" Template="{StaticResource ActionButtonTemplate}" Command="{Binding NextTurnCommand}" Margin="3"/>
+                        </Border>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>

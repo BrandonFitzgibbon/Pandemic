@@ -16,7 +16,7 @@
         <con:NameToNodeConverter x:Key="NameToNodeConverter"/>
 
         <DataTemplate x:Key="InfectionDataTemplate" DataType="{x:Type vm:NodeViewModel}">
-            <Border c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen" BorderThickness="2" Padding="5" CornerRadius="0">
+            <c:ExtendedBorder c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen" BorderThickness="2" Padding="4" CornerRadius="0" AnimatedBorderThickness="4" FrozenBorderThickness="2" AnimatedPadding="2" FrozenPadding="4">
                 <Grid TextElement.Foreground="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -28,7 +28,21 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Name}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Name}" Value="St. Petersburg">
+                                            <Setter Property="Text" Value="St. Peters&#x0a;-burg"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Name}" Value="Johannesburg">
+                                            <Setter Property="Text" Value="Johannes&#x0a;-burg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
                             <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
                         </Viewbox>
@@ -76,11 +90,11 @@
                         </Grid>
                     </UniformGrid>
                 </Grid>
-            </Border>
+            </c:ExtendedBorder>
         </DataTemplate>
 
         <DataTemplate x:Key="PlayerDataTemplate" DataType="{x:Type vm:NodeViewModel}">
-            <Border BorderThickness="2" Padding="5" CornerRadius="0" c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen">
+            <c:ExtendedBorder BorderThickness="2" Padding="4" CornerRadius="0" c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen" AnimatedBorderThickness="4" FrozenBorderThickness="2" AnimatedPadding="2" FrozenPadding="4">
                 <Border.ToolTip>
                     <ToolTip Background="Black" Foreground="White">
                         <ToolTip.Style>
@@ -107,7 +121,21 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Name}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Name}" Value="St. Petersburg">
+                                            <Setter Property="Text" Value="St. Peters&#x0a;-burg"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Name}" Value="Johannesburg">
+                                            <Setter Property="Text" Value="Johannes&#x0a;-burg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
                             <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
                         </Viewbox>
@@ -131,7 +159,7 @@
                         </StackPanel>
                     </Grid>
                 </Grid>
-            </Border>
+            </c:ExtendedBorder>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Players.Count}" Value="0">
                     <Setter TargetName="man1" Property="Content" Value=""/>
@@ -142,7 +170,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="ResearchStationDataTemplate" DataType="{x:Type vm:NodeViewModel}">
-            <Border BorderThickness="2" Padding="5" CornerRadius="0" c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen">
+            <c:ExtendedBorder BorderThickness="2" Padding="4" CornerRadius="0" c:ExtendedBorder.BorderColor="{Binding Status, Converter={StaticResource StatusToColorConverter}}" BorderBrush="LimeGreen" AnimatedBorderThickness="4" FrozenBorderThickness="2" AnimatedPadding="2" FrozenPadding="4">
                 <Border.ToolTip>
                     <ToolTip Background="Black" Foreground="White">
                         <ToolTip.Style>
@@ -169,7 +197,21 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Name}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Name}" Value="St. Petersburg">
+                                            <Setter Property="Text" Value="St. Peters&#x0a;-burg"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Name}" Value="Johannesburg">
+                                            <Setter Property="Text" Value="Johannes&#x0a;-burg"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Viewbox Grid.Column="1" Height="15" Margin="5,0,5,0">
                             <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
                         </Viewbox>
@@ -180,7 +222,7 @@
                         </Viewbox>
                     </Grid>
                 </Grid>
-            </Border>
+            </c:ExtendedBorder>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding ResearchStation}" Value="True">
                     <Setter TargetName="Lightbulb" Property="Content" Value="{StaticResource lightbulb}"/>
@@ -252,8 +294,8 @@
                 </RadioButton>
             </Grid>
         </Border>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <ScrollViewer.Resources>
+        <Border ClipToBounds="True" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseWheel="Border_MouseWheel" MouseEnter="Border_MouseEnter" MouseLeftButtonDown="Border_MouseLeftButtonDown" MouseMove="Border_MouseMove" MouseLeftButtonUp="Border_MouseLeftButtonUp">
+            <Border.Resources>
                 <Style TargetType="c:ConnectedContent">
                     <Setter Property="ContentTemplate" Value="{StaticResource InfectionDataTemplate}"/>
                     <Style.Triggers>
@@ -265,8 +307,15 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </ScrollViewer.Resources>
-            <Canvas Width="2500" Height="600" VerticalAlignment="Center" Background="Transparent">
+            </Border.Resources>
+            <Canvas Width="2500" Height="600" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="Transparent" RenderTransformOrigin="0.5,0.5">
+
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <TranslateTransform X="550" Y="0"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
 
                 <c:ConnectedContent x:Name="SF" Width="100" Height="120" Canvas.Left="50" Canvas.Top="0" Content="{Binding Nodes, ConverterParameter=San Francisco, Converter={StaticResource NameToNodeConverter}}" 
                                     RightConnection="{Binding ElementName=CHI}" RightType="Left"
@@ -472,7 +521,7 @@
                 <TextBlock Text="Angeles" Canvas.Left="2105" Canvas.Top="540" Foreground="White" FontSize="10"/>
                 <Line X1="2100" X2="2150" Y1="540" Y2="540" Stroke="LimeGreen" StrokeThickness="2"/>
             </Canvas>
-        </ScrollViewer>
+        </Border>
     </Grid>
 
 </UserControl>

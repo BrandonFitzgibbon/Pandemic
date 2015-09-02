@@ -284,7 +284,11 @@ namespace Presentation.WPF.Controls
                     break;
             }
 
-            canvas.Children.Add(new Line() { X1 = x1, X2 = x2, Y1 = y1, Y2 = y2, Stroke = System.Windows.Media.Brushes.LimeGreen, StrokeThickness = 2 });
+            Line l = new Line() { X1 = x1, X2 = x2, Y1 = y1, Y2 = y2, Stroke = System.Windows.Media.Brushes.LimeGreen, StrokeThickness = 2 };
+            canvas.Children.Add(l);
+            Canvas.SetZIndex(originator, 1000);
+            Canvas.SetZIndex(target, 1000);
+            Canvas.SetZIndex(l, 0);
         }
     }
 }

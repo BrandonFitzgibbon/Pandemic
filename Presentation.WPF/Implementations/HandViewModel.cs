@@ -31,6 +31,11 @@ namespace Presentation.WPF.Implementations
             get { return Hand != null ? Hand.ActionCards : null; }
         }
 
+        public string SelectedPlayerName
+        {
+            get { return selectedPlayer != null & selectedPlayer.Context != null ? selectedPlayer.Context.Name : null; }
+        }
+
         private BaseActionCard selectedActionCard;
         public BaseActionCard SelectedActionCard
         {
@@ -60,6 +65,7 @@ namespace Presentation.WPF.Implementations
         {
             NotifyPropertyChanged("CityCards");
             NotifyPropertyChanged("ActionCards");
+            NotifyPropertyChanged("SelectedPlayerName");
         }
     }
 }
