@@ -12,21 +12,15 @@ namespace Presentation.WPF.Implementations
 {
     public class InfectionViewModel : ViewModelBase, IInfectionViewModel
     {
-        private IContext<InfectionManager> infectionManager;
-
+        private InfectionManager infectionManager;
         public InfectionManager InfectionManager
         {
-            get { return infectionManager != null ? infectionManager.Context : null; }
+            get { return infectionManager; }
         }
 
-        public InfectionViewModel(IContext<InfectionManager> InfectionManager)
+        public InfectionViewModel(InfectionManager InfectionManager)
         {
             this.infectionManager = InfectionManager;
-        }
-
-        private void ContextChanged(object sender, ContextChangedEventArgs<InfectionManager> e)
-        {
-            NotifyPropertyChanged("InfectionManager");
         }
 
         private RelayCommand infectionCommand;

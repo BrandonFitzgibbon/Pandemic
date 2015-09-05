@@ -11,6 +11,7 @@ namespace Presentation.WPF.Contracts
     public interface IActionsViewModel : IViewModelBase
     {
         ActionManager ActionManager { get; }
+        Node SelectedNode { get; set; }
         ICommand DriveCommand { get; }
     }
 }

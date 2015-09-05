@@ -85,11 +85,14 @@ namespace Engine.Implementations.ActionManagers
             }
             else
             {
-                foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
+                if (player.Hand.CityCards != null)
                 {
-                    foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
+                    foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
                     {
-                        targets.Add(new ShareKnowledgeItem(player, plyr, cityCard));
+                        foreach (Player plyr in players.Where(i => i.Location == player.Location && i != player))
+                        {
+                            targets.Add(new ShareKnowledgeItem(player, plyr, cityCard));
+                        }
                     }
                 }
             }

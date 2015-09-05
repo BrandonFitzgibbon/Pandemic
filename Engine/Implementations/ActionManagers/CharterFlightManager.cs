@@ -68,13 +68,16 @@ namespace Engine.Implementations.ActionManagers
             if (player.ActionCounter.Count < 1)
                 return destinations;
 
-            foreach (CityCard cityCard in player.Hand.CityCards)
+            if(player.Hand.CityCards != null)
             {
-                if(cityCard.Node == player.Location)
+                foreach (CityCard cityCard in player.Hand.CityCards)
                 {
-                    foreach (Node node in nodes.Where(i => i != player.Location))
+                    if (cityCard.Node == player.Location)
                     {
-                        destinations.Add(new CharterFlightItem(cityCard, node));
+                        foreach (Node node in nodes.Where(i => i != player.Location))
+                        {
+                            destinations.Add(new CharterFlightItem(cityCard, node));
+                        }
                     }
                 }
             }

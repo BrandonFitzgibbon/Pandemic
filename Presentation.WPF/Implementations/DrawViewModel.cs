@@ -12,21 +12,11 @@ namespace Presentation.WPF.Implementations
 {
     public class DrawViewModel : ViewModelBase, IDrawViewModel
     {
-        private IContext<DrawManager> drawManager;
+        private DrawManager drawManager;
 
-        public DrawManager DrawManager
-        {
-            get { return drawManager != null ? drawManager.Context : null; }
-        }
-
-        public DrawViewModel(IContext<DrawManager> drawManager)
+        public DrawViewModel(DrawManager drawManager)
         {
             this.drawManager = drawManager;
-        }
-
-        private void ContextChanged(object sender, ContextChangedEventArgs<DrawManager> e)
-        {
-            NotifyPropertyChanged("DrawManager");
         }
 
         private RelayCommand drawCommand;
@@ -42,12 +32,12 @@ namespace Presentation.WPF.Implementations
 
         private bool CanDraw()
         {
-            return DrawManager.CanDraw;
+            return drawManager.CanDraw;
         }
 
         public void Draw()
         {
-            DrawManager.DrawPlayerCard();
+            drawManager.DrawPlayerCard();
             RaiseChangeNotificationRequested();
         }
     }

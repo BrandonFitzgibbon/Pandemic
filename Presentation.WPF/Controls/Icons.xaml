@@ -54,6 +54,21 @@
     <Path x:Key="warning" x:Shared="false"  Width="35.1864" Height="31.6022" Stretch="Uniform" Fill="White" Data="F1 M 34.7541,26.4939L 20.5932,1.72809C 19.9132,0.624023 18.9211,0.0480042 17.6171,0C 16.265,0.0480042 15.2729,0.624023 14.6409,1.72809L 0.480042,26.4939C 0.151978,27.0559 -0.00799561,27.6424 0,28.2534C 0.0289917,29.2073 0.378998,29.9982 1.05005,30.6259C 1.72107,31.2536 2.53915,31.579 3.50421,31.6022L 31.7299,31.6022C 32.693,31.5848 33.503,31.271 34.1601,30.6607C 34.8171,30.0504 35.1591,29.248 35.1861,28.2534C 35.1861,27.6424 35.0421,27.0559 34.7541,26.4939 Z M 15.0729,8.06448L 20.2092,8.06448L 20.2092,19.7072L 15.0729,19.7072L 15.0729,8.06448 Z M 17.665,22.4372C 18.4991,22.4576 19.1832,22.7468 19.7172,23.3048C 20.2512,23.8628 20.5272,24.5674 20.5453,25.4186C 20.5272,26.2444 20.2512,26.9266 19.7172,27.4652C 19.1832,28.0039 18.4991,28.2829 17.665,28.3022C 16.831,28.2829 16.147,28.0039 15.6129,27.4653C 15.0789,26.9266 14.8029,26.2444 14.7849,25.4186C 14.8029,24.546 15.0789,23.8353 15.6129,23.2864C 16.147,22.7376 16.831,22.4545 17.665,22.4372 Z "/>
     <Path x:Key="wrench" x:Shared="false"  Width="45.7602" Height="133.333" Stretch="Uniform" Fill="White" Data="F1 M 42.9975,9.99113C 38.6694,2.41624 29.3568,-1.53432 20.1055,0.358902L 29.0327,16.0536L 24.0587,24.8478L 14.5301,24.8478L 5.32953,8.96437C -0.730347,16.0536 -1.867,25.8478 2.46231,33.3706C 4.68243,37.1617 8.25272,40.3003 12.2579,42.0321C 16.0691,43.8882 17.4558,46.7125 17.4025,50.5549L 17.4025,123.889C 17.4025,129.045 21.5808,133.222 26.7358,133.222C 31.8907,133.222 36.0691,129.045 36.0691,123.889L 36.0691,42.5549C 36.1251,40.0653 36.3959,38.1337 38.1251,36.6188C 45.8647,29.4214 47.8164,18.3805 42.9975,9.99113 Z "/>
 
+    <Viewbox x:Key="microscope" x:Shared="false"  Stretch="Uniform">
+        <Canvas Width="64.121543" Height="100" Canvas.Left="0" Canvas.Top="0">
+            <Rectangle Canvas.Left="33.660618" Canvas.Top="53.386299" Width="28.662369" Height="4.9138918" Fill="White">
+                <Rectangle.RenderTransform>
+                    <MatrixTransform Matrix="0.86601905 0.500011 -0.500011 0.86601905 0 0"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Path Fill="White">
+                <Path.Data>
+                    <PathGeometry Figures="m 50.15154 89.814 c 7.177 -6.766 11.716 -16.284 11.716 -26.898 0 -13.087 -6.868 -24.882 -17.554 -31.511 l 11.966 -20.722 -1.881 -1.09 2.96 -5.125 -7.737 -4.468 -2.96 5.121 -1.985 -1.142 -29.425 50.974 2.575 1.487 -3.649 6.318 6.456 3.725 3.65 -6.311 2.568 1.485 12.372 -21.436 c 7.596 4.833 12.455 13.305 12.455 22.694 0 14.835 -12.07 26.898 -26.906 26.898 -9.927 0 -21.6839998 0 -21.6839998 0 l 0 10.187 61.0329998 0 0 -10.186 c 0 0 -9.033 0 -13.97 0 z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
+    </Viewbox>
+
     <!--The following icons were created by Ted Grajeda from the Noun Project-->
     <Viewbox x:Key="world">
         <Path>
@@ -251,5 +266,247 @@
             </Path>
         </Canvas>
     </Canvas>
+
+    <!--The following icons were created by Till Teenck from the Noun Project-->
+    <Viewbox x:Key="pawnWhite" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="White"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="pawnPurple" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="#FFA230A2"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="pawnGreen" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="#FF30C130"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="pawnBrown" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="#FF7E4700"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="pawnOrange" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="OrangeRed"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
+    <Viewbox x:Key="pawnDarkGreen" x:Shared="false"  Stretch="Uniform">
+        <Viewbox.Resources>
+            <Style TargetType="Path">
+                <Setter Property="Fill" Value="#FF004700"/>
+            </Style>
+        </Viewbox.Resources>
+        <Canvas Width="41.4" Height="71.999999">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas.Resources/>
+            <!--Unknown tag: sodipodi:namedview-->
+            <!--Unknown tag: metadata-->
+            <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform X="9.271429" Y="-596.3622"/>
+                </Canvas.RenderTransform>
+                <Canvas>
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-38.571429" Y="582.3622"/>
+                    </Canvas.RenderTransform>
+                    <Path>
+                        <Path.Data>
+                            <PathGeometry Figures="M 70.6 75.1 60 42.1 C 63.6 39.2 65.9 34.8 65.9 29.8 65.9 21.1 58.8 14 50 14 c -8.7 0 -15.9 7.1 -15.9 15.8 0 5 2.3 9.4 5.9 12.3 l -10.6 33 c 0 0.2 -0.1 0.3 -0.1 0.5 0 3 2.3 5.7 6.5 7.7 3.8 1.7 8.9 2.7 14.2 2.7 5.3 0 10.4 -1 14.2 -2.7 4.2 -1.9 6.5 -4.7 6.5 -7.7 -0.1 -0.2 -0.1 -0.4 -0.1 -0.5 z M 37.2 29.8 c 0 -7 5.7 -12.7 12.8 -12.7 7.1 0 12.8 5.7 12.8 12.7 0 7 -5.7 12.7 -12.8 12.7 -7.1 0 -12.8 -5.7 -12.8 -12.7 z M 50 82.9 C 39.8 82.9 32.7 79.2 32.4 75.7 L 42.7 43.8 c 2.2 1.1 4.7 1.8 7.3 1.8 2.6 0 5.1 -0.6 7.3 -1.8 l 10.3 31.9 c -0.3 3.5 -7.4 7.2 -17.6 7.2 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 3.2819524 623.84271 -11.048544 34.5501 5.149745 5.80517 14.7001806 2.90258 16.760079 -4.30706 2.153529 -5.43064 -11.610334 -33.52015 -7.771433 2.80895 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+                <Path StrokeThickness="0" Stroke="White" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="m 0.84752743 621.97007 -3.83890103 -8.14596 1.685371 -8.42685 7.209643 -6.64786 8.9886456 -0.46815 8.614118 5.337 2.247162 8.2396 -2.996216 9.4568 -7.490538 4.77522 -8.4268546 0 z" FillRule="evenodd"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
 
 </ResourceDictionary>

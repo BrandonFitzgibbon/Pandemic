@@ -8,22 +8,100 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:Anchor}">
                     <Grid x:Name="PART_SizeGrid">
-                        <Border x:Name="PART_GlowBorder"
-                        Background="{TemplateBinding GlowBrush}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                            <Border.Effect>
-                                <BlurEffect Radius="10"/>
-                            </Border.Effect>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter Margin="0,0,-10,-10" Content="{TemplateBinding UpperLeftContent}" ContentTemplate="{TemplateBinding UpperLeftContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" x:Name="PART_UpperLeftContent"/>
+                        <ContentPresenter Margin="-10,0,0,-10" Content="{TemplateBinding UpperRightContent}" ContentTemplate="{TemplateBinding UpperRightContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" x:Name="PART_UpperRightContent"/>
+                        <ContentPresenter Margin="0,0,0,10" MaxWidth="{Binding ElementName=PART_ContentGrid, Path=ActualWidth}" Content="{TemplateBinding TopCenterContent}" ContentTemplate="{TemplateBinding TopCenterContentTemplate}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" x:Name="PART_TopCenter"/>
+                        <ContentPresenter Margin="0,-10,-10,0" Content="{TemplateBinding BottomLeftContent}" ContentTemplate="{TemplateBinding BottomLeftContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" x:Name="PART_BottomLeftContent"/>
+                        <ContentPresenter Margin="-10,-10,0,0" Content="{TemplateBinding BottomRightContent}" ContentTemplate="{TemplateBinding BottomRightContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" x:Name="PART_BottomRightContent"/>
+                        <ContentPresenter Margin="0,10,0,0" MaxWidth="{Binding ElementName=PART_ContentGrid, Path=ActualWidth}" Content="{TemplateBinding BottomCenterContent}" ContentTemplate="{TemplateBinding BottomCenterContentTemplate}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1" x:Name="PART_BottomCenter"/>
+                        <Grid x:Name="PART_ContentGrid" Grid.Column="1" Grid.Row="1">
+                            <Border x:Name="PART_GlowBorder"
+                                    Background="{TemplateBinding GlowBrush}"
+                                    CornerRadius="{TemplateBinding CornerRadius}">
+                            </Border>
+                            <Border x:Name="PART_ContentBorder" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Opacity="{TemplateBinding Opacity}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            </Border>
+                            <ContentPresenter x:Name="PART_CenterContent" IsHitTestVisible="False" Content="{TemplateBinding CenterContent}" ContentTemplate="{TemplateBinding CenterContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="PART_GlowBorder" Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="PART_GlowBorder" Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="10"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
+                            <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type c:PanZoomPanel}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:PanZoomPanel}">
+                    <Grid>
+                        <Border ClipToBounds="True">
+                            <ContentPresenter x:Name="PART_Content" Content="{TemplateBinding Content}"/>
                         </Border>
-                        <Border x:Name="PART_ContentBorder" 
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Black"/>
+                                    <Setter Property="Opacity" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Opacity" Value="0.2"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
+                            <Border Cursor="ScrollW" x:Name="PART_Left" Grid.Column="0" Grid.RowSpan="3"/>
+                            <Border Cursor="ScrollN" x:Name="PART_Top" Grid.Row="0" Grid.ColumnSpan="3"/>
+                            <Border Cursor="ScrollE" x:Name="PART_Right" Grid.Column="2" Grid.RowSpan="3"/>
+                            <Border Cursor="ScrollS" x:Name="PART_Bottom" Grid.Row="2" Grid.ColumnSpan="3"/>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

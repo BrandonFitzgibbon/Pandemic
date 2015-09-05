@@ -14,6 +14,17 @@ namespace Presentation.WPF.Implementations
         private IContext<ActionManager> actionManager;
         private IContext<Player> currentPlayer;
 
+        private Node selectedNode;
+        public Node SelectedNode
+        {
+            get { return selectedNode; }
+            set
+            {
+                selectedNode = value;
+                ddi = DriveDestinations.SingleOrDefault(i => i.Node == value);
+            }
+        }
+
         public Player CurrentPlayer
         {
             get { return currentPlayer != null && currentPlayer.Context != null ? currentPlayer.Context : null; }
@@ -130,25 +141,28 @@ namespace Presentation.WPF.Implementations
             NotifyPropertyChanged("ActionManager");
         }
 
+        private DriveDestinationItem ddi;
+
         private RelayCommand driveCommand;
         public ICommand DriveCommand
         {
             get 
             {
                 if (driveCommand == null)
-                    driveCommand = new RelayCommand(ddi => Drive((DriveDestinationItem)ddi), ddi => CanDrive((DriveDestinationItem)ddi));
+                    driveCommand = new RelayCommand(ddi => Drive(), ddi => CanDrive());
                 return driveCommand;
             }
         }
 
-        private bool CanDrive(DriveDestinationItem ddi)
+        private bool CanDrive()
         {
             return ActionManager.CanDrive(ddi);
         }
 
-        private async void Drive(DriveDestinationItem ddi)
+        private async void Drive()
         {
             await Task.Run(() => ActionManager.Drive(ddi));
+            ddi = null;
             RaiseChangeNotificationRequested();
         }
 

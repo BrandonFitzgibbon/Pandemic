@@ -35,11 +35,14 @@ namespace Presentation.WPF.Views
             Border bd = (Border)sender;
             Canvas canvas = (Canvas)bd.Child;
             var st = (ScaleTransform)((TransformGroup)canvas.RenderTransform).Children.First(i => i is ScaleTransform);
+            var tt = (TranslateTransform)((TransformGroup)canvas.RenderTransform).Children.First(i => i is TranslateTransform);
             double zoom = e.Delta > 0 ? 0.05 : -0.05;
 
-            st.ScaleX = (double)Math.Round(st.ScaleY + zoom, 2);
-            st.ScaleY = (double)Math.Round(st.ScaleY + zoom, 2);
+            if ((double)Math.Round(st.ScaleX + zoom, 2) < 0.3 || (double)Math.Round(st.ScaleY + zoom, 2) > 2.3)
+                return;
 
+            st.ScaleX = (double)Math.Round(st.ScaleX + zoom, 2);
+            st.ScaleY = (double)Math.Round(st.ScaleY + zoom, 2);
         }
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)

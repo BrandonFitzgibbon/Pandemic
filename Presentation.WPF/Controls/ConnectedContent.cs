@@ -87,11 +87,11 @@ namespace Presentation.WPF.Controls
             line.X1 = 0;
             line.Y1 = 0;
 
-            Canvas.SetLeft(line, Canvas.GetLeft(originator) + (originator.Padding.Right * 1.2));
-            Canvas.SetTop(line, Canvas.GetTop(originator) + (originator.Padding.Top * 1.2));
+            Canvas.SetLeft(line, Canvas.GetLeft(originator));
+            Canvas.SetTop(line, Canvas.GetTop(originator));
 
-            line.X2 = (Canvas.GetLeft(target) + (target.Padding.Left * 1.2)) - Canvas.GetLeft(line);
-            line.Y2 = (Canvas.GetTop(target) + (target.Padding.Top * 1.2)) - Canvas.GetTop(line);
+            line.X2 = Canvas.GetLeft(target) - Canvas.GetLeft(line);
+            line.Y2 = Canvas.GetTop(target) - Canvas.GetTop(line);
 
             canvas.Children.Add(line);
         }

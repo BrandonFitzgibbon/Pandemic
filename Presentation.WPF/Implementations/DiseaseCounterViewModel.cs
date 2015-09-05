@@ -13,9 +13,10 @@ namespace Presentation.WPF.Implementations
     {
         private DiseaseCounter counter;
 
-        public DiseaseCounterViewModel(DiseaseCounter counter)
+        public DiseaseCounterViewModel(DiseaseCounter counter, Notifier notifier)
         {
             this.counter = counter;
+            notifier.SubscribeToViewModel(this);
         }
 
         public int Count

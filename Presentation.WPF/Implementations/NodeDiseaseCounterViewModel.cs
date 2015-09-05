@@ -22,9 +22,10 @@ namespace Presentation.WPF.Implementations
             get { return nodeDiseaseCounter != null ? nodeDiseaseCounter.Count : 0; }
         }
 
-        public NodeDiseaseCounterViewModel(NodeDiseaseCounter nodeDiseaseCounter)
+        public NodeDiseaseCounterViewModel(NodeDiseaseCounter nodeDiseaseCounter, Notifier notifier)
         {
             this.nodeDiseaseCounter = nodeDiseaseCounter;
+            notifier.SubscribeToViewModel(this);
         }
     }
 }

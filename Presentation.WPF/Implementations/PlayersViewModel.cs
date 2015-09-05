@@ -34,12 +34,13 @@ namespace Presentation.WPF.Implementations
             set { selectedPlayerViewModel = value; selectedPlayer.Context = selectedPlayerViewModel.Player; NotifyPropertyChanged(); }
         }
 
-        public PlayersViewModel(IContext<Player> currentPlayer, IContext<Player> selectedPlayer, IEnumerable<IPlayerViewModel> playerViewModels)
+        public PlayersViewModel(IContext<Player> currentPlayer, IContext<Player> selectedPlayer, IEnumerable<IPlayerViewModel> playerViewModels, Notifier notifier)
         {
             this.currentPlayer = currentPlayer;
             this.currentPlayer.ContextChanged += ContextChanged;
             this.selectedPlayer = selectedPlayer;
             this.playerViewModels = playerViewModels;
+            notifier.SubscribeToViewModel(this);
         }
 
         private void ContextChanged(object sender, ContextChangedEventArgs<Player> e)

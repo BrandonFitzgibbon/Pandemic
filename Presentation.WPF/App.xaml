@@ -89,8 +89,8 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
 
-                    <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="2" TextElement.Foreground="White" TextElement.FontSize="14">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border x:Name="Border" Opacity="1" Background="Transparent" BorderBrush="White" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}" TextElement.Foreground="White" TextElement.FontSize="14">
+                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
 
                 </Grid>
