@@ -36,20 +36,6 @@ namespace Presentation.WPF.Implementations
             set { boardViewModel = value; NotifyPropertyChanged(); }
         }
 
-        private IDrawViewModel drawViewModel;
-        public IDrawViewModel DrawViewModel
-        {
-            get { return drawViewModel; }
-            set { drawViewModel = value; NotifyPropertyChanged(); }
-        }
-
-        private IInfectionViewModel infectionViewModel;
-        public IInfectionViewModel InfectionViewModel
-        {
-            get { return infectionViewModel; }
-            set { infectionViewModel = value; NotifyPropertyChanged(); }
-        }
-
         private IMessageViewModel messageViewModel;
         public IMessageViewModel MessageViewModel
         {
@@ -91,8 +77,6 @@ namespace Presentation.WPF.Implementations
             messageContext.Context = new StringBuilder();
 
             BoardViewModel = new BoardViewModel(game, currentPlayer, selectedPlayer, notifier);
-            DrawViewModel = new DrawViewModel(drawManager);
-            InfectionViewModel = new InfectionViewModel(infectionManager);
             MessageViewModel = new MessageViewModel(messageContext, game.NodeCounters);
 
             foreach (Player player in game.Players)

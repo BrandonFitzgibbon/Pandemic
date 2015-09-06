@@ -68,6 +68,7 @@
     <Compile Include="Contracts\IHandViewModel.cs" />
     <Compile Include="Contracts\IInfectionViewModel.cs" />
     <Compile Include="Contracts\IMessageViewModel.cs" />
+    <Compile Include="Contracts\INextTurnViewModel.cs" />
     <Compile Include="Contracts\INodeDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\INodeViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Implementations\HandViewModel.cs" />
     <Compile Include="Implementations\InfectionViewModel.cs" />
     <Compile Include="Implementations\MessageViewModel.cs" />
+    <Compile Include="Implementations\NextTurnViewModel.cs" />
     <Compile Include="Implementations\NodeDiseaseCounterViewModel.cs" />
     <Compile Include="Implementations\NodeViewModel.cs" />
     <Compile Include="Implementations\Notifier.cs" />
@@ -144,12 +146,19 @@
     <Compile Include="Views\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NextTurnView.xaml.cs">
+      <DependentUpon>NextTurnView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\medic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +225,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NextTurnView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

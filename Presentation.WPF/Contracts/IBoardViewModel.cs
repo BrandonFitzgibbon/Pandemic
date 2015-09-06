@@ -10,6 +10,8 @@ namespace Presentation.WPF.Contracts
 {
     public interface IBoardViewModel : IViewModelBase
     {
-
+        IPlayerViewModel SelectedPlayerViewModel { get; }
+        IPlayerViewModel CurrentPlayerViewModel { get; }
+        void SetCurrentPlayer(Player player);
     }
 }

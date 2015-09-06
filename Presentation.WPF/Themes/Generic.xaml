@@ -61,6 +61,10 @@
                             <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
                             <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
                         </Trigger>
+                        <Trigger Property="IsCenterContentEnabled" Value="False">
+                            <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
+                            <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

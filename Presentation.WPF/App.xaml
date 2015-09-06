@@ -162,6 +162,10 @@
             <DataTemplate DataType="{x:Type i:InfectionViewModel}">
                 <v:InfectionView/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type i:NextTurnViewModel}">
+                <v:NextTurnView/>
+            </DataTemplate>
             
             <DataTemplate DataType="{x:Type i:HandViewModel}">
                 <v:HandView/>

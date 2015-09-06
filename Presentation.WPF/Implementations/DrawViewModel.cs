@@ -14,9 +14,10 @@ namespace Presentation.WPF.Implementations
     {
         private DrawManager drawManager;
 
-        public DrawViewModel(DrawManager drawManager)
+        public DrawViewModel(DrawManager drawManager, Notifier notifier)
         {
             this.drawManager = drawManager;
+            notifier.SubscribeToViewModel(this);
         }
 
         private RelayCommand drawCommand;

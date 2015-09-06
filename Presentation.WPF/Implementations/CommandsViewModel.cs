@@ -44,6 +44,28 @@ namespace Presentation.WPF.Implementations
             RaiseChangeNotificationRequested();
         }
 
+        private RelayCommand dispatchCommand;
+        public ICommand DispatchCommand
+        {
+            get
+            {
+                if (dispatchCommand == null)
+                    dispatchCommand = new RelayCommand(dpi => Dispatch((DispatchItem)dpi), dpi => CanDispatch((DispatchItem)dpi));
+                return dispatchCommand;
+            }
+        }
+
+        private bool CanDispatch(DispatchItem dpi)
+        {
+            return actionManager.CanDispatch(dpi);
+        }
+
+        private void Dispatch(DispatchItem dpi)
+        {
+            actionManager.Dispatch(dpi);
+            RaiseChangeNotificationRequested();
+        }
+
         private RelayCommand directFlightCommand;
         public ICommand DirectFlightCommand
         {

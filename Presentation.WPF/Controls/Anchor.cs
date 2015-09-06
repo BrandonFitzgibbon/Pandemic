@@ -1,15 +1,19 @@
-﻿using System;
+﻿using Engine.Implementations;
+using Presentation.WPF.Implementations;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace Presentation.WPF.Controls
 {
     [TemplatePart(Name = "PART_GlowBorder", Type = typeof(FrameworkElement))]
     [TemplatePart(Name = "PART_ContentBorder", Type = typeof(FrameworkElement))]
     [TemplatePart(Name = "PART_CenterContent", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_UpperLeftContent", Type = typeof(FrameworkElement))]
     public class Anchor : Control
     {
         private Border glowBorder;
@@ -30,6 +34,7 @@ namespace Presentation.WPF.Controls
 
             glowBorder = (Border)Template.FindName("PART_GlowBorder", this);
             contentBorder = (Border)Template.FindName("PART_ContentBorder", this);
+            ContentPresenter upperLeftContentPresenter = (ContentPresenter)Template.FindName("PART_UpperLeftContent", this);
 
             glowBorder.Padding = new Thickness(1.1 * contentBorder.Padding.Left, 1.1 * contentBorder.Padding.Top, 1.1 * contentBorder.Padding.Right, 1.1 * contentBorder.Padding.Bottom);
 
@@ -37,6 +42,20 @@ namespace Presentation.WPF.Controls
             contentBorder.MouseRightButtonUp += ContentMouseRightButtonUp;
             contentBorder.MouseEnter += ContentMouseEnter;
             contentBorder.MouseLeave += ContentMouseLeave;
+
+            upperLeftContentPresenter.MouseLeftButtonDown += UpperLeftContentPresenter_MouseLeftButtonDown;
+        }
+
+        private void UpperLeftContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentPresenter cp = (ContentPresenter)sender;
+            if(cp.IsMouseOver)
+            {
+                if (!IsUpperLeftContentSelected)
+                    IsUpperLeftContentSelected = true;
+                else if (IsUpperLeftContentSelected)
+                    IsUpperLeftContentSelected = false;
+            }
         }
 
         private void ContentMouseLeave(object sender, MouseEventArgs e)
@@ -101,7 +120,6 @@ namespace Presentation.WPF.Controls
 
         public static readonly DependencyProperty GlowBrushProperty =
             DependencyProperty.Register("GlowBrush", typeof(SolidColorBrush), typeof(Anchor), new PropertyMetadata(System.Windows.Media.Brushes.Transparent));
-
 
         #region ContentDP
 
@@ -234,6 +252,16 @@ namespace Presentation.WPF.Controls
 
         #endregion
 
+        public bool IsUpperLeftContentSelected
+        {
+            get { return (bool)GetValue(IsUpperLeftContentSelectedProperty); }
+            set { SetValue(IsUpperLeftContentSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsUpperLeftContentSelectedProperty =
+            DependencyProperty.Register("IsUpperLeftContentSelected", typeof(bool), typeof(Anchor), new PropertyMetadata());
+
+
         public object Item
         {
             get { return (object)GetValue(ItemProperty); }
@@ -243,6 +271,15 @@ namespace Presentation.WPF.Controls
         public static readonly DependencyProperty ItemProperty =
             DependencyProperty.Register("Item", typeof(object), typeof(Anchor), new PropertyMetadata());
 
+        public object SelectedItem
+        {
+            get { return (object)GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(object), typeof(Anchor), new PropertyMetadata());
+
         public object MouseOverItem
         {
             get { return (object)GetValue(MouseOverItemProperty); }
@@ -251,24 +288,6 @@ namespace Presentation.WPF.Controls
 
         public static readonly DependencyProperty MouseOverItemProperty =
             DependencyProperty.Register("MouseOverItem", typeof(object), typeof(Anchor), new PropertyMetadata());
-
-        public object SelectedItem
-        {
-            get { return (object)GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(Anchor), new PropertyMetadata(new PropertyChangedCallback(SelectedItemChanged)));
-
-        public static void SelectedItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            Anchor anchor = (Anchor)o;
-            if (anchor.Item == e.NewValue)
-                anchor.IsSelected = true;
-            else
-                anchor.IsSelected = false;
-        }
 
         public bool IsSelectable
         {
@@ -299,7 +318,14 @@ namespace Presentation.WPF.Controls
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register("CommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
 
+        public bool IsCenterContentEnabled
+        {
+            get { return (bool)GetValue(IsCenterContentEnabledProperty); }
+            set { SetValue(IsCenterContentEnabledProperty, value); }
+        }
 
+        public static readonly DependencyProperty IsCenterContentEnabledProperty =
+            DependencyProperty.Register("IsCenterContentEnabled", typeof(bool), typeof(Anchor), new PropertyMetadata(true));
 
         public bool FlashingOnMouseOver
         {
@@ -325,19 +351,62 @@ namespace Presentation.WPF.Controls
             }
         }
 
+        private Path p;
+
         private void FlashingEnter(object sender, MouseEventArgs e)
         {
             opacityAnimation.From = contentBorder.Opacity;
             opacityAnimation.To = 0;
             opacityAnimation.RepeatBehavior = RepeatBehavior.Forever;
             opacityAnimation.AutoReverse = true;
-            opacityAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            opacityAnimation.Duration = TimeSpan.FromMilliseconds(750);
             contentBorder.BeginAnimation(Border.OpacityProperty, opacityAnimation);
+
+            Canvas canvas = (Canvas)Parent;
+            NodeViewModel nvm = (NodeViewModel)DataContext;
+
+            foreach (Anchor child in canvas.Children)
+            {
+                if (child.Item == nvm.BoardViewModel.CurrentPlayerViewModel.Location)
+                {
+                    Point origin = new Point(Canvas.GetLeft(child), Canvas.GetTop(child));
+                    Point dest = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));
+                    Point bez1;
+                    Point bez2;
+
+                    if (Math.Abs(dest.X - origin.X) > Math.Abs(dest.Y - origin.Y))
+                    {
+                        bez1 = new Point(origin.X + 0.4 * (dest.X - origin.X), origin.Y + 0.5 * (dest.Y - origin.Y));
+                        bez2 = new Point(origin.X + 0.6 * (dest.X - origin.X), origin.Y + -0.5 * (dest.Y - origin.Y));
+                    }
+                    else
+                    {
+                        bez1 = new Point(origin.X + 0.5 * (dest.X - origin.X), origin.Y + 0.4 * (dest.Y - origin.Y));
+                        bez2 = new Point(origin.X + -0.5 * (dest.X - origin.X), origin.Y + 0.6 * (dest.Y - origin.Y));
+                    }
+
+                    p = new Path() { Stroke = Brushes.White, StrokeThickness = 4, StrokeDashArray = new DoubleCollection() { 5 } };
+                    PathGeometry pg = new PathGeometry();
+                    PathFigure pf = new PathFigure() { StartPoint = origin };
+                    BezierSegment bezSegment = new BezierSegment(bez1, bez2, dest, true);
+                    pf.Segments.Add(bezSegment);
+                    pg.Figures.Add(pf);
+                    p.Data = pg;
+
+                    p.BeginAnimation(Path.OpacityProperty, opacityAnimation);
+
+                    break;
+                }
+            }
+
+            canvas.Children.Add(p);
         }
 
         private void FlashingLeave(object sender, MouseEventArgs e)
         {
             contentBorder.BeginAnimation(Border.OpacityProperty, null);
+            Canvas canvas = (Canvas)Parent;
+            canvas.Children.Remove(p);
         }
     }
 }

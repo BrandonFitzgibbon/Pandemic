@@ -21,16 +21,15 @@
         <con:NodeToSelectableConverter x:Key="NodeToSelectableConverter"/>
 
         <Style TargetType="RadioButton">
-            <Setter Property="Height" Value="50"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}" Width="30" Height="30" Margin="1">
-                            <ContentPresenter Margin="2"/>
+                        <Border Name="Border" Background="Transparent" BorderBrush="White" BorderThickness="2" CornerRadius="45" Margin="5">
+                            <ContentPresenter Margin="10"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource StandardBorderBrush}"/>
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
                             </Trigger>
                             <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
@@ -46,7 +45,7 @@
         </Style>
 
         <DataTemplate x:Key="PlayerTemplate">
-            <Border CornerRadius="5" Padding="6,3,6,3" BorderBrush="Black" BorderThickness="1">
+            <Border CornerRadius="5" Padding="6,3,6,3" Background="Gray" BorderBrush="Black" BorderThickness="1">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="Background" Value="Transparent"/>
@@ -59,16 +58,39 @@
                     </Style>
                 </Border.Style>
                 <Viewbox Height="26">
-                    <Viewbox.Style>
-                        <Style TargetType="Viewbox">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Viewbox.Style>
+                    <ContentControl>
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Setter Property="Content" Value="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                        <Setter Property="Content" Value="{StaticResource pawnWhite}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </Viewbox>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="SelectablePlayerTemplate">
+            <Border CornerRadius="5" Padding="6,3,6,3" BorderThickness="1">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="Yellow"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Viewbox Height="26">
                     <ContentControl>
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
@@ -85,7 +107,7 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="InfectionTemplateLeft">
-            <Border CornerRadius="5" Padding="3" BorderBrush="Black" BorderThickness="1">
+            <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
                 <StackPanel Orientation="Horizontal">
                     <Viewbox Height="16">
                         <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
@@ -95,7 +117,7 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="InfectionTemplateRight">
-            <Border CornerRadius="5" Padding="3" BorderBrush="Black" BorderThickness="1">
+            <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Count}" Foreground="White" FontSize="16" Margin="0,0,5,0"/>
                     <Viewbox Height="16">
@@ -105,6 +127,14 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="DriveDestinationTemplate" DataType="{x:Type ai:DriveDestinationItem}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
+                <Viewbox Height="16" Margin="2,3,0,0">
+                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                </Viewbox>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DispatchDestinationTemplate" DataType="{x:Type ai:DispatchItem}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
                 <Viewbox Height="16" Margin="2,3,0,0">
@@ -216,17 +246,35 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
                                             </Viewbox>
                                             <DataTemplate.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
+                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="False"/>
                                                         <Condition Binding="{Binding CanDrive}" Value="True"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <MultiDataTrigger.Setters>
                                                         <Setter TargetName="Content" Property="Content" Value="{Binding DriveDestinationItem}"/>
                                                         <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DriveDestinationTemplate}"/>
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="False"/>
+                                                        <Condition Binding="{Binding CanDrive}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="True"/>
+                                                        <Condition Binding="{Binding CanDrive}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
                                                     </MultiDataTrigger.Setters>
                                                 </MultiDataTrigger>
                                             </DataTemplate.Triggers>
@@ -239,9 +287,64 @@
                                 <Setter Property="FlashingOnMouseOver" Value="True"/>
                             </DataTrigger>
 
-                            <!--Direct Flight Style-->
+                            <!--Dispatcher Style-->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True"/>
+                                    <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="Dispatcher"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="GlowBrush" Value="White"/>
+                                    <Setter Property="UpperLeftContent" Value="{Binding PlayerOneNotSelectedViewModel}"/>
+                                    <Setter Property="UpperLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
+                                    <Setter Property="IsUpperLeftContentSelected" Value="{Binding IsUpperLeftContentSelected, Mode=TwoWay}"/>
+                                    <Setter Property="UpperRightContent" Value="{Binding PlayerTwoNotSelectedViewModel}"/>
+                                    <Setter Property="UpperRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
+                                    <Setter Property="BottomLeftContent" Value="{Binding PlayerThreeNotSelectedViewModel}"/>
+                                    <Setter Property="BottomLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
+                                    <Setter Property="BottomRightContent" Value="{Binding PlayerFourNotSelectedViewModel}"/>
+                                    <Setter Property="BottomRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
+                                    <Setter Property="CenterContent" Value="{Binding}"/>
+                                    <Setter Property="CenterContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Viewbox>
+                                                    <ContentControl x:Name="Content" Content="{Binding BoardViewModel.SelectedPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                </Viewbox>
+                                                <DataTemplate.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding ContainsSelectedPlayer}" Value="False"/>
+                                                            <Condition Binding="{Binding CanDrive}" Value="True"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter TargetName="Content" Property="Content" Value="{Binding DispatchItem}"/>
+                                                            <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DispatchDestinationTemplate}"/>
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding ContainsSelectedPlayer}" Value="False"/>
+                                                            <Condition Binding="{Binding CanDrive}" Value="False"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Command" Value="{Binding CommandsViewModel.DispatchCommand}"/>
+                                    <Setter Property="CommandParameter" Value="{Binding DispatchItem}"/>
+                                    <Setter Property="IsCenterContentEnabled" Value="{Binding CanDispatch}"/>
+                                    <Setter Property="FlashingOnMouseOver" Value="True"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+
+                                <!--Direct Flight Style-->
                             <DataTrigger Binding="{Binding ElementName=DirectFlightActionButton, Path=IsChecked}" Value="True">
-                                <Setter Property="GlowBrush" Value="LimeGreen"/>
+                                <Setter Property="GlowBrush" Value="White"/>
                                 <Setter Property="UpperLeftContent" Value="{x:Null}"/>
                                 <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
                                 <Setter Property="UpperRightContent" Value="{x:Null}"/>
@@ -255,12 +358,12 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
                                             </Viewbox>
                                             <DataTemplate.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
+                                                        <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
                                                         <Condition Binding="{Binding CanDirectFlight}" Value="True"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <MultiDataTrigger.Setters>
@@ -275,6 +378,46 @@
                                 <Setter Property="Command" Value="{Binding CommandsViewModel.DirectFlightCommand}"/>
                                 <Setter Property="CommandParameter" Value="{Binding DirectFlightItem}"/>
                                 <Setter Property="IsEnabled" Value="{Binding CanDirectFlight}"/>
+                                <Setter Property="FlashingOnMouseOver" Value="True"/>
+                            </DataTrigger>
+
+                            <!--Charter Flight Style-->
+                            <DataTrigger Binding="{Binding ElementName=CharterFlightActionButton, Path=IsChecked}" Value="True">
+                                <Setter Property="GlowBrush" Value="White"/>
+                                <Setter Property="UpperLeftContent" Value="{x:Null}"/>
+                                <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
+                                <Setter Property="UpperRightContent" Value="{x:Null}"/>
+                                <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
+                                <Setter Property="BottomLeftContent" Value="{x:Null}"/>
+                                <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
+                                <Setter Property="BottomRightContent" Value="{x:Null}"/>
+                                <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
+                                <Setter Property="CenterContent" Value="{Binding}"/>
+                                <Setter Property="CenterContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Viewbox>
+                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                            </Viewbox>
+                                            <DataTemplate.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
+                                                        <Condition Binding="{Binding CanCharterFlight}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <MultiDataTrigger.Setters>
+                                                        <Setter TargetName="Content" Property="Content" Value="{Binding CharterFlightItem}"/>
+                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DirectFlightTemplate}"/>
+                                                    </MultiDataTrigger.Setters>
+                                                </MultiDataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Command" Value="{Binding CommandsViewModel.CharterFlightCommand}"/>
+                                <Setter Property="CommandParameter" Value="{Binding CharterFlightItem}"/>
+                                <Setter Property="IsEnabled" Value="{Binding CanCharterFlight}"/>
+                                <Setter Property="FlashingOnMouseOver" Value="True"/>
                             </DataTrigger>
 
                         </Style.Triggers>
@@ -442,6 +585,10 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <RadioButton x:Name="InfectionViewButton" GroupName="RadioButtons" IsChecked="True" HorizontalAlignment="Center" ToolTip="Infections">
@@ -465,6 +612,34 @@
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
+                    <RadioButton Grid.Row="3" x:Name="DriveActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Drive">
+                        <RadioButton.Content>
+                            <Viewbox Height="20" Width="20">
+                                <ContentControl Content="{StaticResource car}"/>
+                            </Viewbox>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Grid.Row="4" x:Name="DirectFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Direct Flight">
+                        <RadioButton.Content>
+                            <Viewbox Height="20" Width="20">
+                                <ContentControl Content="{StaticResource plane}"/>
+                            </Viewbox>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Grid.Row="5" x:Name="CharterFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Charter Train">
+                        <RadioButton.Content>
+                            <Viewbox Height="20" Width="20">
+                                <ContentControl Content="{StaticResource train}"/>
+                            </Viewbox>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton Grid.Row="6" x:Name="TreatDiseaseActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Treat Disease">
+                        <RadioButton.Content>
+                            <Viewbox Height="20" Width="20">
+                                <ContentControl Content="{StaticResource medic}"/>
+                            </Viewbox>
+                        </RadioButton.Content>
+                    </RadioButton>
                 </Grid>
             </Grid>
         </Border>
@@ -483,40 +658,23 @@
                 </Grid>
             </Border>
 
-            <Border x:Name="ActionBar" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0">
+            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
                 <Grid>
                     <Grid Background="Black" Opacity="0.5"/>
-                    <Grid Margin="10,0,10,0">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <RadioButton x:Name="DriveActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Drive">
-                            <RadioButton.Content>
-                                <Viewbox Height="20" Width="20">
-                                    <ContentControl Content="{StaticResource car}"/>
-                                </Viewbox>
-                            </RadioButton.Content>
-                        </RadioButton>
-                        <RadioButton Grid.Row="1" x:Name="DirectFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Direct Flight">
-                            <RadioButton.Content>
-                                <Viewbox Height="20" Width="20">
-                                    <ContentControl Content="{StaticResource plane}"/>
-                                </Viewbox>
-                            </RadioButton.Content>
-                        </RadioButton>
-                        <RadioButton Grid.Row="2" x:Name="CharterFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Charter Train">
-                            <RadioButton.Content>
-                                <Viewbox Height="20" Width="20">
-                                    <ContentControl Content="{StaticResource train}"/>
-                                </Viewbox>
-                            </RadioButton.Content>
-                        </RadioButton>
+                        <ContentControl Content="{Binding DrawViewModel}" Margin="5"/>
+                        <ContentControl Grid.Row="1" Content="{Binding InfectionViewModel}" Margin="5"/>
+                        <ContentControl Grid.Row="2" Content="{Binding NextTurnViewModel}" Margin="5"/>
                     </Grid>
                 </Grid>
             </Border>
+            
         </Grid>
     </Grid>
 

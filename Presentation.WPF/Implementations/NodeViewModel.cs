@@ -13,7 +13,6 @@ namespace Presentation.WPF.Implementations
 {
     public class NodeViewModel : ViewModelBase, INodeViewModel
     {
-        private IContext<Player> currentPlayer;
         private ActionManager actionManager;
 
         private Node node;
@@ -115,9 +114,19 @@ namespace Presentation.WPF.Implementations
             get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 1) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 1) : null; }
         }
 
+        public IPlayerViewModel PlayerOneNotSelectedViewModel
+        {
+            get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 1) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 1 && i.Player != boardViewModel.SelectedPlayerViewModel.Player) : null; }
+        }
+
         public IPlayerViewModel PlayerTwoViewModel
         {
             get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 2) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 2) : null; }
+        }
+
+        public IPlayerViewModel PlayerTwoNotSelectedViewModel
+        {
+            get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 2) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 2 && i.Player != boardViewModel.SelectedPlayerViewModel.Player) : null; }
         }
 
         public IPlayerViewModel PlayerThreeViewModel
@@ -125,14 +134,29 @@ namespace Presentation.WPF.Implementations
             get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 3) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 3) : null; }
         }
 
+        public IPlayerViewModel PlayerThreeNotSelectedViewModel
+        {
+            get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 3) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 3 && i.Player != boardViewModel.SelectedPlayerViewModel.Player) : null; }
+        }
+
         public IPlayerViewModel PlayerFourViewModel
         {
             get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 4) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 4) : null; }
         }
 
-        public IPlayerViewModel CurrentPlayerViewModel
+        public IPlayerViewModel PlayerFourNotSelectedViewModel
         {
-            get { return currentPlayer != null && currentPlayer.Context != null && players != null ? players.SingleOrDefault(i => i.Player == currentPlayer.Context && currentPlayer.Context.Location == Node) : null; }
+            get { return players != null && node.Players.SingleOrDefault(i => i.TurnOrder == 4) != null ? players.SingleOrDefault(i => i.Player.TurnOrder == 4 && i.Player != boardViewModel.SelectedPlayerViewModel.Player) : null; }
+        }
+
+        public bool ContainsCurrentPlayer
+        {
+            get { return boardViewModel != null && boardViewModel.CurrentPlayerViewModel != null && Node.Players != null ? Node.Players.Contains(boardViewModel.CurrentPlayerViewModel.Player) : false; }
+        }
+
+        public bool ContainsSelectedPlayer
+        {
+            get { return boardViewModel != null && boardViewModel.SelectedPlayerViewModel != null && Node.Players != null ? Node.Players.Contains(boardViewModel.SelectedPlayerViewModel.Player) : false; }
         }
 
         public DriveDestinationItem DriveDestinationItem
@@ -150,15 +174,34 @@ namespace Presentation.WPF.Implementations
             get { return actionManager != null && actionManager.DirectFlightDestinations != null ? actionManager.DirectFlightDestinations.SingleOrDefault(i => i.CityCard.Node == Node) : null; }
         }
 
+        public bool CanDispatch
+        {
+            get { return actionManager != null ? actionManager.CanDispatch(DispatchItem) : false; }
+        }
+
+        public DispatchItem DispatchItem
+        {
+            get { return actionManager != null && actionManager.DispatchDestinations != null && boardViewModel != null && boardViewModel.SelectedPlayerViewModel != null ? actionManager.DispatchDestinations.SingleOrDefault(i => i.DispatchDestination == Node && i.Player == boardViewModel.SelectedPlayerViewModel.Player) : null;}
+        }
+
         public bool CanDirectFlight
         {
             get { return actionManager != null ? actionManager.CanDirectFlight(DirectFlightItem) : false; }
         }
 
-        public NodeViewModel(Node node, ActionManager actionManager, IContext<Player> currentPlayer, IEnumerable<INodeDiseaseCounterViewModel> nodeCounters, IEnumerable<IPlayerViewModel> players, IBoardViewModel boardViewModel, Notifier notifier)
+        public CharterFlightItem CharterFlightItem
+        {
+            get { return actionManager != null && actionManager.CharterFlightDestinations != null ? actionManager.CharterFlightDestinations.SingleOrDefault(i => i.CityCard.Node == Node) : null; }
+        }
+
+        public bool CanCharterFlight
+        {
+            get { return actionManager != null ? actionManager.CanCharterFlight(CharterFlightItem) : false; }
+        }
+
+        public NodeViewModel(Node node, ActionManager actionManager, IEnumerable<INodeDiseaseCounterViewModel> nodeCounters, IEnumerable<IPlayerViewModel> players, IBoardViewModel boardViewModel, Notifier notifier)
         {
             this.node = node;
-            this.currentPlayer = currentPlayer;
             this.actionManager = actionManager;
             this.nodeCounters = nodeCounters;
             this.players = players;

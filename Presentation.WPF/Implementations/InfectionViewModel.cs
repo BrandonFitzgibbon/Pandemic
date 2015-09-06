@@ -18,9 +18,10 @@ namespace Presentation.WPF.Implementations
             get { return infectionManager; }
         }
 
-        public InfectionViewModel(InfectionManager InfectionManager)
+        public InfectionViewModel(InfectionManager infectionManager, Notifier notifier)
         {
-            this.infectionManager = InfectionManager;
+            this.infectionManager = infectionManager;
+            notifier.SubscribeToViewModel(this);
         }
 
         private RelayCommand infectionCommand;
