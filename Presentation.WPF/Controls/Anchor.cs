@@ -14,6 +14,9 @@ namespace Presentation.WPF.Controls
     [TemplatePart(Name = "PART_ContentBorder", Type = typeof(FrameworkElement))]
     [TemplatePart(Name = "PART_CenterContent", Type = typeof(FrameworkElement))]
     [TemplatePart(Name = "PART_UpperLeftContent", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_UpperRightContent", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_BottomLeftContent", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_BottomRightContent", Type = typeof(FrameworkElement))]
     public class Anchor : Control
     {
         private Border glowBorder;
@@ -34,7 +37,6 @@ namespace Presentation.WPF.Controls
 
             glowBorder = (Border)Template.FindName("PART_GlowBorder", this);
             contentBorder = (Border)Template.FindName("PART_ContentBorder", this);
-            ContentPresenter upperLeftContentPresenter = (ContentPresenter)Template.FindName("PART_UpperLeftContent", this);
 
             glowBorder.Padding = new Thickness(1.1 * contentBorder.Padding.Left, 1.1 * contentBorder.Padding.Top, 1.1 * contentBorder.Padding.Right, 1.1 * contentBorder.Padding.Bottom);
 
@@ -43,19 +45,17 @@ namespace Presentation.WPF.Controls
             contentBorder.MouseEnter += ContentMouseEnter;
             contentBorder.MouseLeave += ContentMouseLeave;
 
+            ContentPresenter upperLeftContentPresenter = (ContentPresenter)Template.FindName("PART_UpperLeftContent", this);
             upperLeftContentPresenter.MouseLeftButtonDown += UpperLeftContentPresenter_MouseLeftButtonDown;
-        }
 
-        private void UpperLeftContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ContentPresenter cp = (ContentPresenter)sender;
-            if(cp.IsMouseOver)
-            {
-                if (!IsUpperLeftContentSelected)
-                    IsUpperLeftContentSelected = true;
-                else if (IsUpperLeftContentSelected)
-                    IsUpperLeftContentSelected = false;
-            }
+            ContentPresenter upperRightContentPresenter = (ContentPresenter)Template.FindName("PART_UpperRightContent", this);
+            upperRightContentPresenter.MouseLeftButtonDown += UpperRightContentPresenter_MouseLeftButtonDown;
+
+            ContentPresenter bottomLeftContentPresenter = (ContentPresenter)Template.FindName("PART_BottomLeftContent", this);
+            bottomLeftContentPresenter.MouseLeftButtonDown += BottomLeftContentPresenter_MouseLeftButtonDown;
+
+            ContentPresenter bottomRightContentPresenter = (ContentPresenter)Template.FindName("PART_BottomRightContent", this);
+            bottomRightContentPresenter.MouseLeftButtonDown += BottomRightContentPresenter_MouseLeftButtonDown;
         }
 
         private void ContentMouseLeave(object sender, MouseEventArgs e)
@@ -65,15 +65,7 @@ namespace Presentation.WPF.Controls
 
         private void ContentMouseEnter(object sender, MouseEventArgs e)
         {
-            MouseOverItem = Item;
-        }
-
-        private void ContentMouseRightButtonUp(object sender, MouseEventArgs e)
-        {
-            if(IsMouseOver && Command != null)
-            {
-                Command.Execute(CommandParameter);
-            }
+            MouseOverItem = DataContext;
         }
 
         private void ContentMouseLeftButtonDown(object sender, MouseEventArgs e)
@@ -83,12 +75,10 @@ namespace Presentation.WPF.Controls
                 if (IsSelected)
                 {
                     IsSelected = false;
-                    SelectedItem = null;
                 }
                 else if (!IsSelected)
                 {
                     IsSelected = true;
-                    SelectedItem = Item;
                 }
             }
         }
@@ -110,7 +100,6 @@ namespace Presentation.WPF.Controls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Anchor), new PropertyMetadata(new CornerRadius(0)));
-
 
         public SolidColorBrush GlowBrush
         {
@@ -252,34 +241,6 @@ namespace Presentation.WPF.Controls
 
         #endregion
 
-        public bool IsUpperLeftContentSelected
-        {
-            get { return (bool)GetValue(IsUpperLeftContentSelectedProperty); }
-            set { SetValue(IsUpperLeftContentSelectedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsUpperLeftContentSelectedProperty =
-            DependencyProperty.Register("IsUpperLeftContentSelected", typeof(bool), typeof(Anchor), new PropertyMetadata());
-
-
-        public object Item
-        {
-            get { return (object)GetValue(ItemProperty); }
-            set { SetValue(ItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty ItemProperty =
-            DependencyProperty.Register("Item", typeof(object), typeof(Anchor), new PropertyMetadata());
-
-        public object SelectedItem
-        {
-            get { return (object)GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(object), typeof(Anchor), new PropertyMetadata());
-
         public object MouseOverItem
         {
             get { return (object)GetValue(MouseOverItemProperty); }
@@ -298,7 +259,7 @@ namespace Presentation.WPF.Controls
         public static readonly DependencyProperty IsSelectableProperty =
             DependencyProperty.Register("IsSelectable", typeof(bool), typeof(Anchor), new PropertyMetadata(true));
 
-
+        #region Commands
 
         public ICommand Command
         {
@@ -315,8 +276,126 @@ namespace Presentation.WPF.Controls
             set { SetValue(CommandParameterProperty, value); }
         }
 
+        private void ContentMouseRightButtonUp(object sender, MouseEventArgs e)
+        {
+            if (IsMouseOver && Command != null)
+            {
+                Command.Execute(CommandParameter);
+            }
+        }
+
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register("CommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        public ICommand UpperLeftCommand
+        {
+            get { return (ICommand)GetValue(UpperLeftCommandProperty); }
+            set { SetValue(UpperLeftCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpperLeftCommandProperty =
+            DependencyProperty.Register("UpperLeftCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+        public object UpperLeftCommandParameter
+        {
+            get { return (object)GetValue(UpperLeftCommandParameterProperty); }
+            set { SetValue(UpperLeftCommandParameterProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpperLeftCommandParameterProperty =
+            DependencyProperty.Register("UpperLeftCommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        private void UpperLeftContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentPresenter cp = (ContentPresenter)sender;
+            if (cp.IsMouseOver && UpperLeftCommand != null)
+            {
+                UpperLeftCommand.Execute(UpperLeftCommandParameter);
+            }
+        }
+
+        public ICommand UpperRightCommand
+        {
+            get { return (ICommand)GetValue(UpperRightCommandProperty); }
+            set { SetValue(UpperRightCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpperRightCommandProperty =
+            DependencyProperty.Register("UpperRightCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+        public object UpperRightCommandParameter
+        {
+            get { return (object)GetValue(UpperRightCommandParameterProperty); }
+            set { SetValue(UpperRightCommandParameterProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpperRightCommandParameterProperty =
+            DependencyProperty.Register("UpperRightCommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        private void UpperRightContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentPresenter cp = (ContentPresenter)sender;
+            if (cp.IsMouseOver && UpperRightCommand != null)
+            {
+                UpperRightCommand.Execute(UpperRightCommandParameter);
+            }
+        }
+
+        public ICommand BottomLeftCommand
+        {
+            get { return (ICommand)GetValue(BottomLeftCommandProperty); }
+            set { SetValue(BottomLeftCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty BottomLeftCommandProperty =
+            DependencyProperty.Register("BottomLeftCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+        public object BottomLeftCommandParameter
+        {
+            get { return (object)GetValue(BottomLeftCommandParameterProperty); }
+            set { SetValue(BottomLeftCommandParameterProperty, value); }
+        }
+
+        public static readonly DependencyProperty BottomLeftCommandParameterProperty =
+            DependencyProperty.Register("BottomLeftCommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        private void BottomLeftContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentPresenter cp = (ContentPresenter)sender;
+            if (cp.IsMouseOver && BottomLeftCommand != null)
+            {
+                BottomLeftCommand.Execute(BottomLeftCommandParameter);
+            }
+        }
+
+        public ICommand BottomRightCommand
+        {
+            get { return (ICommand)GetValue(BottomRightCommandProperty); }
+            set { SetValue(BottomRightCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty BottomRightCommandProperty =
+            DependencyProperty.Register("BottomRightCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+        public object BottomRightCommandParameter
+        {
+            get { return (object)GetValue(BottomRightCommandParameterProperty); }
+            set { SetValue(BottomRightCommandParameterProperty, value); }
+        }
+
+        public static readonly DependencyProperty BottomRightCommandParameterProperty =
+            DependencyProperty.Register("BottomRightCommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        private void BottomRightContentPresenter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContentPresenter cp = (ContentPresenter)sender;
+            if (cp.IsMouseOver && BottomRightCommand != null)
+            {
+                BottomRightCommand.Execute(BottomRightCommandParameter);
+            }
+        }
+
+        #endregion
 
         public bool IsCenterContentEnabled
         {
@@ -367,7 +446,8 @@ namespace Presentation.WPF.Controls
 
             foreach (Anchor child in canvas.Children)
             {
-                if (child.Item == nvm.BoardViewModel.CurrentPlayerViewModel.Location)
+                NodeViewModel cvm = (NodeViewModel)child.DataContext;
+                if (cvm.Node == nvm.BoardViewModel.SelectedPlayerViewModel.Location)
                 {
                     Point origin = new Point(Canvas.GetLeft(child), Canvas.GetTop(child));
                     Point dest = new Point(Canvas.GetLeft(this), Canvas.GetTop(this));

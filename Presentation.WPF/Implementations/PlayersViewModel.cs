@@ -19,33 +19,17 @@ namespace Presentation.WPF.Implementations
             get { return currentPlayer != null ? currentPlayer.Context : null; } 
         }
 
-        private IContext<Player> selectedPlayer;
-
         private IEnumerable<IPlayerViewModel> playerViewModels;
         public IEnumerable<IPlayerViewModel> PlayerViewModels
         {
             get { return playerViewModels; }
         }
 
-        private IPlayerViewModel selectedPlayerViewModel;
-        public IPlayerViewModel SelectedPlayerViewModel
-        {
-            get { return selectedPlayerViewModel; }
-            set { selectedPlayerViewModel = value; selectedPlayer.Context = selectedPlayerViewModel.Player; NotifyPropertyChanged(); }
-        }
-
-        public PlayersViewModel(IContext<Player> currentPlayer, IContext<Player> selectedPlayer, IEnumerable<IPlayerViewModel> playerViewModels, Notifier notifier)
+        public PlayersViewModel(IContext<Player> currentPlayer, IEnumerable<IPlayerViewModel> playerViewModels, Notifier notifier)
         {
             this.currentPlayer = currentPlayer;
-            this.currentPlayer.ContextChanged += ContextChanged;
-            this.selectedPlayer = selectedPlayer;
             this.playerViewModels = playerViewModels;
             notifier.SubscribeToViewModel(this);
-        }
-
-        private void ContextChanged(object sender, ContextChangedEventArgs<Player> e)
-        {
-            NotifyPropertyChanged("CurrentPlayer");
         }
     }
 }

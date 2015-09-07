@@ -44,7 +44,6 @@ namespace Presentation.WPF.Implementations
         {
             discardManager.Discard(card);
             NotifyPropertyChanged("Cards");
-            RaiseChangeNotificationRequested();
         }
     }
 }

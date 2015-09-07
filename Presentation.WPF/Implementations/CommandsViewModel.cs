@@ -1,6 +1,8 @@
 ﻿using Engine.Implementations;
 using Engine.Implementations.ActionItems;
+using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
+using Presentation.WPF.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,14 @@ namespace Presentation.WPF.Implementations
     public class CommandsViewModel : ViewModelBase, ICommandsViewModel
     {
         private ActionManager actionManager;
+        private IContext<Player> selectedPlayer;
 
-        public CommandsViewModel(ActionManager actionManager, Notifier notifier)
+        public CommandsViewModel(ActionManager actionManager, IContext<Player> selectedPlayer, Notifier notifier)
         {
             if (actionManager == null)
                 throw new ArgumentNullException();
             this.actionManager = actionManager;
+            this.selectedPlayer = selectedPlayer;
             notifier.SubscribeToViewModel(this);
         }
 
@@ -38,10 +42,10 @@ namespace Presentation.WPF.Implementations
             return actionManager.CanDrive(ddi);
         }
 
-        private void Drive(DriveDestinationItem ddi)
+        private async void Drive(DriveDestinationItem ddi)
         {
-            actionManager.Drive(ddi);
-            RaiseChangeNotificationRequested();
+            await Task.Run(() => actionManager.Drive(ddi));
+            RaiseChangeNotificationRequested(null);
         }
 
         private RelayCommand dispatchCommand;
@@ -63,7 +67,6 @@ namespace Presentation.WPF.Implementations
         private void Dispatch(DispatchItem dpi)
         {
             actionManager.Dispatch(dpi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand directFlightCommand;
@@ -85,7 +88,24 @@ namespace Presentation.WPF.Implementations
         public void DirectFlight(DirectFlightItem dfi)
         {
             actionManager.DirectFlight(dfi);
-            RaiseChangeNotificationRequested();
+            RaiseChangeNotificationRequested(new ChangeNotificationRequestedArgs(typeof(NodeViewModel)));
+        }
+
+        private RelayCommand selectPlayerCommand;
+        public ICommand SelectPlayerCommand
+        {
+            get
+            {
+                if (selectPlayerCommand == null)
+                    selectPlayerCommand = new RelayCommand(p => SelectPlayer((Player)p));
+                return selectPlayerCommand;
+            }
+        }
+
+        private void SelectPlayer(Player player)
+        {
+            selectedPlayer.Context = player;
+            RaiseChangeNotificationRequested(new ChangeNotificationRequestedArgs(typeof(BoardViewModel)));
         }
     }
 }

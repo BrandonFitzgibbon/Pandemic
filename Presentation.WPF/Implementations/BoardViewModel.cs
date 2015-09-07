@@ -13,6 +13,9 @@ namespace Presentation.WPF.Implementations
     {
         IContext<Player> currentPlayer;
         IContext<Player> selectedPlayer;
+
+        internal ActionManager ActionManager { get; private set; }
+
         private IEnumerable<IPlayerViewModel> playerViewModels;
 
         private IDrawViewModel drawViewModel;
@@ -34,6 +37,12 @@ namespace Presentation.WPF.Implementations
         {
             get { return nextTurnViewModel; }
             set { nextTurnViewModel = value;  NotifyPropertyChanged(); }
+        }
+
+        private ICommandsViewModel commandsViewModel;
+        public ICommandsViewModel CommandsViewModel
+        {
+            get { return commandsViewModel; }
         }
 
         private IPlayersViewModel playersViewModel;
@@ -77,18 +86,14 @@ namespace Presentation.WPF.Implementations
             drawViewModel = new DrawViewModel(game.DrawManager, notifier);
             infectionViewModel = new InfectionViewModel(game.InfectionManager, notifier);
             playerViewModels = CreatePlayerViewModels(game, notifier);
-            playersViewModel = new PlayersViewModel(currentPlayer, selectedPlayer, playerViewModels, notifier);
+            playersViewModel = new PlayersViewModel(currentPlayer, playerViewModels, notifier);
             nextTurnViewModel = new NextTurnViewModel(game, currentPlayer, notifier);
             nextTurnViewModel.TurnChanged += NextTurnViewModel_TurnChanged;
             gameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, game.ResearchStationCounter, CreateDiseaseCounterViewModels(game, notifier), notifier);
-            nodeViewModels = CreateNodeViewModels(game, currentPlayer, this, notifier);
+            commandsViewModel = new CommandsViewModel(game.ActionManager, selectedPlayer, notifier);
+            nodeViewModels = CreateNodeViewModels(game, selectedPlayer, this, notifier);
 
             notifier.SubscribeToViewModel(this);
-        }
-
-        public void SetCurrentPlayer(Player player)
-        {
-            selectedPlayer.Context = player;
         }
 
         private void NextTurnViewModel_TurnChanged(object sender, EventArgs e)
@@ -101,7 +106,7 @@ namespace Presentation.WPF.Implementations
             NotifyChanges();
         }
 
-        private static IEnumerable<INodeViewModel> CreateNodeViewModels(Game game, IContext<Player> currentPlayer, IBoardViewModel boardViewModel, Notifier notifier)
+        private static IEnumerable<INodeViewModel> CreateNodeViewModels(Game game, IContext<Player> selectedPlayer, IBoardViewModel boardViewModel, Notifier notifier)
         {
             List<INodeViewModel> nodeViewModels = new List<INodeViewModel>();
             foreach (Node node in game.Nodes)
@@ -112,7 +117,7 @@ namespace Presentation.WPF.Implementations
                     NodeDiseaseCounterViewModel ndcvm = new NodeDiseaseCounterViewModel(ndc, notifier);
                     nodeDiseaseCounterViewModels.Add(ndcvm);
                 }
-                NodeViewModel nvm = new NodeViewModel(node, game.ActionManager, nodeDiseaseCounterViewModels, CreatePlayerViewModels(game, notifier), boardViewModel, notifier);
+                NodeViewModel nvm = new NodeViewModel(node, game.ActionManager, selectedPlayer, nodeDiseaseCounterViewModels, CreatePlayerViewModels(game, notifier), boardViewModel, notifier);
                 nodeViewModels.Add(nvm);
             }
             return nodeViewModels;

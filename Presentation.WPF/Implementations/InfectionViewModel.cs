@@ -43,7 +43,6 @@ namespace Presentation.WPF.Implementations
         public void Infection()
         {
             InfectionManager.Infect();
-            RaiseChangeNotificationRequested();
         }
     }
 }

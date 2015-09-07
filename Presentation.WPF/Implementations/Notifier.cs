@@ -1,4 +1,5 @@
 ﻿using Presentation.WPF.Contracts;
+using Presentation.WPF.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,17 @@ namespace Presentation.WPF.Implementations
             viewModels.Add(viewModel);
         }
 
-        private void ChangeNotificationRequested(object sender, EventArgs e)
+        private void ChangeNotificationRequested(object sender, ChangeNotificationRequestedArgs e)
         {
             foreach (IViewModelBase viewModel in viewModels)
             {
-                viewModel.NotifyChanges();
+                if (e != null)
+                {
+                    if (viewModel.GetType() == e.Type)
+                        viewModel.NotifyChanges();
+                }
+                else
+                    viewModel.NotifyChanges();
             }
         }
     }

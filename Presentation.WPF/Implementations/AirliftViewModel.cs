@@ -89,7 +89,6 @@ namespace Presentation.WPF.Implementations
         private void Airlift(AirliftItem ali)
         {
             actionCard.Action(ali);
-            RaiseChangeNotificationRequested();
         }
     }
 }

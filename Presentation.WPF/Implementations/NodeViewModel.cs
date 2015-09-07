@@ -21,6 +21,21 @@ namespace Presentation.WPF.Implementations
             get { return node; }
         }
 
+        public string Name
+        {
+            get { return node.City.Name; }
+        }
+
+        public Disease Disease
+        {
+            get { return node.Disease; }
+        }
+
+        public bool ResearchStation
+        {
+            get { return node.ResearchStation; }
+        }
+
         private IBoardViewModel boardViewModel;
         public IBoardViewModel BoardViewModel
         {
@@ -37,27 +52,6 @@ namespace Presentation.WPF.Implementations
         public IEnumerable<INodeDiseaseCounterViewModel> NodeCounters
         {
             get { return nodeCounters; }
-        }
-
-        private ICommandsViewModel commandsViewModel;
-        public ICommandsViewModel CommandsViewModel
-        {
-            get { return commandsViewModel; }
-        }
-
-        public string Name
-        {
-            get { return node.City.Name; }
-        }
-
-        public Disease Disease
-        {
-            get { return node.Disease; }
-        }
-
-        public bool ResearchStation
-        {
-            get { return node.ResearchStation; }
         }
 
         public NodeStatus Status
@@ -199,14 +193,13 @@ namespace Presentation.WPF.Implementations
             get { return actionManager != null ? actionManager.CanCharterFlight(CharterFlightItem) : false; }
         }
 
-        public NodeViewModel(Node node, ActionManager actionManager, IEnumerable<INodeDiseaseCounterViewModel> nodeCounters, IEnumerable<IPlayerViewModel> players, IBoardViewModel boardViewModel, Notifier notifier)
+        public NodeViewModel(Node node, ActionManager actionManager, IContext<Player> selectedPlayer, IEnumerable<INodeDiseaseCounterViewModel> nodeCounters, IEnumerable<IPlayerViewModel> players, IBoardViewModel boardViewModel, Notifier notifier)
         {
             this.node = node;
             this.actionManager = actionManager;
             this.nodeCounters = nodeCounters;
             this.players = players;
             this.boardViewModel = boardViewModel;
-            commandsViewModel = new CommandsViewModel(this.actionManager, notifier);
             notifier.SubscribeToViewModel(this);
         }
 

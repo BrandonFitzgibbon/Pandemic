@@ -197,18 +197,27 @@
                                 </MultiBinding>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Item" Value="{Binding Node}"/>
                         <Setter Property="FlashingOnMouseOver" Value="False"/>
 
                         <!--Initial View-->
-                        <Setter Property="UpperLeftContent" Value="{Binding YellowCounter}"/>
-                        <Setter Property="UpperLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
-                        <Setter Property="UpperRightContent" Value="{Binding RedCounter}"/>
-                        <Setter Property="UpperRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
-                        <Setter Property="BottomLeftContent" Value="{Binding BlueCounter}"/>
-                        <Setter Property="BottomLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
-                        <Setter Property="BottomRightContent" Value="{Binding BlackCounter}"/>
-                        <Setter Property="BottomRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
+                        <Setter Property="UpperLeftContent" Value="{x:Null}"/>
+                        <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
+                        <Setter Property="UpperRightContent" Value="{x:Null}"/>
+                        <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
+                        <Setter Property="BottomLeftContent" Value="{x:Null}"/>
+                        <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
+                        <Setter Property="BottomRightContent" Value="{x:Null}"/>
+                        <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
+                        
+                        <Setter Property="UpperLeftCommand" Value="{x:Null}"/>
+                        <Setter Property="UpperLeftCommandParameter" Value="{x:Null}"/>
+                        <Setter Property="UpperRightCommand" Value="{x:Null}"/>
+                        <Setter Property="UpperRightCommandParameter" Value="{x:Null}"/>
+                        <Setter Property="BottomLeftCommand" Value="{x:Null}"/>
+                        <Setter Property="BottomLeftCommandParameter" Value="{x:Null}"/>
+                        <Setter Property="BottomRightCommand" Value="{x:Null}"/>
+                        <Setter Property="BottomRightCommandParameter" Value="{x:Null}"/>
+
                         <Setter Property="CenterContent" Value="{x:Null}"/>
                         <Setter Property="CenterContentTemplate" Value="{x:Null}"/>
                         <Setter Property="TopCenterContent" Value="{x:Null}"/>
@@ -218,7 +227,19 @@
                         
                         <Style.Triggers>
 
-                            <!--Player View Style-->
+                            <!--Infection View Style-->
+                            <DataTrigger Binding="{Binding ElementName=InfectionViewButton, Path=IsChecked}" Value="True">
+                                <Setter Property="UpperLeftContent" Value="{Binding YellowCounter}"/>
+                                <Setter Property="UpperLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
+                                <Setter Property="UpperRightContent" Value="{Binding RedCounter}"/>
+                                <Setter Property="UpperRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
+                                <Setter Property="BottomLeftContent" Value="{Binding BlueCounter}"/>
+                                <Setter Property="BottomLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
+                                <Setter Property="BottomRightContent" Value="{Binding BlackCounter}"/>
+                                <Setter Property="BottomRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
+                            </DataTrigger>
+
+                                <!--Player View Style-->
                             <DataTrigger Binding="{Binding ElementName=PlayerViewButton, Path=IsChecked}" Value="True">
                                 <Setter Property="UpperLeftContent" Value="{Binding PlayerOneViewModel}"/>
                                 <Setter Property="UpperLeftContentTemplate" Value="{StaticResource PlayerTemplate}"/>
@@ -233,14 +254,6 @@
                             <!--Drive Style-->
                             <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
                                 <Setter Property="GlowBrush" Value="White"/>
-                                <Setter Property="UpperLeftContent" Value="{x:Null}"/>
-                                <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContent" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContent" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContent" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
                                 <Setter Property="CenterContent" Value="{Binding}"/>
                                 <Setter Property="CenterContentTemplate">
                                     <Setter.Value>
@@ -268,20 +281,11 @@
                                                         <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
                                                     </MultiDataTrigger.Setters>
                                                 </MultiDataTrigger>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="True"/>
-                                                        <Condition Binding="{Binding CanDrive}" Value="False"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <MultiDataTrigger.Setters>
-                                                        <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                                    </MultiDataTrigger.Setters>
-                                                </MultiDataTrigger>
                                             </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="Command" Value="{Binding CommandsViewModel.DriveCommand}"/>
+                                <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DriveCommand}"/>
                                 <Setter Property="CommandParameter" Value="{Binding DriveDestinationItem}"/>
                                 <Setter Property="IsEnabled" Value="{Binding CanDrive}"/>
                                 <Setter Property="FlashingOnMouseOver" Value="True"/>
@@ -297,7 +301,8 @@
                                     <Setter Property="GlowBrush" Value="White"/>
                                     <Setter Property="UpperLeftContent" Value="{Binding PlayerOneNotSelectedViewModel}"/>
                                     <Setter Property="UpperLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="IsUpperLeftContentSelected" Value="{Binding IsUpperLeftContentSelected, Mode=TwoWay}"/>
+                                    <Setter Property="UpperLeftCommand" Value="{Binding CommandsViewModel.SelectPlayerCommand}"/>
+                                    <Setter Property="UpperLeftCommandParameter" Value="{Binding PlayerOneNotSelectedViewModel.Player}"/>
                                     <Setter Property="UpperRightContent" Value="{Binding PlayerTwoNotSelectedViewModel}"/>
                                     <Setter Property="UpperRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
                                     <Setter Property="BottomLeftContent" Value="{Binding PlayerThreeNotSelectedViewModel}"/>

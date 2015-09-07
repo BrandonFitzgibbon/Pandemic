@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentation.WPF.CustomEventArgs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Presentation.WPF.Contracts
 {
     public interface IViewModelBase : INotifyPropertyChanged
     {
-        event EventHandler ChangeNotificationRequested;
-        void RaiseChangeNotificationRequested();
+        event EventHandler<ChangeNotificationRequestedArgs> ChangeNotificationRequested;
+        void RaiseChangeNotificationRequested(ChangeNotificationRequestedArgs e);
         void NotifyChanges();
     }
 }

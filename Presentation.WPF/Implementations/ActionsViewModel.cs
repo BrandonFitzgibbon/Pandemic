@@ -2,6 +2,7 @@
 using Engine.Implementations.ActionItems;
 using Presentation.WPF.Context;
 using Presentation.WPF.Contracts;
+using Presentation.WPF.CustomEventArgs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -163,7 +164,7 @@ namespace Presentation.WPF.Implementations
         {
             await Task.Run(() => ActionManager.Drive(ddi));
             ddi = null;
-            RaiseChangeNotificationRequested();
+            RaiseChangeNotificationRequested(new ChangeNotificationRequestedArgs(typeof(BoardViewModel)));
         }
 
         private RelayCommand directFlightCommand;
@@ -185,7 +186,6 @@ namespace Presentation.WPF.Implementations
         public void DirectFlight(DirectFlightItem dfi)
         {
             ActionManager.DirectFlight(dfi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand charterFlightCommand;
@@ -207,7 +207,6 @@ namespace Presentation.WPF.Implementations
         public void CharterFlight(CharterFlightItem cfi)
         {
             ActionManager.CharterFlight(cfi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand shuttleFlightCommand;
@@ -229,7 +228,6 @@ namespace Presentation.WPF.Implementations
         public void ShuttleFlight(ShuttleFlightItem sfi)
         {
             ActionManager.ShuttleFlight(sfi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand buildResearchStationCommand;
@@ -251,7 +249,6 @@ namespace Presentation.WPF.Implementations
         public void BuildResearchStation(ResearchStationConstructionItem rci)
         {
             ActionManager.BuildResearchStation(rci);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand treatCommand;
@@ -273,7 +270,6 @@ namespace Presentation.WPF.Implementations
         private void Treat(TreatDiseaseItem tdi)
         {
             ActionManager.TreatDisease(tdi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand shareKnowledgeCommand;
@@ -295,7 +291,6 @@ namespace Presentation.WPF.Implementations
         private void ShareKnowledge(ShareKnowledgeItem ski)
         {
             ActionManager.ShareKnowledge(ski);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand discoverCureCommand;
@@ -326,7 +321,6 @@ namespace Presentation.WPF.Implementations
         private void DiscoverCure(dynamic selectedCards)
         {
             ActionManager.DiscoverCure(SelectedCureTarget);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand dispatchCommand;
@@ -348,7 +342,6 @@ namespace Presentation.WPF.Implementations
         private void Dispatch(DispatchItem dpi)
         {
             ActionManager.Dispatch(dpi);
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand relocateCommand;
@@ -375,7 +368,6 @@ namespace Presentation.WPF.Implementations
         private void Relocate()
         {
             ActionManager.Relocate(SelectedRelocationTarget);
-            RaiseChangeNotificationRequested();
         }
     }
 }

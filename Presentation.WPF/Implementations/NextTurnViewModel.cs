@@ -43,7 +43,7 @@ namespace Presentation.WPF.Implementations
             game.NextPlayer();
             currentPlayer.Context = game.CurrentPlayer;
             if (TurnChanged != null) TurnChanged(this, EventArgs.Empty);
-            RaiseChangeNotificationRequested();
+            RaiseChangeNotificationRequested(null);
         }
 
         public event EventHandler TurnChanged;

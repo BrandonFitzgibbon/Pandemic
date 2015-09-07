@@ -90,6 +90,7 @@
     <Compile Include="Converters\RoleToDispatcherConverter.cs" />
     <Compile Include="Converters\RoleToOperationsExpertConverter.cs" />
     <Compile Include="Converters\RoleToPawnConverter.cs" />
+    <Compile Include="CustomEventArgs\ChangeNotificationRequestedArgs.cs" />
     <Compile Include="Implementations\AirliftViewModel.cs" />
     <Compile Include="Implementations\CommandsViewModel.cs" />
     <Compile Include="Implementations\GovernmentGrantViewModel.cs" />
