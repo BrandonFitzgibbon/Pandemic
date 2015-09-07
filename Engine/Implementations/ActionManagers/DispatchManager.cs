@@ -67,24 +67,22 @@ namespace Engine.Implementations.ActionManagers
         {
             List<DispatchItem> destinations = new List<DispatchItem>();
 
-            if (players == null)
+            if (player.ActionCounter.Count == 0)
                 return destinations;
 
             foreach (Player player in players)
             {
-                if (player != this.player)
+
+                DriveManager dm = new DriveManager(player);
+                foreach (DriveDestinationItem ddi in dm.GetDestinations(this.player.ActionCounter.Count))
                 {
-                    DriveManager dm = new DriveManager(player);
-                    foreach (DriveDestinationItem ddi in dm.GetDestinations(this.player.ActionCounter.Count))
-                    {
-                        if(ddi.Node.Players.Count() == 0)
-                            destinations.Add(new DispatchItem(player, ddi.Node, ddi.Cost));
-                    }
+                    if (ddi.Node.Players.Count() == 0)
+                        destinations.Add(new DispatchItem(player, ddi.Node, ddi.Cost));
                 }
 
                 foreach (Player sub in players)
                 {
-                    if (sub.Location != player.Location)
+                    if (sub.Location != player.Location && destinations.Where(i => i.DispatchDestination == sub.Location).Count() == 0)
                         destinations.Add(new DispatchItem(player, sub.Location, 1));
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Presentation.WPF.Contracts;
+using Presentation.WPF.CustomEventArgs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,11 +29,11 @@ namespace Presentation.WPF.Implementations
             }
         }
 
-        public event EventHandler ChangeNotificationRequested;
+        public event EventHandler<ChangeNotificationRequestedArgs> ChangeNotificationRequested;
 
-        public void RaiseChangeNotificationRequested()
+        public void RaiseChangeNotificationRequested(ChangeNotificationRequestedArgs e)
         {
-            if (ChangeNotificationRequested != null) ChangeNotificationRequested(this, EventArgs.Empty);
+            if (ChangeNotificationRequested != null) ChangeNotificationRequested(this, e);
         }
     }
 }

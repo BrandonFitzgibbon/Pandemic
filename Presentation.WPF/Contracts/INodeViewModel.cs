@@ -11,9 +11,10 @@ namespace Presentation.WPF.Contracts
     public interface INodeViewModel : IViewModelBase
     {
         IEnumerable<INodeDiseaseCounterViewModel> NodeCounters { get; }
+        IEnumerable<IPlayerViewModel> Players { get; }
+        Node Node { get; }
         string Name { get; }
         Disease Disease { get; }
         bool ResearchStation { get; }
-        ICollection<Player> Players { get; }
     }
 }

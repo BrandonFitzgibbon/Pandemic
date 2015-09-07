@@ -37,9 +37,10 @@ namespace Presentation.WPF.Implementations
             get { return player != null ? player.TurnOrder : 0; }
         }
 
-        public PlayerViewModel(Player player)
+        public PlayerViewModel(Player player, Notifier notifier)
         {
             this.player = player;
+            notifier.SubscribeToViewModel(this);
         }
     }
 }

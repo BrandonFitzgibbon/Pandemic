@@ -9,15 +9,12 @@ using System.Threading.Tasks;
 
 namespace Presentation.WPF.Implementations
 {
-    public class GameStatusViewModel : ViewModelBase
+    public class GameStatusViewModel : ViewModelBase, IGameStatusViewModel
     {
         private OutbreakCounter outbreakCounter;
         private InfectionRateCounter infectionRateCounter;
         private ResearchStationCounter researchStationCounter;
-        private IDiseaseCounterViewModel yellowCounter;
-        private IDiseaseCounterViewModel redCounter;
-        private IDiseaseCounterViewModel blueCounter;
-        private IDiseaseCounterViewModel blackCounter;
+        private IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels;
         
         public int OutbreakCount
         {
@@ -36,33 +33,34 @@ namespace Presentation.WPF.Implementations
 
         public IDiseaseCounterViewModel YellowCounter
         {
-            get { return yellowCounter; }
+            get { return diseaseCounterViewModels.SingleOrDefault(i => i.Disease.Type == DiseaseType.Yellow); }
         }
 
         public IDiseaseCounterViewModel RedCounter
         {
-            get { return redCounter; }
+            get { return diseaseCounterViewModels.SingleOrDefault(i => i.Disease.Type == DiseaseType.Red); }
         }
 
         public IDiseaseCounterViewModel BlueCounter
         {
-            get { return blueCounter; }
+            get { return diseaseCounterViewModels.SingleOrDefault(i => i.Disease.Type == DiseaseType.Blue); }
         }
 
         public IDiseaseCounterViewModel BlackCounter
         {
-            get { return blackCounter; }
+            get { return diseaseCounterViewModels.SingleOrDefault(i => i.Disease.Type == DiseaseType.Black); }
         }
 
-        public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, ResearchStationCounter researchStationCounter, IDiseaseCounterViewModel yellowCounter, IDiseaseCounterViewModel redCounter, IDiseaseCounterViewModel blueCounter, IDiseaseCounterViewModel blackCounter)
+        public GameStatusViewModel(OutbreakCounter outbreakCounter, InfectionRateCounter infectionRateCounter, ResearchStationCounter researchStationCounter, IEnumerable<IDiseaseCounterViewModel> diseaseCounterViewModels, Notifier notifier)
         {
+            if (diseaseCounterViewModels == null)
+                throw new ArgumentNullException("DiseaseCounterViewModels");
+
             this.outbreakCounter = outbreakCounter;
             this.infectionRateCounter = infectionRateCounter;
             this.researchStationCounter = researchStationCounter;
-            this.yellowCounter = yellowCounter;
-            this.redCounter = redCounter;
-            this.blueCounter = blueCounter;
-            this.blackCounter = blackCounter;
+            this.diseaseCounterViewModels = diseaseCounterViewModels;
+            notifier.SubscribeToViewModel(this);
         }
     }
 }

@@ -109,7 +109,7 @@
         <Border Grid.Column="5" BorderBrush="Gray" BorderThickness="0,0,1,0">
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <Viewbox Margin="5,5,0,5">
-                    <ContentControl Content="{StaticResource lightbulb}" ToolTip="Research Stations Available"/>
+                    <ContentControl Content="{StaticResource microscope}" ToolTip="Research Stations Available"/>
                 </Viewbox>
                 <TextBlock Margin="10,0,10,0" Text="{Binding ResearchStationCount}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="Outbreaks"/>
             </StackPanel>

@@ -98,17 +98,20 @@ namespace Engine.Implementations.ActionManagers
                 return targets;
             }
 
-            foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
+            if (player.Hand.CityCards != null)
             {
-                if (counter.CanBuildResearchStation(cityCard.Node))
+                foreach (CityCard cityCard in player.Hand.CityCards.Where(i => i.Node == player.Location))
                 {
-                    targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, null));
-                }
-                else
-                {
-                    foreach (Node node in nodes.Where(i => counter.CanMoveResearchStation(i, cityCard.Node)))
+                    if (counter.CanBuildResearchStation(cityCard.Node))
                     {
-                        targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, node));
+                        targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, null));
+                    }
+                    else
+                    {
+                        foreach (Node node in nodes.Where(i => counter.CanMoveResearchStation(i, cityCard.Node)))
+                        {
+                            targets.Add(new ResearchStationConstructionItem(cityCard, cityCard.Node, node));
+                        }
                     }
                 }
             }

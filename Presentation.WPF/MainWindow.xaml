@@ -5,77 +5,20 @@
         xmlns:c="clr-namespace:Presentation.WPF.Controls"
         Title="MainWindow" Height="900" Width="1400" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
-    <Grid>
-        <Grid>
-            <Grid.Background>
-                <ImageBrush ImageSource="Controls/monochrome_map_w1.jpeg"/>
-            </Grid.Background>
-        </Grid>
+    <Grid Background="Black">
         <Grid Background="Black" Opacity="0.775"/>
         <Grid Background="Transparent">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
             <v:DialogController EpidemicViewModel="{Binding EpidemicViewModel}" DiscardViewModel="{Binding DiscardViewModel}"/>
-            <Border Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0,0,0,1">
-                <ContentControl Content="{Binding GameStatusViewModel}"/>
-            </Border>
-            <Grid Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.Background>
+                    <RadialGradientBrush RadiusX=".75" RadiusY=".75">
+                        <GradientStop Color="#FF0C3763"/>
+                        <GradientStop Color="Black" Offset="1"/>
+                    </RadialGradientBrush>
+                </Grid.Background>
                 <ContentControl Content="{Binding BoardViewModel}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.RowSpan="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
-                    <ContentControl Content="{Binding PlayersViewModel}"/>
-                </Border>
-                <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0,0,1,0">
-                    <ContentControl Content="{Binding ActionsViewModel}"/>
-                </Border>
-                <Border c:ExtendedBorder.IsOpen="{Binding ActionCardViewOpen}" Background="Black" Grid.Row="1" BorderBrush="Gray" BorderThickness="0,1,1,0">
-                    <Border.RenderTransform>
-                        <TranslateTransform X="-450"/>
-                    </Border.RenderTransform>
-                    <ContentControl Content="{Binding ActionCardViewModel}"/>
-                </Border>
-            </Grid>
-            <Border Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0,1,0,0">
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
-                        <ContentControl Content="{Binding HandViewModel}"/>
-                    </Border>
-                    <StackPanel Grid.Column="2">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <ContentControl Content="{Binding DrawViewModel}" Margin="2"/>
-                            <ContentControl Grid.Column="1" Content="{Binding InfectionViewModel}" Margin="2"/>
-                        </Grid>
-                        <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
-                            <ContentControl Content="{Binding MessageViewModel}"/>
-                        </Border>
-                        <Border BorderBrush="Gray" BorderThickness="0,1,0,0">
-                            <Button Content="End Turn" Template="{StaticResource ActionButtonTemplate}" Command="{Binding NextTurnCommand}" Margin="3"/>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </Border>
         </Grid>
     </Grid>
-    
+
 </Window>

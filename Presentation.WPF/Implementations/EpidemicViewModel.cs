@@ -33,7 +33,7 @@ namespace Presentation.WPF.Implementations
         public bool IsLoaded
         {
             get { return isLoaded; }
-            set { isLoaded = value;  NotifyPropertyChanged(); RaiseChangeNotificationRequested(); }
+            set { isLoaded = value;  NotifyPropertyChanged(); }
         }
 
         public EpidemicViewModel(EpidemicManager manager, IContext<StringBuilder> messageContext)
@@ -63,7 +63,6 @@ namespace Presentation.WPF.Implementations
         {
             Manager.Increase();
             messageContext.Context.AppendLine("The infection counter has increased.");
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand infectCommand;
@@ -85,7 +84,6 @@ namespace Presentation.WPF.Implementations
         private void Infect()
         {
             Manager.Infect();
-            RaiseChangeNotificationRequested();
         }
 
         private RelayCommand intensifyCommand;
@@ -108,7 +106,6 @@ namespace Presentation.WPF.Implementations
         {
             Manager.Intensify();
             messageContext.Context.AppendLine("The infection deck has intensified");
-            RaiseChangeNotificationRequested();
             IsOpen = false;
         }
     }

@@ -11,6 +11,7 @@
     <UserControl.Resources>
         
         <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
+        <c:RoleToPawnConverter x:Key="RoleToPawnConverter"/>
 
     </UserControl.Resources>
 
@@ -35,7 +36,7 @@
             </Viewbox>
         </StackPanel>
         <Separator Grid.Row="1" HorizontalAlignment="Stretch"/>
-        <ListView Grid.Row="2" ItemsSource="{Binding PlayerViewModels}" SelectedItem="{Binding SelectedPlayerViewModel}" BorderBrush="Transparent" Background="Transparent">
+        <ListView Grid.Row="2" ItemsSource="{Binding PlayerViewModels}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Background="Transparent">
@@ -59,12 +60,21 @@
                             </Viewbox>
                             <TextBlock Text="{Binding Location, StringFormat={} : {0}}"/>
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                                <ContentControl Content="{StaticResource pawnWhite}"/>
+                            </Viewbox>
+                            <TextBlock Text=":" Margin="5,0,5,0"/>
+                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                                <ContentControl Content="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                            </Viewbox>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="2" Columns="2"/>
+                    <UniformGrid Rows="4" Columns="1"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>
@@ -78,14 +88,6 @@
                                 <Border x:Name="Border" Background="Transparent" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}" TextElement.FontSize="14" TextElement.Foreground="White">
                                     <ContentPresenter Margin="5"/>
                                 </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource StandardBorderBrush}"/>        
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>

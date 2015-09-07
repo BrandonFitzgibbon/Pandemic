@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Engine.Implementations;
+using Presentation.WPF.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ namespace Presentation.WPF.Contracts
 {
     public interface IBoardViewModel : IViewModelBase
     {
-
+        IPlayerViewModel SelectedPlayerViewModel { get; }
+        IPlayerViewModel CurrentPlayerViewModel { get; }
     }
 }

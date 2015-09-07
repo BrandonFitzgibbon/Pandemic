@@ -89,7 +89,6 @@ namespace Presentation.WPF.Implementations
         private void GovernmentGrant(GovernmentGrantItem ggi)
         {
             actionCard.Action(ggi);
-            RaiseChangeNotificationRequested();
         }
     }
 }
