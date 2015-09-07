@@ -40,7 +40,6 @@ namespace Presentation.WPF.Controls
 
             glowBorder.Padding = new Thickness(1.1 * contentBorder.Padding.Left, 1.1 * contentBorder.Padding.Top, 1.1 * contentBorder.Padding.Right, 1.1 * contentBorder.Padding.Bottom);
 
-            contentBorder.PreviewMouseLeftButtonDown += ContentMouseLeftButtonDown;
             contentBorder.MouseRightButtonUp += ContentMouseRightButtonUp;
             contentBorder.MouseEnter += ContentMouseEnter;
             contentBorder.MouseLeave += ContentMouseLeave;
@@ -68,29 +67,14 @@ namespace Presentation.WPF.Controls
             MouseOverItem = DataContext;
         }
 
-        private void ContentMouseLeftButtonDown(object sender, MouseEventArgs e)
+        public object MouseOverItem
         {
-            if(IsMouseOver)
-            {
-                if (IsSelected)
-                {
-                    IsSelected = false;
-                }
-                else if (!IsSelected)
-                {
-                    IsSelected = true;
-                }
-            }
+            get { return (object)GetValue(MouseOverItemProperty); }
+            set { SetValue(MouseOverItemProperty, value); }
         }
 
-        public bool IsSelected
-        {
-            get { return (bool)GetValue(IsSelectedProperty); }
-            protected set { SetValue(IsSelectedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(Anchor), new PropertyMetadata(false));
+        public static readonly DependencyProperty MouseOverItemProperty =
+            DependencyProperty.Register("MouseOverItem", typeof(object), typeof(Anchor), new PropertyMetadata());
 
         public CornerRadius CornerRadius
         {
@@ -185,6 +169,8 @@ namespace Presentation.WPF.Controls
         public static readonly DependencyProperty BottomRightContentTemplateProperty =
             DependencyProperty.Register("BottomRightContentTemplate", typeof(DataTemplate), typeof(Anchor), new PropertyMetadata());
 
+
+
         public object CenterContent
         {
             get { return (object)GetValue(CenterContentProperty); }
@@ -194,6 +180,8 @@ namespace Presentation.WPF.Controls
         public static readonly DependencyProperty CenterContentProperty =
             DependencyProperty.Register("CenterContent", typeof(object), typeof(Anchor), new PropertyMetadata());
 
+
+
         public DataTemplate CenterContentTemplate
         {
             get { return (DataTemplate)GetValue(CenterContentTemplateProperty); }
@@ -202,6 +190,19 @@ namespace Presentation.WPF.Controls
 
         public static readonly DependencyProperty CenterContentTemplateProperty =
             DependencyProperty.Register("CenterContentTemplate", typeof(DataTemplate), typeof(Anchor), new PropertyMetadata());
+
+
+
+        public bool CenterContentEnabled
+        {
+            get { return (bool)GetValue(CenterContentEnabledProperty); }
+            set { SetValue(CenterContentEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty CenterContentEnabledProperty =
+            DependencyProperty.Register("CenterContentEnabled", typeof(bool), typeof(Anchor), new PropertyMetadata(true));
+
+
 
         public object TopCenterContent
         {
@@ -241,24 +242,6 @@ namespace Presentation.WPF.Controls
 
         #endregion
 
-        public object MouseOverItem
-        {
-            get { return (object)GetValue(MouseOverItemProperty); }
-            set { SetValue(MouseOverItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty MouseOverItemProperty =
-            DependencyProperty.Register("MouseOverItem", typeof(object), typeof(Anchor), new PropertyMetadata());
-
-        public bool IsSelectable
-        {
-            get { return (bool)GetValue(IsSelectableProperty); }
-            set { SetValue(IsSelectableProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsSelectableProperty =
-            DependencyProperty.Register("IsSelectable", typeof(bool), typeof(Anchor), new PropertyMetadata(true));
-
         #region Commands
 
         public ICommand Command
@@ -268,12 +251,41 @@ namespace Presentation.WPF.Controls
         }
 
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(Anchor), new PropertyMetadata(new PropertyChangedCallback(CommandChanged)));
+
+        public static void CommandChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            Anchor a = o as Anchor;
+            ICommand command = e.NewValue as ICommand;
+            if (command != null && o != null)
+            {
+                command.CanExecuteChanged += a.Command_CanExecuteChanged;
+            }
+        }
 
         public object CommandParameter
         {
             get { return (object)GetValue(CommandParameterProperty); }
             set { SetValue(CommandParameterProperty, value); }
+        }
+
+        public static readonly DependencyProperty CommandParameterProperty =
+            DependencyProperty.Register("CommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
+
+        internal void Command_CanExecuteChanged(object sender, EventArgs e)
+        {
+            if(Command.CanExecute(CommandParameter))
+            {
+                contentBorder.IsEnabled = true;
+                glowBorder.IsEnabled = true;
+                CenterContentEnabled = true;
+            }
+            else
+            {
+                contentBorder.IsEnabled = false;
+                glowBorder.IsEnabled = false;
+                CenterContentEnabled = false;
+            }
         }
 
         private void ContentMouseRightButtonUp(object sender, MouseEventArgs e)
@@ -283,9 +295,6 @@ namespace Presentation.WPF.Controls
                 Command.Execute(CommandParameter);
             }
         }
-
-        public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(Anchor), new PropertyMetadata());
 
         public ICommand UpperLeftCommand
         {
@@ -396,15 +405,6 @@ namespace Presentation.WPF.Controls
         }
 
         #endregion
-
-        public bool IsCenterContentEnabled
-        {
-            get { return (bool)GetValue(IsCenterContentEnabledProperty); }
-            set { SetValue(IsCenterContentEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsCenterContentEnabledProperty =
-            DependencyProperty.Register("IsCenterContentEnabled", typeof(bool), typeof(Anchor), new PropertyMetadata(true));
 
         public bool FlashingOnMouseOver
         {

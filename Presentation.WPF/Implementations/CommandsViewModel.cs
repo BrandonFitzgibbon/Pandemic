@@ -42,9 +42,9 @@ namespace Presentation.WPF.Implementations
             return actionManager.CanDrive(ddi);
         }
 
-        private async void Drive(DriveDestinationItem ddi)
+        private void Drive(DriveDestinationItem ddi)
         {
-            await Task.Run(() => actionManager.Drive(ddi));
+            actionManager.Drive(ddi);
             RaiseChangeNotificationRequested(null);
         }
 
@@ -67,6 +67,7 @@ namespace Presentation.WPF.Implementations
         private void Dispatch(DispatchItem dpi)
         {
             actionManager.Dispatch(dpi);
+            RaiseChangeNotificationRequested(null);
         }
 
         private RelayCommand directFlightCommand;
@@ -105,7 +106,7 @@ namespace Presentation.WPF.Implementations
         private void SelectPlayer(Player player)
         {
             selectedPlayer.Context = player;
-            RaiseChangeNotificationRequested(new ChangeNotificationRequestedArgs(typeof(BoardViewModel)));
+            RaiseChangeNotificationRequested(null);
         }
     }
 }

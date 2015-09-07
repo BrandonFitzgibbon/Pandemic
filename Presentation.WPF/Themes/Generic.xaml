@@ -28,6 +28,9 @@
                             <Border x:Name="PART_GlowBorder"
                                     Background="{TemplateBinding GlowBrush}"
                                     CornerRadius="{TemplateBinding CornerRadius}">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
                             </Border>
                             <Border x:Name="PART_ContentBorder" 
                                     Background="{TemplateBinding Background}"
@@ -43,27 +46,11 @@
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="PART_GlowBorder" Property="Effect">
-                                <Setter.Value>
-                                    <BlurEffect Radius="0"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="PART_GlowBorder" Property="Effect">
-                                <Setter.Value>
-                                    <BlurEffect Radius="10"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
+                        <Trigger SourceName="PART_GlowBorder" Property="IsEnabled" Value="False">
                             <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
                         </Trigger>
-                        <Trigger Property="IsCenterContentEnabled" Value="False">
+                        <Trigger SourceName="PART_ContentBorder" Property="IsEnabled" Value="False">
                             <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
-                            <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

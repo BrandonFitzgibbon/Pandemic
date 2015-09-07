@@ -106,6 +106,7 @@
                 </Viewbox>
             </Border>
         </DataTemplate>
+        
         <DataTemplate x:Key="InfectionTemplateLeft">
             <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
                 <StackPanel Orientation="Horizontal">
@@ -116,6 +117,7 @@
                 </StackPanel>
             </Border>
         </DataTemplate>
+
         <DataTemplate x:Key="InfectionTemplateRight">
             <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
                 <StackPanel Orientation="Horizontal">
@@ -125,34 +127,6 @@
                     </Viewbox>
                 </StackPanel>
             </Border>
-        </DataTemplate>
-        <DataTemplate x:Key="DriveDestinationTemplate" DataType="{x:Type ai:DriveDestinationItem}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
-                <Viewbox Height="16" Margin="2,3,0,0">
-                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
-                </Viewbox>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="DispatchDestinationTemplate" DataType="{x:Type ai:DispatchItem}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
-                <Viewbox Height="16" Margin="2,3,0,0">
-                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
-                </Viewbox>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="DirectFlightTemplate" DataType="{x:Type ai:DirectFlightItem}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="1" Foreground="White" FontSize="16"/>
-                <Viewbox Height="16" Margin="2,3,0,0">
-                    <ContentControl Content="{StaticResource cards}"/>
-                </Viewbox>
-                <TextBlock Text="1" Foreground="White" FontSize="16" Margin="2,0,0,0"/>
-                <Viewbox Height="16" Margin="2,3,0,0">
-                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
-                </Viewbox>
-            </StackPanel>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -202,24 +176,29 @@
                         <!--Initial View-->
                         <Setter Property="UpperLeftContent" Value="{x:Null}"/>
                         <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="UpperRightContent" Value="{x:Null}"/>
-                        <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="BottomLeftContent" Value="{x:Null}"/>
-                        <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="BottomRightContent" Value="{x:Null}"/>
-                        <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
-                        
                         <Setter Property="UpperLeftCommand" Value="{x:Null}"/>
                         <Setter Property="UpperLeftCommandParameter" Value="{x:Null}"/>
+
+                        <Setter Property="UpperRightContent" Value="{x:Null}"/>
+                        <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
                         <Setter Property="UpperRightCommand" Value="{x:Null}"/>
                         <Setter Property="UpperRightCommandParameter" Value="{x:Null}"/>
+
+                        <Setter Property="BottomLeftContent" Value="{x:Null}"/>
+                        <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
                         <Setter Property="BottomLeftCommand" Value="{x:Null}"/>
                         <Setter Property="BottomLeftCommandParameter" Value="{x:Null}"/>
+
+                        <Setter Property="BottomRightContent" Value="{x:Null}"/>
+                        <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>                      
                         <Setter Property="BottomRightCommand" Value="{x:Null}"/>
                         <Setter Property="BottomRightCommandParameter" Value="{x:Null}"/>
 
                         <Setter Property="CenterContent" Value="{x:Null}"/>
                         <Setter Property="CenterContentTemplate" Value="{x:Null}"/>
+                        <Setter Property="Command" Value="{x:Null}"/>
+                        <Setter Property="CommandParameter" Value="{x:Null}"/>
+                        
                         <Setter Property="TopCenterContent" Value="{x:Null}"/>
                         <Setter Property="TopCenterContentTemplate" Value="{x:Null}"/>
                         <Setter Property="BottomCenterContent" Value="{x:Null}"/>
@@ -259,35 +238,40 @@
                                     <Setter.Value>
                                         <DataTemplate>
                                             <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                <ContentControl x:Name="Content" Content="{Binding DriveDestinationItem}">
+                                                    <ContentControl.ContentTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
+                                                                <Viewbox Height="16" Margin="2,3,0,0">
+                                                                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                                                                </Viewbox>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ContentControl.ContentTemplate>
+                                                </ContentControl>
                                             </Viewbox>
                                             <DataTemplate.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding ContainsCurrentPlayer}" Value="False"/>
-                                                        <Condition Binding="{Binding CanDrive}" Value="True"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <MultiDataTrigger.Setters>
-                                                        <Setter TargetName="Content" Property="Content" Value="{Binding DriveDestinationItem}"/>
-                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DriveDestinationTemplate}"/>
-                                                    </MultiDataTrigger.Setters>
-                                                </MultiDataTrigger>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="False"/>
-                                                        <Condition Binding="{Binding CanDrive}" Value="False"/>
+                                                        <Condition Binding="{Binding DriveDestinationItem}" Value="{x:Null}"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <MultiDataTrigger.Setters>
                                                         <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
+                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
                                                     </MultiDataTrigger.Setters>
                                                 </MultiDataTrigger>
+                                                <DataTrigger Binding="{Binding ContainsCurrentPlayer}" Value="True">
+                                                    <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                    <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
+                                                </DataTrigger>
                                             </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
                                 <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DriveCommand}"/>
                                 <Setter Property="CommandParameter" Value="{Binding DriveDestinationItem}"/>
-                                <Setter Property="IsEnabled" Value="{Binding CanDrive}"/>
                                 <Setter Property="FlashingOnMouseOver" Value="True"/>
                             </DataTrigger>
 
@@ -301,7 +285,7 @@
                                     <Setter Property="GlowBrush" Value="White"/>
                                     <Setter Property="UpperLeftContent" Value="{Binding PlayerOneNotSelectedViewModel}"/>
                                     <Setter Property="UpperLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="UpperLeftCommand" Value="{Binding CommandsViewModel.SelectPlayerCommand}"/>
+                                    <Setter Property="UpperLeftCommand" Value="{Binding BoardViewModel.CommandsViewModel.SelectPlayerCommand}"/>
                                     <Setter Property="UpperLeftCommandParameter" Value="{Binding PlayerOneNotSelectedViewModel.Player}"/>
                                     <Setter Property="UpperRightContent" Value="{Binding PlayerTwoNotSelectedViewModel}"/>
                                     <Setter Property="UpperRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
@@ -314,35 +298,40 @@
                                         <Setter.Value>
                                             <DataTemplate>
                                                 <Viewbox>
-                                                    <ContentControl x:Name="Content" Content="{Binding BoardViewModel.SelectedPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                    <ContentControl x:Name="Content" Content="{Binding DispatchItem}">
+                                                        <ContentControl.ContentTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
+                                                                    <Viewbox Height="16" Margin="2,3,0,0">
+                                                                        <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
+                                                                    </Viewbox>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ContentControl.ContentTemplate>
+                                                    </ContentControl>
                                                 </Viewbox>
                                                 <DataTemplate.Triggers>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
                                                             <Condition Binding="{Binding ContainsSelectedPlayer}" Value="False"/>
-                                                            <Condition Binding="{Binding CanDrive}" Value="True"/>
-                                                        </MultiDataTrigger.Conditions>
-                                                        <MultiDataTrigger.Setters>
-                                                            <Setter TargetName="Content" Property="Content" Value="{Binding DispatchItem}"/>
-                                                            <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DispatchDestinationTemplate}"/>
-                                                        </MultiDataTrigger.Setters>
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding ContainsSelectedPlayer}" Value="False"/>
-                                                            <Condition Binding="{Binding CanDrive}" Value="False"/>
+                                                            <Condition Binding="{Binding DispatchItem}" Value="{x:Null}"/>
                                                         </MultiDataTrigger.Conditions>
                                                         <MultiDataTrigger.Setters>
                                                             <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
+                                                            <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
                                                         </MultiDataTrigger.Setters>
                                                     </MultiDataTrigger>
+                                                    <DataTrigger Binding="{Binding ContainsSelectedPlayer}" Value="True">
+                                                        <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
+                                                    </DataTrigger>
                                                 </DataTemplate.Triggers>
                                             </DataTemplate>
                                         </Setter.Value>
                                     </Setter>
-                                    <Setter Property="Command" Value="{Binding CommandsViewModel.DispatchCommand}"/>
+                                    <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DispatchCommand}"/>
                                     <Setter Property="CommandParameter" Value="{Binding DispatchItem}"/>
-                                    <Setter Property="IsCenterContentEnabled" Value="{Binding CanDispatch}"/>
                                     <Setter Property="FlashingOnMouseOver" Value="True"/>
                                 </MultiDataTrigger.Setters>
                             </MultiDataTrigger>

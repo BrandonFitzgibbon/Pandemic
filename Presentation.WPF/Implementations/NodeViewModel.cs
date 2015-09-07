@@ -36,6 +36,12 @@ namespace Presentation.WPF.Implementations
             get { return node.ResearchStation; }
         }
 
+        private IEnumerable<INodeDiseaseCounterViewModel> nodeCounters;
+        public IEnumerable<INodeDiseaseCounterViewModel> NodeCounters
+        {
+            get { return nodeCounters; }
+        }
+
         private IBoardViewModel boardViewModel;
         public IBoardViewModel BoardViewModel
         {
@@ -46,12 +52,6 @@ namespace Presentation.WPF.Implementations
         public IEnumerable<IPlayerViewModel> Players
         {
             get { return players; }
-        }
-
-        private IEnumerable<INodeDiseaseCounterViewModel> nodeCounters;
-        public IEnumerable<INodeDiseaseCounterViewModel> NodeCounters
-        {
-            get { return nodeCounters; }
         }
 
         public NodeStatus Status
@@ -158,19 +158,9 @@ namespace Presentation.WPF.Implementations
             get { return actionManager != null && actionManager.DriveDestinations != null ? actionManager.DriveDestinations.SingleOrDefault(i => i.Node == Node) : null; }
         }
 
-        public bool CanDrive
-        {
-            get { return actionManager != null ? actionManager.CanDrive(DriveDestinationItem) : false; }
-        }
-
         public DirectFlightItem DirectFlightItem
         {
             get { return actionManager != null && actionManager.DirectFlightDestinations != null ? actionManager.DirectFlightDestinations.SingleOrDefault(i => i.CityCard.Node == Node) : null; }
-        }
-
-        public bool CanDispatch
-        {
-            get { return actionManager != null ? actionManager.CanDispatch(DispatchItem) : false; }
         }
 
         public DispatchItem DispatchItem
@@ -178,19 +168,9 @@ namespace Presentation.WPF.Implementations
             get { return actionManager != null && actionManager.DispatchDestinations != null && boardViewModel != null && boardViewModel.SelectedPlayerViewModel != null ? actionManager.DispatchDestinations.SingleOrDefault(i => i.DispatchDestination == Node && i.Player == boardViewModel.SelectedPlayerViewModel.Player) : null;}
         }
 
-        public bool CanDirectFlight
-        {
-            get { return actionManager != null ? actionManager.CanDirectFlight(DirectFlightItem) : false; }
-        }
-
         public CharterFlightItem CharterFlightItem
         {
             get { return actionManager != null && actionManager.CharterFlightDestinations != null ? actionManager.CharterFlightDestinations.SingleOrDefault(i => i.CityCard.Node == Node) : null; }
-        }
-
-        public bool CanCharterFlight
-        {
-            get { return actionManager != null ? actionManager.CanCharterFlight(CharterFlightItem) : false; }
         }
 
         public NodeViewModel(Node node, ActionManager actionManager, IContext<Player> selectedPlayer, IEnumerable<INodeDiseaseCounterViewModel> nodeCounters, IEnumerable<IPlayerViewModel> players, IBoardViewModel boardViewModel, Notifier notifier)
