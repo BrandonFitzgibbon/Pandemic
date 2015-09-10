@@ -90,6 +90,7 @@
     <Compile Include="Implementations\DrawManager.cs" />
     <Compile Include="Implementations\EpidemicManager.cs" />
     <Compile Include="Implementations\InfectionManager.cs" />
+    <Compile Include="Implementations\NodeGrapher.cs" />
     <Compile Include="Implementations\ResearchStationCounter.cs" />
     <Compile Include="Implementations\Roles\Dispatcher.cs" />
     <Compile Include="Implementations\EpidemicCard.cs" />

@@ -44,91 +44,6 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
-        <DataTemplate x:Key="PlayerTemplate">
-            <Border CornerRadius="5" Padding="6,3,6,3" Background="Gray" BorderBrush="Black" BorderThickness="1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-                <Viewbox Height="26">
-                    <ContentControl>
-                        <ContentControl.Style>
-                            <Style TargetType="ContentControl">
-                                <Setter Property="Content" Value="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                        <Setter Property="Content" Value="{StaticResource pawnWhite}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ContentControl.Style>
-                    </ContentControl>
-                </Viewbox>
-            </Border>
-        </DataTemplate>
-        <DataTemplate x:Key="SelectablePlayerTemplate">
-            <Border CornerRadius="5" Padding="6,3,6,3" BorderThickness="1">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Background" Value="Gray"/>
-                        <Setter Property="BorderBrush" Value="Black"/>
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" Value="Yellow"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-                <Viewbox Height="26">
-                    <ContentControl>
-                        <ContentControl.Style>
-                            <Style TargetType="ContentControl">
-                                <Setter Property="Content" Value="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                        <Setter Property="Content" Value="{StaticResource pawnWhite}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ContentControl.Style>
-                    </ContentControl>
-                </Viewbox>
-            </Border>
-        </DataTemplate>
-        
-        <DataTemplate x:Key="InfectionTemplateLeft">
-            <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
-                <StackPanel Orientation="Horizontal">
-                    <Viewbox Height="16">
-                        <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                    </Viewbox>
-                    <TextBlock Text="{Binding Count}" Foreground="White" FontSize="16" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
-
-        <DataTemplate x:Key="InfectionTemplateRight">
-            <Border CornerRadius="5" Padding="3" Background="Gray" BorderBrush="Black" BorderThickness="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Count}" Foreground="White" FontSize="16" Margin="0,0,5,0"/>
-                    <Viewbox Height="16">
-                        <ContentControl Content="{Binding Disease, Converter={StaticResource DiseaseToIconConverter}}"/>
-                    </Viewbox>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
-
     </UserControl.Resources>
 
     <Grid>
@@ -145,7 +60,8 @@
         </Grid.RowDefinitions>
 
         <c:PanZoomPanel Grid.Row="1" Grid.Column="1" Scale="0.32">
-            <Canvas x:Name="Canvas" Width="6000" Height="3000" RenderTransformOrigin="0,0">
+            <Canvas x:Name="Canvas" c:ExtendedCanvas.AnchorCollection="{Binding AnchorViewModels}" c:ExtendedCanvas.ConnectionCollection="{Binding ConnectionViewModels}"  Width="6000" Height="3000" RenderTransformOrigin="0,0">
+                
                 <Canvas.Background>
                     <VisualBrush>
                         <VisualBrush.Visual>
@@ -153,6 +69,7 @@
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Canvas.Background>
+                
                 <Canvas.Resources>
 
                     <Style TargetType="c:Anchor">
@@ -161,7 +78,10 @@
                         <Setter Property="Padding" Value="40"/>
                         <Setter Property="BorderBrush" Value="Black"/>
                         <Setter Property="BorderThickness" Value="2"/>
-                        <Setter Property="GlowBrush" Value="{Binding Status, Converter={StaticResource StatusToColorConverter}}"/>
+                        <Setter Property="Background" Value="{Binding Background}"/>
+                        <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                        <Setter Property="GlowBrush" Value="{Binding GlowBrush}"/>
                         <Setter Property="Panel.ZIndex" Value="1000"/>
                         <Setter Property="Margin">
                             <Setter.Value>
@@ -171,249 +91,12 @@
                                 </MultiBinding>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="FlashingOnMouseOver" Value="False"/>
 
-                        <!--Initial View-->
-                        <Setter Property="UpperLeftContent" Value="{x:Null}"/>
-                        <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="UpperLeftCommand" Value="{x:Null}"/>
-                        <Setter Property="UpperLeftCommandParameter" Value="{x:Null}"/>
-
-                        <Setter Property="UpperRightContent" Value="{x:Null}"/>
-                        <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="UpperRightCommand" Value="{x:Null}"/>
-                        <Setter Property="UpperRightCommandParameter" Value="{x:Null}"/>
-
-                        <Setter Property="BottomLeftContent" Value="{x:Null}"/>
-                        <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="BottomLeftCommand" Value="{x:Null}"/>
-                        <Setter Property="BottomLeftCommandParameter" Value="{x:Null}"/>
-
-                        <Setter Property="BottomRightContent" Value="{x:Null}"/>
-                        <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>                      
-                        <Setter Property="BottomRightCommand" Value="{x:Null}"/>
-                        <Setter Property="BottomRightCommandParameter" Value="{x:Null}"/>
-
-                        <Setter Property="CenterContent" Value="{x:Null}"/>
-                        <Setter Property="CenterContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="Command" Value="{x:Null}"/>
-                        <Setter Property="CommandParameter" Value="{x:Null}"/>
-                        
-                        <Setter Property="TopCenterContent" Value="{x:Null}"/>
-                        <Setter Property="TopCenterContentTemplate" Value="{x:Null}"/>
-                        <Setter Property="BottomCenterContent" Value="{x:Null}"/>
-                        <Setter Property="BottomCenterContentTemplate" Value="{x:Null}"/>
-                        
                         <Style.Triggers>
-
-                            <!--Infection View Style-->
-                            <DataTrigger Binding="{Binding ElementName=InfectionViewButton, Path=IsChecked}" Value="True">
-                                <Setter Property="UpperLeftContent" Value="{Binding YellowCounter}"/>
-                                <Setter Property="UpperLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
-                                <Setter Property="UpperRightContent" Value="{Binding RedCounter}"/>
-                                <Setter Property="UpperRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
-                                <Setter Property="BottomLeftContent" Value="{Binding BlueCounter}"/>
-                                <Setter Property="BottomLeftContentTemplate" Value="{StaticResource InfectionTemplateLeft}"/>
-                                <Setter Property="BottomRightContent" Value="{Binding BlackCounter}"/>
-                                <Setter Property="BottomRightContentTemplate" Value="{StaticResource InfectionTemplateRight}"/>
-                            </DataTrigger>
-
-                                <!--Player View Style-->
-                            <DataTrigger Binding="{Binding ElementName=PlayerViewButton, Path=IsChecked}" Value="True">
-                                <Setter Property="UpperLeftContent" Value="{Binding PlayerOneViewModel}"/>
-                                <Setter Property="UpperLeftContentTemplate" Value="{StaticResource PlayerTemplate}"/>
-                                <Setter Property="UpperRightContent" Value="{Binding PlayerTwoViewModel}"/>
-                                <Setter Property="UpperRightContentTemplate" Value="{StaticResource PlayerTemplate}"/>
-                                <Setter Property="BottomLeftContent" Value="{Binding PlayerThreeViewModel}"/>
-                                <Setter Property="BottomLeftContentTemplate" Value="{StaticResource PlayerTemplate}"/>
-                                <Setter Property="BottomRightContent" Value="{Binding PlayerFourViewModel}"/>
-                                <Setter Property="BottomRightContentTemplate" Value="{StaticResource PlayerTemplate}"/>
-                            </DataTrigger>
-
-                            <!--Drive Style-->
                             <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
-                                <Setter Property="GlowBrush" Value="White"/>
-                                <Setter Property="CenterContent" Value="{Binding}"/>
-                                <Setter Property="CenterContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding DriveDestinationItem}">
-                                                    <ContentControl.ContentTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
-                                                                <Viewbox Height="16" Margin="2,3,0,0">
-                                                                    <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
-                                                                </Viewbox>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ContentControl.ContentTemplate>
-                                                </ContentControl>
-                                            </Viewbox>
-                                            <DataTemplate.Triggers>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding ContainsCurrentPlayer}" Value="False"/>
-                                                        <Condition Binding="{Binding DriveDestinationItem}" Value="{x:Null}"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <MultiDataTrigger.Setters>
-                                                        <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
-                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
-                                                    </MultiDataTrigger.Setters>
-                                                </MultiDataTrigger>
-                                                <DataTrigger Binding="{Binding ContainsCurrentPlayer}" Value="True">
-                                                    <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                                    <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DriveCommand}"/>
-                                <Setter Property="CommandParameter" Value="{Binding DriveDestinationItem}"/>
-                                <Setter Property="FlashingOnMouseOver" Value="True"/>
+                                <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterCommand}"/>
+                                <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveCommand}"/>
                             </DataTrigger>
-
-                            <!--Dispatcher Style-->
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True"/>
-                                    <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="Dispatcher"/>
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.Setters>
-                                    <Setter Property="GlowBrush" Value="White"/>
-                                    <Setter Property="UpperLeftContent" Value="{Binding PlayerOneNotSelectedViewModel}"/>
-                                    <Setter Property="UpperLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="UpperLeftCommand" Value="{Binding BoardViewModel.CommandsViewModel.SelectPlayerCommand}"/>
-                                    <Setter Property="UpperLeftCommandParameter" Value="{Binding PlayerOneNotSelectedViewModel.Player}"/>
-                                    <Setter Property="UpperRightContent" Value="{Binding PlayerTwoNotSelectedViewModel}"/>
-                                    <Setter Property="UpperRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="BottomLeftContent" Value="{Binding PlayerThreeNotSelectedViewModel}"/>
-                                    <Setter Property="BottomLeftContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="BottomRightContent" Value="{Binding PlayerFourNotSelectedViewModel}"/>
-                                    <Setter Property="BottomRightContentTemplate" Value="{StaticResource SelectablePlayerTemplate}"/>
-                                    <Setter Property="CenterContent" Value="{Binding}"/>
-                                    <Setter Property="CenterContentTemplate">
-                                        <Setter.Value>
-                                            <DataTemplate>
-                                                <Viewbox>
-                                                    <ContentControl x:Name="Content" Content="{Binding DispatchItem}">
-                                                        <ContentControl.ContentTemplate>
-                                                            <DataTemplate>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock x:Name="Text" Text="{Binding Cost}" Foreground="White" FontSize="16"/>
-                                                                    <Viewbox Height="16" Margin="2,3,0,0">
-                                                                        <ContentControl x:Name="Content" Content="{StaticResource actions}"/>
-                                                                    </Viewbox>
-                                                                </StackPanel>
-                                                            </DataTemplate>
-                                                        </ContentControl.ContentTemplate>
-                                                    </ContentControl>
-                                                </Viewbox>
-                                                <DataTemplate.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding ContainsSelectedPlayer}" Value="False"/>
-                                                            <Condition Binding="{Binding DispatchItem}" Value="{x:Null}"/>
-                                                        </MultiDataTrigger.Conditions>
-                                                        <MultiDataTrigger.Setters>
-                                                            <Setter TargetName="Content" Property="Content" Value="{x:Null}"/>
-                                                            <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
-                                                        </MultiDataTrigger.Setters>
-                                                    </MultiDataTrigger>
-                                                    <DataTrigger Binding="{Binding ContainsSelectedPlayer}" Value="True">
-                                                        <Setter TargetName="Content" Property="Content" Value="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{x:Null}"/>
-                                                    </DataTrigger>
-                                                </DataTemplate.Triggers>
-                                            </DataTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DispatchCommand}"/>
-                                    <Setter Property="CommandParameter" Value="{Binding DispatchItem}"/>
-                                    <Setter Property="FlashingOnMouseOver" Value="True"/>
-                                </MultiDataTrigger.Setters>
-                            </MultiDataTrigger>
-
-                                <!--Direct Flight Style-->
-                            <DataTrigger Binding="{Binding ElementName=DirectFlightActionButton, Path=IsChecked}" Value="True">
-                                <Setter Property="GlowBrush" Value="White"/>
-                                <Setter Property="UpperLeftContent" Value="{x:Null}"/>
-                                <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContent" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContent" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContent" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="CenterContent" Value="{Binding}"/>
-                                <Setter Property="CenterContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                            </Viewbox>
-                                            <DataTemplate.Triggers>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
-                                                        <Condition Binding="{Binding CanDirectFlight}" Value="True"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <MultiDataTrigger.Setters>
-                                                        <Setter TargetName="Content" Property="Content" Value="{Binding DirectFlightItem}"/>
-                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DirectFlightTemplate}"/>
-                                                    </MultiDataTrigger.Setters>
-                                                </MultiDataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Command" Value="{Binding CommandsViewModel.DirectFlightCommand}"/>
-                                <Setter Property="CommandParameter" Value="{Binding DirectFlightItem}"/>
-                                <Setter Property="IsEnabled" Value="{Binding CanDirectFlight}"/>
-                                <Setter Property="FlashingOnMouseOver" Value="True"/>
-                            </DataTrigger>
-
-                            <!--Charter Flight Style-->
-                            <DataTrigger Binding="{Binding ElementName=CharterFlightActionButton, Path=IsChecked}" Value="True">
-                                <Setter Property="GlowBrush" Value="White"/>
-                                <Setter Property="UpperLeftContent" Value="{x:Null}"/>
-                                <Setter Property="UpperLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContent" Value="{x:Null}"/>
-                                <Setter Property="UpperRightContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContent" Value="{x:Null}"/>
-                                <Setter Property="BottomLeftContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContent" Value="{x:Null}"/>
-                                <Setter Property="BottomRightContentTemplate" Value="{x:Null}"/>
-                                <Setter Property="CenterContent" Value="{Binding}"/>
-                                <Setter Property="CenterContentTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Viewbox>
-                                                <ContentControl x:Name="Content" Content="{Binding BoardViewModel.CurrentPlayerViewModel.Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                                            </Viewbox>
-                                            <DataTemplate.Triggers>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="{x:Null}"/>
-                                                        <Condition Binding="{Binding CanCharterFlight}" Value="True"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <MultiDataTrigger.Setters>
-                                                        <Setter TargetName="Content" Property="Content" Value="{Binding CharterFlightItem}"/>
-                                                        <Setter TargetName="Content" Property="ContentTemplate" Value="{StaticResource DirectFlightTemplate}"/>
-                                                    </MultiDataTrigger.Setters>
-                                                </MultiDataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Command" Value="{Binding CommandsViewModel.CharterFlightCommand}"/>
-                                <Setter Property="CommandParameter" Value="{Binding CharterFlightItem}"/>
-                                <Setter Property="IsEnabled" Value="{Binding CanCharterFlight}"/>
-                                <Setter Property="FlashingOnMouseOver" Value="True"/>
-                            </DataTrigger>
-
                         </Style.Triggers>
                         
                     </Style>
@@ -423,144 +106,8 @@
                     </Style>
                 </Canvas.Resources>
 
-                <c:Anchor x:Name="MTL" Background="Blue" Canvas.Left="1675" Canvas.Top="1150" DataContext="{Binding NodeViewModels, ConverterParameter=Montreal, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="CHI" Background="Blue" Canvas.Left="1325" Canvas.Top="1125" DataContext="{Binding NodeViewModels, ConverterParameter=Chicago, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SF" Background="Blue" Canvas.Left="800" Canvas.Top="1200" DataContext="{Binding NodeViewModels, ConverterParameter=San Francisco, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="NY" Background="Blue" Canvas.Left="1950" Canvas.Top="1200" DataContext="{Binding NodeViewModels, ConverterParameter=New York, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="WSH" Background="Blue" Canvas.Left="1800" Canvas.Top="1350" DataContext="{Binding NodeViewModels, ConverterParameter=Washington, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="ATL" Background="Blue" Canvas.Left="1400" Canvas.Top="1400" DataContext="{Binding NodeViewModels, ConverterParameter=Atlanta, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="LON" Background="Blue" Canvas.Left="2625" Canvas.Top="1025" DataContext="{Binding NodeViewModels, ConverterParameter=London, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MAD" Background="Blue" Canvas.Left="2600" Canvas.Top="1300" DataContext="{Binding NodeViewModels, ConverterParameter=Madrid, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="PAR" Background="Blue" Canvas.Left="2900" Canvas.Top="1175" DataContext="{Binding NodeViewModels, ConverterParameter=Paris, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MIL" Background="Blue" Canvas.Left="3125" Canvas.Top="1100" DataContext="{Binding NodeViewModels, ConverterParameter=Milan, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="STP" Background="Blue" Canvas.Left="3325" Canvas.Top="900" DataContext="{Binding NodeViewModels, ConverterParameter=St. Petersburg, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="ESS" Background="Blue" Canvas.Left="2975" Canvas.Top="975" DataContext="{Binding NodeViewModels, ConverterParameter=Essen, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MIA" Background="Yellow" Canvas.Left="1600" Canvas.Top="1575" DataContext="{Binding NodeViewModels, ConverterParameter=Miami, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="LA" Background="Yellow" Canvas.Left="800" Canvas.Top="1525" DataContext="{Binding NodeViewModels, ConverterParameter=Los Angeles, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MEX" Background="Yellow" Canvas.Left="1100" Canvas.Top="1600" DataContext="{Binding NodeViewModels, ConverterParameter=Mexico City, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="LIM" Background="Yellow" Canvas.Left="1450" Canvas.Top="2300" DataContext="{Binding NodeViewModels, ConverterParameter=Lima, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SAN" Background="Yellow" Canvas.Left="1525" Canvas.Top="2600" DataContext="{Binding NodeViewModels, ConverterParameter=Santiago, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="BOG" Background="Yellow" Canvas.Left="1600" Canvas.Top="1900" DataContext="{Binding NodeViewModels, ConverterParameter=Bogota, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SAO" Background="Yellow" Canvas.Left="2125" Canvas.Top="2275" DataContext="{Binding NodeViewModels, ConverterParameter=Sao Paulo, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="BUE" Background="Yellow" Canvas.Left="1900" Canvas.Top="2525" DataContext="{Binding NodeViewModels, ConverterParameter=Buenos Aires, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="LAG" Background="Yellow" Canvas.Left="2800" Canvas.Top="1875" DataContext="{Binding NodeViewModels, ConverterParameter=Lagos, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="KHA" Background="Yellow" Canvas.Left="3300" Canvas.Top="1825" DataContext="{Binding NodeViewModels, ConverterParameter=Khartoum, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="KIN" Background="Yellow" Canvas.Left="3100" Canvas.Top="2100" DataContext="{Binding NodeViewModels, ConverterParameter=Kinshasa, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="JOH" Background="Yellow" Canvas.Left="3350" Canvas.Top="2375" DataContext="{Binding NodeViewModels, ConverterParameter=Johannesburg, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="ALG" Background="Black" Canvas.Left="2900" Canvas.Top="1450" DataContext="{Binding NodeViewModels, ConverterParameter=Algiers, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="CAI" Background="Black" Canvas.Left="3300" Canvas.Top="1550" DataContext="{Binding NodeViewModels, ConverterParameter=Cairo, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MOS" Background="Black" Canvas.Left="3550" Canvas.Top="1100" DataContext="{Binding NodeViewModels, ConverterParameter=Moscow, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="IST" Background="Black" Canvas.Left="3300" Canvas.Top="1275" DataContext="{Binding NodeViewModels, ConverterParameter=Istanbul, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="BAG" Background="Black" Canvas.Left="3550" Canvas.Top="1400" DataContext="{Binding NodeViewModels, ConverterParameter=Baghdad, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="TEH" Background="Black" Canvas.Left="3900" Canvas.Top="1250" DataContext="{Binding NodeViewModels, ConverterParameter=Tehran, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="KAR" Background="Black" Canvas.Left="4000" Canvas.Top="1550" DataContext="{Binding NodeViewModels, ConverterParameter=Karachi, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="DEL" Background="Black" Canvas.Left="4200" Canvas.Top="1400" DataContext="{Binding NodeViewModels, ConverterParameter=Delhi, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="RIY" Background="Black" Canvas.Left="3625" Canvas.Top="1675" DataContext="{Binding NodeViewModels, ConverterParameter=Riyadh, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MUM" Background="Black" Canvas.Left="4075" Canvas.Top="1750" DataContext="{Binding NodeViewModels, ConverterParameter=Mumbai, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="CHE" Background="Black" Canvas.Left="4300" Canvas.Top="1875" DataContext="{Binding NodeViewModels, ConverterParameter=Chennai, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="KOL" Background="Black" Canvas.Left="4525" Canvas.Top="1500" DataContext="{Binding NodeViewModels, ConverterParameter=Kolkata, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SHA" Background="Red" Canvas.Left="4725" Canvas.Top="1275" DataContext="{Binding NodeViewModels, ConverterParameter=Shanghai, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="BEI" Background="Red" Canvas.Left="4750" Canvas.Top="1000" DataContext="{Binding NodeViewModels, ConverterParameter=Beijing, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SEO" Background="Red" Canvas.Left="5000" Canvas.Top="1050" DataContext="{Binding NodeViewModels, ConverterParameter=Seoul, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="TOK" Background="Red" Canvas.Left="5250" Canvas.Top="1200" DataContext="{Binding NodeViewModels, ConverterParameter=Tokyo, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="HON" Background="Red" Canvas.Left="4775" Canvas.Top="1600" DataContext="{Binding NodeViewModels, ConverterParameter=Hong Kong, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="BAN" Background="Red" Canvas.Left="4575" Canvas.Top="1750" DataContext="{Binding NodeViewModels, ConverterParameter=Bangkok, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="TAI" Background="Red" Canvas.Left="5100" Canvas.Top="1600" DataContext="{Binding NodeViewModels, ConverterParameter=Taipei, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="OSA" Background="Red" Canvas.Left="5400" Canvas.Top="1475" DataContext="{Binding NodeViewModels, ConverterParameter=Osaka, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="HOC" Background="Red" Canvas.Left="4825" Canvas.Top="1925" DataContext="{Binding NodeViewModels, ConverterParameter=Ho Chi Minh City, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="MAN" Background="Red" Canvas.Left="5175" Canvas.Top="1950" DataContext="{Binding NodeViewModels, ConverterParameter=Manila, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="JAK" Background="Red" Canvas.Left="4600" Canvas.Top="2125" DataContext="{Binding NodeViewModels, ConverterParameter=Jakarta, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:Anchor x:Name="SYD" Background="Red" Canvas.Left="5350" Canvas.Top="2600" DataContext="{Binding NodeViewModels, ConverterParameter=Sydney, Converter={StaticResource NameToNodeConverter}}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SF}" Target="{Binding ElementName=CHI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHI}" Target="{Binding ElementName=MTL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHI}" Target="{Binding ElementName=ATL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=WSH}" Target="{Binding ElementName=ATL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=NY}" Target="{Binding ElementName=MTL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=NY}" Target="{Binding ElementName=WSH}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=NY}" Target="{Binding ElementName=LON}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=NY}" Target="{Binding ElementName=MAD}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=WSH}" Target="{Binding ElementName=MTL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LON}" Target="{Binding ElementName=MAD}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=PAR}" Target="{Binding ElementName=LON}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=PAR}" Target="{Binding ElementName=MAD}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=PAR}" Target="{Binding ElementName=MIL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=PAR}" Target="{Binding ElementName=ESS}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ESS}" Target="{Binding ElementName=STP}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ESS}" Target="{Binding ElementName=LON}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ESS}" Target="{Binding ElementName=MIL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=WSH}" Target="{Binding ElementName=MIA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ATL}" Target="{Binding ElementName=MIA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LA}" Target="{Binding ElementName=SF}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LA}" Target="{Binding ElementName=CHI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LA}" Target="{Binding ElementName=MEX}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHI}" Target="{Binding ElementName=MEX}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=MIA}" Target="{Binding ElementName=MEX}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=MIA}" Target="{Binding ElementName=BOG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BOG}" Target="{Binding ElementName=SAO}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BOG}" Target="{Binding ElementName=BUE}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BOG}" Target="{Binding ElementName=LIM}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BOG}" Target="{Binding ElementName=MEX}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LIM}" Target="{Binding ElementName=MEX}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LIM}" Target="{Binding ElementName=SAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SAO}" Target="{Binding ElementName=BUE}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SAO}" Target="{Binding ElementName=MAD}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SAO}" Target="{Binding ElementName=LAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KIN}" Target="{Binding ElementName=KHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KIN}" Target="{Binding ElementName=LAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KIN}" Target="{Binding ElementName=JOH}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=LAG}" Target="{Binding ElementName=KHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=JOH}" Target="{Binding ElementName=KHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ALG}" Target="{Binding ElementName=PAR}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ALG}" Target="{Binding ElementName=MAD}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=ALG}" Target="{Binding ElementName=CAI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CAI}" Target="{Binding ElementName=RIY}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CAI}" Target="{Binding ElementName=KHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CAI}" Target="{Binding ElementName=BAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=CAI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=ALG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=MIL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=STP}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=BAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=IST}" Target="{Binding ElementName=MOS}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TEH}" Target="{Binding ElementName=BAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=MOS}" Target="{Binding ElementName=STP}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=MOS}" Target="{Binding ElementName=TEH}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=RIY}" Target="{Binding ElementName=BAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=RIY}" Target="{Binding ElementName=KAR}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KAR}" Target="{Binding ElementName=BAG}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KAR}" Target="{Binding ElementName=TEH}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KAR}" Target="{Binding ElementName=DEL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KAR}" Target="{Binding ElementName=MUM}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=DEL}" Target="{Binding ElementName=TEH}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=DEL}" Target="{Binding ElementName=KOL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=DEL}" Target="{Binding ElementName=MUM}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=DEL}" Target="{Binding ElementName=CHE}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHE}" Target="{Binding ElementName=MUM}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHE}" Target="{Binding ElementName=KOL}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHE}" Target="{Binding ElementName=BAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=CHE}" Target="{Binding ElementName=JAK}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KOL}" Target="{Binding ElementName=BAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=KOL}" Target="{Binding ElementName=HON}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HON}" Target="{Binding ElementName=BAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HON}" Target="{Binding ElementName=SHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HON}" Target="{Binding ElementName=TAI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HON}" Target="{Binding ElementName=HOC}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HON}" Target="{Binding ElementName=MAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BAN}" Target="{Binding ElementName=HOC}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BAN}" Target="{Binding ElementName=JAK}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HOC}" Target="{Binding ElementName=JAK}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=HOC}" Target="{Binding ElementName=MAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SYD}" Target="{Binding ElementName=JAK}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SYD}" Target="{Binding ElementName=MAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TAI}" Target="{Binding ElementName=MAN}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TAI}" Target="{Binding ElementName=SHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TAI}" Target="{Binding ElementName=OSA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TOK}" Target="{Binding ElementName=OSA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TOK}" Target="{Binding ElementName=SEO}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=TOK}" Target="{Binding ElementName=SHA}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SHA}" Target="{Binding ElementName=SEO}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=SHA}" Target="{Binding ElementName=BEI}"/>
-                <c:ConnectedContent Canvas="{Binding ElementName=Canvas}" Originator="{Binding ElementName=BEI}" Target="{Binding ElementName=SEO}"/>
+                <Path DataContext="{Binding PathAnimationViewModel}" Data="{Binding Data}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Stroke="White" StrokeThickness="3" StrokeDashArray="{Binding StrokeArray}"/>
+                
             </Canvas>
         </c:PanZoomPanel>
 

@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Presentation.WPF.Contracts;
+using Presentation.WPF.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace Presentation.WPF.Controls
 {
@@ -48,370 +52,76 @@ namespace Presentation.WPF.Controls
                 sb.Begin();
             }
         }
+    }
 
-        public static SolidColorBrush GetBorderColor(DependencyObject o)
+    public partial class ExtendedCanvas : Canvas
+    {
+        public static IEnumerable<IAnchorViewModel> GetAnchorCollection(DependencyObject o)
         {
-            return (SolidColorBrush)o.GetValue(BorderColorProperty);
+            return (IEnumerable<IAnchorViewModel>)o.GetValue(AnchorCollectionProperty);
         }
 
-        public static void SetBorderColor(DependencyObject o, SolidColorBrush value)
+        public static void SetAnchorCollection(DependencyObject o, IEnumerable<IAnchorViewModel> value)
         {
-            o.SetValue(BorderColorProperty, value);
+            o.SetValue(AnchorCollectionProperty, value);
         }
 
-        public static readonly DependencyProperty BorderColorProperty =
-            DependencyProperty.RegisterAttached("BorderColor", typeof(SolidColorBrush), typeof(ExtendedBorder), new PropertyMetadata(new PropertyChangedCallback(OnBorderColorChanged)));
+        public static readonly DependencyProperty AnchorCollectionProperty =
+            DependencyProperty.RegisterAttached("AnchorCollection", typeof(IEnumerable<IAnchorViewModel>), typeof(ExtendedCanvas), new PropertyMetadata(new PropertyChangedCallback(OnAnchorCollectionChanged)));
 
-        public Thickness AnimatedBorderThickness { get; set; }
-        public Thickness FrozenBorderThickness { get; set; }
-        public Thickness AnimatedPadding { get; set; }
-        public Thickness FrozenPadding { get; set; }
-
-        public static void OnBorderColorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        public static void OnAnchorCollectionChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ExtendedBorder bd = (ExtendedBorder)o;
-            Storyboard sb = new Storyboard();
+            IEnumerable<IAnchorViewModel> anchorViewModels = e.NewValue as IEnumerable<IAnchorViewModel>;
+            Canvas canvas = o as Canvas;
 
-            ColorAnimation colAni = new ColorAnimation();
-            ThicknessAnimation thkAni = new ThicknessAnimation();
-            ThicknessAnimation padAni = new ThicknessAnimation();
-
-            SolidColorBrush oldColor = (SolidColorBrush)e.OldValue;
-            SolidColorBrush newColor = (SolidColorBrush)e.NewValue;                     
-
-            if (oldColor == null)
-                oldColor = newColor;
-
-            if (newColor == null)
-                return;
-
-            RepeatBehavior rbYellow = new RepeatBehavior(TimeSpan.FromMilliseconds(750));
-            TimeSpan durationYellow = TimeSpan.FromMilliseconds(750);
-
-            RepeatBehavior rbOrange = new RepeatBehavior(TimeSpan.FromMilliseconds(500));
-            TimeSpan durationOrange = TimeSpan.FromMilliseconds(500);
-
-            RepeatBehavior rbRed = new RepeatBehavior(TimeSpan.FromMilliseconds(250));
-            TimeSpan durationRed = TimeSpan.FromMilliseconds(250);
-
-            if (oldColor.Color == System.Windows.Media.Brushes.LimeGreen.Color && newColor.Color == System.Windows.Media.Brushes.Yellow.Color)
+            if (anchorViewModels != null && canvas != null)
             {
-                colAni.From = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.To = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.Duration = durationYellow;
-                colAni.RepeatBehavior = rbYellow;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationYellow;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationYellow;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
+                foreach (IAnchorViewModel avm in anchorViewModels)
+                {
+                    Anchor anchor = new Anchor();
+                    anchor.DataContext = avm;
+                    canvas.Children.Add(anchor);
+                }
             }
+        }
 
-            if (oldColor.Color == System.Windows.Media.Brushes.LimeGreen.Color && newColor.Color == System.Windows.Media.Brushes.Orange.Color)
+        public static IEnumerable<IConnectionViewModel> GetConnectionCollection(DependencyObject o)
+        {
+            return (IEnumerable<IConnectionViewModel>)o.GetValue(ConnectionCollectionProperty);
+        }
+
+        public static void SetConnectionCollection(DependencyObject o, IEnumerable<IConnectionViewModel> value)
+        {
+            o.SetValue(ConnectionCollectionProperty, value);
+        }
+
+        public static readonly DependencyProperty ConnectionCollectionProperty =
+            DependencyProperty.RegisterAttached("ConnectionCollection", typeof(IEnumerable<IConnectionViewModel>), typeof(ExtendedCanvas), new PropertyMetadata(new PropertyChangedCallback(OnConnectionCollectionChanged)));
+
+        public static void OnConnectionCollectionChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            IEnumerable<IConnectionViewModel> connectionViewModels = e.NewValue as IEnumerable<IConnectionViewModel>;
+            Canvas canvas = o as Canvas;
+
+            if (connectionViewModels != null && canvas != null)
             {
-                colAni.From = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.To = System.Windows.Media.Brushes.Orange.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
+                foreach (IConnectionViewModel cvm in connectionViewModels)
+                {
+                    Line connection = new Line();
+                    connection.DataContext = cvm;
+                    connection.SetBinding(Line.X1Property, new Binding("X1"));
+                    connection.SetBinding(Line.X2Property, new Binding("X2"));
+                    connection.SetBinding(Line.Y1Property, new Binding("Y1"));
+                    connection.SetBinding(Line.Y2Property, new Binding("Y2"));
+                    connection.SetBinding(Line.StrokeProperty, new Binding("Stroke"));
+                    connection.SetBinding(Line.StrokeThicknessProperty, new Binding("Thickness"));
+                    connection.SetBinding(Line.OpacityProperty, new Binding("Opacity"));
+                    connection.SetBinding(Canvas.LeftProperty, new Binding("Left"));
+                    connection.SetBinding(Canvas.TopProperty, new Binding("Top"));
 
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationOrange;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
+                    canvas.Children.Add(connection);
+                }
             }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.LimeGreen.Color && newColor.Color == System.Windows.Media.Brushes.Red.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.To = System.Windows.Media.Brushes.Red.Color;
-                colAni.Duration = durationRed;
-                colAni.RepeatBehavior = rbRed;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationRed;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationRed;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Yellow.Color && newColor.Color == System.Windows.Media.Brushes.LimeGreen.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.To = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.AnimatedBorderThickness;
-                thkAni.To = new Thickness(bd.FrozenBorderThickness.Left, bd.FrozenBorderThickness.Top, bd.FrozenBorderThickness.Right, bd.FrozenBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                padAni.From = bd.AnimatedPadding;
-                padAni.To = new Thickness(bd.FrozenPadding.Left, bd.FrozenPadding.Top, bd.FrozenPadding.Right, bd.FrozenPadding.Bottom);
-                padAni.Duration = durationOrange;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Yellow.Color && newColor.Color == System.Windows.Media.Brushes.Yellow.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.To = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.Duration = durationYellow;
-                colAni.RepeatBehavior = rbYellow;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationYellow ;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationYellow;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Yellow.Color && newColor.Color == System.Windows.Media.Brushes.Orange.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.To = System.Windows.Media.Brushes.Orange.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationOrange;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Yellow.Color && newColor.Color == System.Windows.Media.Brushes.Red.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.To = System.Windows.Media.Brushes.Red.Color;
-                colAni.Duration = durationRed;
-                colAni.RepeatBehavior = rbRed;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationRed;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationRed;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Orange.Color && newColor.Color == System.Windows.Media.Brushes.LimeGreen.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Orange.Color;
-                colAni.To = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.AnimatedBorderThickness;
-                thkAni.To = new Thickness(bd.FrozenBorderThickness.Left, bd.FrozenBorderThickness.Top, bd.FrozenBorderThickness.Right, bd.FrozenBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                padAni.From = bd.AnimatedPadding;
-                padAni.To = new Thickness(bd.FrozenPadding.Left, bd.FrozenPadding.Top, bd.FrozenPadding.Right, bd.FrozenPadding.Bottom);
-                padAni.Duration = durationOrange;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Orange.Color && newColor.Color == System.Windows.Media.Brushes.Yellow.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Orange.Color;
-                colAni.To = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.Duration = durationYellow;
-                colAni.RepeatBehavior = rbYellow;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationYellow;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationYellow;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Orange.Color && newColor.Color == System.Windows.Media.Brushes.Orange.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Orange.Color;
-                colAni.To = System.Windows.Media.Brushes.Orange.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationOrange;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Orange.Color && newColor.Color == System.Windows.Media.Brushes.Red.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Orange.Color;
-                colAni.To = System.Windows.Media.Brushes.Red.Color;
-                colAni.Duration = durationRed;
-                colAni.RepeatBehavior = rbRed;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationRed;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationRed;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Red.Color && newColor.Color == System.Windows.Media.Brushes.LimeGreen.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Red.Color;
-                colAni.To = System.Windows.Media.Brushes.LimeGreen.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.AnimatedBorderThickness;
-                thkAni.To = new Thickness(bd.FrozenBorderThickness.Left, bd.FrozenBorderThickness.Top, bd.FrozenBorderThickness.Right, bd.FrozenBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                padAni.From = bd.AnimatedPadding;
-                padAni.To = new Thickness(bd.FrozenPadding.Left, bd.FrozenPadding.Top, bd.FrozenPadding.Right, bd.FrozenPadding.Bottom);
-                padAni.Duration = durationOrange;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Red.Color && newColor.Color == System.Windows.Media.Brushes.Yellow.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Red.Color;
-                colAni.To = System.Windows.Media.Brushes.Yellow.Color;
-                colAni.Duration = durationYellow;
-                colAni.RepeatBehavior = rbYellow;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationYellow;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationYellow;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Red.Color && newColor.Color == System.Windows.Media.Brushes.Orange.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Red.Color;
-                colAni.To = System.Windows.Media.Brushes.Orange.Color;
-                colAni.Duration = durationOrange;
-                colAni.RepeatBehavior = rbOrange;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationOrange;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationOrange;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (oldColor.Color == System.Windows.Media.Brushes.Red.Color && newColor.Color == System.Windows.Media.Brushes.Red.Color)
-            {
-                colAni.From = System.Windows.Media.Brushes.Red.Color;
-                colAni.To = System.Windows.Media.Brushes.Red.Color;
-                colAni.Duration = durationRed;
-                colAni.RepeatBehavior = rbRed;
-                colAni.AutoReverse = true;
-
-                thkAni.From = bd.FrozenBorderThickness;
-                thkAni.To = new Thickness(bd.AnimatedBorderThickness.Left, bd.AnimatedBorderThickness.Top, bd.AnimatedBorderThickness.Right, bd.AnimatedBorderThickness.Bottom);
-                thkAni.Duration = durationRed;
-                thkAni.RepeatBehavior = RepeatBehavior.Forever;
-                thkAni.AutoReverse = true;
-
-                padAni.From = bd.FrozenPadding;
-                padAni.To = new Thickness(bd.AnimatedPadding.Left, bd.AnimatedPadding.Top, bd.AnimatedPadding.Right, bd.AnimatedPadding.Bottom);
-                padAni.Duration = durationRed;
-                padAni.RepeatBehavior = RepeatBehavior.Forever;
-                padAni.AutoReverse = true;
-            }
-
-            if (colAni.From != null && colAni.To != null && bd.BorderBrush != null)
-            {
-                sb.Children.Add(colAni);
-                sb.Children.Add(thkAni);
-                sb.Children.Add(padAni);
-
-                Storyboard.SetTargetProperty(colAni, new PropertyPath("BorderBrush.Color"));
-                Storyboard.SetTarget(colAni, bd);
-
-                Storyboard.SetTargetProperty(thkAni, new PropertyPath("BorderThickness"));
-                Storyboard.SetTarget(thkAni, bd);
-
-                Storyboard.SetTargetProperty(padAni, new PropertyPath("Padding"));
-                Storyboard.SetTarget(padAni, bd);
-
-                sb.Begin();
-            }
-                
         }
     }
 }

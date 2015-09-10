@@ -1,4 +1,6 @@
-﻿using Presentation.WPF.Contracts;
+﻿using Engine.Implementations;
+using Presentation.WPF.Contracts;
+using Presentation.WPF.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,10 +28,24 @@ namespace Presentation.WPF.Views
         public BoardView()
         {
             InitializeComponent();
+
+            pathLine = new Path();
+            pathGeo = new PathGeometry();
+            pathFigure = new PathFigure();
+            pathLine.Data = pathGeo;
+            pathGeo.Figures.Add(pathFigure);
+            pathLine.Stroke = Brushes.White;
+            pathLine.StrokeThickness = 3;
+            pathLine.StrokeDashArray = new DoubleCollection() { 5 };
+
+            Canvas.Children.Add(pathLine);
         }
 
         Point start;
         Point origin;
+        Path pathLine;
+        PathGeometry pathGeo;
+        PathFigure pathFigure;
 
         private void Border_MouseWheel(object sender, MouseWheelEventArgs e)
         {
