@@ -74,6 +74,7 @@
     <Compile Include="Contracts\INodeDiseaseCounterViewModel.cs" />
     <Compile Include="Contracts\INodeViewModel.cs" />
     <Compile Include="Contracts\IPathAnimationViewModel.cs" />
+    <Compile Include="Contracts\IPawnViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
     <Compile Include="Contracts\IPlayerViewModel.cs" />
     <Compile Include="Controls\Anchor.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Implementations\NodeViewModel.cs" />
     <Compile Include="Implementations\Notifier.cs" />
     <Compile Include="Implementations\PathAnimationViewModel.cs" />
+    <Compile Include="Implementations\PawnViewModel.cs" />
     <Compile Include="Implementations\PlayersViewModel.cs" />
     <Compile Include="Implementations\PlayerViewModel.cs" />
     <Compile Include="Implementations\RelayCommand.cs" />

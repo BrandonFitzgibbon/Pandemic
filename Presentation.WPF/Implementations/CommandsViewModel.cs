@@ -16,13 +16,15 @@ namespace Presentation.WPF.Implementations
     {
         private ActionManager actionManager;
         private IContext<Player> selectedPlayer;
+        private IBoardViewModel boardViewModel;
 
-        public CommandsViewModel(ActionManager actionManager, IContext<Player> selectedPlayer, Notifier notifier)
+        public CommandsViewModel(ActionManager actionManager, IContext<Player> selectedPlayer, IBoardViewModel boardViewModel, Notifier notifier)
         {
             if (actionManager == null)
                 throw new ArgumentNullException();
             this.actionManager = actionManager;
             this.selectedPlayer = selectedPlayer;
+            this.boardViewModel = boardViewModel;
             notifier.SubscribeToViewModel(this);
         }
 
@@ -32,19 +34,27 @@ namespace Presentation.WPF.Implementations
             get
             {
                 if (driveCommand == null)
-                    driveCommand = new RelayCommand(ddi => Drive((DriveDestinationItem)ddi), ddi => CanDrive((DriveDestinationItem)ddi));
+                    driveCommand = new RelayCommand(node => Drive((Node)node), node => CanDrive((Node)node));
                 return driveCommand;
             }
         }
 
-        private bool CanDrive(DriveDestinationItem ddi)
+        private bool CanDrive(Node node)
         {
-            return actionManager.CanDrive(ddi);
+            if (node == null)
+                return false;
+            else
+            {
+                DriveDestinationItem ddi = actionManager.DriveDestinations.SingleOrDefault(i => i.Node == node);
+                return actionManager.CanDrive(ddi);
+            }
         }
 
-        private void Drive(DriveDestinationItem ddi)
+        private void Drive(Node node)
         {
+            DriveDestinationItem ddi = actionManager.DriveDestinations.SingleOrDefault(i => i.Node == node);
             actionManager.Drive(ddi);
+            boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
             RaiseChangeNotificationRequested(null);
         }
 

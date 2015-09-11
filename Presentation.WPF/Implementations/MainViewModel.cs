@@ -60,7 +60,7 @@ namespace Presentation.WPF.Implementations
         public MainViewModel()
         {
             data = new DataAccess.Data();
-            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Heroic);
+            game = new Game(data, new List<string> { "Jessica", "Jack", "John", "Jane" }, Difficulty.Introductory);
             notifier = new Notifier();
 
             actionCardManager = game.ActionCardManager;

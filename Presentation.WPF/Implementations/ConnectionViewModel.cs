@@ -96,17 +96,27 @@ namespace Presentation.WPF.Implementations
             X1 = 0;
             Y1 = 0;
 
-            int direction = 1;
+            double xDirection = 1;
+            double yDirection = 1;
 
             if (originator.Node.City.Name == "San Francisco" && destination.Node.City.Name == "Tokyo" || originator.Node.City.Name == "Tokyo" && destination.Node.City.Name == "San Francisco")
-                direction = -1;
+            {
+                xDirection = -0.1;
+                yDirection = 0.1;
+            }
             if (originator.Node.City.Name == "San Francisco" && destination.Node.City.Name == "Manila" || originator.Node.City.Name == "Manila" && destination.Node.City.Name == "San Francisco")
-                direction = -1;
+            {
+                xDirection = -0.1;
+                yDirection = 0.1;
+            }
             if (originator.Node.City.Name == "Los Angeles" && destination.Node.City.Name == "Sydney" || originator.Node.City.Name == "Sydney" && destination.Node.City.Name == "Los Angeles")
-                direction = -1;
+            {
+                xDirection = -0.1;
+                yDirection = 0.1;
+            }
 
-            X2 = (destination.Left - originator.Left) * direction;
-            Y2 = (destination.Top - originator.Top);
+            X2 = (destination.Left - originator.Left) * xDirection;
+            Y2 = (destination.Top - originator.Top) * yDirection;
             Stroke = Brushes.White;
             Thickness = 3;
             Opacity = 1;

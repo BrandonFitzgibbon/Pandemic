@@ -59,6 +59,8 @@ namespace Presentation.WPF.Implementations
             timer.Tick += Timer_Tick;
         }
 
+        #region MouseEnter/MouseLeave Command
+
         private RelayCommand mouseEnterCommand;
         public ICommand MouseEnterCommand
         {
@@ -101,16 +103,73 @@ namespace Presentation.WPF.Implementations
         {
             if (Connections.Count > 0)
             {
-                BoardViewModel.PathAnimationViewModel.Left = Connections[0].Originator.Left;
-                boardViewModel.PathAnimationViewModel.Top = Connections[0].Originator.Top;
+                BoardViewModel.PathAnimationViewModel.Left = 0;
+                boardViewModel.PathAnimationViewModel.Top = 0;
                 PathGeometry pg = new PathGeometry(new PathFigureCollection());
-                PathFigure pf = new PathFigure(new Point(0, 0), new PathSegmentCollection(), false);
+                PathFigure pf = new PathFigure(new Point(Connections[0].Originator.Left, Connections[0].Originator.Top), new PathSegmentCollection(), false);
+
+                PathFigure pFlipped = new PathFigure();
+                bool pathFlipped = false;
+                int flippedIndex = 0;
+
                 for (int i = 0; i < Connections.Count; i++)
                 {
-                    LineSegment segment = new LineSegment(new Point(Connections[i].Destination.Left - Connections[0].Originator.Left, Connections[i].Destination.Top - Connections[0].Originator.Top), true);
+                    if ((Connections[i].Originator.Node.City.Name == "Los Angeles" && Connections[i].Destination.Node.City.Name == "Sydney") || (Connections[i].Originator.Node.City.Name == "Sydney" && Connections[i].Destination.Node.City.Name == "Los Angeles"))
+                    {
+                        pathFlipped = true;
+                        flippedIndex = i;
+                        LineSegment flipSegment = new LineSegment(new Point(Connections[i].Originator.Left + Connections[i].X2, Connections[i].Originator.Top + Connections[i].Y2), true);
+                        pf.Segments.Add(flipSegment);
+                    }
+
+                    if (pathFlipped)
+                        break;
+
+                    if ((Connections[i].Originator.Node.City.Name == "San Francisco" && Connections[i].Destination.Node.City.Name == "Tokyo") || (Connections[i].Originator.Node.City.Name == "Tokyo" && Connections[i].Destination.Node.City.Name == "San Francisco"))
+                    {
+                        pathFlipped = true;
+                        flippedIndex = i;
+                        LineSegment flipSegment = new LineSegment(new Point(Connections[i].Originator.Left + Connections[i].X2, Connections[i].Originator.Top + Connections[i].Y2), true);
+                        pf.Segments.Add(flipSegment);
+                    }
+
+                    if (pathFlipped)
+                        break;
+
+                    if ((Connections[i].Originator.Node.City.Name == "San Francisco" && Connections[i].Destination.Node.City.Name == "Manila") || (Connections[i].Originator.Node.City.Name == "Manila" && Connections[i].Destination.Node.City.Name == "San Francisco"))
+                    {
+                        pathFlipped = true;
+                        flippedIndex = i;
+                        LineSegment flipSegment = new LineSegment(new Point(Connections[i].Originator.Left + Connections[i].X2, Connections[i].Originator.Top + Connections[i].Y2), true);
+                        pf.Segments.Add(flipSegment);
+                    }
+
+                    if (pathFlipped)
+                        break;
+
+                    LineSegment segment = new LineSegment(new Point(Connections[i].Destination.Left, Connections[i].Destination.Top), true);
                     pf.Segments.Add(segment);
                 }
+
+                if(pathFlipped)
+                {
+                    Point origin = new Point(Connections[flippedIndex].Destination.Left - Connections[flippedIndex].X2, Connections[flippedIndex].Destination.Top - Connections[flippedIndex].Y2);
+                    pFlipped.StartPoint = origin;
+                    pFlipped.Segments = new PathSegmentCollection();
+                    pFlipped.IsClosed = false;
+
+                    LineSegment initial = new LineSegment(new Point(Connections[flippedIndex].Destination.Left, Connections[flippedIndex].Destination.Top), true);
+                    pFlipped.Segments.Add(initial);
+
+                    for (int i = flippedIndex + 1; i < Connections.Count; i++)
+                    {
+                        LineSegment segment = new LineSegment(new Point(Connections[i].Destination.Left, Connections[i].Destination.Top), true);
+                        pFlipped.Segments.Add(segment);
+                    }
+                }
+
                 pg.Figures.Add(pf);
+                if (pathFlipped) pg.Figures.Add(pFlipped);
                 BoardViewModel.PathAnimationViewModel.Data = pg;
                 timer.Start();
             }
@@ -138,5 +197,6 @@ namespace Presentation.WPF.Implementations
             BoardViewModel.PathAnimationViewModel.Data = null;
         }
 
+        #endregion
     }
 }

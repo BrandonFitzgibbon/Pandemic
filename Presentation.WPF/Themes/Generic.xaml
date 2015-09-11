@@ -7,7 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:Anchor}">
-                    <Grid x:Name="PART_SizeGrid">
+                    <Grid x:Name="PART_SizeGrid" IsEnabled="{TemplateBinding ContentEnabled}">
                         <Border x:Name="PART_GlowBorder"
                                     Background="{TemplateBinding GlowBrush}"
                                     CornerRadius="{TemplateBinding CornerRadius}">
@@ -25,8 +25,14 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
                         </Border>
-                        <ContentPresenter x:Name="PART_Content" IsHitTestVisible="False" IsEnabled="{TemplateBinding ContentEnabled}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter x:Name="PART_Content" IsHitTestVisible="False" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="PART_SizeGrid" Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>
+                            <Setter TargetName="PART_ContentBorder" Property="Background" Value="Gray"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

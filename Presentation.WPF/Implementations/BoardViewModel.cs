@@ -84,6 +84,12 @@ namespace Presentation.WPF.Implementations
             get { return pathAnimationViewModel; }
         }
 
+        private IPawnViewModel pawnViewModel;
+        public IPawnViewModel PawnViewModel
+        {
+            get { return pawnViewModel; }
+        }
+
         public IPlayerViewModel SelectedPlayerViewModel
         {
             get { return selectedPlayer != null && selectedPlayer.Context != null && playerViewModels != null ? playerViewModels.SingleOrDefault(i => i.Player == selectedPlayer.Context) : null; }
@@ -98,7 +104,6 @@ namespace Presentation.WPF.Implementations
         {
             this.currentPlayer = currentPlayer;
             this.selectedPlayer = selectedPlayer;
-            selectedPlayer.Context = currentPlayer.Context;
 
             this.selectedPlayer.ContextChanged += SelectedPlayer_ContextChanged;
 
@@ -109,12 +114,15 @@ namespace Presentation.WPF.Implementations
             nextTurnViewModel = new NextTurnViewModel(game, currentPlayer, notifier);
             nextTurnViewModel.TurnChanged += NextTurnViewModel_TurnChanged;
             gameStatusViewModel = new GameStatusViewModel(game.OutbreakCounter, game.InfectionRateCounter, game.ResearchStationCounter, CreateDiseaseCounterViewModels(game, notifier), notifier);
-            commandsViewModel = new CommandsViewModel(game.ActionManager, selectedPlayer, notifier);
+            commandsViewModel = new CommandsViewModel(game.ActionManager, selectedPlayer, this, notifier);
             nodeViewModels = CreateNodeViewModels(game, selectedPlayer, this, notifier);
             anchorViewModels = CreateAnchorViewModels(game.Nodes);
             connectionViewModels = CreateConnectionViewModels(game.Nodes, AnchorViewModels);
             pathAnimationViewModel = new PathAnimationViewModel();
+            pawnViewModel = new PawnViewModel(this, selectedPlayer);
             notifier.SubscribeToViewModel(this);
+
+            selectedPlayer.Context = currentPlayer.Context;
         }
 
         private void NextTurnViewModel_TurnChanged(object sender, EventArgs e)

@@ -96,6 +96,8 @@
                             <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
                                 <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterCommand}"/>
                                 <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveCommand}"/>
+                                <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DriveCommand}"/>
+                                <Setter Property="CommandParameter" Value="{Binding Node}"/>
                             </DataTrigger>
                         </Style.Triggers>
                         
@@ -107,6 +109,21 @@
                 </Canvas.Resources>
 
                 <Path DataContext="{Binding PathAnimationViewModel}" Data="{Binding Data}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Stroke="White" StrokeThickness="3" StrokeDashArray="{Binding StrokeArray}"/>
+
+                <ContentControl DataContext="{Binding PawnViewModel}" Content="{Binding Content}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Panel.ZIndex="2000">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Margin">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource CenterConverter}">
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"/>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
                 
             </Canvas>
         </c:PanZoomPanel>
