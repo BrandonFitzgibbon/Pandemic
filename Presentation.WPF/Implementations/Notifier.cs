@@ -29,7 +29,7 @@ namespace Presentation.WPF.Implementations
             {
                 if (e != null)
                 {
-                    if (viewModel.GetType() == e.Type)
+                    if (e.Type.IsAssignableFrom(viewModel.GetType()))
                         viewModel.NotifyChanges();
                 }
                 else

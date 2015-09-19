@@ -12,6 +12,8 @@ namespace Presentation.WPF.Contracts
         Player Player { get; }
         string Name { get; }
         string Role { get; }
+        int TurnOrder { get; }
+        object Pawn { get; }
         Node Location { get; }
     }
 }

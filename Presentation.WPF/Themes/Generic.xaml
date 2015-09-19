@@ -7,26 +7,32 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:Anchor}">
-                    <Grid x:Name="PART_SizeGrid" IsEnabled="{TemplateBinding ContentEnabled}">
-                        <Border x:Name="PART_GlowBorder"
+                    <DockPanel LastChildFill="True">
+                        <ContentPresenter x:Name="PART_LeftContent" MinWidth="{Binding ElementName=PART_RightContent, Path=ActualWidth}" Content="{TemplateBinding LeftContent}" ContentTemplate="{TemplateBinding LeftContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                        <ContentPresenter x:Name="PART_RightContent" MinWidth="{Binding ElementName=PART_LeftContent, Path=ActualWidth}" Content="{TemplateBinding RightContent}" ContentTemplate="{TemplateBinding RightContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                        <ContentPresenter x:Name="PART_TopContent" MinHeight="{Binding ElementName=PART_BottomContent, Path=ActualHeight}" Content="{TemplateBinding TopContent}" ContentTemplate="{TemplateBinding TopContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+                        <ContentPresenter x:Name="PART_BottomContent" MinHeight="{Binding ElementName=PART_TopContent, Path=ActualHeight}" Content="{TemplateBinding BottomContent}" ContentTemplate="{TemplateBinding BottomContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Bottom"/>
+                        <Grid x:Name="PART_SizeGrid" IsEnabled="{TemplateBinding ContentEnabled}">
+                            <Border x:Name="PART_GlowBorder"
                                     Background="{TemplateBinding GlowBrush}"
                                     CornerRadius="{TemplateBinding CornerRadius}">
-                            <Border.Effect>
-                                <BlurEffect Radius="10"/>
-                            </Border.Effect>
-                        </Border>
-                        <Border x:Name="PART_ContentBorder" 
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <Border x:Name="PART_ContentBorder" 
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Padding="{TemplateBinding Padding}"
                                     CornerRadius="{TemplateBinding CornerRadius}"
-                                    Opacity="{TemplateBinding Opacity}"
+                                    Opacity="{TemplateBinding ContentOpacity}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                        </Border>
-                        <ContentPresenter x:Name="PART_Content" IsHitTestVisible="False" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="PART_Content" IsHitTestVisible="False" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DockPanel>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="PART_SizeGrid" Property="IsEnabled" Value="False">
                             <Setter TargetName="PART_GlowBorder" Property="Background" Value="Black"/>

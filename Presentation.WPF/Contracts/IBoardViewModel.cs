@@ -12,9 +12,12 @@ namespace Presentation.WPF.Contracts
     {
         IPlayerViewModel SelectedPlayerViewModel { get; }
         IPlayerViewModel CurrentPlayerViewModel { get; }
+        IEnumerable<IPlayerViewModel> PlayerViewModels { get; }
+        ICommandsViewModel CommandsViewModel { get; }
         IEnumerable<IConnectionViewModel> ConnectionViewModels { get; }
         IEnumerable<IAnchorViewModel> AnchorViewModels { get; }
         IPathAnimationViewModel PathAnimationViewModel { get; }
         IPawnViewModel PawnViewModel { get; }
+        void SelectPlayer(int turnOrder);
     }
 }

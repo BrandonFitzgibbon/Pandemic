@@ -1,4 +1,5 @@
 ﻿using Engine.Implementations;
+using Engine.Implementations.ActionItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,10 @@ namespace Presentation.WPF.Contracts
     public interface IAnchorViewModel : IViewModelBase
     {
         Node Node { get; }
+        DriveDestinationItem DriveDestinationItem { get; }
+        DispatchItem DispatchItem { get; }
         double Left { get; set; }
         double Top { get; set; }
-        SolidColorBrush Background { get; set; }
+
     }
 }

@@ -99,15 +99,19 @@ namespace Presentation.WPF.Implementations
         {
             if (timer != null) timer.Stop();
 
-            timer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(0.4) };
+            timer = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromTicks(10000) };
 
             List<LineSegment> segments = new List<LineSegment>();
+            Dictionary<int, bool> teleport = new Dictionary<int, bool>();
 
-            foreach (PathFigure pf in data.Figures)
+            foreach (PathFigure figure in data.Figures)
             {
-                foreach (LineSegment segment in pf.Segments)
+                segments.Add(new LineSegment(figure.StartPoint, false));
+                teleport.Add(segments.Count - 1, true);
+                foreach (LineSegment segment in figure.Segments)
                 {
                     segments.Add(segment);
+                    teleport.Add(segments.Count - 1, false);
                 }
             }
 
@@ -131,6 +135,12 @@ namespace Presentation.WPF.Implementations
             timer.Tick += (object sender, EventArgs e) =>
             {
                 Point current = segments[index].Point;
+                if (teleport[index] == true)
+                {
+                    Left = current.X;
+                    Top = current.Y;
+                }
+
 
                 if((xOffset > 1 && yOffset > 1 && Left >= current.X && Top >= current.Y)
                 || (xOffset > 1 && yOffset < 1 && Left >= current.X && Top <= current.Y)
@@ -162,28 +172,29 @@ namespace Presentation.WPF.Implementations
                     }
                 }
 
+
                 if (Left < x)
                 {
-                    Left = Left + (1 * Math.Abs(xFactor));
+                    Left = Left + (20 * Math.Abs(xFactor));
                     if (x - Left < (x - Left) * 0.0001)
                         Left = x;
                 }
                 else if (Left > x)
                 {
-                    Left = Left - (1 * Math.Abs(xFactor));
+                    Left = Left - (20 * Math.Abs(xFactor));
                     if (Left - x < (Left - x) * 0.0001)
                         Left = x;
                 }
 
                 if (Top < y)
                 {
-                    Top = Top + (1 * Math.Abs(yFactor));
+                    Top = Top + (20 * Math.Abs(yFactor));
                     if (y - Top < (y - top) * 0.0001)
                         Top = y;
                 }
                 else if (Top > y)
                 {
-                    Top = Top - (1 * Math.Abs(yFactor));
+                    Top = Top - (20 * Math.Abs(yFactor));
                     if (Top - y < (Top - y) * 0.0001)
                         Top = y;
                 }
@@ -191,36 +202,6 @@ namespace Presentation.WPF.Implementations
             };
 
             timer.Start();
-        }
-
-        public void store(PathGeometry data)
-        {
-            FrameworkElement o = content as FrameworkElement;
-            if (o != null)
-            {
-                Storyboard sb = new Storyboard();
-                Storyboard.SetTarget(sb, o.Parent);
-
-                DoubleAnimationUsingPath aniX = new DoubleAnimationUsingPath();
-                aniX.PathGeometry = data;
-                aniX.Source = PathAnimationSource.X;
-                aniX.Duration = TimeSpan.FromMilliseconds(1500);
-                aniX.BeginTime = TimeSpan.FromMilliseconds(0);
-
-                DoubleAnimationUsingPath aniY = new DoubleAnimationUsingPath();
-                aniY.PathGeometry = data;
-                aniY.Source = PathAnimationSource.Y;
-                aniY.Duration = TimeSpan.FromMilliseconds(1500);
-                aniX.BeginTime = TimeSpan.FromMilliseconds(0);
-
-                Storyboard.SetTargetProperty(aniX, new PropertyPath(Canvas.LeftProperty));
-                Storyboard.SetTargetProperty(aniY, new PropertyPath(Canvas.TopProperty));
-
-                sb.Children.Add(aniX);
-                sb.Children.Add(aniY);
-
-                sb.Begin();
-            }
         }
     }
 }

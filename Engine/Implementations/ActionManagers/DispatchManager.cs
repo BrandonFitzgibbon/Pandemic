@@ -82,7 +82,7 @@ namespace Engine.Implementations.ActionManagers
 
                 foreach (Player sub in players)
                 {
-                    if (sub.Location != player.Location && destinations.Where(i => i.DispatchDestination == sub.Location).Count() == 0)
+                    if (sub.Location != player.Location && destinations.Where(i => i.Player == player && i.DispatchDestination == sub.Location).Count() == 0)
                         destinations.Add(new DispatchItem(player, sub.Location, 1));
                 }
             }

@@ -72,7 +72,6 @@
     <Compile Include="Contracts\IMessageViewModel.cs" />
     <Compile Include="Contracts\INextTurnViewModel.cs" />
     <Compile Include="Contracts\INodeDiseaseCounterViewModel.cs" />
-    <Compile Include="Contracts\INodeViewModel.cs" />
     <Compile Include="Contracts\IPathAnimationViewModel.cs" />
     <Compile Include="Contracts\IPawnViewModel.cs" />
     <Compile Include="Contracts\IPlayersViewModel.cs" />
@@ -87,9 +86,8 @@
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
     <Compile Include="Converters\InfectionCountToBoolean.cs" />
-    <Compile Include="Converters\NameToNodeConverter.cs" />
-    <Compile Include="Converters\NodeStatusToColorConverter.cs" />
     <Compile Include="Converters\NodeToSelectableConverter.cs" />
+    <Compile Include="Converters\PlayerInNodeConverter.cs" />
     <Compile Include="Converters\RoleToDispatcherConverter.cs" />
     <Compile Include="Converters\RoleToOperationsExpertConverter.cs" />
     <Compile Include="Converters\RoleToPawnConverter.cs" />
@@ -111,7 +109,6 @@
     <Compile Include="Implementations\MessageViewModel.cs" />
     <Compile Include="Implementations\NextTurnViewModel.cs" />
     <Compile Include="Implementations\NodeDiseaseCounterViewModel.cs" />
-    <Compile Include="Implementations\NodeViewModel.cs" />
     <Compile Include="Implementations\Notifier.cs" />
     <Compile Include="Implementations\PathAnimationViewModel.cs" />
     <Compile Include="Implementations\PawnViewModel.cs" />
@@ -163,10 +160,6 @@
     <Page Include="Controls\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\medic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -281,9 +274,6 @@
       <Project>{c72d0eca-4385-4332-bfe8-5cf3856c707a}</Project>
       <Name>Engine</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Controls\monochrome_map_w1.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Controls\bacteria.jpg" />

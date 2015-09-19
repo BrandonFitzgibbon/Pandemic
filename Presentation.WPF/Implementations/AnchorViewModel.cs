@@ -1,5 +1,7 @@
 ﻿using Engine.Implementations;
+using Engine.Implementations.ActionItems;
 using Presentation.WPF.Contracts;
+using Presentation.WPF.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,16 @@ namespace Presentation.WPF.Implementations
         public Node Node
         {
             get { return node; }
+        }
+
+        public DriveDestinationItem DriveDestinationItem
+        {
+            get { return BoardViewModel.CommandsViewModel.GetDriveDestinationItem(Node); }
+        }
+
+        public DispatchItem DispatchItem
+        {
+            get { return BoardViewModel.CommandsViewModel.GetDispatchItem(Node); }
         }
 
         private IBoardViewModel boardViewModel;
@@ -40,6 +52,20 @@ namespace Presentation.WPF.Implementations
             set { top = value;  NotifyPropertyChanged(); }
         }
 
+        private double opacity = 1;
+        public double Opacity
+        {
+            get { return opacity; }
+            set { opacity = value;  NotifyPropertyChanged(); }
+        }
+
+        private object actionContent;
+        public object ActionContent
+        {
+            get { return actionContent; }
+            set { actionContent = value; }
+        }
+
         private SolidColorBrush background;
         public SolidColorBrush Background
         {
@@ -47,32 +73,69 @@ namespace Presentation.WPF.Implementations
             set { background = value; NotifyPropertyChanged(); }
         }
 
-        private int i = 0;
-        private DispatcherTimer timer;
+        private SolidColorBrush glowBrush = Brushes.White;
+        public SolidColorBrush GlowBrush
+        {
+            get { return glowBrush; }
+            set { glowBrush = value;  NotifyPropertyChanged(); }
+        }
 
-        public AnchorViewModel(Node node, IBoardViewModel boardViewModel)
+        private SolidColorBrush contentForeground;
+        public SolidColorBrush ContentForeground
+        {
+            get { return contentForeground; }
+            set { contentForeground = value; NotifyPropertyChanged(); }
+        }
+
+        private int i = 0;
+        private DispatcherTimer opacityTimer;
+        private int opacityDireciton;
+
+        public AnchorViewModel(Node node, IBoardViewModel boardViewModel, Notifier notifier)
         {
             this.node = node;
             this.boardViewModel = boardViewModel;
 
-            timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
-            timer.Tick += Timer_Tick;
+            notifier.SubscribeToViewModel(this);
+
+            opacityTimer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(1) };
+            opacityTimer.Tick += opacityTimer_Tick;
         }
 
-        #region MouseEnter/MouseLeave Command
+        #region TopSelectPlayerCommand
 
-        private RelayCommand mouseEnterCommand;
-        public ICommand MouseEnterCommand
+        private RelayCommand topSelectPlayerCommand;
+        public ICommand TopSelectPlayerCommand
         {
             get
             {
-                if (mouseEnterCommand == null)
-                    mouseEnterCommand = new RelayCommand(a => MouseEnter());
-                return mouseEnterCommand;
+                if (topSelectPlayerCommand == null)
+                    topSelectPlayerCommand = new RelayCommand(a => TopSelectPlayer());
+                return topSelectPlayerCommand;
             }
         }
 
-        private void MouseEnter()
+        private void TopSelectPlayer()
+        {
+            BoardViewModel.SelectPlayer(1);
+        }
+
+        #endregion
+
+        #region MouseEnterDrive/MouseLeaveDrive Command
+
+        private RelayCommand mouseEnterDriveCommand;
+        public ICommand MouseEnterDriveCommand
+        {
+            get
+            {
+                if (mouseEnterDriveCommand == null)
+                    mouseEnterDriveCommand = new RelayCommand(a => MouseEnterDrive());
+                return mouseEnterDriveCommand;
+            }
+        }
+
+        private void MouseEnterDrive()
         {
             List<Node> path = NodeGrapher.GetNodePath(BoardViewModel.SelectedPlayerViewModel.Location, Node).ToList();
             List<IConnectionViewModel> connectionPath = new List<IConnectionViewModel>();
@@ -90,12 +153,23 @@ namespace Presentation.WPF.Implementations
             AnimatePath(connectionPath);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void opacityTimer_Tick(object sender, EventArgs e)
         {
-            if (i % 2 == 0)
+            if (i % 10 == 0)
                 BoardViewModel.PathAnimationViewModel.StrokeArray = new DoubleCollection() { 5 };
-            else
+            else if (i % 5 == 0)
                 BoardViewModel.PathAnimationViewModel.StrokeArray = new DoubleCollection() { 3 };
+
+            if (Opacity == 0)
+                opacityDireciton = 1;
+            else if (Opacity == 1)
+                opacityDireciton = -1;
+
+            if (opacityDireciton == -1)
+                Opacity = Opacity - 0.05 < 0 ? 0 : Opacity - 0.05;
+            else if (opacityDireciton == 1)
+                Opacity = Opacity + 0.05 > 1 ? 1 : Opacity + 0.05;
+
             i++;
         }
 
@@ -171,30 +245,90 @@ namespace Presentation.WPF.Implementations
                 pg.Figures.Add(pf);
                 if (pathFlipped) pg.Figures.Add(pFlipped);
                 BoardViewModel.PathAnimationViewModel.Data = pg;
-                timer.Start();
+                opacityTimer.Start();
             }
         }
 
-
-        private RelayCommand mouseLeaveCommand;
-        public ICommand MouseLeaveCommand
+        private RelayCommand mouseLeaveDriveCommand;
+        public ICommand MouseLeaveDriveCommand
         {
             get
             {
-                if (mouseLeaveCommand == null)
-                    mouseLeaveCommand = new RelayCommand(a => MouseLeave());
-                return mouseLeaveCommand;
+                if (mouseLeaveDriveCommand == null)
+                    mouseLeaveDriveCommand = new RelayCommand(a => MouseLeaveDrive());
+                return mouseLeaveDriveCommand;
             }
         }
 
-        private void MouseLeave()
+        private void MouseLeaveDrive()
         {
-            timer.Stop();
+            opacityTimer.Stop();
             foreach (ConnectionViewModel cvm in BoardViewModel.ConnectionViewModels)
             {
                 cvm.Opacity = 1;
             }
             BoardViewModel.PathAnimationViewModel.Data = null;
+            Opacity = 1;
+        }
+
+        #endregion
+
+        #region MouseEnterDispatch/MousLeaveDispatch Command
+
+        private RelayCommand mouseEnterDispatchCommand;
+        public ICommand MouseEnterDispatchCommand
+        {
+            get
+            {
+                if (mouseEnterDispatchCommand == null)
+                    mouseEnterDispatchCommand = new RelayCommand(a => MouseEnterDispatch());
+                return mouseEnterDispatchCommand;
+            }
+        }
+
+        private void MouseEnterDispatch()
+        {
+            if (DispatchItem.Player.Location.Connections.Contains(Node) || Node.Players.Count() == 0)
+            {
+                MouseEnterDrive();
+            }
+            else
+            {
+                IAnchorViewModel sender = BoardViewModel.AnchorViewModels.SingleOrDefault(i => i.Node == DispatchItem.Player.Location);
+                if (sender != null)
+                    AnimateDispatchPath(sender);
+            }
+        }
+
+        private void dispatchTimer_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AnimateDispatchPath(IAnchorViewModel sender)
+        {
+            PathGeometry pg = new PathGeometry();
+            pg.Figures = new PathFigureCollection();
+            pg.Figures.Add(new PathFigure() { StartPoint = new Point(sender.Left, sender.Top), Segments = new PathSegmentCollection(), IsClosed = false });
+            pg.Figures.First().Segments.Add(new LineSegment(new Point(Left, Top), true));
+            BoardViewModel.PathAnimationViewModel.Data = pg;
+            opacityTimer.Start();
+        }
+
+        private RelayCommand mouseLeaveDispatchCommand;
+        public ICommand MouseLeaveDispatchCommand
+        {
+            get
+            {
+                if (mouseLeaveDispatchCommand == null)
+                    mouseLeaveDispatchCommand = new RelayCommand(a => MouseLeaveDispatch());
+                return mouseLeaveDispatchCommand;
+            }
+        }
+
+        private void MouseLeaveDispatch()
+        {
+            MouseLeaveDrive();
         }
 
         #endregion

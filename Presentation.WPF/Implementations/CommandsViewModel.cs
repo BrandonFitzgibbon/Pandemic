@@ -28,6 +28,14 @@ namespace Presentation.WPF.Implementations
             notifier.SubscribeToViewModel(this);
         }
 
+        public DriveDestinationItem GetDriveDestinationItem(Node node)
+        {
+            if (node == null)
+                return null;
+
+            return actionManager.DriveDestinations.SingleOrDefault(i => i.Node == node);
+        }
+
         private RelayCommand driveCommand;
         public ICommand DriveCommand
         {
@@ -54,8 +62,16 @@ namespace Presentation.WPF.Implementations
         {
             DriveDestinationItem ddi = actionManager.DriveDestinations.SingleOrDefault(i => i.Node == node);
             actionManager.Drive(ddi);
-            boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
             RaiseChangeNotificationRequested(null);
+            boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
+        }
+
+        public DispatchItem GetDispatchItem(Node node)
+        {
+            if (node == null || actionManager.DispatchDestinations == null)
+                return null;
+
+            return actionManager.DispatchDestinations.SingleOrDefault(i => i.DispatchDestination == node && i.Player == boardViewModel.SelectedPlayerViewModel.Player);
         }
 
         private RelayCommand dispatchCommand;
@@ -78,6 +94,7 @@ namespace Presentation.WPF.Implementations
         {
             actionManager.Dispatch(dpi);
             RaiseChangeNotificationRequested(null);
+            boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
         }
 
         private RelayCommand directFlightCommand;
@@ -99,24 +116,6 @@ namespace Presentation.WPF.Implementations
         public void DirectFlight(DirectFlightItem dfi)
         {
             actionManager.DirectFlight(dfi);
-            RaiseChangeNotificationRequested(new ChangeNotificationRequestedArgs(typeof(NodeViewModel)));
-        }
-
-        private RelayCommand selectPlayerCommand;
-        public ICommand SelectPlayerCommand
-        {
-            get
-            {
-                if (selectPlayerCommand == null)
-                    selectPlayerCommand = new RelayCommand(p => SelectPlayer((Player)p));
-                return selectPlayerCommand;
-            }
-        }
-
-        private void SelectPlayer(Player player)
-        {
-            selectedPlayer.Context = player;
-            RaiseChangeNotificationRequested(null);
         }
     }
 }

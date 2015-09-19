@@ -14,8 +14,7 @@
 
     <UserControl.Resources>
 
-        <con:NodeStatusToColorConverter x:Key="StatusToColorConverter"/>
-        <con:NameToNodeConverter x:Key="NameToNodeConverter"/>
+        <con:PlayerInNodeConverter x:Key="PlayerInNodeConverter"/>
         <con:CenterConverter x:Key="CenterConverter"/>
         <con:RoleToPawnConverter x:Key="RoleToPawnConverter"/>
         <con:NodeToSelectableConverter x:Key="NodeToSelectableConverter"/>
@@ -79,6 +78,7 @@
                         <Setter Property="BorderBrush" Value="Black"/>
                         <Setter Property="BorderThickness" Value="2"/>
                         <Setter Property="Background" Value="{Binding Background}"/>
+                        <Setter Property="ContentOpacity" Value="{Binding Opacity}"/>
                         <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                         <Setter Property="Canvas.Top" Value="{Binding Top}"/>
                         <Setter Property="GlowBrush" Value="{Binding GlowBrush}"/>
@@ -94,11 +94,366 @@
 
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
-                                <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterCommand}"/>
-                                <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveCommand}"/>
+                                <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterDriveCommand}"/>
+                                <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveDriveCommand}"/>
                                 <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DriveCommand}"/>
                                 <Setter Property="CommandParameter" Value="{Binding Node}"/>
+                                <Setter Property="Content" Value="{Binding}"/>
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DriveDestinationItem}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
+                                                <TextBlock Text="{Binding DriveDestinationItem.Cost}" Foreground="{Binding ContentForeground}" FontWeight="Bold" FontSize="24"/>
+                                                <Viewbox Height="18" Margin="3,2,0,0">
+                                                    <ContentControl Content="{Binding ActionContent}"/>
+                                                </Viewbox>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="TopContent" Value="{Binding}"/>
+                                <Setter Property="TopContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Border Background="Gray" BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Viewbox>
+                                                    <ContentControl x:Name="Content">
+                                                        <ContentControl.Style>
+                                                            <Style TargetType="ContentControl">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="1">
+                                                                            <Binding Path="Node"/>
+                                                                            <Binding Path="BoardViewModel"/>
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ContentControl.Style>
+                                                    </ContentControl>
+                                                </Viewbox>
+                                            </Border>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BottomContent" Value="{Binding}"/>
+                                <Setter Property="BottomContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Border Background="Gray" BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Viewbox>
+                                                    <ContentControl x:Name="Content">
+                                                        <ContentControl.Style>
+                                                            <Style TargetType="ContentControl">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="2">
+                                                                            <Binding Path="Node"/>
+                                                                            <Binding Path="BoardViewModel"/>
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ContentControl.Style>
+                                                    </ContentControl>
+                                                </Viewbox>
+                                            </Border>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="LeftContent" Value="{Binding}"/>
+                                <Setter Property="LeftContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Border Background="Gray" BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Viewbox>
+                                                    <ContentControl x:Name="Content">
+                                                        <ContentControl.Style>
+                                                            <Style TargetType="ContentControl">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="3">
+                                                                            <Binding Path="Node"/>
+                                                                            <Binding Path="BoardViewModel"/>
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ContentControl.Style>
+                                                    </ContentControl>
+                                                </Viewbox>
+                                            </Border>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="RightContent" Value="{Binding}"/>
+                                <Setter Property="RightContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Border Background="Gray" BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Viewbox>
+                                                    <ContentControl x:Name="Content">
+                                                        <ContentControl.Style>
+                                                            <Style TargetType="ContentControl">
+                                                                <Setter Property="Content">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="4">
+                                                                            <Binding Path="Node"/>
+                                                                            <Binding Path="BoardViewModel"/>
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ContentControl.Style>
+                                                    </ContentControl>
+                                                </Viewbox>
+                                            </Border>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True"/>
+                                    <Condition Binding="{Binding BoardViewModel.CurrentPlayerViewModel.Role}" Value="Dispatcher"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterDispatchCommand}"/>
+                                    <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveDispatchCommand}"/>
+                                    <Setter Property="Command" Value="{Binding BoardViewModel.CommandsViewModel.DispatchCommand}"/>
+                                    <Setter Property="CommandParameter" Value="{Binding DispatchItem}"/>
+                                    <Setter Property="Content" Value="{Binding}"/>
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <StackPanel.Style>
+                                                        <Style TargetType="StackPanel">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding DispatchItem}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </StackPanel.Style>
+                                                    <TextBlock Text="{Binding DispatchItem.Cost}" Foreground="{Binding ContentForeground}" FontWeight="Bold" FontSize="24"/>
+                                                    <Viewbox Height="18" Margin="3,2,0,0">
+                                                        <ContentControl Content="{Binding ActionContent}"/>
+                                                    </Viewbox>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="TopContent" Value="{Binding}"/>
+                                    <Setter Property="TopContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Background" Value="Gray"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="Yellow"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Viewbox>
+                                                        <ContentControl x:Name="Content">
+                                                            <ContentControl.Style>
+                                                                <Style TargetType="ContentControl">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="1">
+                                                                                <Binding Path="Node"/>
+                                                                                <Binding Path="BoardViewModel"/>
+                                                                            </MultiBinding>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ContentControl.Style>
+                                                        </ContentControl>
+                                                    </Viewbox>
+                                                </Border>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="TopCommand" Value="{Binding TopSelectPlayerCommand}"/>
+                                    <Setter Property="BottomContent" Value="{Binding}"/>
+                                    <Setter Property="BottomContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Background" Value="Gray"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="Yellow"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Viewbox>
+                                                        <ContentControl x:Name="Content">
+                                                            <ContentControl.Style>
+                                                                <Style TargetType="ContentControl">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="2">
+                                                                                <Binding Path="Node"/>
+                                                                                <Binding Path="BoardViewModel"/>
+                                                                            </MultiBinding>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ContentControl.Style>
+                                                        </ContentControl>
+                                                    </Viewbox>
+                                                </Border>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="LeftContent" Value="{Binding}"/>
+                                    <Setter Property="LeftContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Background" Value="Gray"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="Yellow"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Viewbox>
+                                                        <ContentControl x:Name="Content">
+                                                            <ContentControl.Style>
+                                                                <Style TargetType="ContentControl">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="3">
+                                                                                <Binding Path="Node"/>
+                                                                                <Binding Path="BoardViewModel"/>
+                                                                            </MultiBinding>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ContentControl.Style>
+                                                        </ContentControl>
+                                                    </Viewbox>
+                                                </Border>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="RightContent" Value="{Binding}"/>
+                                    <Setter Property="RightContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Border BorderBrush="Black" BorderThickness="1" Height="25" Width="25" CornerRadius="90" Padding="1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Setter Property="Background" Value="Gray"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ElementName=Content, Path=Content}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                                </DataTrigger>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="Yellow"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <Viewbox>
+                                                        <ContentControl x:Name="Content">
+                                                            <ContentControl.Style>
+                                                                <Style TargetType="ContentControl">
+                                                                    <Setter Property="Content">
+                                                                        <Setter.Value>
+                                                                            <MultiBinding Converter="{StaticResource PlayerInNodeConverter}" ConverterParameter="4">
+                                                                                <Binding Path="Node"/>
+                                                                                <Binding Path="BoardViewModel"/>
+                                                                            </MultiBinding>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ContentControl.Style>
+                                                        </ContentControl>
+                                                    </Viewbox>
+                                                </Border>
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                         
                     </Style>
@@ -108,11 +463,12 @@
                     </Style>
                 </Canvas.Resources>
 
-                <Path DataContext="{Binding PathAnimationViewModel}" Data="{Binding Data}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Stroke="White" StrokeThickness="3" StrokeDashArray="{Binding StrokeArray}"/>
+                <Path Panel.ZIndex="500" DataContext="{Binding PathAnimationViewModel}" Data="{Binding Data}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Stroke="White" StrokeThickness="3" StrokeDashArray="{Binding StrokeArray}"/>
 
                 <ContentControl DataContext="{Binding PawnViewModel}" Content="{Binding Content}" Canvas.Left="{Binding Left}" Canvas.Top="{Binding Top}" Panel.ZIndex="2000">
                     <ContentControl.Style>
                         <Style TargetType="ContentControl">
+                            <Setter Property="Visibility" Value="Hidden"/>
                             <Setter Property="Margin">
                                 <Setter.Value>
                                     <MultiBinding Converter="{StaticResource CenterConverter}">
@@ -121,6 +477,11 @@
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </ContentControl.Style>
                 </ContentControl>
