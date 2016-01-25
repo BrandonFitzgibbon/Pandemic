@@ -18,11 +18,31 @@
         <con:CenterConverter x:Key="CenterConverter"/>
         <con:RoleToPawnConverter x:Key="RoleToPawnConverter"/>
         <con:NodeToSelectableConverter x:Key="NodeToSelectableConverter"/>
+        <con:DiseaseCubeVisibilityConverter x:Key="DiseaseCubeVisibilityConverter"/>
 
         <Style TargetType="RadioButton">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
+                        <Border Name="Border" Background="Transparent" BorderBrush="White" BorderThickness="2" CornerRadius="45" Margin="5">
+                            <ContentPresenter Margin="10"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                            </Trigger>
+                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
                         <Border Name="Border" Background="Transparent" BorderBrush="White" BorderThickness="2" CornerRadius="45" Margin="5">
                             <ContentPresenter Margin="10"/>
                         </Border>
@@ -78,6 +98,7 @@
                         <Setter Property="BorderBrush" Value="Black"/>
                         <Setter Property="BorderThickness" Value="2"/>
                         <Setter Property="Background" Value="{Binding Background}"/>
+                        <Setter Property="Foreground" Value="{Binding ContentForeground}"/>
                         <Setter Property="ContentOpacity" Value="{Binding Opacity}"/>
                         <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                         <Setter Property="Canvas.Top" Value="{Binding Top}"/>
@@ -93,6 +114,10 @@
                         </Setter>
 
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=InfectionViewButton, Path=IsChecked}" Value="True">
+                                <Setter Property="Background" Value="{Binding AlertBackground}"/>
+                                <Setter Property="Foreground" Value="{Binding AlertForeground}"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding ElementName=DriveActionButton, Path=IsChecked}" Value="True">
                                 <Setter Property="MouseEnterCommand" Value="{Binding MouseEnterDriveCommand}"/>
                                 <Setter Property="MouseLeaveCommand" Value="{Binding MouseLeaveDriveCommand}"/>
@@ -113,7 +138,7 @@
                                                         </Style.Triggers>
                                                     </Style>
                                                 </StackPanel.Style>
-                                                <TextBlock Text="{Binding DriveDestinationItem.Cost}" Foreground="{Binding ContentForeground}" FontWeight="Bold" FontSize="24"/>
+                                                <TextBlock Text="{Binding DriveDestinationItem.Cost}" FontWeight="Bold" FontSize="24"/>
                                                 <Viewbox Height="18" Margin="3,2,0,0">
                                                     <ContentControl Content="{Binding ActionContent}"/>
                                                 </Viewbox>
@@ -287,7 +312,7 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </StackPanel.Style>
-                                                    <TextBlock Text="{Binding DispatchItem.Cost}" Foreground="{Binding ContentForeground}" FontWeight="Bold" FontSize="24"/>
+                                                    <TextBlock Text="{Binding DispatchItem.Cost}" FontWeight="Bold" FontSize="24"/>
                                                     <Viewbox Height="18" Margin="3,2,0,0">
                                                         <ContentControl Content="{Binding ActionContent}"/>
                                                     </Viewbox>
@@ -374,6 +399,7 @@
                                             </DataTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Setter Property="BottomCommand" Value="{Binding BottomSelectPlayerCommand}"/>
                                     <Setter Property="LeftContent" Value="{Binding}"/>
                                     <Setter Property="LeftContentTemplate">
                                         <Setter.Value>
@@ -413,6 +439,7 @@
                                             </DataTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Setter Property="LeftCommand" Value="{Binding LeftSelectPlayerCommand}"/>
                                     <Setter Property="RightContent" Value="{Binding}"/>
                                     <Setter Property="RightContentTemplate">
                                         <Setter.Value>
@@ -452,6 +479,7 @@
                                             </DataTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Setter Property="RightCommand" Value="{Binding RightSelectPlayerCommand}"/>
                                 </MultiDataTrigger.Setters>
                             </MultiDataTrigger>
                         </Style.Triggers>
@@ -510,49 +538,49 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <RadioButton x:Name="InfectionViewButton" GroupName="RadioButtons" IsChecked="True" HorizontalAlignment="Center" ToolTip="Infections">
-                        <RadioButton.Content>
+                    <ToggleButton x:Name="InfectionViewButton" IsChecked="True" HorizontalAlignment="Center" ToolTip="Infections">
+                        <ToggleButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource compoundWhite}"/>
                             </Viewbox>
-                        </RadioButton.Content>
-                    </RadioButton>
-                    <RadioButton Grid.Row="1" x:Name="PlayerViewButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Players">
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <RadioButton Grid.Row="1" x:Name="PlayerViewButton" GroupName="RadioButtons1" HorizontalAlignment="Center" ToolTip="Players">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource man}"/>
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton Grid.Row="2" x:Name="ResearchViewButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Research Stations">
+                    <RadioButton Grid.Row="2" x:Name="ResearchViewButton" GroupName="RadioButtons1" HorizontalAlignment="Center" ToolTip="Research Stations">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource microscope}"/>
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton Grid.Row="3" x:Name="DriveActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Drive">
+                    <RadioButton Grid.Row="3" x:Name="DriveActionButton" GroupName="RadioButtons2" HorizontalAlignment="Center" ToolTip="Drive">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource car}"/>
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton Grid.Row="4" x:Name="DirectFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Direct Flight">
+                    <RadioButton Grid.Row="4" x:Name="DirectFlightActionButton" GroupName="RadioButtons2" HorizontalAlignment="Center" ToolTip="Direct Flight">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource plane}"/>
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton Grid.Row="5" x:Name="CharterFlightActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Charter Train">
+                    <RadioButton Grid.Row="5" x:Name="CharterFlightActionButton" GroupName="RadioButtons2" HorizontalAlignment="Center" ToolTip="Charter Train">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource train}"/>
                             </Viewbox>
                         </RadioButton.Content>
                     </RadioButton>
-                    <RadioButton Grid.Row="6" x:Name="TreatDiseaseActionButton" GroupName="RadioButtons" HorizontalAlignment="Center" ToolTip="Treat Disease">
+                    <RadioButton Grid.Row="6" x:Name="TreatDiseaseActionButton" GroupName="RadioButtons2" HorizontalAlignment="Center" ToolTip="Treat Disease">
                         <RadioButton.Content>
                             <Viewbox Height="20" Width="20">
                                 <ContentControl Content="{StaticResource medic}"/>

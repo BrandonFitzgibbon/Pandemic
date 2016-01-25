@@ -15,14 +15,14 @@ namespace Engine.Implementations
         public Disease Disease { get; private set; }
         public int Count { get; private set; }
 
-        public NodeDiseaseCounter(Disease disease, Node node)
+        internal NodeDiseaseCounter(Disease disease, Node node)
         {
             Disease = disease;
             Node = node;
             Count = 0;
         }
 
-        public void OutbreakInfection(OutbreakEventArgs e)
+        internal void OutbreakInfection(OutbreakEventArgs e)
         {
             foreach (Player player in Node.Players)
             {
@@ -55,7 +55,7 @@ namespace Engine.Implementations
             }
         }
 
-        public void Infection(int rate)
+        internal void Infection(int rate)
         {
             foreach (Player player in Node.Players)
             {
@@ -98,7 +98,7 @@ namespace Engine.Implementations
                 if (Infected != null) Infected(this, new InfectionEventArgs(this, j));
         }
 
-        public void Treatment(int rate, Player treater)
+        internal void Treatment(int rate, Player treater)
         {
             int j = 0;
             for (int i = 0; i < rate; i++)

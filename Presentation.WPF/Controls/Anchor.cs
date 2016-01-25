@@ -21,6 +21,9 @@ namespace Presentation.WPF.Controls
         private Border glowBorder;
         private Border contentBorder;
         private ContentPresenter topContent;
+        private ContentPresenter rightContent;
+        private ContentPresenter leftContent;
+        private ContentPresenter bottomContent;
 
         static Anchor()
         {
@@ -34,6 +37,9 @@ namespace Presentation.WPF.Controls
             glowBorder = (Border)Template.FindName("PART_GlowBorder", this);
             contentBorder = (Border)Template.FindName("PART_ContentBorder", this);
             topContent = (ContentPresenter)Template.FindName("PART_TopContent", this);
+            leftContent = (ContentPresenter)Template.FindName("PART_LeftContent", this);
+            rightContent = (ContentPresenter)Template.FindName("PART_RightContent", this);
+            bottomContent = (ContentPresenter)Template.FindName("PART_BottomContent", this);
 
             glowBorder.Padding = new Thickness(1.1 * contentBorder.Padding.Left, 1.1 * contentBorder.Padding.Top, 1.1 * contentBorder.Padding.Right, 1.1 * contentBorder.Padding.Bottom);
 
@@ -42,6 +48,9 @@ namespace Presentation.WPF.Controls
             contentBorder.MouseLeave += ContentBorder_MouseLeave;
 
             topContent.MouseLeftButtonUp += TopContentMouseLeftButtonUp;
+            leftContent.MouseLeftButtonUp += LeftContentMouseLeftButtonUp;
+            rightContent.MouseLeftButtonUp += RightContentMouseLeftButtonUp;
+            bottomContent.MouseLeftButtonUp += BottomContentMouseLeftButtonUp;
 
         }
 
@@ -112,6 +121,27 @@ namespace Presentation.WPF.Controls
 
 
 
+        public ICommand LeftCommand
+        {
+            get { return (ICommand)GetValue(LeftCommandProperty); }
+            set { SetValue(LeftCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty LeftCommandProperty =
+            DependencyProperty.Register("LeftCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+
+
+        private void LeftContentMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (leftContent.IsMouseOver && LeftCommand != null)
+            {
+                LeftCommand.Execute(null);
+            }
+        }
+
+
+
         public object TopContent
         {
             get { return (object)GetValue(TopContentProperty); }
@@ -177,6 +207,25 @@ namespace Presentation.WPF.Controls
 
 
 
+        public ICommand RightCommand
+        {
+            get { return (ICommand)GetValue(RightCommandProperty); }
+            set { SetValue(RightCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty RightCommandProperty =
+            DependencyProperty.Register("RightCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+
+
+        private void RightContentMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (rightContent.IsMouseOver && RightCommand != null)
+            {
+                RightCommand.Execute(null);
+            }
+        }
+
         public object BottomContent
         {
             get { return (object)GetValue(BottomContentProperty); }
@@ -196,6 +245,27 @@ namespace Presentation.WPF.Controls
 
         public static readonly DependencyProperty BottomContentTemplateProperty =
             DependencyProperty.Register("BottomContentTemplate", typeof(DataTemplate), typeof(Anchor), new PropertyMetadata());
+
+
+
+        public ICommand BottomCommand
+        {
+            get { return (ICommand)GetValue(BottomCommandProperty); }
+            set { SetValue(BottomCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty BottomCommandProperty =
+            DependencyProperty.Register("BottomCommand", typeof(ICommand), typeof(Anchor), new PropertyMetadata());
+
+
+
+        private void BottomContentMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (bottomContent.IsMouseOver && BottomCommand != null)
+            {
+                BottomCommand.Execute(null);
+            }
+        }
 
 
 

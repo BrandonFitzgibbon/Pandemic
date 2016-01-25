@@ -24,7 +24,7 @@ namespace Presentation.WPF.Converters
             IBoardViewModel bvm = (IBoardViewModel)values[1];
             int turn = int.Parse(parameter.ToString());
 
-            if (bvm.CurrentPlayerViewModel.TurnOrder != turn && node.Players.Contains(bvm.PlayerViewModels.SingleOrDefault(i => i.TurnOrder == turn).Player))
+            if (bvm.SelectedPlayerViewModel.TurnOrder != turn && node.Players.Contains(bvm.PlayerViewModels.SingleOrDefault(i => i.TurnOrder == turn).Player))
             {
                 return bvm.PlayerViewModels.SingleOrDefault(i => i.TurnOrder == turn).Pawn;
             }

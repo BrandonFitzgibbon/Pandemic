@@ -22,6 +22,18 @@ namespace Presentation.WPF.Implementations
             get { return node; }
         }
 
+        private IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters;
+
+        public int YellowCount
+        {
+            get { return nodeDiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Yellow).Count; }
+        }
+
+        public int BlueCount
+        {
+            get { return nodeDiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Blue).Count; }
+        }
+
         public DriveDestinationItem DriveDestinationItem
         {
             get { return BoardViewModel.CommandsViewModel.GetDriveDestinationItem(Node); }
@@ -66,6 +78,20 @@ namespace Presentation.WPF.Implementations
             set { actionContent = value; }
         }
 
+        private SolidColorBrush alertBackground;
+        public SolidColorBrush AlertBackground
+        {
+            get { return alertBackground; }
+            set { alertBackground = value; NotifyPropertyChanged(); }
+        }
+
+        private SolidColorBrush alertForegound;
+        public SolidColorBrush AlertForeground
+        {
+            get { return alertForegound; }
+            set { alertForegound = value;  NotifyPropertyChanged(); }
+        }
+
         private SolidColorBrush background;
         public SolidColorBrush Background
         {
@@ -87,19 +113,69 @@ namespace Presentation.WPF.Implementations
             set { contentForeground = value; NotifyPropertyChanged(); }
         }
 
+        private double nameplateFontSize = 16;
+        public double NameplateFontSize
+        {
+            get { return nameplateFontSize; }
+            set { nameplateFontSize = value;  NotifyPropertyChanged(); }
+        }
+
         private int i = 0;
         private DispatcherTimer opacityTimer;
         private int opacityDireciton;
 
-        public AnchorViewModel(Node node, IBoardViewModel boardViewModel, Notifier notifier)
+        public AnchorViewModel(Node node, IEnumerable<NodeDiseaseCounter> diseaseCounters, IBoardViewModel boardViewModel, Notifier notifier)
         {
             this.node = node;
+            this.nodeDiseaseCounters = diseaseCounters;
             this.boardViewModel = boardViewModel;
+
+            foreach (NodeDiseaseCounter ndc in diseaseCounters)
+            {
+                ndc.Infected += Ndc_Infected;
+                ndc.Treated += Ndc_Treated;
+            }
 
             notifier.SubscribeToViewModel(this);
 
             opacityTimer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(1) };
             opacityTimer.Tick += opacityTimer_Tick;
+
+            GetAlertColors();
+        }
+
+        private void Ndc_Treated(object sender, Engine.CustomEventArgs.TreatedEventArgs e)
+        {
+            GetAlertColors();
+        }
+
+        private void Ndc_Infected(object sender, Engine.CustomEventArgs.InfectionEventArgs e)
+        {
+            GetAlertColors();
+        }
+
+        private void GetAlertColors()
+        {
+            int max = nodeDiseaseCounters.Max(i => i.Count);
+            switch (max)
+            {
+                case 1:
+                    AlertBackground = Brushes.Yellow;
+                    AlertForeground = Brushes.Black;
+                    break;
+                case 2:
+                    AlertBackground = Brushes.Orange;
+                    AlertForeground = Brushes.White;
+                    break;
+                case 3:
+                    AlertBackground = Brushes.Red;
+                    AlertForeground = Brushes.White;
+                    break;
+                default:
+                    AlertBackground = Brushes.LimeGreen;
+                    AlertForeground = Brushes.Black;
+                    break;
+            }
         }
 
         #region TopSelectPlayerCommand
@@ -118,6 +194,66 @@ namespace Presentation.WPF.Implementations
         private void TopSelectPlayer()
         {
             BoardViewModel.SelectPlayer(1);
+        }
+
+        #endregion
+
+        #region LeftSelectPlayerCommand
+
+        private RelayCommand leftSelectPlayerCommand;
+        public ICommand LeftSelectPlayerCommand
+        {
+            get
+            {
+                if (leftSelectPlayerCommand == null)
+                    leftSelectPlayerCommand = new RelayCommand(a => LeftSelectPlayer());
+                return leftSelectPlayerCommand;
+            }
+        }
+
+        private void LeftSelectPlayer()
+        {
+            BoardViewModel.SelectPlayer(3);
+        }
+
+        #endregion
+
+        #region BottomSelectPlayerCommand
+
+        private RelayCommand bottomSelectPlayerCommand;
+        public ICommand BottomSelectPlayerCommand
+        {
+            get
+            {
+                if (bottomSelectPlayerCommand == null)
+                    bottomSelectPlayerCommand = new RelayCommand(a => BottomSelectPlayer());
+                return bottomSelectPlayerCommand;
+            }
+        }
+
+        private void BottomSelectPlayer()
+        {
+            BoardViewModel.SelectPlayer(2);
+        }
+
+        #endregion
+
+        #region RightSelectPlayerCommand
+
+        private RelayCommand rightSelectPlayerCommand;
+        public ICommand RightSelectPlayerCommand
+        {
+            get
+            {
+                if (rightSelectPlayerCommand == null)
+                    rightSelectPlayerCommand = new RelayCommand(a => RightSelectPlayer());
+                return rightSelectPlayerCommand;
+            }
+        }
+
+        private void RightSelectPlayer()
+        {
+            BoardViewModel.SelectPlayer(4);
         }
 
         #endregion

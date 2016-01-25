@@ -81,7 +81,9 @@
     <Compile Include="Controls\Icons.cs" />
     <Compile Include="Controls\PanZoomPanel.cs" />
     <Compile Include="Converters\CenterConverter.cs" />
+    <Compile Include="Converters\DiseaseCubeVisibilityConverter.cs" />
     <Compile Include="Converters\DiseaseStatusToIconConverter.cs" />
+    <Compile Include="Converters\DiseaseToBackgroundConverter.cs" />
     <Compile Include="Converters\DiseaseToColorConverter.cs" />
     <Compile Include="Converters\DiseaseToFontConverter.cs" />
     <Compile Include="Converters\DiseaseToIconConverter.cs" />
