@@ -13,6 +13,7 @@ namespace Presentation.WPF.Contracts
     {
         DriveDestinationItem GetDriveDestinationItem(Node node);
         DispatchItem GetDispatchItem(Node node);
+        DirectFlightItem GetDirectFlightItem(Node node);
         ICommand DispatchCommand { get; }
     }
 }

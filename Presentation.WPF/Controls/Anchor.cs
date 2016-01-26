@@ -88,6 +88,17 @@ namespace Presentation.WPF.Controls
 
 
 
+        public SolidColorBrush ContentFill
+        {
+            get { return (SolidColorBrush)GetValue(ContentFillProperty); }
+            set { SetValue(ContentFillProperty, value); }
+        }
+
+        public static readonly DependencyProperty ContentFillProperty =
+            DependencyProperty.Register("ContentFill", typeof(SolidColorBrush), typeof(Anchor), new PropertyMetadata(System.Windows.Media.Brushes.Transparent));
+
+   
+
         public double ContentOpacity
         {
             get { return (double)GetValue(ContentOpacityProperty); }

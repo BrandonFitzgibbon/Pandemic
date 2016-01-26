@@ -97,6 +97,14 @@ namespace Presentation.WPF.Implementations
             boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
         }
 
+        public DirectFlightItem GetDirectFlightItem(Node node)
+        {
+            if (node == null || actionManager.DirectFlightDestinations == null)
+                return null;
+
+            return actionManager.DirectFlightDestinations.SingleOrDefault(i => i.CityCard.Node == node);
+        }
+
         private RelayCommand directFlightCommand;
         public ICommand DirectFlightCommand
         {
@@ -116,6 +124,8 @@ namespace Presentation.WPF.Implementations
         public void DirectFlight(DirectFlightItem dfi)
         {
             actionManager.DirectFlight(dfi);
+            RaiseChangeNotificationRequested(null);
+            boardViewModel.PawnViewModel.AnimateDrive(boardViewModel.PathAnimationViewModel.Data);
         }
     }
 }

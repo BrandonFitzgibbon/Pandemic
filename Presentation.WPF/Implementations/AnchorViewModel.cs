@@ -24,16 +24,6 @@ namespace Presentation.WPF.Implementations
 
         private IEnumerable<NodeDiseaseCounter> nodeDiseaseCounters;
 
-        public int YellowCount
-        {
-            get { return nodeDiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Yellow).Count; }
-        }
-
-        public int BlueCount
-        {
-            get { return nodeDiseaseCounters.Single(i => i.Disease.Type == DiseaseType.Blue).Count; }
-        }
-
         public DriveDestinationItem DriveDestinationItem
         {
             get { return BoardViewModel.CommandsViewModel.GetDriveDestinationItem(Node); }
@@ -42,6 +32,11 @@ namespace Presentation.WPF.Implementations
         public DispatchItem DispatchItem
         {
             get { return BoardViewModel.CommandsViewModel.GetDispatchItem(Node); }
+        }
+
+        public DirectFlightItem DirectFlightItem
+        {
+            get { return BoardViewModel.CommandsViewModel.GetDirectFlightItem(Node); }
         }
 
         private IBoardViewModel boardViewModel;
@@ -78,11 +73,25 @@ namespace Presentation.WPF.Implementations
             set { actionContent = value; }
         }
 
+        private object alertActionContent;
+        public object AlertActionContent
+        {
+            get { return alertActionContent; }
+            set { alertActionContent = value;  NotifyPropertyChanged(); }
+        }
+
         private SolidColorBrush alertBackground;
         public SolidColorBrush AlertBackground
         {
             get { return alertBackground; }
             set { alertBackground = value; NotifyPropertyChanged(); }
+        }
+
+        private SolidColorBrush alertFill;
+        public SolidColorBrush AlertFill
+        {
+            get { return alertFill; }
+            set { alertFill = value; NotifyPropertyChanged(); }
         }
 
         private SolidColorBrush alertForegound;
@@ -97,6 +106,13 @@ namespace Presentation.WPF.Implementations
         {
             get { return background; }
             set { background = value; NotifyPropertyChanged(); }
+        }
+
+        private SolidColorBrush fill;
+        public SolidColorBrush Fill
+        {
+            get { return fill; }
+            set { fill = value;  NotifyPropertyChanged(); }
         }
 
         private SolidColorBrush glowBrush = Brushes.White;
@@ -162,18 +178,22 @@ namespace Presentation.WPF.Implementations
                 case 1:
                     AlertBackground = Brushes.Yellow;
                     AlertForeground = Brushes.Black;
+                    AlertFill = Brushes.Black;
                     break;
                 case 2:
                     AlertBackground = Brushes.Orange;
                     AlertForeground = Brushes.White;
+                    AlertFill = Brushes.White;
                     break;
                 case 3:
                     AlertBackground = Brushes.Red;
                     AlertForeground = Brushes.White;
+                    AlertFill = Brushes.White;
                     break;
                 default:
                     AlertBackground = Brushes.LimeGreen;
                     AlertForeground = Brushes.Black;
+                    AlertFill = Brushes.Black;
                     break;
             }
         }
@@ -409,7 +429,45 @@ namespace Presentation.WPF.Implementations
 
         #endregion
 
-        #region MouseEnterDispatch/MousLeaveDispatch Command
+        #region MouseEnterDirectFlight/MouseLeaveDirectFlight Command
+
+        private RelayCommand mouseEnterDirectFlightCommand;
+        public ICommand MouseEnterDirectFlightCommand
+        {
+            get
+            {
+                if (mouseEnterDirectFlightCommand == null)
+                    mouseEnterDirectFlightCommand = new RelayCommand(a => MouseEnterDirectFlight());
+                return mouseEnterDirectFlightCommand;
+            }
+        }
+
+        private void MouseEnterDirectFlight()
+        {
+            IAnchorViewModel sender = BoardViewModel.AnchorViewModels.SingleOrDefault(i => i.Node == BoardViewModel.SelectedPlayerViewModel.Location);
+            if (sender != null)
+                AnimateDispatchPath(sender);
+        }
+
+        private RelayCommand mouseLeaveDirectFlightCommand;
+        public ICommand MouseLeaveDirectFlightCommand
+        {
+            get
+            {
+                if (mouseLeaveDirectFlightCommand == null)
+                    mouseLeaveDirectFlightCommand = new RelayCommand(a => MouseLeaveDirectFlight());
+                return mouseLeaveDirectFlightCommand;
+            }
+        }
+
+        private void MouseLeaveDirectFlight()
+        {
+            MouseLeaveDrive();
+        }
+
+        #endregion
+
+        #region MouseEnterDispatch/MouseLeaveDispatch Command
 
         private RelayCommand mouseEnterDispatchCommand;
         public ICommand MouseEnterDispatchCommand
