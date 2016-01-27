@@ -13,6 +13,26 @@
         <c:DiseaseToIconConverter x:Key="DiseaseToIconConverter"/>
         <c:RoleToPawnConverter x:Key="RoleToPawnConverter"/>
 
+        <Style TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0">
+                            <ContentPresenter Margin="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+
+                            </Trigger>
+                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#7F808080"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid Background="Transparent">
@@ -39,42 +59,105 @@
         <ListView Grid.Row="2" ItemsSource="{Binding PlayerViewModels}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="Transparent">
+                    <DataTemplate.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+                        <Style TargetType="Viewbox">
+                            <Setter Property="Height" Value="18"/>
+                            <Setter Property="Width" Value="18"/>
+                        </Style>
+                    </DataTemplate.Resources>
+                    <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="text" Text="{Binding Name}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding TurnOrder, StringFormat={}#{0}}" HorizontalAlignment="Right"/>
-                        </Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding TurnOrder, StringFormat={}#{0}}"/>
+                                <Viewbox Height="17" Margin="5,0,0,0">
+                                    <ContentControl Content="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
+                                </Viewbox>
+                            </StackPanel>
+                            <Viewbox Grid.Row="1" HorizontalAlignment="Left" Margin="0,3,0,3">
                                 <ContentControl Content="{StaticResource id}"/>
                             </Viewbox>
-                            <TextBlock Text="{Binding Role, StringFormat={} : {0}}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
+                            <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Role}"/>
+                            <Viewbox Grid.Row="2" HorizontalAlignment="Left" Margin="0,3,0,3">
                                 <ContentControl Content="{StaticResource pin}"/>
                             </Viewbox>
-                            <TextBlock Text="{Binding Location, StringFormat={} : {0}}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
-                                <ContentControl Content="{StaticResource pawnWhite}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Location}"/>
+                            <Viewbox Grid.Row="3" HorizontalAlignment="Left" Margin="0,3,0,0">
+                                <ContentControl Content="{StaticResource actions}"/>
                             </Viewbox>
-                            <TextBlock Text=":" Margin="5,0,5,0"/>
-                            <Viewbox Height="{Binding ElementName=text, Path=FontSize}">
-                                <ContentControl Content="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
-                            </Viewbox>
-                        </StackPanel>
+                            <TextBlock Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Player.ActionCounter.Count}"/>
+                        </Grid>
+                        <Expander Margin="0,5,0,5">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Width="60" Height="30">
+                                        <ContentControl Content="{StaticResource city}"/>
+                                    </Viewbox>
+                                    <TextBlock VerticalAlignment="Center" Text="City Cards" Foreground="White" FontSize="14"/>
+                                    <Viewbox Width="60" Height="30">
+                                        <ContentControl Content="{StaticResource city}">
+                                            <ContentControl.LayoutTransform>
+                                                <ScaleTransform ScaleX="-1"/>
+                                            </ContentControl.LayoutTransform>
+                                        </ContentControl>
+                                    </Viewbox>
+                                </StackPanel>
+                            </Expander.Header>
+                            <ItemsControl ItemsSource="{Binding Player.Hand.CityCards}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Node.City}" Foreground="White" FontSize="14"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Expander.Template>
+                                <ControlTemplate TargetType="Expander">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Name="ContentRow" Height="0"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Separator HorizontalAlignment="Stretch"/>
+                                        <ToggleButton Grid.Row="1" Width="auto" Height="30" IsChecked="{Binding Path=IsExpanded,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <ToggleButton.Content>
+                                                <ContentPresenter ContentSource="Header"/>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <Border Name="Content" Grid.Row="2">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <Separator Grid.Row="3" HorizontalAlignment="Stretch"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsExpanded" Value="True">
+                                            <Setter TargetName="ContentRow" Property="Height" Value="{Binding ElementName=Content,Path=DesiredHeight}" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Expander.Template>
+                        </Expander>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="4" Columns="1"/>
+                    <StackPanel/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>
@@ -94,17 +177,5 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Separator Grid.Row="3" HorizontalAlignment="Stretch"/>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Viewbox Height="30">
-                <ContentControl Content="{StaticResource man}"/>
-            </Viewbox>
-            <Label Content="{Binding CurrentPlayer}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
-            <Viewbox Height="25" Margin="15,0,0,0">
-                <ContentControl Content="{StaticResource actions}"/>
-            </Viewbox>
-            <Label Content="{Binding CurrentPlayer.ActionCounter.Count}" ContentStringFormat="{}: {0}" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
-        </StackPanel>
     </Grid>
-    
 </UserControl>

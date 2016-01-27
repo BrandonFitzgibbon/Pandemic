@@ -783,7 +783,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="PlayersBar" BorderBrush="Gray" BorderThickness="0,0,1,1" IsHitTestVisible="False">
+            <Border x:Name="PlayersBar" BorderBrush="Gray" BorderThickness="0,0,1,1">
                 <Grid>
                     <Grid Background="Black" Opacity="0.5"/>
                     <ContentControl Content="{Binding PlayersViewModel}"/>

@@ -73,7 +73,7 @@ namespace Engine.Implementations.ActionManagers
             if (player.ActionCounter.Count < 1)
                 return targets;
 
-            if (player is Researcher)
+            if (player is Researcher && player.Hand.CityCards != null)
             {
                 foreach (CityCard cityCard in player.Hand.CityCards)
                 {
