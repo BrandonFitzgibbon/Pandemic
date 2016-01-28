@@ -14,18 +14,39 @@
         <c:RoleToPawnConverter x:Key="RoleToPawnConverter"/>
 
         <Style TargetType="ToggleButton">
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0">
+                        <Border Name="Border" Background="Transparent" BorderBrush="Gray" BorderThickness="1" CornerRadius="45">
                             <ContentPresenter Margin="0"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
                             </Trigger>
                             <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#7F808080"/>
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Car" TargetType="RadioButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Name="Border" Background="Transparent" BorderBrush="Gray" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0">
+                            <ContentPresenter Margin="5"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
+                            </Trigger>
+                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -89,68 +110,86 @@
                                     <ContentControl Content="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
                                 </Viewbox>
                             </StackPanel>
-                            <Viewbox Grid.Row="1" HorizontalAlignment="Left">
+                            <Viewbox Grid.Row="1" HorizontalAlignment="Left" Margin="0,3,0,0">
                                 <ContentControl Content="{StaticResource id}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Role}"/>
-                            <Viewbox Grid.Row="2" HorizontalAlignment="Left">
+                            <Viewbox Grid.Row="2" HorizontalAlignment="Left" Margin="0,3,0,0">
                                 <ContentControl Content="{StaticResource pin}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Location}"/>
-                            <Viewbox Grid.Row="3" HorizontalAlignment="Left">
+                            <Viewbox Grid.Row="3" HorizontalAlignment="Left" Margin="0,3,0,0">
                                 <ContentControl Content="{StaticResource actions}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Player.ActionCounter.Count}"/>
                         </Grid>
-                        <Expander>
-                            <Expander.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Viewbox Width="60" Height="30">
-                                        <ContentControl Content="{StaticResource city}"/>
-                                    </Viewbox>
-                                    <TextBlock VerticalAlignment="Center" Text="City Cards" Foreground="White" FontSize="14"/>
-                                    <Viewbox Width="60" Height="30">
-                                        <ContentControl Content="{StaticResource city}">
-                                            <ContentControl.LayoutTransform>
-                                                <ScaleTransform ScaleX="-1"/>
-                                            </ContentControl.LayoutTransform>
-                                        </ContentControl>
-                                    </Viewbox>
-                                </StackPanel>
-                            </Expander.Header>
-                            <ItemsControl ItemsSource="{Binding Player.Hand.CityCards}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Node.City}" Foreground="White" FontSize="14"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <Expander.Template>
-                                <ControlTemplate TargetType="Expander">
+                        <UserControl Margin="0,5,0,5">
+                            <UserControl.Template>
+                                <ControlTemplate TargetType="UserControl">
                                     <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Name="ContentRow" Height="0"/>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="0" x:Name="ContentRow"/>
                                         </Grid.RowDefinitions>
-                                        <ToggleButton Width="auto" Height="30" IsChecked="{Binding Path=IsExpanded,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                            <ToggleButton.Content>
-                                                <ContentPresenter ContentSource="Header"/>
-                                            </ToggleButton.Content>
+                                        <ToggleButton Grid.Row="0" Grid.Column="0" x:Name="ContentExpand">
+                                            <Viewbox Height="20" Width="20">
+                                                <ContentControl/>
+                                            </Viewbox>
                                         </ToggleButton>
-                                        <Border Name="Content" Grid.Row="1">
-                                            <ContentPresenter/>
+                                        <UniformGrid Grid.Row="0" Grid.Column="2" Columns="2">
+                                            <RadioButton x:Name="CityCards" IsChecked="True" Style="{StaticResource Car}">
+                                                <Viewbox Height="15">
+                                                    <ContentControl Content="{StaticResource pin}"/>
+                                                </Viewbox>
+                                            </RadioButton>
+                                            <RadioButton x:Name="ActionCards" IsChecked="False" Style="{StaticResource Car}">
+                                                <Viewbox Height="15">
+                                                    <ContentControl Content="{StaticResource lightning}"/>
+                                                </Viewbox>
+                                            </RadioButton>
+                                        </UniformGrid>
+                                        <Border x:Name="Content" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="Gray" BorderThickness="1" CornerRadius="0">
+                                            <Grid>
+                                                <Border x:Name="City" Visibility="Visible">
+                                                    <ItemsControl ItemsSource="{Binding Player.Hand.CityCards}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Node.City}" FontSize="14" Foreground="White" Margin="5,0,5,0"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </Border>
+                                                <Border x:Name="Action" Visibility="Hidden">
+                                                    <ItemsControl ItemsSource="{Binding Player.Hand.ActionCards}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Name}" FontSize="14" Foreground="White" Margin="5,0,5,0"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </Border>
+                                            </Grid>
                                         </Border>
-                                        <Separator Grid.Row="2" HorizontalAlignment="Stretch"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
-                                        <Trigger Property="IsExpanded" Value="True">
-                                            <Setter TargetName="ContentRow" Property="Height" Value="{Binding ElementName=Content,Path=DesiredHeight}" />
-                                        </Trigger>
+                                        <DataTrigger Binding="{Binding ElementName=ContentExpand, Path=IsChecked}" Value="True">
+                                            <Setter Property="Height" TargetName="ContentRow" Value="{Binding ElementName=Content, Path=DesiredHeight}"/>
+                                            <Setter Property="BorderThickness" TargetName="CityCards" Value="1,1,1,0"/>
+                                            <Setter Property="BorderThickness" TargetName="ActionCards" Value="1,1,1,0"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=CityCards, Path=IsChecked}" Value="False">
+                                            <Setter Property="Visibility" TargetName="City" Value="Hidden"/>
+                                            <Setter Property="Visibility" TargetName="Action" Value="Visible"/>
+                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
-                            </Expander.Template>
-                        </Expander>
+                            </UserControl.Template>
+                        </UserControl>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -166,7 +205,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
                                 <Border>
-                                    <ContentPresenter/>
+                                    <ContentPresenter Margin="5"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>

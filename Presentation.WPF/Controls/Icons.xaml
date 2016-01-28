@@ -68,6 +68,33 @@
         </Canvas>
     </Viewbox>
 
+    <!--Daisy Binks-->
+    <Viewbox x:Key="lightning" x:Shared="false"  Stretch="Uniform">
+      <Canvas Width="744.09448819" Height="1052.3622047">
+            <Canvas.RenderTransform>
+                <TranslateTransform X="0" Y="0"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+          <Canvas>
+            <Canvas.RenderTransform>
+              <MatrixTransform Matrix="15.972412 0 0 13.25087 -369.88589 -65.418308"/>
+            </Canvas.RenderTransform>
+            <Canvas>
+              <Canvas>
+                <Canvas>
+                  <Path Fill="White">
+                    <Path.Data>
+                      <PathGeometry Figures="M 69.866 5.276 C 64.043 15.431 56.246 23.62 50.218 33.57 c 5.761 0 11.53 0 17.291 0 0.888 1.832 -1.847 4.731 -3.144 6.288 C 52.812 53.69 37.21 69.315 25.854 83.871 28.337 73.253 35.701 60.717 40 49.289 c -5.501 0 -11.003 0 -16.505 0 C 28.856 34.474 35.081 20.523 40 5.276 c 9.958 0 19.908 0 29.866 0 z" FillRule="NonZero"/>
+                    </Path.Data>
+                  </Path>
+                </Canvas>
+              </Canvas>
+            </Canvas>
+          </Canvas>
+        </Canvas>
+      </Canvas>
+    </Viewbox>
+    
     <!--Chuck Spidell-->
     <Viewbox x:Key="city" x:Shared="false">
         <Canvas Width="1200" Height="744.09449">
