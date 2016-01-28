@@ -55,13 +55,14 @@
                 <ContentControl Content="{StaticResource man}"/>
             </Viewbox>
         </StackPanel>
-        <Separator Grid.Row="1" HorizontalAlignment="Stretch"/>
+        <Separator Grid.Row="1" HorizontalAlignment="Stretch" Foreground="Gray"/>
         <ListView Grid.Row="2" ItemsSource="{Binding PlayerViewModels}" BorderBrush="Transparent" Background="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DataTemplate.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Foreground" Value="White"/>
                         </Style>
                         <Style TargetType="Viewbox">
                             <Setter Property="Height" Value="18"/>
@@ -88,20 +89,20 @@
                                     <ContentControl Content="{Binding Role, Converter={StaticResource RoleToPawnConverter}}"/>
                                 </Viewbox>
                             </StackPanel>
-                            <Viewbox Grid.Row="1" HorizontalAlignment="Left" Margin="0,3,0,3">
+                            <Viewbox Grid.Row="1" HorizontalAlignment="Left">
                                 <ContentControl Content="{StaticResource id}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Role}"/>
-                            <Viewbox Grid.Row="2" HorizontalAlignment="Left" Margin="0,3,0,3">
+                            <Viewbox Grid.Row="2" HorizontalAlignment="Left">
                                 <ContentControl Content="{StaticResource pin}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Location}"/>
-                            <Viewbox Grid.Row="3" HorizontalAlignment="Left" Margin="0,3,0,0">
+                            <Viewbox Grid.Row="3" HorizontalAlignment="Left">
                                 <ContentControl Content="{StaticResource actions}"/>
                             </Viewbox>
                             <TextBlock Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Text="{Binding Player.ActionCounter.Count}"/>
                         </Grid>
-                        <Expander Margin="0,5,0,5">
+                        <Expander>
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Viewbox Width="60" Height="30">
@@ -128,21 +129,19 @@
                                 <ControlTemplate TargetType="Expander">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Name="ContentRow" Height="0"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <Separator HorizontalAlignment="Stretch"/>
-                                        <ToggleButton Grid.Row="1" Width="auto" Height="30" IsChecked="{Binding Path=IsExpanded,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton Width="auto" Height="30" IsChecked="{Binding Path=IsExpanded,Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                                             <ToggleButton.Content>
                                                 <ContentPresenter ContentSource="Header"/>
                                             </ToggleButton.Content>
                                         </ToggleButton>
-                                        <Border Name="Content" Grid.Row="2">
+                                        <Border Name="Content" Grid.Row="1">
                                             <ContentPresenter/>
                                         </Border>
-                                        <Separator Grid.Row="3" HorizontalAlignment="Stretch"/>
+                                        <Separator Grid.Row="2" HorizontalAlignment="Stretch"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsExpanded" Value="True">
@@ -162,14 +161,12 @@
             </ListView.ItemsPanel>
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Margin" Value="5"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <Border x:Name="Border" Background="Transparent" BorderThickness="{StaticResource StandardBorderThickness}" CornerRadius="{StaticResource StandardCornerRadius}" TextElement.FontSize="14" TextElement.Foreground="White">
-                                    <ContentPresenter Margin="5"/>
+                                <Border>
+                                    <ContentPresenter/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
