@@ -18,17 +18,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="Border" Background="Transparent" BorderBrush="Gray" BorderThickness="1" CornerRadius="45">
+                        <Border Name="Border" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="45">
                             <ContentPresenter Margin="0"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
-                            </Trigger>
-                            <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{StaticResource StandardMouseOverBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -129,7 +121,7 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -138,10 +130,10 @@
                                         </Grid.RowDefinitions>
                                         <ToggleButton Grid.Row="0" Grid.Column="0" x:Name="ContentExpand">
                                             <Viewbox Height="20" Width="20">
-                                                <ContentControl/>
+                                                <ContentControl x:Name="togcontent" Content="{StaticResource plus}"/>
                                             </Viewbox>
                                         </ToggleButton>
-                                        <UniformGrid Grid.Row="0" Grid.Column="2" Columns="2">
+                                        <UniformGrid Grid.Row="0" Grid.Column="2" Columns="2" Margin="40,0,0,0">
                                             <RadioButton x:Name="CityCards" IsChecked="True" Style="{StaticResource Car}">
                                                 <Viewbox Height="15">
                                                     <ContentControl Content="{StaticResource pin}"/>
@@ -181,6 +173,7 @@
                                             <Setter Property="Height" TargetName="ContentRow" Value="{Binding ElementName=Content, Path=DesiredHeight}"/>
                                             <Setter Property="BorderThickness" TargetName="CityCards" Value="1,1,1,0"/>
                                             <Setter Property="BorderThickness" TargetName="ActionCards" Value="1,1,1,0"/>
+                                            <Setter Property="Content" TargetName="togcontent" Value="{StaticResource minus}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ElementName=CityCards, Path=IsChecked}" Value="False">
                                             <Setter Property="Visibility" TargetName="City" Value="Hidden"/>

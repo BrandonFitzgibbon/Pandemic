@@ -115,7 +115,7 @@ namespace Presentation.WPF.Implementations
             this.selectedPlayer.ContextChanged += SelectedPlayer_ContextChanged;
 
             drawViewModel = new DrawViewModel(game.DrawManager, notifier);
-            infectionViewModel = new InfectionViewModel(game.InfectionManager, notifier);
+            infectionViewModel = new InfectionViewModel(game.InfectionManager, game.NodeCounters, this, notifier);
             playerViewModels = CreatePlayerViewModels(game, notifier);
             playersViewModel = new PlayersViewModel(currentPlayer, playerViewModels, notifier);
             nextTurnViewModel = new NextTurnViewModel(game, currentPlayer, notifier);

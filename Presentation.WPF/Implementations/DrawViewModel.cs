@@ -39,6 +39,7 @@ namespace Presentation.WPF.Implementations
         public async void Draw()
         {
             await Task.Run(() => drawManager.DrawPlayerCard());
+            RaiseChangeNotificationRequested(null);
         }
     }
 }

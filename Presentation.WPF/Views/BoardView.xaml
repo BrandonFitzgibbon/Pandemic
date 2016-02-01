@@ -59,6 +59,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <Style TargetType="ToolTip">
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
@@ -81,7 +82,7 @@
 
         <c:PanZoomPanel Grid.Row="1" Grid.Column="1" Scale="0.32">
             <Canvas x:Name="Canvas" c:ExtendedCanvas.AnchorCollection="{Binding AnchorViewModels}" c:ExtendedCanvas.ConnectionCollection="{Binding ConnectionViewModels}"  Width="6000" Height="3000" RenderTransformOrigin="0,0">
-                
+
                 <Canvas.Background>
                     <VisualBrush>
                         <VisualBrush.Visual>
@@ -89,7 +90,7 @@
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Canvas.Background>
-                
+
                 <Canvas.Resources>
 
                     <Style TargetType="c:Anchor">
@@ -666,7 +667,7 @@
                                 </MultiDataTrigger.Setters>
                             </MultiDataTrigger>
                         </Style.Triggers>
-                        
+
                     </Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="White"/>
@@ -699,7 +700,31 @@
                         </Style>
                     </ContentControl.Style>
                 </ContentControl>
-                
+
+                <Border Canvas.Left="{Binding InfectionViewModel.Left}" Canvas.Top="{Binding InfectionViewModel.Top}" Background="Transparent" Visibility="{Binding InfectionViewModel.BannerVisibility}" Panel.ZIndex="3000">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Margin">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource CenterConverter}">
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualWidth"/>
+                                        <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Border.Style>
+                    <Border.RenderTransform>
+                        <TranslateTransform Y="{Binding InfectionViewModel.Translate}"/>
+                    </Border.RenderTransform>
+                        <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding InfectionViewModel.InfectionCount}"/>
+                        <Viewbox>
+                            <ContentControl Content="{Binding InfectionViewModel.InfectionIcon}"/>
+                        </Viewbox>
+                    </StackPanel>
+                </Border>
+
             </Canvas>
         </c:PanZoomPanel>
 

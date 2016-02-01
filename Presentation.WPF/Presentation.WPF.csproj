@@ -159,6 +159,10 @@
     <Compile Include="Views\PlayersView.xaml.cs">
       <DependentUpon>PlayersView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\diseaseRed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
